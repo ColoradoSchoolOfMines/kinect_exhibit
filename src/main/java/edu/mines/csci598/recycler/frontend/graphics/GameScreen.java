@@ -22,8 +22,8 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         setFocusable(true);
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
-        background = new Sprite("src/main/resources/SpriteImages/background.jpg");
-        s= new Sprite("src/main/resources/SpriteImages/glass.png");
+        background = new Sprite("src/main/resources/SpriteImages/background.jpg", 1.0);
+        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0.1);
 
 
 
@@ -33,7 +33,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(background.getImage().getScaledInstance(x,y,Image.SCALE_SMOOTH), 0, 0, this);
+        g2d.drawImage(background.getImage(), 0, 0, this);
         g2d.drawImage(s.getImage(),5,5, this);
         g.dispose();
     }

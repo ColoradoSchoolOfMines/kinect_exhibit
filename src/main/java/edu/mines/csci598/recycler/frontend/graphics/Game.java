@@ -18,7 +18,7 @@ public class Game extends JFrame implements GraphicsConstants{
         add(new GameScreen());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(x, y);
+        setSize(screenWidth, screenHeight);
         setLocationRelativeTo(null);
         setTitle("R - Type");
         setResizable(false);
