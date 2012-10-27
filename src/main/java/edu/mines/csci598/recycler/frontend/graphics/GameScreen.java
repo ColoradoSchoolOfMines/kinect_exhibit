@@ -26,13 +26,14 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         s= new Sprite("src/main/resources/SpriteImages/default.jpg");
 
 
+
     }
 
     public void paint(Graphics g) {
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(background.getImage(), 0, 0, this);
+        g2d.drawImage(background.getImage().getScaledInstance(x,y,Image.SCALE_SMOOTH), 0, 0, this);
         g2d.drawImage(s.getImage(),5,5, this);
         g.dispose();
     }
