@@ -15,18 +15,22 @@ import java.util.LinkedList;
  */
 public class GameScreen extends JPanel implements GraphicsConstants{
     LinkedList<Displayable> drawableLinkedList;
-
+    Sprite s;
     public GameScreen() {
 
         setFocusable(true);
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
+        s= new Sprite();
+
 
     }
 
     public void paint(Graphics g) {
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
+        Graphics2D g2d = (Graphics2D)g;
+        g2d.drawImage(s.getImage(),5,5, this);
         g.dispose();
     }
 
