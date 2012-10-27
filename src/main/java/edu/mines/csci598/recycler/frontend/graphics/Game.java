@@ -1,9 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,5 +27,8 @@ public class Game extends JFrame implements GraphicsConstants{
         game.gameScreen.start();
     }
 
+    public GameScreen getGameScreen(){
+        return gameScreen;
+    }
 
 }

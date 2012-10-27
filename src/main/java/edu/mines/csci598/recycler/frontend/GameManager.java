@@ -1,6 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 
 import java.util.ArrayList;
 
@@ -19,10 +19,27 @@ public class GameManager {
     GameScreen gameScreen;
     ArrayList<RecycleBin> recycleBins;
     ArrayList<Recyclable> recyclables;
+   public GameManager(){
+       Game game = new Game();
+       gameScreen = game.getGameScreen();
+       Sprite s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, 0, 0.1);
+       Path p = new Path();
+       p.addLine(new Line(0.0,0.0,700.0,00.0,10.0));
+       s.setPath(p);
+       s.setStartTime(0);
 
+       gameScreen.addSprite(s);
+
+       gameUpdateLoop();
+   }
    private void gameUpdateLoop(){
+       long startTime = System.currentTimeMillis(); //in seconds
+
        while(true){
-           //calculate game time
+           double current_time = (System.currentTimeMillis()-startTime)/1000.0;
+           gameScreen.update(current_time);
+
+
            //see if hand is going through item and handle it
            //see if hand hits powerup and handle it
            //tell the game screen to update
@@ -30,6 +47,11 @@ public class GameManager {
        }
 
 
-   };
+   }
+
+   public static void main(String[] args){
+       GameManager gm = new GameManager();
+
+   }
 
 }

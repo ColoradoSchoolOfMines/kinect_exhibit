@@ -17,10 +17,11 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     LinkedList<Displayable> drawableLinkedList;
     Sprite s;
     Sprite background;
+    LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     public GameScreen() {
 
         setFocusable(true);
-        setBackground(Color.BLACK);
+        setBackground(Color.RED);
         setDoubleBuffered(true);
         background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
         s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
@@ -33,6 +34,9 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), this);
         g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
+        for(Sprite sprite : sprites){
+            g2d.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
+        }
         g.dispose();
     }
 
@@ -73,4 +77,17 @@ public class GameScreen extends JPanel implements GraphicsConstants{
 
     }
 
+    public boolean addSprite(Sprite s){
+        return sprites.add(s);
+    }
+    public boolean removeSprite(Sprite s){
+        return sprites.remove(s);
+    }
+    public void update(double time ){
+        for(Sprite sprite: sprites){
+            sprite.updateLocation(time);
+        }
+        repaint();
+
+    }
 }

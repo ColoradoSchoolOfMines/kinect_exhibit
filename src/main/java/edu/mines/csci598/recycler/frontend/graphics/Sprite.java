@@ -29,6 +29,8 @@ public class Sprite implements GraphicsConstants{
     private int width;
     private int height;
     private double scaleFactor;
+    private Path path;
+    private double startTime;
 
     public Sprite(String fileName, int x, int y, double scaleFactor) {
         this.x = x;
@@ -129,5 +131,18 @@ public class Sprite implements GraphicsConstants{
         return image.getScaledInstance((int)(screenWidth * scaleFactor), (int)(screenHeight * scaleFactor), Image.SCALE_SMOOTH);
     }
 
+    public void setPath(Path p){
+        path = p;
+    };
+    public void setStartTime(double time){
+        startTime = time;
+    }
+    public void updateLocation(double time){
+        if(path != null){
+            Coordinate c = path.getLocation(startTime,time);
+            x=(int)c.x;
+            y=(int)c.y;
+        }
+    }
 
 }
