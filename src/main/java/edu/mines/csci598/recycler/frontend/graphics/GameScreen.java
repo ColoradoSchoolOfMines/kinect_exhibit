@@ -23,7 +23,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         background = new Sprite("src/main/resources/SpriteImages/background.jpg");
-        s= new Sprite("src/main/resources/SpriteImages/default.jpg");
+        s= new Sprite("src/main/resources/SpriteImages/glass.png");
 
 
 
