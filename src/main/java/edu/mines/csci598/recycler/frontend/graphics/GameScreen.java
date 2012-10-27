@@ -25,8 +25,6 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         background = new Sprite("src/main/resources/SpriteImages/background.jpg");
         s= new Sprite("src/main/resources/SpriteImages/glass.png");
 
-
-
     }
 
     public void paint(Graphics g) {
