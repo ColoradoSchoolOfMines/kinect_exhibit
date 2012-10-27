@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
 
 /**
@@ -12,21 +13,22 @@ import java.util.LinkedList;
  * Date: 10/20/12
  * Time: 9:13 PM
  */
-public class GameScreen extends JFrame{
+public class GameScreen extends JPanel implements GraphicsConstants{
     LinkedList<Displayable> drawableLinkedList;
-    public static final int x = 800;
-    public static final int y = 600;
 
     public GameScreen() {
 
-        add(new Board());
+        setFocusable(true);
+        setBackground(Color.BLACK);
+        setDoubleBuffered(true);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(x, y);
-        setLocationRelativeTo(null);
-        setTitle("R - Type");
-        setResizable(false);
-        setVisible(true);
     }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
+    }
+
 
 }
