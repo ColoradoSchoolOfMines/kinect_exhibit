@@ -20,7 +20,7 @@ public class Game extends JFrame implements GraphicsConstants{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(screenWidth, screenHeight);
         setLocationRelativeTo(null);
-        setTitle("R - Type");
+        setTitle("Recycler");
         setResizable(false);
         setVisible(true);
     }
