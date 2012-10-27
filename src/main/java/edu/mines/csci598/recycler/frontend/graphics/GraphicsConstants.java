@@ -8,6 +8,6 @@ package edu.mines.csci598.recycler.frontend.graphics;
  * To change this template use File | Settings | File Templates.
  */
 public interface GraphicsConstants {
-    public static final int x = 800;
-    public static final int y = 600;
+    public static final int x = 940;
+    public static final int y = 1080;
 }
