@@ -20,23 +20,24 @@ import java.io.IOException;
 
 public class Sprite implements GraphicsConstants{
 
-    private float dx;
-    private float dy;
-    private float x;
-    private float y;
+    private int dx;
+    private int dy;
+    private int x;
+    private int y;
     private Image image;
     private String fileName;
     private int width;
     private int height;
     private double scaleFactor;
 
-    public Sprite(String fileName, double scaleFactor) {
+    public Sprite(String fileName, int x, int y, double scaleFactor) {
+        this.x = x;
+        this.y = y;
         this.fileName = fileName;
         this.scaleFactor = scaleFactor;
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
-        moveTo(0, 0);
     }
 
     /*
@@ -87,7 +88,7 @@ public class Sprite implements GraphicsConstants{
       * param {float} dx
       * 		The positive or negative horizontal velocity.
       */
-    public void setHorizontalVelocity(float dx) {
+    public void setHorizontalVelocity(int dx) {
         this.dx = dx;
     }
 
@@ -97,7 +98,7 @@ public class Sprite implements GraphicsConstants{
       * param {float} dy
       * 		The positive or negative vertical velocity.
       */
-    public void setVerticalVelocity(float dy) {
+    public void setVerticalVelocity(int dy) {
         this.dy = dy;
     }
 

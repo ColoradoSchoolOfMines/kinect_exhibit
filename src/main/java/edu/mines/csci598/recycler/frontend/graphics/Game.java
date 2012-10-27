@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -12,11 +13,11 @@ import java.awt.image.BufferedImage;
  * To change this template use File | Settings | File Templates.
  */
 public class Game extends JFrame implements GraphicsConstants{
+    private GameScreen gameScreen;
 
     public Game() {
-
-        add(new GameScreen());
-
+        gameScreen = new GameScreen();
+        add(gameScreen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(screenWidth, screenHeight);
         setLocationRelativeTo(null);
@@ -25,7 +26,9 @@ public class Game extends JFrame implements GraphicsConstants{
         setVisible(true);
     }
     public static void main( String[] args ){
-        new Game();
+        Game game = new Game();
+        game.gameScreen.start();
     }
+
 
 }

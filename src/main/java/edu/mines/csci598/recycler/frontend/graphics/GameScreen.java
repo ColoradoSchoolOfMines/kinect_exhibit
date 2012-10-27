@@ -22,8 +22,8 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         setFocusable(true);
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
-        background = new Sprite("src/main/resources/SpriteImages/background.jpg", 1.0);
-        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0.1);
+        background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
+        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
 
     }
 
@@ -31,10 +31,46 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(background.getImage(), 0, 0, this);
-        g2d.drawImage(s.getImage(),5,5, this);
+        g2d.drawImage(background.getImage(), background.getX(), background.getY(), this);
+        g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
         g.dispose();
     }
 
+    public void start(){
+        while(s.getX() < 700){
+            s.setHorizontalVelocity(1);
+            while(s.getX() <= 500){
+                s.move();
+                repaint();
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+            s.setHorizontalVelocity(0);
+            s.setVerticalVelocity(-1);
+            while(s.getY() != 200){
+                s.move();
+                repaint();
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+            s.setVerticalVelocity(0);
+            s.setHorizontalVelocity(1);
+            s.move();
+            repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            System.out.println(s.getX());
+        }
+
+    }
 
 }
