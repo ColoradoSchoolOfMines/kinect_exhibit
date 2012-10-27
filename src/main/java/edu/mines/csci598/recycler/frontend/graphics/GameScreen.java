@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import java.util.LinkedList;
+
 /**
  * The GameScreen class is responsible for drawing the displayables with their updated time.
  *

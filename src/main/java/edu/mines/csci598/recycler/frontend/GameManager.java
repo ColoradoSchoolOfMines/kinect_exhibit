@@ -2,6 +2,8 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 
+import java.util.ArrayList;
+
 /**
  * The GameManager is where the game play logic is. The main game update loop will go here.
  *
