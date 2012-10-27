@@ -18,7 +18,7 @@ import java.io.IOException;
 
 
 
-public class Sprite {
+public class Sprite implements GraphicsConstants{
 
     private float dx;
     private float dy;
@@ -26,9 +26,13 @@ public class Sprite {
     private float y;
     private Image image;
     private String fileName;
+    private int width;
+    private int height;
+    private double scaleFactor;
 
-    public Sprite(String fileName) {
+    public Sprite(String fileName, double scaleFactor) {
         this.fileName = fileName;
+        this.scaleFactor = scaleFactor;
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
@@ -121,6 +125,8 @@ public class Sprite {
       * return {Image}
       */
     public Image getImage() {
-        return image;
+        return image.getScaledInstance((int)(screenWidth * scaleFactor), (int)(screenHeight * scaleFactor), Image.SCALE_SMOOTH);
     }
+
+
 }
