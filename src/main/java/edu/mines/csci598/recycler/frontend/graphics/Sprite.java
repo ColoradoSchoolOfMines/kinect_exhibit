@@ -25,9 +25,11 @@ public class Sprite {
     private float x;
     private float y;
     private Image image;
+    private String fileName;
 
-    public Sprite() {
-        setImage("src/main/resources/SpriteImages/default.jpg");
+    public Sprite(String fileName) {
+        this.fileName = fileName;
+        setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
         moveTo(0, 0);

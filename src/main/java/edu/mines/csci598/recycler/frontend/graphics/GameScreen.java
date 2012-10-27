@@ -16,12 +16,14 @@ import java.util.LinkedList;
 public class GameScreen extends JPanel implements GraphicsConstants{
     LinkedList<Displayable> drawableLinkedList;
     Sprite s;
+    Sprite background;
     public GameScreen() {
 
         setFocusable(true);
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
-        s= new Sprite();
+        background = new Sprite("src/main/resources/SpriteImages/background.jpg");
+        s= new Sprite("src/main/resources/SpriteImages/default.jpg");
 
 
     }
@@ -30,6 +32,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
+        g2d.drawImage(background.getImage(), 0, 0, this);
         g2d.drawImage(s.getImage(),5,5, this);
         g.dispose();
     }

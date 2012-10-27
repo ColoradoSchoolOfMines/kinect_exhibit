@@ -12,7 +12,7 @@
 //
 //public class Board extends JPanel {
 //
-//	private HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
+////	private HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
 //
 //	public Board() {
 //		addKeyListener(new TAdapter());

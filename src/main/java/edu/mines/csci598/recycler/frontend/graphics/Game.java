@@ -1,6 +1,8 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Created with IntelliJ IDEA.
