@@ -3,10 +3,11 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 /**
  * The GameManager is where the game play logic is. The main game update loop will go here.
- *
+ * *******NEED TO FIX sprite linked list.  Sometimes throws exception*******
  *
  * Created with IntelliJ IDEA.
  * User: jzeimen
@@ -19,25 +20,55 @@ public class GameManager {
     GameScreen gameScreen;
     ArrayList<RecycleBin> recycleBins;
     ArrayList<Recyclable> recyclables;
+    double lastGenerateTime;
+    double generateTimeDelay;
    public GameManager(){
        Game game = new Game();
        gameScreen = game.getGameScreen();
-       Sprite s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, 0, 0.1);
+       lastGenerateTime=0;
+       generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY;
+       gameUpdateLoop();
+   }
+   private void generateSprite(double currentTime,int itemType){
+       Sprite s;
        Path p = new Path();
        p.addLine(new Line(0.0,0.0,700.0,00.0,10.0));
-       s.setPath(p);
-       s.setStartTime(0);
+       if(itemType==GameConstants.ITEM_TYPE_GLASS){
+           s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, 0, 0.1);
+           s.setPath(p);
+           s.setStartTime(currentTime);
+           gameScreen.addSprite(s);
+       }else if(itemType==GameConstants.ITEM_TYPE_PLASTIC){
+           s= new Sprite("src/main/resources/SpriteImages/jug.png", 0, 0, 0.1);
+           s.setPath(p);
+           s.setStartTime(currentTime);
+           gameScreen.addSprite(s);
+       }
+   }
+   private void generateItems(double currentTime,int numItemTypes){
+       //Function will decide on item type to generate
+       //Function will create a new sprite of that type
+       //Function will add sprite to screen
+       int itemType;
 
-       gameScreen.addSprite(s);
-
-       gameUpdateLoop();
+       if(currentTime-lastGenerateTime>generateTimeDelay){
+           lastGenerateTime=currentTime;
+           itemType = (int) (Math.random() * numItemTypes);
+           //System.out.println("Ct:"+currentTime+",IT:"+itemType);
+           try{
+               generateSprite(currentTime,itemType);
+           }catch (ConcurrentModificationException e){}
+       }
    }
    private void gameUpdateLoop(){
        long startTime = System.currentTimeMillis(); //in seconds
+       int numItemType = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
 
        while(true){
-           double current_time = (System.currentTimeMillis()-startTime)/1000.0;
-           gameScreen.update(current_time);
+           double currentTime = (System.currentTimeMillis()-startTime)/1000.0;
+           generateItems(currentTime,numItemType);
+           gameScreen.update(currentTime);
+
 
 
            //see if hand is going through item and handle it

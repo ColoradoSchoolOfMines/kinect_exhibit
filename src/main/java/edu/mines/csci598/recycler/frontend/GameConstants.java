@@ -8,4 +8,9 @@ package edu.mines.csci598.recycler.frontend;
  * To change this template use File | Settings | File Templates.
  */
 public class GameConstants {
+    public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
+    public static final double INITIAL_ITEM_GENERATION_DELAY = 3;
+    public static final int ITEM_TYPE_PLASTIC=0;
+    public static final int ITEM_TYPE_GLASS=1;
+
 }
