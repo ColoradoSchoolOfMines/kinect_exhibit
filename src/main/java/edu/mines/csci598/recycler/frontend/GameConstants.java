@@ -10,6 +10,7 @@ package edu.mines.csci598.recycler.frontend;
 public class GameConstants {
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
     public static final double INITIAL_ITEM_GENERATION_DELAY = 3;
+    //TODO: Need to use the RecyclableType enum instead of integers
     public static final int ITEM_TYPE_PLASTIC=0;
     public static final int ITEM_TYPE_GLASS=1;
 

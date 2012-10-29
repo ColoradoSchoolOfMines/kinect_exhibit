@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
- * TODO: Should we pull in Kyle's Sprite class and replace this one?
+ *
  *
  * Created with IntelliJ IDEA.
  * User: jzeimen
@@ -134,9 +134,20 @@ public class Sprite implements GraphicsConstants{
     public void setPath(Path p){
         path = p;
     };
+
+    /**
+     * Set the time the sprite is supposed to start moving along its path.
+     * This is usually whatever the current time is.
+     * @param time
+     */
     public void setStartTime(double time){
         startTime = time;
     }
+
+    /**
+     * Based on the time the sprite will update it's x and y location.
+     * @param time
+     */
     public void updateLocation(double time){
         if(path != null){
             Coordinate c = path.getLocation(startTime,time);

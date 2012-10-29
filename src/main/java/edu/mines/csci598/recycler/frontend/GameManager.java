@@ -7,7 +7,7 @@ import java.util.ConcurrentModificationException;
 
 /**
  * The GameManager is where the game play logic is. The main game update loop will go here.
- * *******NEED TO FIX sprite linked list.  Sometimes throws exception*******
+ * TODO:*******NEED TO FIX sprite linked list.  Sometimes throws exception*******
  *
  * Created with IntelliJ IDEA.
  * User: jzeimen

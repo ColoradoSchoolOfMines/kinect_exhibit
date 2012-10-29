@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * The GameScreen class is responsible for drawing the displayables with their updated time.
+ * The GameScreen class is responsible for drawing the sprites with their updated time.
  *
  *
  * Created with IntelliJ IDEA.
@@ -31,6 +31,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
 
     }
 
+
     public void paint(Graphics g) {
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
@@ -43,6 +44,10 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         g.dispose();
     }
 
+    /**
+     * Function only used to test some graphics features during development. Useless for the game will delete in future
+     * when we know we don't need it any more.
+     */
     public void start(){
         while(s.getX() < 700){
             s.setHorizontalVelocity(1);
@@ -88,6 +93,11 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     public boolean removeSprite(Sprite s){
         return sprites.remove(s);
     }
+
+    /**
+     * Updates the game screen. You must pass in the time so it knows how far everything needs to move.
+     * @param time
+     */
     public void update(double time ){
         for(Sprite sprite: sprites){
             try{

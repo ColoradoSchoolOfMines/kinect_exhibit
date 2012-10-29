@@ -3,6 +3,9 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import java.util.ArrayList;
 
 /**
+ * A Path is a representation of the path an item is to follow on the screen. It consists
+ * of a list of Lines.
+ *
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/27/12
@@ -16,14 +19,25 @@ public class Path {
 
     }
 
-
+    /**
+     * This function adds the Line to the end of the path.
+     * @param l
+     * @return
+     */
     public boolean addLine(Line l){
         return path.add(l);
     }
 
-    public Coordinate getLocation(double startTime, double endTime){
+
+    /**
+     *
+     * @param startTime The time the path starts
+     * @param referenceTime The time where you want to see it is along the path.
+     * @return
+     */
+    public Coordinate getLocation(double startTime, double referenceTime){
         Coordinate coordinate = new Coordinate(0,0);
-        double time = endTime - startTime;
+        double time = referenceTime - startTime;
         for(Line l : path){
             double currentLineTotalTime = l.getTotalTime();
             if(time <= currentLineTotalTime || l == path.get(path.size()-1)){
