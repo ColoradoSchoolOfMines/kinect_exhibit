@@ -58,6 +58,7 @@ public class GameManager {
            Log.logError(("Trash not implemented yet"));
        }
    }
+   
    private void generateItems(double currentTime,int numItemTypes){
        //Function will decide on item type to generate
        //Function will create a new sprite of that type
@@ -67,11 +68,12 @@ public class GameManager {
        if((currentTime-lastGenerateTime) > generateTimeDelay){
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
-               generateSprite(currentTime,RecyclableType.getRandom());
+               generateSprite(currentTime,RecyclableType.getRandom(numItemTypes));
                lastGenerateTime=currentTime;
            }catch (ConcurrentModificationException e){}
        }
    }
+   
    private void gameUpdateLoop(){
        long startTime = System.currentTimeMillis(); //in seconds
        int numItemType = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;

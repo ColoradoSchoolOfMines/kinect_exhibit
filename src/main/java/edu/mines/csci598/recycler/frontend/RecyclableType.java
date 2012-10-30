@@ -17,9 +17,16 @@ public enum RecyclableType {
     TRASH;
     
     private static final Random rand = new Random();
-    public static RecyclableType getRandom()
+    public static RecyclableType getRandom(int numberOfItemTypesInUse)
     {
-    	int randomChoiceIndex = rand.nextInt(RecyclableType.values().length);
+    	int numRecyclableTypes = RecyclableType.values().length;
+    	
+    	if(numberOfItemTypesInUse > numRecyclableTypes){ // error checking, just use the number of recyclables instead
+    		numberOfItemTypesInUse = numRecyclableTypes;
+    	}
+    	
+    	// Generates a choice between 0 and the number of items in use passed in, or the total number available
+    	int randomChoiceIndex = rand.nextInt(numberOfItemTypesInUse);
     	return RecyclableType.values()[randomChoiceIndex];
     }
 }

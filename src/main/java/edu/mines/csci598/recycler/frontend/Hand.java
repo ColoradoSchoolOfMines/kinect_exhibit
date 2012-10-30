@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -37,7 +38,7 @@ public class Hand implements MouseMotionListener, Displayable {
     * return {int}
     */
     public int getX() {
-        return 1;
+        return 1; // TODO magic constant, probably not implemented yet
     }
 
     /*
@@ -46,7 +47,7 @@ public class Hand implements MouseMotionListener, Displayable {
       * return {int}
       */
     public int getY() {
-        return 1;
+        return 1; // TODO magic constant, probably not implemented yet
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -58,7 +59,7 @@ public class Hand implements MouseMotionListener, Displayable {
     }
 
     void saySomething(String eventDescription, MouseEvent e) {
-        System.out.println(eventDescription
+        Log.logInfo(eventDescription
                 + " (" + e.getX() + "," + e.getY() + ")"
                 + " detected on "
                 + e.getComponent().getClass().getName()
