@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.Hand;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ConcurrentModificationException;
@@ -16,11 +18,14 @@ import java.util.LinkedList;
  * Time: 9:13 PM
  */
 public class GameScreen extends JPanel implements GraphicsConstants{
+
     LinkedList<Displayable> drawableLinkedList;
     Sprite s;
     Sprite background;
     LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     Iterator it = sprites.iterator();
+    Hand hand;
+
     public GameScreen() {
 
         setFocusable(true);
@@ -28,6 +33,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         setDoubleBuffered(true);
         background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
         s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
+        hand = new Hand();
 
     }
 
@@ -90,6 +96,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
          sprites.addLast(s);
         }catch (ConcurrentModificationException e){}
     }
+
     public boolean removeSprite(Sprite s){
         return sprites.remove(s);
     }
@@ -110,4 +117,5 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         repaint();
 
     }
+
 }

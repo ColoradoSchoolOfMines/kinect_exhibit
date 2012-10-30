@@ -22,6 +22,7 @@ public class GameManager {
     ArrayList<Recyclable> recyclables;
     double lastGenerateTime;
     double generateTimeDelay;
+
    public GameManager(){
        Game game = new Game();
        gameScreen = game.getGameScreen();
@@ -67,14 +68,18 @@ public class GameManager {
        while(true){
            double currentTime = (System.currentTimeMillis()-startTime)/1000.0;
            generateItems(currentTime,numItemType);
-           gameScreen.update(currentTime);
-
 
 
            //see if hand is going through item and handle it
+           // check coordinates here
+
            //see if hand hits powerup and handle it
+
            //tell the game screen to update
+           gameScreen.update(currentTime);
+
            //check to for winning condition.
+
        }
 
 
