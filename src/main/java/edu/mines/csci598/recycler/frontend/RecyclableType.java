@@ -11,9 +11,9 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public enum RecyclableType {
+    GLASS,
     PLASTIC,
     PAPER,
-    GLASS,
     TRASH;
     
     private static final Random rand = new Random();
@@ -25,6 +25,7 @@ public enum RecyclableType {
      * @param numberOfItemTypesInUse
      * @return
      */
+    // TODO this shouldn't really depend on the order we typed items above
     public static RecyclableType getRandom(int numberOfItemTypesInUse)
     {
     	int numRecyclableTypes = RecyclableType.values().length;

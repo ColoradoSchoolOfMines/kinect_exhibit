@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,12 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), this);
         g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
         for(Sprite sprite : sprites){
-            g2d.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
+        	try{
+        		g2d.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
+        	}
+        	catch(ConcurrentModificationException e){
+        		Log.logError("Trying to draw sprite: " + s);
+        	}
         }
         g.dispose();
     }
@@ -103,7 +109,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     public void addSprite(Sprite s){
         try{
          sprites.addLast(s);
-        }catch (ConcurrentModificationException e){}
+        }catch (ConcurrentModificationException e){Log.logError("Trying to add sprite " + s);}
     }
 
     public boolean removeSprite(Sprite s){
@@ -120,7 +126,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
                 sprite.updateLocation(time);
                 //if(sprite.getX()==700)removeSprite(sprite);
             }catch (ConcurrentModificationException e){
-
+            	Log.logError("Trying to update sprite " + sprite + " with time " + time);
             }
         }
         repaint();

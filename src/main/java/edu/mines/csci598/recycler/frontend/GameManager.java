@@ -66,14 +66,13 @@ public class GameManager {
        //Function will decide on item type to generate
        //Function will create a new sprite of that type
        //Function will add sprite to screen
-       int itemType;
-
+	   
        if((currentTime-lastGenerateTime) > generateTimeDelay){
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
                generateSprite(currentTime,RecyclableType.getRandom(numItemTypes));
                lastGenerateTime=currentTime;
-           }catch (ConcurrentModificationException e){}
+           }catch (ConcurrentModificationException e){Log.logError("Trying to generate a new sprite");}
        }
    }
    
