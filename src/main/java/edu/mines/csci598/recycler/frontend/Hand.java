@@ -22,8 +22,20 @@ import java.awt.event.MouseEvent;
 public class Hand implements MouseMotionListener, Displayable {
 
 	private Sprite sprite;
+    private int velocityX;
+    private int velocityY;
+    private int x;
+    private int y;
+    private int oldX;
+    private int oldY;
 	
     public Hand() {
+        x=0;
+        y=0;
+        oldX=0;
+        oldY=0;
+        velocityX=0;
+        velocityY=0;
 
     }
     
@@ -38,7 +50,7 @@ public class Hand implements MouseMotionListener, Displayable {
     * return {int}
     */
     public int getX() {
-        return 1; // TODO magic constant, probably not implemented yet
+        return x;
     }
 
     /*
@@ -47,10 +59,24 @@ public class Hand implements MouseMotionListener, Displayable {
       * return {int}
       */
     public int getY() {
-        return 1; // TODO magic constant, probably not implemented yet
+        return y;
     }
 
+    public int getVelocityX(){
+        return velocityX;
+    }
+    public int getVelocityY(){
+        return velocityY;
+    }
+
+
     public void mouseMoved(MouseEvent e) {
+        oldX = x;
+        oldY = y;
+        x = e.getX();
+        y = e.getY();
+        velocityX = x-oldX;
+        velocityY = y-oldY;
         saySomething("Mouse moved", e);
     }
 
@@ -60,7 +86,7 @@ public class Hand implements MouseMotionListener, Displayable {
 
     void saySomething(String eventDescription, MouseEvent e) {
         Log.logInfo(eventDescription
-                + " (" + e.getX() + "," + e.getY() + ")"
+                + " (x=" + x + ",y=" + y + ",vX=" + velocityX+ ",vy=" + velocityY  + ")"
                 + " detected on "
                 + e.getComponent().getClass().getName()
                 + "\n");

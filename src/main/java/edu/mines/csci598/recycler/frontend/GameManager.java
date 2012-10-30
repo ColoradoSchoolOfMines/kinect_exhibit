@@ -6,6 +6,7 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
 
 /**
  * The GameManager is where the game play logic is. The main game update loop will go here.
@@ -23,14 +24,22 @@ public class GameManager {
     GameScreen gameScreen;
     ArrayList<RecycleBin> recycleBins;
     ArrayList<Recyclable> recyclables;
+    LinkedList<Recyclable> recyclablesToDelete;
     double lastGenerateTime;
     double generateTimeDelay;
+    boolean generateMultiple;
 
    private GameManager(){
        GameFrame gamePanel = GameFrame.getInstance();
        gameScreen = gamePanel.getGameScreen();
        lastGenerateTime=0;
        generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
+       generateMultiple=true;
+       if(!generateMultiple){
+           Recyclable r = new Recyclable(0, RecyclableType.getRandom(2));
+           recyclables.add(r);
+           gameScreen.handleSprites(GameConstants.ADD_SPRITE,r.getSprite(),0);
+       }
        gameUpdateLoop();
    }
    
@@ -50,6 +59,7 @@ public class GameManager {
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
                Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypes));
+               //recyclables.add(r);
                gameScreen.handleSprites(GameConstants.ADD_SPRITE,r.getSprite(),currentTime);
                
                lastGenerateTime=currentTime;
@@ -57,7 +67,39 @@ public class GameManager {
                Log.logError("Trying to generate a new sprite");}
        }
    }
-   
+   private synchronized void updateRecyclables(){
+       /*
+       Sprite sprite;
+       for(Recyclable recyclable:recyclables){
+           sprite = recyclable.getSprite();
+           try{
+               sprite.updateLocation(time);
+               //if(sprite.getX()>=700) sprites.remove(sprite);
+               if(sprite.getX()>=GameConstants.TOP_PATH_END_X) spritesToRemove.addLast(sprite);
+
+               if(sprite.getY()<=GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
+                   sprite.setState(GameConstants.UNTOUCHABLE);
+               }else if(sprite.getY()<=GameConstants.SPRITE_BECOMES_TOUCHABLE){
+                   sprite.setState(GameConstants.TOUCHABLE);
+               }
+               checkCollision(recyclable);
+
+
+              //System.out.println("sx="+sprite.getX()+"sy="+sprite.getY()+
+              //        "hx="+hand.getX()+"hx="+hand.getY()+
+              //        "hvx="+hand.getVelocityX()+"hvy="+hand.getVelocityY());
+
+
+           }catch (ConcurrentModificationException e){
+               Log.logError("Trying to update sprite " + sprite + " with time " + time);
+           }
+       }
+        */
+   }
+   private synchronized void checkCollision(Recyclable r){
+
+
+   }
    private void gameUpdateLoop(){
        long startTime = System.currentTimeMillis(); //in seconds
        int numItemType = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
@@ -65,10 +107,11 @@ public class GameManager {
 
        while(true){
            double currentTime = (System.currentTimeMillis()-startTime)/1000.0;
-           generateItems(currentTime,numItemType);
+           if(generateMultiple)generateItems(currentTime,numItemType);
 
            //see if hand is going through item and handle it
            // check coordinates here
+           //gameScreen.checkCollisions();
 
            //see if hand hits powerup and handle it
 

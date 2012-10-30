@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -31,6 +33,7 @@ public class Sprite implements GraphicsConstants{
     private double scaleFactor;
     private Path path;
     private double startTime;
+    private int state;
 
     public Sprite(String fileName, int x, int y, double scaleFactor) {
         this.x = x;
@@ -40,6 +43,7 @@ public class Sprite implements GraphicsConstants{
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
+        state = GameConstants.UNTOUCHABLE;
     }
 
     /*
@@ -56,6 +60,12 @@ public class Sprite implements GraphicsConstants{
             throw new RuntimeException("File error: "+fileName);
         }
         image =(Image)img;
+    }
+    public void setState(int newState){
+        state = newState;
+    }
+    public int getState(){
+        return state;
     }
 
     /*
