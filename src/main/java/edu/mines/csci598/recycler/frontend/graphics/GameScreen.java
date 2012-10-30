@@ -32,7 +32,10 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         setDoubleBuffered(true);
         background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
         s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
+        
+        // TODO I think this should be a temporary hack
         hand = new Hand();
+        addMouseMotionListener(hand);
     }
     
     public static final GameScreen getInstance()
