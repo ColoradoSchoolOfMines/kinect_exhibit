@@ -11,9 +11,6 @@ package edu.mines.csci598.recycler.frontend.graphics;
  * Time: 9:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Displayable {
-    private Sprite sprite;
-    public Sprite getSprite(){
-        return sprite;
-    }
+public interface Displayable {
+    public Sprite getSprite();
 }

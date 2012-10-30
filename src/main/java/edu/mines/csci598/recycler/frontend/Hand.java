@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -17,10 +18,17 @@ import java.awt.event.MouseEvent;
  * Time: 9:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Hand extends Displayable implements MouseMotionListener {
+public class Hand implements MouseMotionListener, Displayable {
 
+	private Sprite sprite;
+	
     public Hand() {
 
+    }
+    
+    public Sprite getSprite()
+    {
+    	return sprite;
     }
 
     /*
