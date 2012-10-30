@@ -134,9 +134,13 @@ public class GameScreen extends JPanel implements GraphicsConstants{
                 try{
                     sprite.updateLocation(time);
                     //if(sprite.getX()>=700) sprites.remove(sprite);
+                    if(sprite.getX()>=700) spritesToRemove.addLast(sprite);
                 }catch (ConcurrentModificationException e){
                     Log.logError("Trying to update sprite " + sprite + " with time " + time);
                 }
+            }
+            for(Sprite sprite: spritesToRemove){
+                sprites.remove(sprite);
             }
 
         }catch(ExceptionInInitializerError e){
