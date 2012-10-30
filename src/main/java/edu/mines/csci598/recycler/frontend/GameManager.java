@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -16,6 +17,7 @@ import java.util.ConcurrentModificationException;
  * To change this template use File | Settings | File Templates.
  */
 public class GameManager {
+	private static final GameManager INSTANCE = new GameManager();
     Player player1, player2;
     GameScreen gameScreen;
     ArrayList<RecycleBin> recycleBins;
@@ -23,13 +25,18 @@ public class GameManager {
     double lastGenerateTime;
     double generateTimeDelay;
 
-   public GameManager(){
-       Game game = new Game();
+   private GameManager(){
+       GamePanel game = GamePanel.getInstance();
        gameScreen = game.getGameScreen();
        lastGenerateTime=0;
        generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY;
        gameUpdateLoop();
    }
+   
+   public static final GameManager getInstance(){
+	   return INSTANCE;
+   }
+   
    private void generateSprite(double currentTime,int itemType){
        Sprite s;
        Path p = new Path();

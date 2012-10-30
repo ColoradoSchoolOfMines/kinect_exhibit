@@ -12,11 +12,12 @@ import javax.swing.*;
  * Time: 11:09 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Game extends JFrame implements GraphicsConstants{
+public class GamePanel extends JFrame implements GraphicsConstants{
     private GameScreen gameScreen;
+    private static final GamePanel INSTANCE = new GamePanel();
 
-    public Game() {
-        gameScreen = new GameScreen();
+    private GamePanel() {
+    	gameScreen = GameScreen.getInstance();
         add(gameScreen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(screenWidth, screenHeight);
@@ -25,13 +26,17 @@ public class Game extends JFrame implements GraphicsConstants{
         setResizable(false);
         setVisible(true);
     }
+    
+    public static final GamePanel getInstance(){
+    	return INSTANCE;
+    }
 
     /**
      * This main function is used by those working on the graphics to test things with the graphics.
      * @param args
      */
     public static void main( String[] args ){
-        Game game = new Game();
+        GamePanel game = GamePanel.getInstance();
         game.gameScreen.start();
     }
 

@@ -18,15 +18,15 @@ import java.util.LinkedList;
  * Time: 9:13 PM
  */
 public class GameScreen extends JPanel implements GraphicsConstants{
+	private static final GameScreen INSTANCE = new GameScreen();
+    private LinkedList<Displayable> drawableLinkedList;
+    private Sprite s;
+    private Sprite background;
+    private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
+    private Iterator it = sprites.iterator();
+    private Hand hand;
 
-    LinkedList<Displayable> drawableLinkedList;
-    Sprite s;
-    Sprite background;
-    LinkedList<Sprite> sprites = new LinkedList<Sprite>();
-    Iterator it = sprites.iterator();
-    Hand hand;
-
-    public GameScreen() {
+    private GameScreen() {
 
         setFocusable(true);
         setBackground(Color.RED);
@@ -34,7 +34,11 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
         s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
         hand = new Hand();
-
+    }
+    
+    public static final GameScreen getInstance()
+    {
+    	return INSTANCE;
     }
 
 

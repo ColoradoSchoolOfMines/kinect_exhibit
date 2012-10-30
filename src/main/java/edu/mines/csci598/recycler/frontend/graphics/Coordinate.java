@@ -1,7 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 /**
- * A simple class to hold 2 doubles representing a point ont the screen.
+ * A simple class to hold 2 doubles representing a point on the screen.
  *
  * Created with IntelliJ IDEA.
  * User: jzeimen

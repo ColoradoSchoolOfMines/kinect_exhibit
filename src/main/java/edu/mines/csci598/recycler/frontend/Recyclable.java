@@ -16,9 +16,10 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 public class Recyclable implements Displayable {
     public enum MotionState{SHOOT, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE }
 
+    private Sprite sprite;
+    
 	@Override
 	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
+		return sprite;
 	};
 }
