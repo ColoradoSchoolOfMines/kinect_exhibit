@@ -7,7 +7,7 @@ package edu.mines.csci598.recycler.frontend.utils;
  * Time: 2:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameConstants {
+public final class GameConstants {
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
-    public static final double INITIAL_ITEM_GENERATION_DELAY = 3;
+    public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
 }

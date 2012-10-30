@@ -18,7 +18,7 @@ import java.util.ConcurrentModificationException;
  * To change this template use File | Settings | File Templates.
  */
 public class GameManager {
-	private static final GameManager INSTANCE = new GameManager();
+	private static GameManager INSTANCE = new GameManager();
     Player player1, player2;
     GameScreen gameScreen;
     ArrayList<RecycleBin> recycleBins;
@@ -27,14 +27,17 @@ public class GameManager {
     double generateTimeDelay;
 
    private GameManager(){
-       GamePanel game = GamePanel.getInstance();
-       gameScreen = game.getGameScreen();
+       GameFrame gamePanel = GameFrame.getInstance();
+       gameScreen = gamePanel.getGameScreen();
        lastGenerateTime=0;
-       generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY;
+       generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
        gameUpdateLoop();
    }
    
    public static final GameManager getInstance(){
+	   if(INSTANCE == null){
+		   INSTANCE = new GameManager();
+	   }
 	   return INSTANCE;
    }
    
@@ -95,7 +98,7 @@ public class GameManager {
    }
 
    public static void main(String[] args){
-       GameManager gm = new GameManager();
+       GameManager gm = GameManager.getInstance();
    }
 
 }

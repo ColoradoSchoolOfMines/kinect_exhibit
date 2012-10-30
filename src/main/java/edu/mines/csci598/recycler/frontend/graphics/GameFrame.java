@@ -12,22 +12,25 @@ import javax.swing.*;
  * Time: 11:09 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GamePanel extends JFrame implements GraphicsConstants{
+public class GameFrame extends JFrame{
     private GameScreen gameScreen;
-    private static final GamePanel INSTANCE = new GamePanel();
+    private static GameFrame INSTANCE;
 
-    private GamePanel() {
+    private GameFrame() {
     	gameScreen = GameScreen.getInstance();
         add(gameScreen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(screenWidth, screenHeight);
+        setSize(GraphicsConstants.screenWidth, GraphicsConstants.screenHeight);
         setLocationRelativeTo(null);
         setTitle("Recycler");
         setResizable(false);
         setVisible(true);
     }
     
-    public static final GamePanel getInstance(){
+    public static final GameFrame getInstance(){
+    	if(INSTANCE == null){
+    		INSTANCE = new GameFrame();
+    	}
     	return INSTANCE;
     }
 
@@ -36,7 +39,7 @@ public class GamePanel extends JFrame implements GraphicsConstants{
      * @param args
      */
     public static void main( String[] args ){
-        GamePanel game = GamePanel.getInstance();
+        GameFrame game = GameFrame.getInstance();
         game.gameScreen.start();
     }
 

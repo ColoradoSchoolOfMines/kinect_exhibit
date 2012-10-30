@@ -18,7 +18,7 @@ import java.util.LinkedList;
  * Time: 9:13 PM
  */
 public class GameScreen extends JPanel implements GraphicsConstants{
-	private static final GameScreen INSTANCE = new GameScreen();
+	private static GameScreen INSTANCE;
     private LinkedList<Displayable> drawableLinkedList;
     private Sprite s;
     private Sprite background;
@@ -27,7 +27,6 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     private Hand hand;
 
     private GameScreen() {
-
         setFocusable(true);
         setBackground(Color.RED);
         setDoubleBuffered(true);
@@ -38,6 +37,9 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     
     public static final GameScreen getInstance()
     {
+    	if(INSTANCE == null){
+    		INSTANCE = new GameScreen();
+    	}
     	return INSTANCE;
     }
 

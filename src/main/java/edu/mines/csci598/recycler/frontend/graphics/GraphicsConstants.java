@@ -9,6 +9,7 @@ import java.awt.*;
  * Time: 11:38 AM
  * To change this template use File | Settings | File Templates.
  */
+// TODO why is this an interface?
 public interface GraphicsConstants {
     final Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 

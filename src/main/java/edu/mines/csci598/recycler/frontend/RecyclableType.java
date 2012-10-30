@@ -17,6 +17,14 @@ public enum RecyclableType {
     TRASH;
     
     private static final Random rand = new Random();
+    
+    /**
+     * Returns a random RecyclableType of the first <em>numberOfItemTypesInUse</em> types.
+     * If <em>numberOfItemTypesInUse</em> is greater than the total number of items in the game,
+     * the total number is used instead.
+     * @param numberOfItemTypesInUse
+     * @return
+     */
     public static RecyclableType getRandom(int numberOfItemTypesInUse)
     {
     	int numRecyclableTypes = RecyclableType.values().length;
