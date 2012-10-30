@@ -41,28 +41,7 @@ public class GameManager {
 	   return INSTANCE;
    }
    
-   private void generateSprite(double currentTime,RecyclableType itemType){
-       Sprite s;
-       Path p = new Path();
-       p.addLine(new Line(0.0,0.0,700.0,00.0,10.0));
-       if(itemType==RecyclableType.GLASS){
-           s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, 0, 0.1);
-           s.setPath(p);
-           s.setStartTime(currentTime);
-           gameScreen.addSprite(s);
-       }else if(itemType==RecyclableType.PLASTIC){
-           s= new Sprite("src/main/resources/SpriteImages/jug.png", 0, 0, 0.1);
-           s.setPath(p);
-           s.setStartTime(currentTime);
-           gameScreen.addSprite(s);
-       }else if(itemType==RecyclableType.PAPER){
-           Log.logError(("Paper not implemented yet"));
-       }else if(itemType==RecyclableType.TRASH){
-           Log.logError(("Trash not implemented yet"));
-       }
-   }
-   
-   private void generateItems(double currentTime,int numItemTypes){
+   private void generateItems(double currentTime, int numItemTypes){
        //Function will decide on item type to generate
        //Function will create a new sprite of that type
        //Function will add sprite to screen
@@ -70,7 +49,9 @@ public class GameManager {
        if((currentTime-lastGenerateTime) > generateTimeDelay){
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
-               generateSprite(currentTime,RecyclableType.getRandom(numItemTypes));
+               Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypes));
+               gameScreen.addSprite(r.getSprite());
+               
                lastGenerateTime=currentTime;
            }catch (ConcurrentModificationException e){Log.logError("Trying to generate a new sprite");}
        }

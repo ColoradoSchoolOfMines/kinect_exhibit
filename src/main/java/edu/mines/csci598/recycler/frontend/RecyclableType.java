@@ -2,6 +2,8 @@ package edu.mines.csci598.recycler.frontend;
 
 import java.util.Random;
 
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+
 /**
  * The possible types of "Recyclables"
  * Created with IntelliJ IDEA.
@@ -11,10 +13,15 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public enum RecyclableType {
-    GLASS,
-    PLASTIC,
-    PAPER,
-    TRASH;
+    GLASS("src/main/resources/SpriteImages/glass.png"),
+    PLASTIC("src/main/resources/SpriteImages/jug.png"),
+    PAPER("not yet drawn"),
+    TRASH("not yet drawn");
+    
+    private String imageFilePath;
+	RecyclableType(String imageFilePath){
+		this.imageFilePath = imageFilePath;
+	}
     
     private static final Random rand = new Random();
     
@@ -38,4 +45,8 @@ public enum RecyclableType {
     	int randomChoiceIndex = rand.nextInt(numberOfItemTypesInUse);
     	return RecyclableType.values()[randomChoiceIndex];
     }
+
+	public String getFilePath() {
+		return imageFilePath;
+	}
 }
