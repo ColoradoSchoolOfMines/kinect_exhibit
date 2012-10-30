@@ -10,4 +10,7 @@ package edu.mines.csci598.recycler.frontend.utils;
 public final class GameConstants {
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
     public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
+    public static final int ADD_SPRITE = 0;
+    public static final int REMOVE_SPRITE = 1;
+    public static final int UPDATE_SPRITES = 2;
 }

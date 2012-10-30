@@ -50,16 +50,18 @@ public class GameManager {
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
                Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypes));
-               gameScreen.addSprite(r.getSprite());
+               gameScreen.handleSprites(GameConstants.ADD_SPRITE,r.getSprite(),currentTime);
                
                lastGenerateTime=currentTime;
-           }catch (ConcurrentModificationException e){Log.logError("Trying to generate a new sprite");}
+           }catch (ConcurrentModificationException e){
+               Log.logError("Trying to generate a new sprite");}
        }
    }
    
    private void gameUpdateLoop(){
        long startTime = System.currentTimeMillis(); //in seconds
        int numItemType = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
+
 
        while(true){
            double currentTime = (System.currentTimeMillis()-startTime)/1000.0;
@@ -71,7 +73,11 @@ public class GameManager {
            //see if hand hits powerup and handle it
 
            //tell the game screen to update
-           gameScreen.update(currentTime);
+
+           Sprite s = new Sprite("src/main/resources/SpriteImages/glass.png",10,10,0);
+           gameScreen.handleSprites(GameConstants.UPDATE_SPRITES, s, currentTime);
+           //gameScreen.update(currentTime);
+
 
            //check to for winning condition.
        }

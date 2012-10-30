@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     private Sprite s;
     private Sprite background;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
+    private LinkedList<Sprite> spritesToRemove = new LinkedList<Sprite>();
     private Iterator it = sprites.iterator();
     private Hand hand;
 
@@ -48,7 +50,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
     }
 
 
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         super.paint(g);
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
@@ -69,7 +71,7 @@ public class GameScreen extends JPanel implements GraphicsConstants{
      * Function only used to test some graphics features during development. Useless for the game will delete in future
      * when we know we don't need it any more.
      */
-    public void start(){
+    public synchronized void start(){
         while(s.getX() < 700){
             s.setHorizontalVelocity(1);
             while(s.getX() <= 500){
@@ -106,28 +108,39 @@ public class GameScreen extends JPanel implements GraphicsConstants{
 
     }
 
-    public void addSprite(Sprite s){
+    public synchronized void addSprite(Sprite s){
         try{
          sprites.addLast(s);
         }catch (ConcurrentModificationException e){Log.logError("Trying to add sprite " + s);}
     }
 
-    public boolean removeSprite(Sprite s){
+    public synchronized boolean removeSprite(Sprite s){
         return sprites.remove(s);
+    }
+
+    public synchronized void handleSprites(int flag, Sprite s, double time){
+        if(flag == GameConstants.ADD_SPRITE) addSprite(s);
+        else if (flag == GameConstants.REMOVE_SPRITE) removeSprite(s);
+        else if (flag == GameConstants.UPDATE_SPRITES) update(time);
     }
 
     /**
      * Updates the game screen. You must pass in the time so it knows how far everything needs to move.
      * @param time
      */
-    public void update(double time ){
-        for(Sprite sprite: sprites){
-            try{
-                sprite.updateLocation(time);
-                //if(sprite.getX()==700)removeSprite(sprite);
-            }catch (ConcurrentModificationException e){
-            	Log.logError("Trying to update sprite " + sprite + " with time " + time);
+    public synchronized void update(double time ){
+        try {
+            for(Sprite sprite: sprites){
+                try{
+                    sprite.updateLocation(time);
+                    //if(sprite.getX()>=700) sprites.remove(sprite);
+                }catch (ConcurrentModificationException e){
+                    Log.logError("Trying to update sprite " + sprite + " with time " + time);
+                }
             }
+
+        }catch(ExceptionInInitializerError e){
+            Log.logError("Trying to update sprites with time " + time);
         }
         repaint();
 

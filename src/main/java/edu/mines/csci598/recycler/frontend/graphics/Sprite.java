@@ -148,7 +148,7 @@ public class Sprite implements GraphicsConstants{
      * Based on the time the sprite will update it's x and y location.
      * @param time
      */
-    public void updateLocation(double time){
+    public synchronized void updateLocation(double time){
         if(path != null){
             Coordinate c = path.getLocation(startTime,time);
             x=(int)c.x;
