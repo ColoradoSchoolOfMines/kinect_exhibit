@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -37,20 +38,24 @@ public class GameManager {
 	   return INSTANCE;
    }
    
-   private void generateSprite(double currentTime,int itemType){
+   private void generateSprite(double currentTime,RecyclableType itemType){
        Sprite s;
        Path p = new Path();
        p.addLine(new Line(0.0,0.0,700.0,00.0,10.0));
-       if(itemType==GameConstants.ITEM_TYPE_GLASS){
+       if(itemType==RecyclableType.GLASS){
            s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, 0, 0.1);
            s.setPath(p);
            s.setStartTime(currentTime);
            gameScreen.addSprite(s);
-       }else if(itemType==GameConstants.ITEM_TYPE_PLASTIC){
+       }else if(itemType==RecyclableType.PLASTIC){
            s= new Sprite("src/main/resources/SpriteImages/jug.png", 0, 0, 0.1);
            s.setPath(p);
            s.setStartTime(currentTime);
            gameScreen.addSprite(s);
+       }else if(itemType==RecyclableType.PAPER){
+           Log.logError(("Paper not implemented yet"));
+       }else if(itemType==RecyclableType.TRASH){
+           Log.logError(("Trash not implemented yet"));
        }
    }
    private void generateItems(double currentTime,int numItemTypes){
@@ -59,12 +64,11 @@ public class GameManager {
        //Function will add sprite to screen
        int itemType;
 
-       if(currentTime-lastGenerateTime>generateTimeDelay){
-           lastGenerateTime=currentTime;
-           itemType = (int) (Math.random() * numItemTypes);
+       if((currentTime-lastGenerateTime) > generateTimeDelay){
            //System.out.println("Ct:"+currentTime+",IT:"+itemType);
            try{
-               generateSprite(currentTime,itemType);
+               generateSprite(currentTime,RecyclableType.getRandom());
+               lastGenerateTime=currentTime;
            }catch (ConcurrentModificationException e){}
        }
    }
@@ -76,7 +80,6 @@ public class GameManager {
            double currentTime = (System.currentTimeMillis()-startTime)/1000.0;
            generateItems(currentTime,numItemType);
 
-
            //see if hand is going through item and handle it
            // check coordinates here
 
@@ -86,15 +89,11 @@ public class GameManager {
            gameScreen.update(currentTime);
 
            //check to for winning condition.
-
        }
-
-
    }
 
    public static void main(String[] args){
        GameManager gm = new GameManager();
-
    }
 
 }

@@ -14,6 +14,6 @@ public interface GraphicsConstants {
 
     public static final int screenWidth = screen.width;
     public static final int screenHeight = screen.height;
-    public static final int x = 940;
-    public static final int y = 1080;
+    //public static final int x = 940;
+    //public static final int y = 1080;
 }

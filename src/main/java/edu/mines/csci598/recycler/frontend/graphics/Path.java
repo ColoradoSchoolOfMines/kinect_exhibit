@@ -35,6 +35,7 @@ public class Path {
      * @param referenceTime The time where you want to see it is along the path.
      * @return
      */
+    // TODO this needs better documentation
     public Coordinate getLocation(double startTime, double referenceTime){
         Coordinate coordinate = new Coordinate(0,0);
         double time = referenceTime - startTime;
