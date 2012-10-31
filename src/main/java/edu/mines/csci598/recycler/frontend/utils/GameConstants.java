@@ -1,5 +1,8 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
+import edu.mines.csci598.recycler.frontend.RecyclableType;
+import edu.mines.csci598.recycler.frontend.RecycleBin;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marshall
@@ -45,6 +48,26 @@ public final class GameConstants {
     public static final int MIN_VELOCITY = 25;
     public static final int SPRITE_X_OFFSET = 50;
     public static final int SPRITE_Y_OFFSET = 50;
+
+    public static final RecyclableType BIN_1_TYPE = RecyclableType.GLASS;
+    public static final RecycleBin.ConveyorSide BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double BIN_1_MIN_Y = 438;
+    public static final double BIN_1_MAX_Y = 838;
+
+    public static final RecyclableType BIN_2_TYPE = RecyclableType.PAPER;
+    public static final RecycleBin.ConveyorSide BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double BIN_2_MIN_Y = 40;
+    public static final double BIN_2_MAX_Y = 440;
+
+    public static final RecyclableType BIN_3_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double BIN_3_MIN_Y = 140;
+    public static final double BIN_3_MAX_Y = 540;
+
+    public static final RecyclableType BIN_4_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double BIN_4_MIN_Y = 538;
+    public static final double BIN_4_MAX_Y = 938;
 
 }
 

@@ -21,6 +21,7 @@ public class Recyclable implements Displayable {
     private Sprite sprite;
     private RecyclableType type;
     private Path p;
+    private MotionState currentMotion = MotionState.CONVEYOR;
     //private Line line = new Line(0.0,0.0,700.0,00.0,10.0);
     private Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X,GameConstants.BOTTOM_PATH_START_Y,
                         GameConstants.BOTTOM_PATH_END_X,GameConstants.BOTTOM_PATH_END_Y,GameConstants.BOTTOM_PATH_TIME);
@@ -46,5 +47,17 @@ public class Recyclable implements Displayable {
 	@Override
 	public Sprite getSprite() {
 		return sprite;
-	};
+	}
+
+    public RecyclableType getType() {
+        return type;
+    }
+
+    public void setMotionState(MotionState motion) {
+        this.currentMotion = motion;
+    }
+
+    public MotionState getCurrentMotion() {
+        return currentMotion;
+    }
 }

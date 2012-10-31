@@ -29,6 +29,8 @@ public class GameManager {
     double generateTimeDelay;
     boolean generateMultiple;
     int numItemTypes;
+    int score;
+    int strikes;
 
    private GameManager(){
        GameFrame gamePanel = GameFrame.getInstance();
@@ -42,7 +44,24 @@ public class GameManager {
            Recyclable r = new Recyclable(0, RecyclableType.getRandom(4));
            handleRecyclables(GameConstants.ADD_SPRITE, r);
        }
+       setUpBins();
        gameUpdateLoop();
+   }
+
+   private void setUpBins() {
+       RecycleBin bin1 = new RecycleBin(GameConstants.BIN_1_SIDE, GameConstants.BIN_1_MIN_Y,
+               GameConstants.BIN_1_MAX_Y, GameConstants.BIN_1_TYPE);
+       RecycleBin bin2 = new RecycleBin(GameConstants.BIN_2_SIDE, GameConstants.BIN_2_MIN_Y,
+               GameConstants.BIN_2_MAX_Y, GameConstants.BIN_2_TYPE);
+       RecycleBin bin3 = new RecycleBin(GameConstants.BIN_3_SIDE, GameConstants.BIN_3_MIN_Y,
+               GameConstants.BIN_3_MAX_Y, GameConstants.BIN_3_TYPE);
+       RecycleBin bin4 = new RecycleBin(GameConstants.BIN_4_SIDE, GameConstants.BIN_4_MIN_Y,
+               GameConstants.BIN_4_MAX_Y, GameConstants.BIN_4_TYPE);
+
+       recycleBins.add(bin1);
+       recycleBins.add(bin2);
+       recycleBins.add(bin3);
+       recycleBins.add(bin4);
    }
    
    public static final GameManager getInstance(){
@@ -120,48 +139,84 @@ public class GameManager {
         else if (flag == GameConstants.UPDATE_SPRITES) updateRecyclables();
     }
    private synchronized void checkCollision(Recyclable r){
-       if(r.getSprite().getState()==GameConstants.TOUCHABLE){
-           if(gameScreen.hand.getX()>= r.getSprite().getX()+(GameConstants.SPRITE_X_OFFSET/2) &&
-                   gameScreen.hand.getX()<= r.getSprite().getX()+(GameConstants.SPRITE_X_OFFSET*2)){
-               if(gameScreen.hand.getY() >= r.getSprite().getY()+(GameConstants.SPRITE_Y_OFFSET/2) &&
-                       gameScreen.hand.getY() <= r.getSprite().getY()+(GameConstants.SPRITE_Y_OFFSET*2)){
+       if (r.getSprite().getState() == GameConstants.TOUCHABLE){
+           if (gameScreen.hand.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
+                   gameScreen.hand.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
+               if (gameScreen.hand.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
+                       gameScreen.hand.getY() <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
                    //Handle collision
                    //Log.logInfo("Collision detected on Sprite");
 
-                   Log.logError("Sx="+r.getSprite().getX()+",Sy="+r.getSprite().getY()+
-                                ",Hx="+gameScreen.hand.getX()+",Hy="+gameScreen.hand.getY()+
-                                ",Hvx="+gameScreen.hand.getVelocityX()+",Hvy"+gameScreen.hand.getVelocityY());
+                   Log.logError("Sx=" + r.getSprite().getX() + ",Sy="+r.getSprite().getY() +
+                                ",Hx=" + gameScreen.hand.getX() + ",Hy="+gameScreen.hand.getY() +
+                                ",Hvx=" + gameScreen.hand.getVelocityX() + ",Hvy"+gameScreen.hand.getVelocityY());
                    //System.out.println("Collision detected on sprite");
                    r.getSprite().setState(GameConstants.UNTOUCHABLE);
 
                    //Handle sprite collision
-                   if(gameScreen.hand.getVelocityX() > GameConstants.MIN_VELOCITY){
+                   if (gameScreen.hand.getVelocityX() > GameConstants.MIN_VELOCITY){
                        Path path= new Path();
                        Log.logInfo("Pushed Right");
-                       Line collideLine = new Line(r.getSprite().getX(),r.getSprite().getY(),
-                              r.getSprite().getX()+GameConstants.ITEM_PATH_END,r.getSprite().getY(),
+                       Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                              r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
                                GameConstants.ITEM_PATH_TIME);
                        path.addLine(collideLine);
                        r.getSprite().setPath(path);
                        r.getSprite().setStartTime(currentTime);
+                       r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
 
                        //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
-                   }else if(gameScreen.hand.getVelocityX() < -1 * GameConstants.MIN_VELOCITY){
+                   }
+                   else if (gameScreen.hand.getVelocityX() < -1 * GameConstants.MIN_VELOCITY){
                        Path path = new Path();
                        Log.logInfo("Pushed Left");
-                       Line collideLine = new Line(r.getSprite().getX(),r.getSprite().getY(),
-                               r.getSprite().getX()-GameConstants.ITEM_PATH_END,r.getSprite().getY(),
+                       Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                               r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
                                GameConstants.ITEM_PATH_TIME);
                        path.addLine(collideLine);
                        r.getSprite().setPath(path);
                        r.getSprite().setStartTime(currentTime);
+                       r.setMotionState(Recyclable.MotionState.FALL_LEFT);
                        //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
                    }
+
+                   RecyclableType binType = findRecycledBin(r);
+                   handleScore(r, binType);
                }
            }
        }
 
    }
+
+   private RecyclableType findRecycledBin(Recyclable r) {
+       int yCord = r.getSprite().getY();
+
+       // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
+       // left of the conveyor we only need to check which way it's going and the y coordinates
+       for (RecycleBin bin:recycleBins) {
+           if ((r.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT && bin.getSide() == RecycleBin.ConveyorSide.LEFT) ||
+               (r.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
+
+               if (yCord >= bin.getMinY() && yCord <= bin.getMaxY()) {
+                   return bin.getType();
+               }
+           }
+       }
+       return RecyclableType.SKULL;
+   }
+
+   // given the recyclable and the bin it went into this function either increments the score or adds a strike
+   private void handleScore(Recyclable r, RecyclableType binType ) {
+       if (r.getType() == binType) {
+           score++;
+       }
+       else {
+           strikes++;
+       }
+       Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
+   }
+
+
    private void gameUpdateLoop(){
        long startTime = System.currentTimeMillis(); //in seconds
 
