@@ -1,12 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
+import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseEvent;
 
 /**
  * The "hand" represents a user's hand. It can be displayed on the screen and its motion will
@@ -73,8 +73,8 @@ public class Hand implements MouseMotionListener, Displayable {
     public void mouseMoved(MouseEvent e) {
         oldX = x;
         oldY = y;
-        x = e.getX();
-        y = e.getY();
+        x = (int)(e.getX()/GraphicsConstants.SCALE_FACTOR);
+        y = (int)(e.getY()/GraphicsConstants.SCALE_FACTOR);
         velocityX = x-oldX;
         velocityY = y-oldY;
         //saySomething("Mouse moved", e);

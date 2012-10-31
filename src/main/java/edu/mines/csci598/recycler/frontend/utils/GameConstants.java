@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Marshall
@@ -18,24 +16,24 @@ public final class GameConstants {
     public static final int UPDATE_SPRITES = 2;
 
     public static final int BOTTOM_PATH_START_X = 0;
-    public static final int BOTTOM_PATH_START_Y = GameScreen.screenHeight - 120;
-    public static final int BOTTOM_PATH_END_X = GameScreen.screenWidth / 2;
+    public static final int BOTTOM_PATH_START_Y = 880;
+    public static final int BOTTOM_PATH_END_X = 480;
     public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
     public static final int BOTTOM_PATH_TIME = 5;
 
     public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
-    public static final int VERTICAL_PATH_END_Y = 20;
+    public static final int VERTICAL_PATH_END_Y = 80;
     public static final int VERTICAL_PATH_TIME = 10;
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
-    public static final int TOP_PATH_END_X = GameScreen.screenWidth - 120;
+    public static final int TOP_PATH_END_X = 860;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_TIME = BOTTOM_PATH_TIME;
 
-    public static final int ITEM_PATH_END = 300;
+    public static final int ITEM_PATH_END = 250;
     public static final int ITEM_PATH_TIME = 5;
 
     public static final int UNTOUCHABLE = 0;

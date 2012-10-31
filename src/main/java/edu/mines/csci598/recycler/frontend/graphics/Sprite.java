@@ -4,6 +4,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 
 
-public class Sprite implements GraphicsConstants{
+public class Sprite{
 
     private int dx;
     private int dy;
@@ -28,19 +29,14 @@ public class Sprite implements GraphicsConstants{
     private int y;
     private Image image;
     private String fileName;
-    private int width;
-    private int height;
-    private double scaleFactor;
     private Path path;
     private double startTime;
     private int state;
-    private boolean scaled = false;
 
-    public Sprite(String fileName, int x, int y, double scaleFactor) {
+    public Sprite(String fileName, int x, int y) {
         this.x = x;
         this.y = y;
         this.fileName = fileName;
-        this.scaleFactor = scaleFactor;
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
@@ -54,13 +50,17 @@ public class Sprite implements GraphicsConstants{
       * 		The name of the file to be loaded.
       */
     public void setImage(String fileName) {
-        Image img = null;
+        BufferedImage img = null;
         try {
             img = ImageIO.read(new File(fileName));
         } catch (IOException e) {
             throw new RuntimeException("File error: "+fileName);
         }
-        image =(Image)img;
+        //Calculate the rounded scaled height
+        int newHeight = (int)Math.round(img.getHeight()*GraphicsConstants.SCALE_FACTOR);
+        int newWidth = (int)Math.round(img.getWidth()*GraphicsConstants.SCALE_FACTOR);
+        //scale the image
+        image =img.getScaledInstance(newWidth,newHeight,BufferedImage.SCALE_SMOOTH);
 
     }
     public void setState(int newState){
@@ -121,8 +121,11 @@ public class Sprite implements GraphicsConstants{
       *
       * return {int}
       */
-    public int getX() {
-        return (int) Math.round(x);
+    public int getScaledX() {
+        return (int) Math.round(x*GraphicsConstants.SCALE_FACTOR);
+    }
+    public int getX(){
+        return x;
     }
 
     /*
@@ -130,20 +133,18 @@ public class Sprite implements GraphicsConstants{
       *
       * return {int}
       */
-    public int getY() {
-        return (int) Math.round(y);
+    public int getScaledY() {
+        return (int) Math.round(y*GraphicsConstants.SCALE_FACTOR);
     }
-
+    public int getY(){
+        return y;
+    }
     /*
       * Gets the icon image.
       *
       * return {Image}
       */
     public Image getImage() {
-        if(!scaled){
-            image = image.getScaledInstance((int)(screenWidth * scaleFactor), (int)(screenHeight * scaleFactor), Image.SCALE_SMOOTH);
-            scaled = true;
-        }
         return image;
     }
 

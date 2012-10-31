@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import java.awt.*;
-
 /**
  * Created with IntelliJ IDEA.
  * User: jrramey11
@@ -9,12 +7,11 @@ import java.awt.*;
  * Time: 11:38 AM
  * To change this template use File | Settings | File Templates.
  */
-// TODO why is this an interface?
-public interface GraphicsConstants {
-    final Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-    public static final int screenWidth = screen.width;
-    public static final int screenHeight = screen.height;
-    //public static final int x = 940;
-    //public static final int y = 1080;
+public class GraphicsConstants {
+    public static final double SCALE_FACTOR = .75;
+    public static final int GAME_SCREEN_WIDTH = (int)Math.round(960* SCALE_FACTOR);
+    public static final int GAME_SCREEN_HEIGHT = (int)Math.round(1080* SCALE_FACTOR);
+    
+    
 }

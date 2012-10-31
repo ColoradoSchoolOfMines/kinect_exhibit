@@ -4,7 +4,6 @@ import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
@@ -40,7 +39,7 @@ public class GameManager {
        generateTimeDelay=GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
        generateMultiple=true;
        if(!generateMultiple){
-           Recyclable r = new Recyclable(0, RecyclableType.getRandom(2));
+           Recyclable r = new Recyclable(0, RecyclableType.getRandom(4));
            handleRecyclables(GameConstants.ADD_SPRITE, r);
        }
        gameUpdateLoop();
@@ -144,8 +143,9 @@ public class GameManager {
                                GameConstants.ITEM_PATH_TIME);
                        path.addLine(collideLine);
                        r.getSprite().setPath(path);
+                       r.getSprite().setStartTime(currentTime);
 
-                       r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
+                       //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
                    }else if(gameScreen.hand.getVelocityX() < -1 * GameConstants.MIN_VELOCITY){
                        Path path = new Path();
                        Log.logInfo("Pushed Left");
@@ -154,8 +154,8 @@ public class GameManager {
                                GameConstants.ITEM_PATH_TIME);
                        path.addLine(collideLine);
                        r.getSprite().setPath(path);
-
-                       r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
+                       r.getSprite().setStartTime(currentTime);
+                       //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
                    }
                }
            }

@@ -20,7 +20,7 @@ public class GameFrame extends JFrame{
     	gameScreen = GameScreen.getInstance();
         add(gameScreen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(GraphicsConstants.screenWidth, GraphicsConstants.screenHeight);
+        setSize(GraphicsConstants.GAME_SCREEN_WIDTH, GraphicsConstants.GAME_SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         setTitle("Recycler");
         setResizable(false);

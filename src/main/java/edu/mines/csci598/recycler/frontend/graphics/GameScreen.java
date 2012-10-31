@@ -19,7 +19,7 @@ import java.util.LinkedList;
  * Date: 10/20/12
  * Time: 9:13 PM
  */
-public class GameScreen extends JPanel implements GraphicsConstants{
+public class GameScreen extends JPanel{
 	private static GameScreen INSTANCE;
     private LinkedList<Displayable> drawableLinkedList;
     private Sprite s;
@@ -31,10 +31,10 @@ public class GameScreen extends JPanel implements GraphicsConstants{
 
     private GameScreen() {
         setFocusable(true);
-        setBackground(Color.RED);
+        setBackground(Color.black);
         setDoubleBuffered(true);
-        background = new Sprite("src/main/resources/SpriteImages/background.jpg", 0, 0, 1.0);
-        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, screenHeight -200, 0.1);
+        background = new Sprite("src/main/resources/SpriteImages/background.png", 0, 0);
+        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
         
         // TODO I think this should be a temporary hack
         hand = new Hand();
@@ -55,10 +55,9 @@ public class GameScreen extends JPanel implements GraphicsConstants{
         Toolkit.getDefaultToolkit().sync();
         Graphics2D g2d = (Graphics2D)g;
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), this);
-        //g2d.drawImage(s.getImage(), s.getX(), s.getY(), this);
         for(Sprite sprite : sprites){
         	try{
-        		g2d.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
+        		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), this);
         	}
         	catch(ConcurrentModificationException e){
         		Log.logError("Trying to draw sprite: " + s);

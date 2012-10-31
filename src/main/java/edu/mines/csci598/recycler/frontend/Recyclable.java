@@ -37,7 +37,7 @@ public class Recyclable implements Displayable {
         p.addLine(verticalLine);
         p.addLine(topLine);
         
-        sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X,GameConstants.BOTTOM_PATH_START_Y, 0.1);
+        sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X,GameConstants.BOTTOM_PATH_START_Y);
         sprite.setPath(p);
         sprite.setStartTime(currentTime);
     	// TODO should recyclables really need to know the time???
