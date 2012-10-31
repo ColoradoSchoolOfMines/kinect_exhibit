@@ -34,6 +34,7 @@ public class Sprite implements GraphicsConstants{
     private Path path;
     private double startTime;
     private int state;
+    private boolean scaled = false;
 
     public Sprite(String fileName, int x, int y, double scaleFactor) {
         this.x = x;
@@ -60,6 +61,7 @@ public class Sprite implements GraphicsConstants{
             throw new RuntimeException("File error: "+fileName);
         }
         image =(Image)img;
+
     }
     public void setState(int newState){
         state = newState;
@@ -138,7 +140,11 @@ public class Sprite implements GraphicsConstants{
       * return {Image}
       */
     public Image getImage() {
-        return image.getScaledInstance((int)(screenWidth * scaleFactor), (int)(screenHeight * scaleFactor), Image.SCALE_SMOOTH);
+        if(!scaled){
+            image = image.getScaledInstance((int)(screenWidth * scaleFactor), (int)(screenHeight * scaleFactor), Image.SCALE_SMOOTH);
+            scaled = true;
+        }
+        return image;
     }
 
     public void setPath(Path p){
