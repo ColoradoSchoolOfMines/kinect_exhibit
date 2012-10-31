@@ -40,7 +40,7 @@ public class GameFrame extends JFrame{
      */
     public static void main( String[] args ){
         GameFrame game = GameFrame.getInstance();
-        game.gameScreen.start();
+        //game.gameScreen.start();
     }
 
     public GameScreen getGameScreen(){

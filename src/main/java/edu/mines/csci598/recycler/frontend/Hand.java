@@ -77,9 +77,13 @@ public class Hand implements MouseMotionListener, Displayable {
         y = e.getY();
         velocityX = x-oldX;
         velocityY = y-oldY;
-        saySomething("Mouse moved", e);
+        //saySomething("Mouse moved", e);
     }
-
+    public void mouseClicked(MouseEvent e) {
+        velocityX = 0;
+        velocityY = 0;
+        saySomething("Mouse clicked",e);
+    }
     public void mouseDragged(MouseEvent e) {
         saySomething("Mouse dragged", e);
     }

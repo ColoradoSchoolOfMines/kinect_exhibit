@@ -27,7 +27,7 @@ public final class GameConstants {
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_END_Y = 20;
-    public static final int VERTICAL_PATH_TIME = 20;
+    public static final int VERTICAL_PATH_TIME = 10;
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
@@ -35,11 +35,18 @@ public final class GameConstants {
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_TIME = BOTTOM_PATH_TIME;
 
+    public static final int ITEM_PATH_END = 300;
+    public static final int ITEM_PATH_TIME = 5;
+
     public static final int UNTOUCHABLE = 0;
     public static final int TOUCHABLE = 1;
     public static final int SPRITE_BECOMES_TOUCHABLE = BOTTOM_PATH_END_Y - 50;
     public static final int SPRITE_BECOMES_UNTOUCHABLE = TOP_PATH_START_Y + 20;
     public static final int HORIZONTAL_VELOCITY = 2;
+
+    public static final int MIN_VELOCITY = 25;
+    public static final int SPRITE_X_OFFSET = 50;
+    public static final int SPRITE_Y_OFFSET = 50;
 
 }
 
