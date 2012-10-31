@@ -15,6 +15,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 public enum RecyclableType {
     GLASS("src/main/resources/SpriteImages/glass.png"),
     PLASTIC("src/main/resources/SpriteImages/jug.png"),
+    SKULL("src/main/resources/SpriteImages/skull_crossbones.png"),
     PAPER("not yet drawn"),
     TRASH("not yet drawn");
     
