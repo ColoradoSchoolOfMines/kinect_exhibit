@@ -14,7 +14,7 @@ package edu.mines.csci598.recycler.frontend;
  */
 public class RecycleBin {
 
-    public enum ConveyorSide {RIGHT, LEFT};
+    public enum ConveyorSide { RIGHT, LEFT };
     private double minY;
     private double maxY;
     private ConveyorSide side;

@@ -17,7 +17,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
  * To change this template use File | Settings | File Templates.
  */
 public class Recyclable implements Displayable {
-    public enum MotionState{SHOOT, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE }
+    public enum MotionState { CHUTE, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE };
     private Sprite sprite;
     private RecyclableType type;
     private Path p;

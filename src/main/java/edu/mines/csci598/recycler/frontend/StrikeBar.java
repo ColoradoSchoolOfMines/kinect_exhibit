@@ -15,10 +15,10 @@ public class StrikeBar {
      * The recyclable is the offending strike so it can be displayed in the bar
      * @param recyclable
      */
-    public void addStrike(Recyclable recyclable){
+    public void addStrike(Recyclable recyclable) {
 
     }
-    public void removeStrike(){
+    public void removeStrike() {
 
     }
 }
