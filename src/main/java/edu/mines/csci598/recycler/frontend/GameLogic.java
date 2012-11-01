@@ -1,5 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.backend.GameState;
+import edu.mines.csci598.backend.GameManager;
+import edu.mines.csci598.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
@@ -19,7 +22,7 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLogic extends GameState {
-    private static GameLogic INSTANCE = new GameLogic();
+    private static GameLogic INSTANCE;
     Player player1, player2;
     GameScreen gameScreen;
     GameManager gameManager;
@@ -34,7 +37,8 @@ public class GameLogic extends GameState {
     int score;
     int strikes;
 
-    private GameLogic() {
+    private GameLogic(GameManager gameManager) {
+        this.gameManager = gameManager;
         GameFrame gamePanel = GameFrame.getInstance();
         gameScreen = gamePanel.getGameScreen();
         numItemTypes = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
@@ -71,7 +75,8 @@ public class GameLogic extends GameState {
 
     public static final GameLogic getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new GameLogic();
+            GameManager gameManager = new GameManager("Recycler");
+            INSTANCE = new GameLogic(gameManager);
         }
         return INSTANCE;
     }
@@ -125,7 +130,7 @@ public class GameLogic extends GameState {
         for (Recyclable recyclable : recyclablesToRemove) {
             recyclables.remove(recyclable);
         }
-        gameScreen.repaint();
+        // XXX gameScreen.repaint();
     }
 
     public synchronized void addRecyclable(Recyclable r) {
@@ -223,6 +228,10 @@ public class GameLogic extends GameState {
         Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
     }
 
+    public GameManager getGameManager() {
+       return this.gameManager;
+    }
+
 
     protected GameState updateThis(float elapsedTime) {
 
@@ -254,9 +263,7 @@ public class GameLogic extends GameState {
 
     public static void main(String[] args) {
         GameLogic gm = GameLogic.getInstance();
-        gameManager = new GameManager("Recycler");
         ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-        gameManager.installInputDriver(mouse);
+        gm.getGameManager().installInputDriver(mouse);
     }
-
 }
