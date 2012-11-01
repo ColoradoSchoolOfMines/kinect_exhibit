@@ -6,6 +6,7 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,7 +20,7 @@ import java.util.LinkedList;
  * Date: 10/20/12
  * Time: 9:13 PM
  */
-public class GameScreen extends JPanel{
+public class GameScreen {
 	private static GameScreen INSTANCE;
     private LinkedList<Displayable> drawableLinkedList;
     private Sprite s;
@@ -30,15 +31,8 @@ public class GameScreen extends JPanel{
     public Hand hand;
 
     private GameScreen() {
-        setFocusable(true);
-        setBackground(Color.black);
-        setDoubleBuffered(true);
         background = new Sprite("src/main/resources/SpriteImages/background.png", 0, 0);
-        s= new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
-        
-        // TODO I think this should be a temporary hack
-        hand = new Hand();
-        addMouseMotionListener(hand);
+        s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
     }
     
     public static final GameScreen getInstance()
@@ -50,20 +44,17 @@ public class GameScreen extends JPanel{
     }
 
 
-    public synchronized void paint(Graphics g) {
-        super.paint(g);
-        Toolkit.getDefaultToolkit().sync();
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(background.getImage(), background.getX(), background.getY(), this);
+    public synchronized void paint(Graphics2D g2d, Component canvas) {
+
+        g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
         for(Sprite sprite : sprites){
         	try{
-        		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), this);
+        		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         	}
         	catch(ConcurrentModificationException e){
         		Log.logError("Trying to draw sprite: " + s);
         	}
         }
-        g.dispose();
     }
     public synchronized void addSprite(Sprite s){
         try{
