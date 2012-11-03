@@ -28,7 +28,7 @@ public class Hand implements MouseMotionListener, Displayable {
     private int y;
     private int oldX;
     private int oldY;
-	
+
     public Hand() {
         x=0;
         y=0;
@@ -38,7 +38,7 @@ public class Hand implements MouseMotionListener, Displayable {
         velocityY=0;
 
     }
-    
+
     public Sprite getSprite()
     {
     	return sprite;

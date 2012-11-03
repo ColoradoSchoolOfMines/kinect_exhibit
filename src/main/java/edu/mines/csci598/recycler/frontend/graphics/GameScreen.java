@@ -34,7 +34,7 @@ public class GameScreen {
         background = new Sprite("src/main/resources/SpriteImages/background.png", 0, 0);
         s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
     }
-    
+
     public static final GameScreen getInstance()
     {
     	if(INSTANCE == null){

@@ -29,21 +29,21 @@ public class Recyclable implements Displayable {
             GameConstants.VERTICAL_PATH_END_X,GameConstants.VERTICAL_PATH_END_Y,GameConstants.VERTICAL_PATH_TIME);
     private Line topLine = new Line(GameConstants.TOP_PATH_START_X,GameConstants.TOP_PATH_START_Y,
             GameConstants.TOP_PATH_END_X,GameConstants.TOP_PATH_END_Y,GameConstants.TOP_PATH_TIME);
-    
-    public Recyclable(double currentTime, RecyclableType type){ 
+
+    public Recyclable(double currentTime, RecyclableType type){
     	this.type = type;
-    	
+
         p = new Path();
         p.addLine(bottomLine);
         p.addLine(verticalLine);
         p.addLine(topLine);
-        
+
         sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X,GameConstants.BOTTOM_PATH_START_Y);
         sprite.setPath(p);
         sprite.setStartTime(currentTime);
     	// TODO should recyclables really need to know the time???
     }
-    
+
 	@Override
 	public Sprite getSprite() {
 		return sprite;

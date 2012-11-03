@@ -6,8 +6,8 @@ package edu.mines.csci598.recycler.backend;
  * Like Closeable, but its method doesn't throw IOException.
  */
 public interface Destroyable {
-  /**
-   * Releases resources held by this object.
-   */
-  public void destroy();
+    /**
+     * Releases resources held by this object.
+     */
+    public void destroy();
 }
