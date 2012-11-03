@@ -3,7 +3,7 @@ package edu.mines.csci598.entejagd;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import edu.mines.csci598.backend.*;
+import edu.mines.csci598.recycler.backend.*;
 
 public class Entejagd extends GameState {
   private final GameManager game;

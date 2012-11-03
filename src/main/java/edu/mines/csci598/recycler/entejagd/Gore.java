@@ -5,7 +5,7 @@ import static java.lang.Math.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import edu.mines.csci598.backend.GameManager;
+import edu.mines.csci598.recycler.backend.GameManager;
 
 class Gore extends GameObject {
   private static final class Particle {

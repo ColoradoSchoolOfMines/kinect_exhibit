@@ -18,7 +18,7 @@ public class GameFrame extends JFrame{
 
     private GameFrame() {
     	gameScreen = GameScreen.getInstance();
-        add(gameScreen);
+        //add(gameScreen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(GraphicsConstants.GAME_SCREEN_WIDTH, GraphicsConstants.GAME_SCREEN_HEIGHT);
         setLocationRelativeTo(null);
@@ -26,8 +26,8 @@ public class GameFrame extends JFrame{
         setResizable(false);
         setVisible(true);
     }
-    
-    public static final GameFrame getInstance(){
+
+    public static final GameFrame getInstance() {
     	if(INSTANCE == null){
     		INSTANCE = new GameFrame();
     	}
@@ -38,7 +38,7 @@ public class GameFrame extends JFrame{
      * This main function is used by those working on the graphics to test things with the graphics.
      * @param args
      */
-    public static void main( String[] args ){
+    public static void main(String[] args) {
         GameFrame game = GameFrame.getInstance();
         //game.gameScreen.start();
     }
