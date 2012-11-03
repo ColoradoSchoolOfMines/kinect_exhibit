@@ -1,8 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.backend.GameState;
-import edu.mines.csci598.backend.GameManager;
-import edu.mines.csci598.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.backend.GameState;
+import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
