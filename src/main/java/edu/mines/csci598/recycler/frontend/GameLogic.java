@@ -81,7 +81,7 @@ public class GameLogic extends GameState {
 
     public static final GameLogic getInstance() {
         if (INSTANCE == null) {
-            GameManager gameManager = new GameManager("Recycler");
+            GameManager gameManager = new GameManager("Recycler", false);
             INSTANCE = new GameLogic(gameManager);
         }
         return INSTANCE;
