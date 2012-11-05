@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.backend.GameManager;
+
 /**
  * A player class contains the players hands and in the future will keep track of
  * other player specific things.
@@ -13,5 +15,10 @@ package edu.mines.csci598.recycler.frontend;
 public class Player {
     Hand primary;
     Hand auxiliary;
+
+    public Player(GameManager manager) {
+        primary = new Hand(manager);
+        auxiliary = new Hand(manager);
+    }
 
 }

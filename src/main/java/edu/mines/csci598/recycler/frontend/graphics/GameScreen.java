@@ -25,15 +25,14 @@ public class GameScreen {
     private LinkedList<Displayable> drawableLinkedList;
     private Sprite s;
     private Sprite background;
+    private Sprite player1PrimaryHand;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private LinkedList<Sprite> spritesToRemove = new LinkedList<Sprite>();
     private Iterator it = sprites.iterator();
-    public Hand hand;
 
     private GameScreen() {
         background = new Sprite("src/main/resources/SpriteImages/background.png", 0, 0);
         s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
-        hand = new Hand(); //Should this even go here?
     }
 
     public static final GameScreen getInstance()
@@ -48,6 +47,8 @@ public class GameScreen {
     public synchronized void paint(Graphics2D g2d, Component canvas) {
 
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
+        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
+
         for(Sprite sprite : sprites){
         	try{
         		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
@@ -77,6 +78,10 @@ public class GameScreen {
     public synchronized void handleSprite(int flag, Sprite s, double time){
         if(flag == GameConstants.ADD_SPRITE) addSprite(s);
         else if (flag == GameConstants.REMOVE_SPRITE) removeSprite(s);
+    }
+
+    public void addHandSprite(Sprite s) {
+        player1PrimaryHand = s;
     }
 
 }

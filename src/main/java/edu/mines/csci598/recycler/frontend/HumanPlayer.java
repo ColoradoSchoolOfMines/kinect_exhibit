@@ -8,5 +8,7 @@ package edu.mines.csci598.recycler.frontend;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-public class HumanPlayer extends Player {
+public class HumanPlayer {
+
+
 }

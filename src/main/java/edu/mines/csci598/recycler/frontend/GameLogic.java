@@ -52,6 +52,11 @@ public class GameLogic extends GameState {
             handleRecyclables(GameConstants.ADD_SPRITE, r);
         }
         setUpBins();
+
+        // sets up the first player and adds its primary hand to the gameScreen
+        // so that it can be displayed
+        player1 = new Player(gameManager);
+        gameScreen.addHandSprite(player1.primary.getSprite());
     }
 
     private void setUpBins() {
@@ -152,7 +157,7 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void checkCollision(Recyclable r) {
-        if (r.getSprite().getState() == GameConstants.TOUCHABLE) {
+      /*  if (r.getSprite().getState() == GameConstants.TOUCHABLE) {
             if (gameScreen.hand.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
                     gameScreen.hand.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
                 if (gameScreen.hand.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
@@ -197,7 +202,7 @@ public class GameLogic extends GameState {
                 }
             }
         }
-
+      */
     }
 
     private RecyclableType findRecycledBin(Recyclable r) {
@@ -239,6 +244,9 @@ public class GameLogic extends GameState {
         if (generateMultiple) {
             generateItems(currentTime);
         }
+
+        // display the hand
+        player1.primary.updateLocation();
 
         //see if hand is going through item and handle it
         // check coordinates here

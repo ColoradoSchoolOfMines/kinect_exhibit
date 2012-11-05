@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
@@ -28,15 +30,24 @@ public class Hand implements MouseMotionListener, Displayable {
     private int y;
     private int oldX;
     private int oldY;
+    GameManager gameManager;
 
-    public Hand() {
+    public Hand(GameManager manager) {
         x=0;
         y=0;
         oldX=0;
         oldY=0;
         velocityX=0;
         velocityY=0;
+        sprite = new Sprite("src/main/resources/SpriteImages/default.jpg", x, y);
+        gameManager = manager;
+    }
 
+    public void updateLocation() {
+        x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0]);
+        y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][1]);
+        sprite.setX(x);
+        sprite.setY(y);
     }
 
     public Sprite getSprite()
@@ -50,9 +61,6 @@ public class Hand implements MouseMotionListener, Displayable {
     * return {int}
     */
     public int getX() {
-        //
-        //gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0])
-
         return x;
     }
 
@@ -62,7 +70,6 @@ public class Hand implements MouseMotionListener, Displayable {
       * return {int}
       */
     public int getY() {
-        //gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][])
         return y;
     }
 
