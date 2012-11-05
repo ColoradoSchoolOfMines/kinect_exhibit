@@ -12,6 +12,6 @@ package edu.mines.csci598.recycler.frontend;
  */
 public class Player {
     Hand primary;
-    Hand auxilary;
+    Hand auxiliary;
 
 }

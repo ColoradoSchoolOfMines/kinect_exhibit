@@ -50,6 +50,9 @@ public class Hand implements MouseMotionListener, Displayable {
     * return {int}
     */
     public int getX() {
+        //
+        //gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0])
+
         return x;
     }
 
@@ -59,6 +62,7 @@ public class Hand implements MouseMotionListener, Displayable {
       * return {int}
       */
     public int getY() {
+        //gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][])
         return y;
     }
 

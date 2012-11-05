@@ -31,6 +31,7 @@ public class GameLogic extends GameState {
     LinkedList<Recyclable> recyclablesToRemove = new LinkedList<Recyclable>();
     double lastGenerateTime;
     double currentTime;
+    long startTime;
     double generateTimeDelay;
     boolean generateMultiple;
     int numItemTypes;
@@ -39,11 +40,11 @@ public class GameLogic extends GameState {
 
     private GameLogic(GameManager gameManager) {
         this.gameManager = gameManager;
-        GameFrame gamePanel = GameFrame.getInstance();
-        gameScreen = gamePanel.getGameScreen();
+        gameScreen = GameScreen.getInstance();
         numItemTypes = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         lastGenerateTime = 0;
         currentTime = 0;
+        startTime = System.currentTimeMillis();
         generateTimeDelay = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         generateMultiple = true;
         if (!generateMultiple) {
@@ -85,7 +86,6 @@ public class GameLogic extends GameState {
         //Function will decide on item type to generate
         //Function will create a new sprite of that type
         //Function will add sprite to screen
-
         if ((currentTime - lastGenerateTime) > generateTimeDelay) {
             //System.out.println("Ct:"+currentTime+",IT:"+itemType);
             try {
@@ -101,7 +101,6 @@ public class GameLogic extends GameState {
 
     private synchronized void updateRecyclables() {
         Sprite sprite;
-
         try {
             for (Recyclable recyclable : recyclables) {
                 sprite = recyclable.getSprite();
@@ -130,7 +129,7 @@ public class GameLogic extends GameState {
         for (Recyclable recyclable : recyclablesToRemove) {
             recyclables.remove(recyclable);
         }
-        // XXX gameScreen.repaint();
+        //drawThis();
     }
 
     public synchronized void addRecyclable(Recyclable r) {
@@ -147,9 +146,9 @@ public class GameLogic extends GameState {
     }
 
     public synchronized void handleRecyclables(int flag, Recyclable r) {
-        if (flag == GameConstants.ADD_SPRITE) addRecyclable(r);
-        else if (flag == GameConstants.REMOVE_SPRITE) removeRecyclable(r);
-        else if (flag == GameConstants.UPDATE_SPRITES) updateRecyclables();
+        if      (flag == GameConstants.ADD_SPRITE)      addRecyclable(r);
+        else if (flag == GameConstants.REMOVE_SPRITE)   removeRecyclable(r);
+        else if (flag == GameConstants.UPDATE_SPRITES)  updateRecyclables();
     }
 
     private synchronized void checkCollision(Recyclable r) {
@@ -232,12 +231,14 @@ public class GameLogic extends GameState {
        return this.gameManager;
     }
 
-
     protected GameState updateThis(float elapsedTime) {
 
-        long startTime = System.currentTimeMillis(); //in seconds
+         //in seconds
         currentTime = (System.currentTimeMillis() - startTime) / 1000.0;
-        if (generateMultiple) generateItems(currentTime);
+
+        if (generateMultiple) {
+            generateItems(currentTime);
+        }
 
         //see if hand is going through item and handle it
         // check coordinates here
@@ -245,15 +246,12 @@ public class GameLogic extends GameState {
 
         //see if hand hits powerup and handle it
 
-
         Recyclable r = new Recyclable(currentTime, RecyclableType.SKULL);
         //handleRecyclables(GameConstants.UPDATE_SPRITES, r);
 
-        //tell the game manager to update, updates game screen
         updateRecyclables();
 
-
-        //check to for winning condition.
+        //check for winning condition.
         return this;
     }
 
@@ -265,5 +263,8 @@ public class GameLogic extends GameState {
         GameLogic gm = GameLogic.getInstance();
         ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
         gm.getGameManager().installInputDriver(mouse);
+        gm.getGameManager().setState(gm);
+        gm.getGameManager().run();
+        gm.getGameManager().destroy();
     }
 }

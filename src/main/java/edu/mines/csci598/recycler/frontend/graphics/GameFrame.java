@@ -12,6 +12,9 @@ import javax.swing.*;
  * Time: 11:09 AM
  * To change this template use File | Settings | File Templates.
  */
+
+//TODO: We might not need this class after merge with backend
+
 public class GameFrame extends JFrame{
     private GameScreen gameScreen;
     private static GameFrame INSTANCE;
