@@ -157,22 +157,24 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void checkCollision(Recyclable r) {
-      /*  if (r.getSprite().getState() == GameConstants.TOUCHABLE) {
-            if (gameScreen.hand.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
-                    gameScreen.hand.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
-                if (gameScreen.hand.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
-                        gameScreen.hand.getY() <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
+        //Log.logInfo("loc: " + player1.primary.getX() + " " + player1.primary.getY() + "  " + player1.primary.getVelocityX());
+        if (r.getSprite().getState() == GameConstants.TOUCHABLE) {
+            if (player1.primary.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
+                    player1.primary.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
+                if (player1.primary.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
+                        player1.primary.getY() <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
                     //Handle collision
-                    //Log.logInfo("Collision detected on Sprite");
+                    Log.logInfo("Collision detected on Sprite");
+                    Log.logInfo("velocity: " + player1.primary.getVelocityX());
 
                     Log.logError("Sx=" + r.getSprite().getX() + ",Sy=" + r.getSprite().getY() +
-                            ",Hx=" + gameScreen.hand.getX() + ",Hy=" + gameScreen.hand.getY() +
-                            ",Hvx=" + gameScreen.hand.getVelocityX() + ",Hvy" + gameScreen.hand.getVelocityY());
+                            ",Hx=" + player1.primary.getX() + ",Hy=" + player1.primary.getY() +
+                            ",Hvx=" + player1.primary.getVelocityX() + ",Hvy" + player1.primary.getVelocityY());
                     //System.out.println("Collision detected on sprite");
                     r.getSprite().setState(GameConstants.UNTOUCHABLE);
 
                     //Handle sprite collision
-                    if (gameScreen.hand.getVelocityX() > GameConstants.MIN_VELOCITY) {
+                    if (player1.primary.getVelocityX() > GameConstants.MIN_VELOCITY) {
                         Path path = new Path();
                         Log.logInfo("Pushed Right");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
@@ -184,7 +186,7 @@ public class GameLogic extends GameState {
                         r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
 
                         //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
-                    } else if (gameScreen.hand.getVelocityX() < -1 * GameConstants.MIN_VELOCITY) {
+                    } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_VELOCITY) {
                         Path path = new Path();
                         Log.logInfo("Pushed Left");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
@@ -202,7 +204,7 @@ public class GameLogic extends GameState {
                 }
             }
         }
-      */
+
     }
 
     private RecyclableType findRecycledBin(Recyclable r) {

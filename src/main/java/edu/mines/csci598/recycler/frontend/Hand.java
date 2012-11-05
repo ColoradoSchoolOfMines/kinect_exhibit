@@ -21,7 +21,7 @@ import java.awt.event.MouseMotionListener;
  * Time: 9:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Hand implements MouseMotionListener, Displayable {
+public class Hand implements Displayable {
 
 	private Sprite sprite;
     private int velocityX;
@@ -44,8 +44,15 @@ public class Hand implements MouseMotionListener, Displayable {
     }
 
     public void updateLocation() {
+        oldX = x;
+        oldY = y;
+
         x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0]);
         y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][1]);
+
+        velocityX = Math.abs(x-oldX);
+        velocityY = Math.abs(y-oldY);
+
         sprite.setX(x);
         sprite.setY(y);
     }
@@ -78,33 +85,6 @@ public class Hand implements MouseMotionListener, Displayable {
     }
     public int getVelocityY(){
         return velocityY;
-    }
-
-
-    public void mouseMoved(MouseEvent e) {
-        oldX = x;
-        oldY = y;
-        x = (int)(e.getX()/GraphicsConstants.SCALE_FACTOR);
-        y = (int)(e.getY()/GraphicsConstants.SCALE_FACTOR);
-        velocityX = x-oldX;
-        velocityY = y-oldY;
-        //saySomething("Mouse moved", e);
-    }
-    public void mouseClicked(MouseEvent e) {
-        velocityX = 0;
-        velocityY = 0;
-        saySomething("Mouse clicked",e);
-    }
-    public void mouseDragged(MouseEvent e) {
-        saySomething("Mouse dragged", e);
-    }
-
-    void saySomething(String eventDescription, MouseEvent e) {
-        Log.logInfo(eventDescription
-                + " (x=" + x + ",y=" + y + ",vX=" + velocityX+ ",vy=" + velocityY  + ")"
-                + " detected on "
-                + e.getComponent().getClass().getName()
-                + "\n");
     }
 
 }
