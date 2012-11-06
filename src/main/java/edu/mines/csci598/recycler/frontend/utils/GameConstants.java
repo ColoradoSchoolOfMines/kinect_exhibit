@@ -47,6 +47,8 @@ public final class GameConstants {
     public static final int SPRITE_X_OFFSET = 50;
     public static final int SPRITE_Y_OFFSET = 50;
 
+    public static final int IN_BIN_OFFSET = 150;
+
     public static final RecyclableType BIN_1_TYPE = RecyclableType.GLASS;
     public static final RecycleBin.ConveyorSide BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
     public static final double BIN_1_MIN_Y = 438;

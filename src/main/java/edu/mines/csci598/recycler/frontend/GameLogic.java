@@ -116,6 +116,14 @@ public class GameLogic extends GameState {
                         recyclablesToRemove.addLast(recyclable);
                         gameScreen.removeSprite(recyclable.getSprite());
                     }
+                    if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
+                            sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
+                        (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
+                            sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
+
+                        recyclablesToRemove.addLast(recyclable);
+                        gameScreen.removeSprite(recyclable.getSprite());
+                    }
 
                     if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
                         sprite.setState(Sprite.TouchState.UNTOUCHABLE);
