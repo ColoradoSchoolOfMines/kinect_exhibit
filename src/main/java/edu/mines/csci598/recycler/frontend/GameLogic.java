@@ -10,6 +10,7 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
 import java.awt.*;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * The GameLogic is where the game play logic is. The main game update loop will go here.
@@ -33,7 +34,10 @@ public class GameLogic extends GameState {
     double currentTime;
     long startTime;
     double generateTimeDelay;
+    double itemGenerationDelay;
     boolean generateMultiple;
+    int itemGenerationMin;
+    Random randItems;
     int numItemTypes;
     int score;
     int strikes;
@@ -46,7 +50,10 @@ public class GameLogic extends GameState {
         currentTime = 0;
         startTime = System.currentTimeMillis();
         generateTimeDelay = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
-        generateMultiple = true;
+        itemGenerationDelay=0;
+        generateMultiple = false;
+        itemGenerationMin=GameConstants.START_ITEM_GENERATION_MIN;
+        randItems = new Random();
         if (!generateMultiple) {
             Recyclable r = new Recyclable(0, RecyclableType.getRandom(4));
             handleRecyclables(GameConstants.ADD_SPRITE, r);
@@ -86,18 +93,35 @@ public class GameLogic extends GameState {
         }
         return INSTANCE;
     }
-
+    /*
+    *Determines if item can be generated
+     */
+    private boolean generateItem(){
+        boolean ret=false;
+        int randGen = randItems.nextInt(100)+1;
+        //Log.logInfo("ct="+currentTime+",lgt="+lastGenerateTime+",rg="+randGen+",igm="+itemGenerationMin);
+        if(randGen>itemGenerationMin)
+            ret=true;
+        return ret;
+    }
+    /*
+    *   Generates the item if possible
+     */
     private void generateItems(double currentTime) {
         //Function will decide on item type to generate
         //Function will create a new sprite of that type
         //Function will add sprite to screen
-        if ((currentTime - lastGenerateTime) > generateTimeDelay) {
+        if ((currentTime - lastGenerateTime) > generateTimeDelay + itemGenerationDelay) {
             //System.out.println("Ct:"+currentTime+",IT:"+itemType);
             try {
-                Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypes));
-                handleRecyclables(GameConstants.ADD_SPRITE, r);
-
-                lastGenerateTime = currentTime;
+                if(generateItem()){
+                    Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypes));
+                    handleRecyclables(GameConstants.ADD_SPRITE, r);
+                    lastGenerateTime=currentTime;
+                    itemGenerationDelay=0;
+                }else{
+                    itemGenerationDelay+=GameConstants.ITEM_GENERATION_DELAY;
+                }
             } catch (ConcurrentModificationException e) {
                 Log.logError("Trying to generate a new sprite");
             }
@@ -168,11 +192,16 @@ public class GameLogic extends GameState {
 
     private synchronized void checkCollision(Recyclable r) {
         //Log.logInfo("loc: " + player1.primary.getX() + " " + player1.primary.getY() + "  " + player1.primary.getVelocityX());
+        Log.logInfo("P1:(x1,y1)=("+player1.primary.getX()+"," + player1.primary.getY() +")");
         if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
-            if (player1.primary.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
-                    player1.primary.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
-                if (player1.primary.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
-                        player1.primary.getY() <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
+            if (player1.primary.getX() >=
+                  r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
+                  player1.primary.getX() <=
+                  r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
+                if (player1.primary.getY() >=
+                        r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
+                        player1.primary.getY()
+                                <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
                     //Handle collision
                    // Log.logInfo("Collision detected on Sprite ");
                     Log.logInfo("velocity: " + player1.primary.getVelocityX());

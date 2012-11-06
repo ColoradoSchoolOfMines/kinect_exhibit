@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -179,6 +180,7 @@ public class Sprite{
             Coordinate c = path.getLocation(startTime,time);
             x=(int)c.x;
             y=(int)c.y;
+            Log.logInfo("Sprite at (x,y):("+x+","+y+")");
         }
     }
 

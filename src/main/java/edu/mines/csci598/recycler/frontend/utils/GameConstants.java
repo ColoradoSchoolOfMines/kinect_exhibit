@@ -11,8 +11,14 @@ import edu.mines.csci598.recycler.frontend.RecycleBin;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameConstants {
+    public static final double HAND_TO_SPRITE_SCALING = .77;
+    public static final double SPRITE_TO_HAND_SCALING = 1.22;
+
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
     public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
+
+    public static final double ITEM_GENERATION_DELAY = 0.5;
+    public static final int START_ITEM_GENERATION_MIN = 50;
 
     public static final int ADD_SPRITE = 0;
     public static final int REMOVE_SPRITE = 1;
@@ -28,7 +34,7 @@ public final class GameConstants {
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_END_Y = 80;
-    public static final int VERTICAL_PATH_TIME = 10;
+    public static final int VERTICAL_PATH_TIME = 30;
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
@@ -44,8 +50,8 @@ public final class GameConstants {
     public static final int HORIZONTAL_VELOCITY = 2;
 
     public static final int MIN_VELOCITY = 10;
-    public static final int SPRITE_X_OFFSET = 50;
-    public static final int SPRITE_Y_OFFSET = 50;
+    public static final int SPRITE_X_OFFSET = 100;
+    public static final int SPRITE_Y_OFFSET = 100;
 
     public static final int IN_BIN_OFFSET = 150;
 
