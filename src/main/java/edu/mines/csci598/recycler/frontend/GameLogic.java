@@ -118,9 +118,9 @@ public class GameLogic extends GameState {
                     }
 
                     if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
-                        sprite.setState(GameConstants.UNTOUCHABLE);
+                        sprite.setState(Sprite.TouchState.UNTOUCHABLE);
                     } else if (sprite.getY() <= GameConstants.SPRITE_BECOMES_TOUCHABLE) {
-                        sprite.setState(GameConstants.TOUCHABLE);
+                        sprite.setState(Sprite.TouchState.TOUCHABLE);
                     }
                     checkCollision(recyclable);
 
@@ -158,7 +158,7 @@ public class GameLogic extends GameState {
 
     private synchronized void checkCollision(Recyclable r) {
         //Log.logInfo("loc: " + player1.primary.getX() + " " + player1.primary.getY() + "  " + player1.primary.getVelocityX());
-        if (r.getSprite().getState() == GameConstants.TOUCHABLE) {
+        if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
             if (player1.primary.getX() >= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
                     player1.primary.getX() <= r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
                 if (player1.primary.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
@@ -171,7 +171,7 @@ public class GameLogic extends GameState {
                             ",Hx=" + player1.primary.getX() + ",Hy=" + player1.primary.getY() +
                             ",Hvx=" + player1.primary.getVelocityX() + ",Hvy" + player1.primary.getVelocityY());
                     //System.out.println("Collision detected on sprite");
-                    r.getSprite().setState(GameConstants.UNTOUCHABLE);
+                    r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
 
                     //Handle sprite collision
                     if (player1.primary.getVelocityX() > GameConstants.MIN_VELOCITY) {

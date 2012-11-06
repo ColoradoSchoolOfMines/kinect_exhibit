@@ -50,8 +50,8 @@ public class Hand implements Displayable {
         x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0]);
         y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][1]);
 
-        velocityX = Math.abs(x-oldX);
-        velocityY = Math.abs(y-oldY);
+        velocityX = x-oldX;
+        velocityY = y-oldY;
 
         sprite.setX(x);
         sprite.setY(y);

@@ -23,6 +23,7 @@ import java.io.IOException;
 
 public class Sprite{
 
+    public enum TouchState { TOUCHABLE, UNTOUCHABLE };
     private int dx;
     private int dy;
     private int x;
@@ -31,7 +32,7 @@ public class Sprite{
     private String fileName;
     private Path path;
     private double startTime;
-    private int state;
+    private TouchState state;
 
     public Sprite(String fileName, int x, int y) {
         this.x = x;
@@ -40,7 +41,7 @@ public class Sprite{
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
-        state = GameConstants.UNTOUCHABLE;
+        state = TouchState.UNTOUCHABLE;
     }
 
     /*
@@ -63,10 +64,10 @@ public class Sprite{
         image =img.getScaledInstance(newWidth,newHeight,BufferedImage.SCALE_SMOOTH);
 
     }
-    public void setState(int newState){
+    public void setState(TouchState newState){
         state = newState;
     }
-    public int getState(){
+    public TouchState getState(){
         return state;
     }
 

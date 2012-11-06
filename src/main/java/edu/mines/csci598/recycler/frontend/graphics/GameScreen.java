@@ -60,7 +60,7 @@ public class GameScreen {
     }
     public synchronized void addSprite(Sprite s){
         try{
-         s.setState(GameConstants.UNTOUCHABLE);
+         s.setState(Sprite.TouchState.UNTOUCHABLE);
          sprites.addLast(s);
         }catch (ConcurrentModificationException e){Log.logError("Trying to add sprite " + s);}
     }

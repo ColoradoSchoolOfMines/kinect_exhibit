@@ -39,8 +39,6 @@ public final class GameConstants {
     public static final int ITEM_PATH_END = 250;
     public static final int ITEM_PATH_TIME = 5;
 
-    public static final int UNTOUCHABLE = 0;
-    public static final int TOUCHABLE = 1;
     public static final int SPRITE_BECOMES_TOUCHABLE = BOTTOM_PATH_END_Y - 50;
     public static final int SPRITE_BECOMES_UNTOUCHABLE = TOP_PATH_START_Y + 20;
     public static final int HORIZONTAL_VELOCITY = 2;
