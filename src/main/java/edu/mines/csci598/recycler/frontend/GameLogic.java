@@ -55,7 +55,7 @@ public class GameLogic extends GameState {
         itemGenerationMin=GameConstants.START_ITEM_GENERATION_MIN;
         randItems = new Random();
         if (!generateMultiple) {
-            Recyclable r = new Recyclable(0, RecyclableType.getRandom(4));
+            Recyclable r = new Recyclable(0, RecyclableType.getRandom(3));
             handleRecyclables(GameConstants.ADD_SPRITE, r);
         }
         setUpBins();
@@ -191,30 +191,32 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void checkCollision(Recyclable r) {
-        //Log.logInfo("loc: " + player1.primary.getX() + " " + player1.primary.getY() + "  " + player1.primary.getVelocityX());
-        Log.logInfo("P1:(x1,y1)=("+player1.primary.getX()+"," + player1.primary.getY() +")");
+        //Log.logInfo("(x1,y1)-P1:("+player1.primary.getX()+"," + player1.primary.getY() +"),s:(" +
+        //            r.getSprite().getScaledX()+","+r.getSprite().getScaledY()+"),state="+
+        //            r.getSprite().getState());
+        //Log.logInfo("P1("+player1.primary.getVelocityX()+","+player1.primary.getVelocityY()+")");
+
         if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
             if (player1.primary.getX() >=
-                  r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET / 2) &&
+                  r.getSprite().getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
                   player1.primary.getX() <=
-                  r.getSprite().getX() + (GameConstants.SPRITE_X_OFFSET * 2)) {
-                if (player1.primary.getY() >=
-                        r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
-                        player1.primary.getY()
-                                <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
+                  r.getSprite().getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
+                if (player1.primary.getY() >= r.getSprite().getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
+                        player1.primary.getY() <= r.getSprite().getScaledY()+ (GameConstants.SPRITE_Y_OFFSET)) {
                     //Handle collision
-                   // Log.logInfo("Collision detected on Sprite ");
-                    Log.logInfo("velocity: " + player1.primary.getVelocityX());
+                    //Log.logInfo("Collision detected on Sprite ");
 
+                    /*
                     Log.logError("Sx=" + r.getSprite().getX() + ",Sy=" + r.getSprite().getY() +
                             ",Hx=" + player1.primary.getX() + ",Hy=" + player1.primary.getY() +
                             ",Hvx=" + player1.primary.getVelocityX() + ",Hvy" + player1.primary.getVelocityY());
+                    */
                     //System.out.println("Collision detected on sprite");
 
                     boolean pushed = false;
 
                     //Handle sprite collision
-                    if (player1.primary.getVelocityX() > GameConstants.MIN_VELOCITY) {
+                    if (player1.primary.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
                         Path path = new Path();
                         Log.logInfo("Pushed Right");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
@@ -227,7 +229,7 @@ public class GameLogic extends GameState {
                         pushed = true;
 
                         //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
-                    } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_VELOCITY) {
+                    } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
                         Path path = new Path();
                         Log.logInfo("Pushed Left");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
@@ -252,7 +254,7 @@ public class GameLogic extends GameState {
     }
 
     private RecyclableType findRecycledBin(Recyclable r) {
-        int yCord = r.getSprite().getY();
+        int yCord = r.getSprite().getScaledY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
         // left of the conveyor we only need to check which way it's going and the y coordinates

@@ -13,8 +13,8 @@ import java.util.Random;
 public enum RecyclableType {
     GLASS("src/main/resources/SpriteImages/glass.png"),
     PLASTIC("src/main/resources/SpriteImages/plastic.png"),
-    SKULL("src/main/resources/SpriteImages/skull_crossbones.png"),
-    PAPER("src/main/resources/SpriteImages/paper.png");
+    PAPER("src/main/resources/SpriteImages/paper.png"),
+    SKULL("src/main/resources/SpriteImages/skull_crossbones.png");
     //TRASH("not yet drawn");
 
     private String imageFilePath;

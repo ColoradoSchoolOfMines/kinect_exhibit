@@ -180,7 +180,7 @@ public class Sprite{
             Coordinate c = path.getLocation(startTime,time);
             x=(int)c.x;
             y=(int)c.y;
-            Log.logInfo("Sprite at (x,y):("+x+","+y+")");
+            //Log.logInfo("Sprite at (x,y):("+x+","+y+")");
         }
     }
 

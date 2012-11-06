@@ -30,6 +30,7 @@ public class Hand implements Displayable {
     private int y;
     private int oldX;
     private int oldY;
+    private int velocityCount;
     GameManager gameManager;
 
     public Hand(GameManager manager) {
@@ -52,6 +53,8 @@ public class Hand implements Displayable {
 
         velocityX = x-oldX;
         velocityY = y-oldY;
+
+        //Log.logInfo("v:("+velocityX+","+velocityY+"),new("+x+","+y+"),old("+oldX+","+oldY+")");
 
         sprite.setX(x);
         sprite.setY(y);
