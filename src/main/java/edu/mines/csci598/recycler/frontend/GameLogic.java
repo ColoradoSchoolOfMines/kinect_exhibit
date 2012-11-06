@@ -51,7 +51,7 @@ public class GameLogic extends GameState {
         startTime = System.currentTimeMillis();
         generateTimeDelay = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         itemGenerationDelay=0;
-        generateMultiple = false;
+        generateMultiple = true;
         itemGenerationMin=GameConstants.START_ITEM_GENERATION_MIN;
         randItems = new Random();
         if (!generateMultiple) {
