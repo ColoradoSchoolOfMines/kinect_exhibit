@@ -130,6 +130,7 @@ public class GameLogic extends GameState {
 
     private synchronized void updateRecyclables() {
         Sprite sprite;
+        Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
         try {
             for (Recyclable recyclable : recyclables) {
                 sprite = recyclable.getSprite();

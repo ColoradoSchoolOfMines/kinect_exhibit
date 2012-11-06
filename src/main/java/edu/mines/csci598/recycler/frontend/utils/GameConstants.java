@@ -47,8 +47,8 @@ public final class GameConstants {
     public static final int HORIZONTAL_VELOCITY = 2;
 
     public static final int MIN_HAND_VELOCITY = 10;
-    public static final int SPRITE_X_OFFSET = 100;
-    public static final int SPRITE_Y_OFFSET = 100;
+    public static final int SPRITE_X_OFFSET = 50;
+    public static final int SPRITE_Y_OFFSET = 50;
 
     public static final int IN_BIN_OFFSET = 150;
 
