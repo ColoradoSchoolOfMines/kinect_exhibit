@@ -123,11 +123,14 @@ public class GameLogic extends GameState {
                         recyclablesToRemove.addLast(recyclable);
                         gameScreen.removeSprite(recyclable.getSprite());
                     }
-
-                    if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
-                        sprite.setState(Sprite.TouchState.UNTOUCHABLE);
-                    } else if (sprite.getY() <= GameConstants.SPRITE_BECOMES_TOUCHABLE) {
-                        sprite.setState(Sprite.TouchState.TOUCHABLE);
+                    // make sure the item is still on the conveyor before changing it's touch status
+                    if (recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_RIGHT &&
+                            recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_LEFT) {
+                        if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
+                            sprite.setState(Sprite.TouchState.UNTOUCHABLE);
+                        } else if (sprite.getY() <= GameConstants.SPRITE_BECOMES_TOUCHABLE) {
+                            sprite.setState(Sprite.TouchState.TOUCHABLE);
+                        }
                     }
                     checkCollision(recyclable);
 

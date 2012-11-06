@@ -43,7 +43,7 @@ public final class GameConstants {
     public static final int SPRITE_BECOMES_UNTOUCHABLE = TOP_PATH_START_Y + 20;
     public static final int HORIZONTAL_VELOCITY = 2;
 
-    public static final int MIN_VELOCITY = 25;
+    public static final int MIN_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
     public static final int SPRITE_Y_OFFSET = 50;
 

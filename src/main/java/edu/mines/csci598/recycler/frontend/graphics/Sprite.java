@@ -61,7 +61,7 @@ public class Sprite{
         int newHeight = (int)Math.round(img.getHeight()*GraphicsConstants.SCALE_FACTOR);
         int newWidth = (int)Math.round(img.getWidth()*GraphicsConstants.SCALE_FACTOR);
         //scale the image
-        image =img.getScaledInstance(newWidth,newHeight,BufferedImage.SCALE_SMOOTH);
+        image = img.getScaledInstance(newWidth,newHeight,BufferedImage.SCALE_SMOOTH);
 
     }
     public void setState(TouchState newState){
