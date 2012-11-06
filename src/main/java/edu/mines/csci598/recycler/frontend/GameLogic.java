@@ -120,7 +120,6 @@ public class GameLogic extends GameState {
                             sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
                         (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
                             sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
-
                         recyclablesToRemove.addLast(recyclable);
                         gameScreen.removeSprite(recyclable.getSprite());
                     }
@@ -172,14 +171,15 @@ public class GameLogic extends GameState {
                 if (player1.primary.getY() >= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET / 2) &&
                         player1.primary.getY() <= r.getSprite().getY() + (GameConstants.SPRITE_Y_OFFSET * 2)) {
                     //Handle collision
-                    Log.logInfo("Collision detected on Sprite");
+                   // Log.logInfo("Collision detected on Sprite ");
                     Log.logInfo("velocity: " + player1.primary.getVelocityX());
 
                     Log.logError("Sx=" + r.getSprite().getX() + ",Sy=" + r.getSprite().getY() +
                             ",Hx=" + player1.primary.getX() + ",Hy=" + player1.primary.getY() +
                             ",Hvx=" + player1.primary.getVelocityX() + ",Hvy" + player1.primary.getVelocityY());
                     //System.out.println("Collision detected on sprite");
-                    r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+
+                    boolean pushed = false;
 
                     //Handle sprite collision
                     if (player1.primary.getVelocityX() > GameConstants.MIN_VELOCITY) {
@@ -192,6 +192,7 @@ public class GameLogic extends GameState {
                         r.getSprite().setPath(path);
                         r.getSprite().setStartTime(currentTime);
                         r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
+                        pushed = true;
 
                         //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
                     } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_VELOCITY) {
@@ -204,11 +205,14 @@ public class GameLogic extends GameState {
                         r.getSprite().setPath(path);
                         r.getSprite().setStartTime(currentTime);
                         r.setMotionState(Recyclable.MotionState.FALL_LEFT);
+                        pushed = true;
                         //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
                     }
-
-                    RecyclableType binType = findRecycledBin(r);
-                    handleScore(r, binType);
+                    if (pushed) {
+                        r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+                        RecyclableType binType = findRecycledBin(r);
+                        handleScore(r, binType);
+                    }
                 }
             }
         }
