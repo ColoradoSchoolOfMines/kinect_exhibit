@@ -13,5 +13,23 @@ public class GraphicsConstants {
     public static final int GAME_SCREEN_WIDTH = (int)Math.round(960* SCALE_FACTOR);
     public static final int GAME_SCREEN_HEIGHT = (int)Math.round(1080* SCALE_FACTOR);
 
+    public static final double LEFT_X_SCALE = .174;
+    public static final double RIGHT_X_SCALE = .874;
+    public static final double LEFT_TOP_Y_SCALE = .217;
+    public static final double LEFT_BOTTOM_Y_SCALE = .667;
+    public static final double RIGHT_TOP_Y_SCALE = .340;
+    public static final double RIGHT_BOTTOM_Y_SCALE = .791;
+
+
+    //960*.75 = 720
+    //125/720 = .174
+    //500/720 = .694
+
+    //1080*.75 = 810
+    //135/810 = .167
+    //500/810 = .617
+    //235/810 = .290
+    //600/810 = .741
+
 
 }
