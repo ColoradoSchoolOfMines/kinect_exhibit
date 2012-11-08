@@ -31,7 +31,7 @@ public class GameScreen {
     private Iterator it = sprites.iterator();
 
     private GameScreen() {
-        background = new Sprite("src/main/resources/SpriteImages/background.png", 0, 0);
+        background = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
         s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
     }
 
