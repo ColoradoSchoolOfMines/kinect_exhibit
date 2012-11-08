@@ -60,7 +60,7 @@ public class GameLogic extends GameState {
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
-        
+
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
         if (!generateMultiple) {
@@ -154,6 +154,7 @@ public class GameLogic extends GameState {
                     if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
                         recyclablesToRemove.addLast(recyclable);
                         gameScreen.removeSprite(recyclable.getSprite());
+                        handleScore(recyclable, RecyclableType.TRASH);
                     }
                     if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
                             sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
