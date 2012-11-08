@@ -1,15 +1,18 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
+
 
 /**
  * The GameLogic is where the game play logic is. The main game update loop will go here.
@@ -21,6 +24,12 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLogic extends GameState {
+
+    private final Logger logger = LogManager.getLogger(GameLogic.class);
+    private final boolean INFO = logger.isInfoEnabled();
+    private final boolean DEBUG = logger.isDebugEnabled();
+    private final boolean TRACE = logger.isTraceEnabled();
+
     private static GameLogic INSTANCE;
     private Player player1, player2;
     private GameScreen gameScreen;
