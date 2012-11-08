@@ -42,7 +42,7 @@ public final class GameConstants {
 
     public static final int BOTTOM_PATH_START_X = 0;
     public static final int BOTTOM_PATH_START_Y = 880;
-    public static final int BOTTOM_PATH_END_X = 480;
+    public static final int BOTTOM_PATH_END_X = 445;
     public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
     public static final double BOTTOM_PATH_START_TIME = 5;
     public static final double BOTTOM_PATH_END_TIME = 5;
@@ -50,13 +50,13 @@ public final class GameConstants {
     public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
-    public static final int VERTICAL_PATH_END_Y = 80;
+    public static final int VERTICAL_PATH_END_Y = 40;
     public static final double VERTICAL_PATH_START_TIME = 15;
     public static final double VERTICAL_PATH_END_TIME = 1.5;
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
-    public static final int TOP_PATH_END_X = 860;
+    public static final int TOP_PATH_END_X = 750;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
     public static final double TOP_PATH_START_TIME = BOTTOM_PATH_START_TIME;
     public static final double TOP_PATH_END_TIME = BOTTOM_PATH_END_TIME;

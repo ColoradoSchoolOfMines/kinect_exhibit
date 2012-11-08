@@ -11,9 +11,9 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public enum RecyclableType {
-    GLASS("src/main/resources/SpriteImages/glass.png"),
     PLASTIC("src/main/resources/SpriteImages/plastic.png"),
     PAPER("src/main/resources/SpriteImages/paper.png"),
+    GLASS("src/main/resources/SpriteImages/glass.png"),
     SKULL("src/main/resources/SpriteImages/skull_crossbones.png");
     //TRASH("not yet drawn");
     // TODO get trash going
