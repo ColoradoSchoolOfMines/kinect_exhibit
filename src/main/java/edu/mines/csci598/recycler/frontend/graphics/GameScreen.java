@@ -63,6 +63,22 @@ public class GameScreen {
         g2d.drawString("STRIKES: ", 120, 20);
         g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.black);
+        g2d.drawString("Paper ", 125, 135);
+
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.black);
+        g2d.drawString("Glass", 125, 500);
+
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.black);
+        g2d.drawString("Plastic", 500, 235);
+
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.black);
+        g2d.drawString("Plastic", 500, 600);
+
         for(Sprite sprite : sprites){
         	try{
         		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);

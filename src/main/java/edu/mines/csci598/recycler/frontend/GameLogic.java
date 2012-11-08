@@ -42,7 +42,7 @@ public class GameLogic extends GameState {
     private int itemType3ActivationTime;
     private int itemType4ActivationTime;
     private int timeToMaxDifficulty;
-    private int gameOverStrikes = 3;
+    private int gameOverStrikes;
 
     private GameLogic(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -59,6 +59,7 @@ public class GameLogic extends GameState {
         itemGenerationDelay = 0;
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
+        gameOverStrikes = 10;
         
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
