@@ -60,7 +60,7 @@ public class GameScreen {
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.red);
-        g2d.drawString("STRIKES: ", 120, 20);
+        g2d.drawString("STRIKES: ", 130, 20);
         g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));

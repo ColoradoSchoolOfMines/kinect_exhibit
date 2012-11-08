@@ -59,7 +59,7 @@ public class GameLogic extends GameState {
         itemGenerationDelay = 0;
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
-        gameOverStrikes = 10;
+        gameOverStrikes = 3;
         
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
@@ -310,6 +310,7 @@ public class GameLogic extends GameState {
         gameScreen.addSprite(sprite);
         //If We want it to exit
         //gameManager.destroy();
+
     }
 
 
