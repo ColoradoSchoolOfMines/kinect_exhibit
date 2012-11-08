@@ -307,9 +307,12 @@ public class GameLogic extends GameState {
         	numItemTypesInUse++;
         }
         
+        double pctToMaxDifficulty = Math.min(1, currentTimeSec/timeToMaxDifficulty);
+        conveyor.setSpeed(pctToMaxDifficulty);
+        
         // increase probability of item generation
         double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        itemGenerationProb = Math.min(1, startProbability + (1-startProbability) * currentTimeSec/timeToMaxDifficulty);
+        itemGenerationProb = startProbability + (1-startProbability) * pctToMaxDifficulty;
     }
 
     public GameManager getGameManager() {

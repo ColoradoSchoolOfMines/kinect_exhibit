@@ -44,19 +44,22 @@ public final class GameConstants {
     public static final int BOTTOM_PATH_START_Y = 880;
     public static final int BOTTOM_PATH_END_X = 480;
     public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
-    public static final int BOTTOM_PATH_TIME = 5;
+    public static final double BOTTOM_PATH_START_TIME = 5;
+    public static final double BOTTOM_PATH_END_TIME = 5;
 
     public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_END_Y = 80;
-    public static final int VERTICAL_PATH_TIME = 15;
+    public static final double VERTICAL_PATH_START_TIME = 15;
+    public static final double VERTICAL_PATH_END_TIME = 1.5;
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_END_X = 860;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
-    public static final int TOP_PATH_TIME = BOTTOM_PATH_TIME;
+    public static final double TOP_PATH_START_TIME = BOTTOM_PATH_START_TIME;
+    public static final double TOP_PATH_END_TIME = BOTTOM_PATH_END_TIME;
 
     public static final int ITEM_PATH_END = 250;
     public static final int ITEM_PATH_TIME = 5;
@@ -102,7 +105,7 @@ public final class GameConstants {
     /**
      * The amount of time, in seconds from the game start, that it takes before a fourth item is added to the game
      */
-	public static final int ITEM_TYPE_4_ACTIVATION_TIME = 75;
+	public static final int ITEM_TYPE_4_ACTIVATION_TIME = 10000; // TODO reduce this when we have a reasonable graphic
 	/**
 	 * The amount of time it takes from the start of the game, in seconds, to reach its maximum difficulty
 	 */

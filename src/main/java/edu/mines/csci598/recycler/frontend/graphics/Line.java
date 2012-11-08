@@ -56,6 +56,10 @@ public class Line {
     public double getTotalTime(){
         return totalTime;
     }
+    
+    public void setTotalTime(double totalTime){
+    	this.totalTime = totalTime;
+    }
 
 
 }
