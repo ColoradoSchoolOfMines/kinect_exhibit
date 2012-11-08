@@ -60,7 +60,7 @@ public class GameLogic extends GameState {
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
-        
+
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
         if (!generateMultiple) {

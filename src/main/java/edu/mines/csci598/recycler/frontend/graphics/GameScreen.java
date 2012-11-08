@@ -51,7 +51,6 @@ public class GameScreen {
 
         g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
         g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
-        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.green);
@@ -87,6 +86,8 @@ public class GameScreen {
         		Log.logError("Trying to draw sprite: " + s);
         	}
         }
+
+        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
     }
     public synchronized void addSprite(Sprite s){
         try{
