@@ -97,11 +97,15 @@ public class GameLogic extends GameState {
         RecycleBin bin4 = new RecycleBin(
                 GameConstants.BIN_4_SIDE, GameConstants.BIN_4_MIN_Y,
                 GameConstants.BIN_4_MAX_Y, GameConstants.BIN_4_TYPE);
+        RecycleBin bin5 = new RecycleBin(
+                GameConstants.BIN_5_SIDE, GameConstants.BIN_5_MIN_Y,
+                GameConstants.BIN_5_MAX_Y, GameConstants.BIN_5_TYPE);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);
         recycleBins.add(bin3);
         recycleBins.add(bin4);
+        recycleBins.add(bin5);
     }
 
     public static final GameLogic getInstance() {

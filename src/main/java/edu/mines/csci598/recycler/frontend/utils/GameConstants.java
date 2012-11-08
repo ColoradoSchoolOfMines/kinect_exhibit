@@ -93,6 +93,13 @@ public final class GameConstants {
     public static final RecycleBin.ConveyorSide BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
     public static final double BIN_4_MIN_Y = 538;
     public static final double BIN_4_MAX_Y = 938;
+
+    public static final RecyclableType BIN_5_TYPE = RecyclableType.TRASH;
+    public static final RecycleBin.ConveyorSide BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double BIN_5_MIN_Y = 0;
+    public static final double BIN_5_MAX_Y = 140;
+
+
     
     /**
      * The amount of time, in seconds from the game start, that it takes before a second item is added to the game
