@@ -24,9 +24,18 @@ public final class GameConstants {
      */
     public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
 
+    /**
+     * If an item is not generated, this is the minimum delay before it can be attempted again.  As item
+     * generation possibly happens many times per second, this keeps a non-generation from still showing
+     * up immediately as far as the users are concerned.
+     */
     public static final double ITEM_GENERATION_DELAY = 0.25;
+    /**
+     * The probability, at the start of the game, that an item will be generated
+     */
     public static final double START_ITEM_GENERATION_PROB = 0.5;
 
+    // TODO these three should become an enum, so that ADD_SPRITE != BOTTOM_PATH_START_X
     public static final int ADD_SPRITE = 0;
     public static final int REMOVE_SPRITE = 1;
     public static final int UPDATE_SPRITES = 2;

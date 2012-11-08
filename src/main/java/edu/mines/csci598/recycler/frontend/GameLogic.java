@@ -3,14 +3,16 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
-import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.Line; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
+import edu.mines.csci598.recycler.frontend.graphics.Path; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
+import edu.mines.csci598.recycler.frontend.graphics.Sprite; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * The GameLogic is where the game play logic is. The main game update loop will go here.
@@ -27,7 +29,7 @@ public class GameLogic extends GameState {
     private GameScreen gameScreen;
     private GameManager gameManager;
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
-    private LinkedList<Recyclable> recyclables = new LinkedList<Recyclable>();
+    private ConveyorBelt conveyor;
     private LinkedList<Recyclable> recyclablesToRemove = new LinkedList<Recyclable>();
     private double lastGenerationTime;
     private double currentTimeSec;
@@ -47,22 +49,23 @@ public class GameLogic extends GameState {
     private GameLogic(GameManager gameManager) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
-        numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         
+        numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         itemType2ActivationTime = GameConstants.ITEM_TYPE_2_ACTIVATION_TIME;
         itemType3ActivationTime = GameConstants.ITEM_TYPE_3_ACTIVATION_TIME;
         itemType4ActivationTime = GameConstants.ITEM_TYPE_4_ACTIVATION_TIME;
         timeToMaxDifficulty = GameConstants.TIME_TO_MAX_DIFFICULTY;
-        
+        minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         lastGenerationTime = 0;
         currentTimeSec = 0;
-        startTime = System.currentTimeMillis();
-        minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         itemGenerationDelay = 0;
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
+        
+        conveyor = new ConveyorBelt();
+        startTime = System.currentTimeMillis();
         if (!generateMultiple) {
-            Recyclable r = new Recyclable(0, RecyclableType.getRandom(3));
+            Recyclable r = new Recyclable(0, RecyclableType.getRandom(numItemTypesInUse));
             handleRecyclables(GameConstants.ADD_SPRITE, r);
         }
         setUpBins();
@@ -140,7 +143,7 @@ public class GameLogic extends GameState {
     private synchronized void updateRecyclables() {
         //Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
         try {
-            for (Recyclable recyclable : recyclables) {
+            for (Recyclable recyclable : conveyor.getRecyclables()){
                 Sprite sprite = recyclable.getSprite();
                 try {
                     sprite.updateLocation(currentTimeSec);
@@ -175,14 +178,14 @@ public class GameLogic extends GameState {
             Log.logError("Trying to update sprites with time " + currentTimeSec);
         }
         for (Recyclable recyclable : recyclablesToRemove) {
-            recyclables.remove(recyclable);
+        	conveyor.removeRecyclable(recyclable);
         }
         //drawThis();
     }
 
     public synchronized void addRecyclable(Recyclable r) {
         try {
-            recyclables.add(r);
+            conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
         } catch (ExceptionInInitializerError e) {
             Log.logError("Trying to add Recyclable with time " + currentTimeSec);
@@ -190,7 +193,7 @@ public class GameLogic extends GameState {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
-        recyclables.remove(r);
+    	conveyor.removeRecyclable(r);
     }
 
     public synchronized void handleRecyclables(int flag, Recyclable r) {
@@ -304,12 +307,9 @@ public class GameLogic extends GameState {
         	numItemTypesInUse++;
         }
         
-        // increase conveyor speed
-        
         // increase probability of item generation
         double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
         itemGenerationProb = Math.min(1, startProbability + (1-startProbability) * currentTimeSec/timeToMaxDifficulty);
-        
     }
 
     public GameManager getGameManager() {
