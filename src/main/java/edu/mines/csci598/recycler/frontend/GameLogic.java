@@ -3,10 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-import edu.mines.csci598.recycler.frontend.graphics.Line; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
-import edu.mines.csci598.recycler.frontend.graphics.Path; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
-import edu.mines.csci598.recycler.frontend.graphics.Sprite; // TODO refactor this import out.  the game logic shouldn't depend on the graphics
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
@@ -45,6 +42,7 @@ public class GameLogic extends GameState {
     private int itemType3ActivationTime;
     private int itemType4ActivationTime;
     private int timeToMaxDifficulty;
+    private int gameOverStrikes = 3;
 
     private GameLogic(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -289,9 +287,31 @@ public class GameLogic extends GameState {
         } else {
             strikes++;
         }
+
+        if(strikes >= gameOverStrikes){
+            gameOver();
+        }
         Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
     }
-    
+
+    public String getScoreString(){
+        return ("" + score);
+    }
+
+    public String getStrikesString(){
+        return ("" + strikes);
+    }
+
+
+    private void gameOver(){
+        System.out.println("GAME OVER");
+        Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH/2) -220, (GraphicsConstants.GAME_SCREEN_HEIGHT/2) -200);
+        gameScreen.addSprite(sprite);
+        //If We want it to exit
+        //gameManager.destroy();
+    }
+
+
     private void increaseDifficulty(){
     	// Possibly add more items
         if(numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime){

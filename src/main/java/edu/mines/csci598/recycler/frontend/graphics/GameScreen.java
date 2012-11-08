@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.GameLogic;
 import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
@@ -51,6 +52,16 @@ public class GameScreen {
         g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
         g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
         g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
+
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.green);
+        g2d.drawString("SCORE: ", 0, 20);
+        g2d.drawString(GameLogic.getInstance().getScoreString(), 100, 20);
+
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g2d.setColor(Color.red);
+        g2d.drawString("STRIKES: ", 120, 20);
+        g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
         for(Sprite sprite : sprites){
         	try{
