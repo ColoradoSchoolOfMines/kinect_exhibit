@@ -54,7 +54,7 @@ public final class GameConstants {
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
-    public static final int TOP_PATH_END_X = 860;
+    public static final int TOP_PATH_END_X = 750;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_TIME = BOTTOM_PATH_TIME;
 
