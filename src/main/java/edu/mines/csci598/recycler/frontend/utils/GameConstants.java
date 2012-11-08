@@ -11,10 +11,20 @@ import edu.mines.csci598.recycler.frontend.RecycleBin;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameConstants {
+	/**
+	 * The number of item types which are generated at the start of the game
+	 */
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 1;
+    /**
+     *  The total number of item types available in the game
+     */
+    public static final int TOTAL_NUMBER_OF_ITEM_TYPES = 4; // TODO this needs to be 5 eventually
+    /**
+     *  The minimum amount of time between object generations, at the beginning of the game
+     */
     public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
 
-    public static final double ITEM_GENERATION_DELAY = 0.5;
+    public static final double ITEM_GENERATION_DELAY = 0.25;
     public static final double START_ITEM_GENERATION_PROB = 0.5;
 
     public static final int ADD_SPRITE = 0;
@@ -72,9 +82,22 @@ public final class GameConstants {
     public static final double BIN_4_MIN_Y = 538;
     public static final double BIN_4_MAX_Y = 938;
     
+    /**
+     * The amount of time, in seconds from the game start, that it takes before a second item is added to the game
+     */
 	public static final int ITEM_TYPE_2_ACTIVATION_TIME = 15;
+    /**
+     * The amount of time, in seconds from the game start, that it takes before a third item is added to the game
+     */
 	public static final int ITEM_TYPE_3_ACTIVATION_TIME = 30;
+    /**
+     * The amount of time, in seconds from the game start, that it takes before a fourth item is added to the game
+     */
 	public static final int ITEM_TYPE_4_ACTIVATION_TIME = 75;
+	/**
+	 * The amount of time it takes from the start of the game, in seconds, to reach its maximum difficulty
+	 */
+	public static final int TIME_TO_MAX_DIFFICULTY = 300;
 
 }
 

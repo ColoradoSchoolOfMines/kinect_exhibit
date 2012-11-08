@@ -29,10 +29,10 @@ public class GameLogic extends GameState {
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
     private LinkedList<Recyclable> recyclables = new LinkedList<Recyclable>();
     private LinkedList<Recyclable> recyclablesToRemove = new LinkedList<Recyclable>();
-    private double lastGenerateTime;
+    private double lastGenerationTime;
     private double currentTimeSec;
     private long startTime;
-    private double generateTimeDelay;
+    private double minTimeBetweenGenerations;
     private double itemGenerationDelay;
     private boolean generateMultiple;
     private double itemGenerationProb;
@@ -42,6 +42,7 @@ public class GameLogic extends GameState {
     private int itemType2ActivationTime;
     private int itemType3ActivationTime;
     private int itemType4ActivationTime;
+    private int timeToMaxDifficulty;
 
     private GameLogic(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -51,11 +52,12 @@ public class GameLogic extends GameState {
         itemType2ActivationTime = GameConstants.ITEM_TYPE_2_ACTIVATION_TIME;
         itemType3ActivationTime = GameConstants.ITEM_TYPE_3_ACTIVATION_TIME;
         itemType4ActivationTime = GameConstants.ITEM_TYPE_4_ACTIVATION_TIME;
+        timeToMaxDifficulty = GameConstants.TIME_TO_MAX_DIFFICULTY;
         
-        lastGenerateTime = 0;
+        lastGenerationTime = 0;
         currentTimeSec = 0;
         startTime = System.currentTimeMillis();
-        generateTimeDelay = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
+        minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         itemGenerationDelay = 0;
         generateMultiple = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
@@ -118,14 +120,14 @@ public class GameLogic extends GameState {
         //Function will decide on item type to generate
         //Function will create a new recyclable of that type
         //Function will add recyclable to screen
-        if ((currentTime - lastGenerateTime) > generateTimeDelay + itemGenerationDelay) {
+        if ((currentTime - lastGenerationTime) > minTimeBetweenGenerations + itemGenerationDelay) {
             //Log.logInfo("Ct:"+currentTime+",IT:"+itemType);
             try {
                 if(possiblyGenerateItem()){
                     Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypesInUse));
                     handleRecyclables(GameConstants.ADD_SPRITE, r);
-                    lastGenerateTime=currentTime;
-                    itemGenerationDelay=0;
+                    lastGenerationTime=currentTime;
+                    itemGenerationDelay = 0;
                 }else{
                     itemGenerationDelay+=GameConstants.ITEM_GENERATION_DELAY;
                 }
@@ -136,7 +138,7 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void updateRecyclables() {
-        Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
+        //Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
         try {
             for (Recyclable recyclable : recyclables) {
                 Sprite sprite = recyclable.getSprite();
@@ -288,6 +290,7 @@ public class GameLogic extends GameState {
     }
     
     private void increaseDifficulty(){
+    	// Possibly add more items
         if(numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime){
         	Log.logInfo("Increasing item types to 2!");
         	numItemTypesInUse++;
@@ -300,6 +303,13 @@ public class GameLogic extends GameState {
         	Log.logInfo("Increasing item types to 4!");
         	numItemTypesInUse++;
         }
+        
+        // increase conveyor speed
+        
+        // increase probability of item generation
+        double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
+        itemGenerationProb = Math.min(1, startProbability + (1-startProbability) * currentTimeSec/timeToMaxDifficulty);
+        
     }
 
     public GameManager getGameManager() {
