@@ -16,7 +16,8 @@ public enum RecyclableType {
     PAPER("src/main/resources/SpriteImages/paper.png"),
     SKULL("src/main/resources/SpriteImages/skull_crossbones.png");
     //TRASH("not yet drawn");
-
+    // TODO get trash going
+    
     private String imageFilePath;
 	RecyclableType(String imageFilePath){
 		this.imageFilePath = imageFilePath;

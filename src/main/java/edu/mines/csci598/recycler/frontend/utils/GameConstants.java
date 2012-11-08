@@ -11,11 +11,11 @@ import edu.mines.csci598.recycler.frontend.RecycleBin;
  * To change this template use File | Settings | File Templates.
  */
 public final class GameConstants {
-    public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 2;
+    public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 1;
     public static final double INITIAL_ITEM_GENERATION_DELAY_SECONDS = 3;
 
     public static final double ITEM_GENERATION_DELAY = 0.5;
-    public static final int START_ITEM_GENERATION_MIN = 50;
+    public static final double START_ITEM_GENERATION_PROB = 0.5;
 
     public static final int ADD_SPRITE = 0;
     public static final int REMOVE_SPRITE = 1;
@@ -71,6 +71,10 @@ public final class GameConstants {
     public static final RecycleBin.ConveyorSide BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
     public static final double BIN_4_MIN_Y = 538;
     public static final double BIN_4_MAX_Y = 938;
+    
+	public static final int ITEM_TYPE_2_ACTIVATION_TIME = 15;
+	public static final int ITEM_TYPE_3_ACTIVATION_TIME = 30;
+	public static final int ITEM_TYPE_4_ACTIVATION_TIME = 75;
 
 }
 
