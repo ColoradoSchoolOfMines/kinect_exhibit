@@ -71,8 +71,7 @@ public class GameLogic extends GameState {
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
         if (debugCollision) {
-            Recyclable r = new Recyclable(0, RecyclableType.getRandom(numItemTypesInUse));
-            handleRecyclables(GameConstants.ADD_SPRITE, r);
+            addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
         }
         setUpBins();
 
@@ -138,8 +137,7 @@ public class GameLogic extends GameState {
     private void generateItems() {
         try {
             if (needsItemGeneration()) {
-                Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse));
-                handleRecyclables(GameConstants.ADD_SPRITE, r);
+                addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
                 lastGenerationTime = currentTimeSec;
                 itemGenerationDelay = 0;
             } else {
@@ -204,12 +202,6 @@ public class GameLogic extends GameState {
 
     public synchronized void removeRecyclable(Recyclable r) {
         conveyor.removeRecyclable(r);
-    }
-
-    public synchronized void handleRecyclables(int flag, Recyclable r) {
-        if (flag == GameConstants.ADD_SPRITE) addRecyclable(r);
-        else if (flag == GameConstants.REMOVE_SPRITE) removeRecyclable(r);
-        else if (flag == GameConstants.UPDATE_SPRITES) updateRecyclables();
     }
 
     private synchronized void checkCollision(Recyclable r) {
@@ -359,7 +351,6 @@ public class GameLogic extends GameState {
         //see if hand hits powerup and handle it
 
         //Recyclable r = new Recyclable(currentTime, RecyclableType.SKULL);
-        //handleRecyclables(GameConstants.UPDATE_SPRITES, r);
 
         updateRecyclables();
 
