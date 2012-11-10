@@ -82,7 +82,7 @@ public class GameScreen {
         		g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         	}
         	catch(ConcurrentModificationException e){
-        		Log.logError("Trying to draw sprite: " + s);
+        		Log.logError("ERROR: ConcurrentModificationException trying to draw sprite " + s);
         	}
         }
 
@@ -92,7 +92,9 @@ public class GameScreen {
         try{
          s.setState(Sprite.TouchState.UNTOUCHABLE);
          sprites.addLast(s);
-        }catch (ConcurrentModificationException e){Log.logError("Trying to add sprite " + s);}
+        } catch (ConcurrentModificationException e) {
+            Log.logError("ERROR: ConcurrentModificationException trying to add sprite " + s);
+        }
     }
 
     public synchronized boolean removeSprite(Sprite s){

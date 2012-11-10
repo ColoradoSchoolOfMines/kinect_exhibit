@@ -6,8 +6,6 @@ import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.ConcurrentModificationException;
@@ -121,7 +119,6 @@ public class GameLogic extends GameState {
      */
     private boolean possiblyGenerateItem(){
         boolean generated = false;
-        //Log.logInfo("ct="+currentTime+",lgt="+lastGenerateTime+",rg="+randGen+",igm="+itemGenerationMin);
         if(Math.random() < itemGenerationProb){
             generated = true;
         }
@@ -136,7 +133,6 @@ public class GameLogic extends GameState {
         //Function will create a new recyclable of that type
         //Function will add recyclable to screen
         if ((currentTime - lastGenerationTime) > minTimeBetweenGenerations + itemGenerationDelay) {
-            //Log.logInfo("Ct:"+currentTime+",IT:"+itemType);
             try {
                 if(possiblyGenerateItem()){
                     Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypesInUse));
@@ -147,13 +143,12 @@ public class GameLogic extends GameState {
                     itemGenerationDelay+=GameConstants.ITEM_GENERATION_DELAY;
                 }
             } catch (ConcurrentModificationException e) {
-                Log.logError("Trying to generate a new recyclable");
+                Log.logError("ERROR: ConcurrentModificationException generating a new recyclable!");
             }
         }
     }
 
     private synchronized void updateRecyclables() {
-        //Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
         try {
             for (Recyclable recyclable : conveyor.getRecyclables()){
                 Sprite sprite = recyclable.getSprite();
@@ -184,11 +179,11 @@ public class GameLogic extends GameState {
                     checkCollision(recyclable);
 
                 } catch (ConcurrentModificationException e) {
-                    Log.logError("Trying to update recyclable " + recyclable + " with time " + currentTimeSec);
+                    Log.logError("ERROR: ConcurrentModificationException updating recyclable " + recyclable + " with time " + currentTimeSec);
                 }
             }
         } catch (ExceptionInInitializerError e) {
-            Log.logError("Trying to update sprites with time " + currentTimeSec);
+            Log.logError("ERROR: ExceptionInInitializerError updating sprites with time " + currentTimeSec);
         }
         for (Recyclable recyclable : recyclablesToRemove) {
         	conveyor.removeRecyclable(recyclable);
@@ -201,7 +196,7 @@ public class GameLogic extends GameState {
             conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
         } catch (ExceptionInInitializerError e) {
-            Log.logError("Trying to add Recyclable with time " + currentTimeSec);
+            Log.logError("ERROR: ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
         }
     }
 
@@ -224,21 +219,13 @@ public class GameLogic extends GameState {
                 if (player1.primary.getY() >= r.getSprite().getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
                         player1.primary.getY() <= r.getSprite().getScaledY()+ (GameConstants.SPRITE_Y_OFFSET)) {
                     //Handle collision
-                    //Log.logInfo("Collision detected on Sprite ");
-
-                    /*
-                    Log.logError("Sx=" + r.getSprite().getX() + ",Sy=" + r.getSprite().getY() +
-                            ",Hx=" + player1.primary.getX() + ",Hy=" + player1.primary.getY() +
-                            ",Hvx=" + player1.primary.getVelocityX() + ",Hvy" + player1.primary.getVelocityY());
-                    */
-                    //System.out.println("Collision detected on sprite");
 
                     boolean pushed = false;
 
                     //Handle sprite collision
                     if (player1.primary.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
                         Path path = new Path();
-                        Log.logInfo("Pushed Right");
+                        Log.logInfo("INFO: Pushed Right");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                                 r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
                                 GameConstants.ITEM_PATH_TIME);
@@ -251,7 +238,7 @@ public class GameLogic extends GameState {
                         //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
                     } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
                         Path path = new Path();
-                        Log.logInfo("Pushed Left");
+                        Log.logInfo("INFO: Pushed Left");
                         Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                                 r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
                                 GameConstants.ITEM_PATH_TIME);
@@ -301,7 +288,6 @@ public class GameLogic extends GameState {
         if(strikes >= gameOverStrikes){
             gameOver();
         }
-        Log.logInfo("Score: " + score + " Strikes: " + strikes + "\n");
     }
 
     public String getScoreString(){
@@ -326,15 +312,15 @@ public class GameLogic extends GameState {
     private void increaseDifficulty(){
     	// Possibly add more items
         if(numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime){
-        	Log.logInfo("Increasing item types to 2!");
+        	Log.logInfo("INFO: Increasing item types to 2!");
         	numItemTypesInUse++;
         }
         if(numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime){
-        	Log.logInfo("Increasing item types to 3!");
+        	Log.logInfo("INFO: Increasing item types to 3!");
         	numItemTypesInUse++;
         }
         if(numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime){
-        	Log.logInfo("Increasing item types to 4!");
+        	Log.logInfo("INFO: Increasing item types to 4!");
         	numItemTypesInUse++;
         }
         
