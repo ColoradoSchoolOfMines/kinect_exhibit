@@ -1,6 +1,8 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import junit.framework.TestCase;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * Testing Path class
@@ -11,6 +13,16 @@ import junit.framework.TestCase;
  * To change this template use File | Settings | File Templates.
  */
 public class PathTest extends TestCase {
+
+    public PathTest(String testName) {
+        super(testName);
+    }
+
+
+    public static Test suite() {
+        return new TestSuite(PathTest.class);
+    }
+
     public void testGetLocation() throws Exception {
         Path p = new Path();
         p.addLine(new Line(0.0, 0.0, 0.5, 0.8, 4.0));
