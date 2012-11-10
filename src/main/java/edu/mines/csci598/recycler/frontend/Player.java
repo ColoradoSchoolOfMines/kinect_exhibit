@@ -5,7 +5,7 @@ import edu.mines.csci598.recycler.backend.GameManager;
 /**
  * A player class contains the players hands and in the future will keep track of
  * other player specific things.
- *
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/20/12

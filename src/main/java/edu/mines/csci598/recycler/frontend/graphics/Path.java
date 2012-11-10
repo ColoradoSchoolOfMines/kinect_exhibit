@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * A Path is a representation of the path an item is to follow on the screen. It consists
  * of a list of Lines.
- *
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/27/12
@@ -15,34 +15,34 @@ import java.util.ArrayList;
 public class Path {
     ArrayList<Line> path = new ArrayList<Line>();
 
-    public Path(){
+    public Path() {
 
     }
 
     /**
      * This function adds the Line to the end of the path.
+     *
      * @param l
      * @return
      */
-    public boolean addLine(Line l){
+    public boolean addLine(Line l) {
         return path.add(l);
     }
 
 
     /**
-     *
-     * @param startTime The time the path starts
+     * @param startTime     The time the path starts
      * @param referenceTime The time where you want to see it is along the path.
      * @return
      */
     // TODO this needs better documentation
-    public Coordinate getLocation(double startTime, double referenceTime){
-        Coordinate coordinate = new Coordinate(0,0);
+    public Coordinate getLocation(double startTime, double referenceTime) {
+        Coordinate coordinate = new Coordinate(0, 0);
         double time = referenceTime - startTime;
-        for(Line l : path){
+        for (Line l : path) {
             double currentLineTotalTime = l.getTotalTime();
-            if(time <= currentLineTotalTime || l == path.get(path.size()-1)){
-                coordinate= l.getLocation(time);
+            if (time <= currentLineTotalTime || l == path.get(path.size() - 1)) {
+                coordinate = l.getLocation(time);
                 break;
             }
             time = time - currentLineTotalTime;

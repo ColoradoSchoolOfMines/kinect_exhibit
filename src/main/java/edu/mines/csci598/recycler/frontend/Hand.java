@@ -13,8 +13,8 @@ import java.awt.event.MouseMotionListener;
 /**
  * The "hand" represents a user's hand. It can be displayed on the screen and its motion will
  * dictate whether or not it has hit an item on the conveyor belt.
- *
- *
+ * <p/>
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/20/12
@@ -23,7 +23,7 @@ import java.awt.event.MouseMotionListener;
  */
 public class Hand implements Displayable {
 
-	private Sprite sprite;
+    private Sprite sprite;
     private int velocityX;
     private int velocityY;
     private int x;
@@ -34,12 +34,12 @@ public class Hand implements Displayable {
     GameManager gameManager;
 
     public Hand(GameManager manager) {
-        x=0;
-        y=0;
-        oldX=0;
-        oldY=0;
-        velocityX=0;
-        velocityY=0;
+        x = 0;
+        y = 0;
+        oldX = 0;
+        oldY = 0;
+        velocityX = 0;
+        velocityY = 0;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
         gameManager = manager;
     }
@@ -51,16 +51,15 @@ public class Hand implements Displayable {
         x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0]);
         y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][1]);
 
-        velocityX = x-oldX;
-        velocityY = y-oldY;
+        velocityX = x - oldX;
+        velocityY = y - oldY;
 
         sprite.setX(x);
         sprite.setY(y);
     }
 
-    public Sprite getSprite()
-    {
-    	return sprite;
+    public Sprite getSprite() {
+        return sprite;
     }
 
     /*
@@ -81,10 +80,11 @@ public class Hand implements Displayable {
         return y;
     }
 
-    public int getVelocityX(){
+    public int getVelocityX() {
         return velocityX;
     }
-    public int getVelocityY(){
+
+    public int getVelocityY() {
         return velocityY;
     }
 

@@ -2,7 +2,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 /**
  * A simple class to hold 2 doubles representing a point on the screen.
- *
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/27/12
@@ -12,8 +12,9 @@ package edu.mines.csci598.recycler.frontend.graphics;
 public class Coordinate {
     public double x;
     public double y;
-    public Coordinate(double x, double y){
-        this.x=x;
-        this.y=y;
+
+    public Coordinate(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 }

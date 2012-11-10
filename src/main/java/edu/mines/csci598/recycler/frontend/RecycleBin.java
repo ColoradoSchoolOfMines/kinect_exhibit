@@ -5,7 +5,7 @@ package edu.mines.csci598.recycler.frontend;
  * The drawing of bins will be in the background.
  * This class basically keeps track of where the bins are in relation to the conveyor so you can
  * ask if a given item fell into a bin and if it was the correct one.
- *
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
  * Date: 10/20/12
@@ -14,7 +14,9 @@ package edu.mines.csci598.recycler.frontend;
  */
 public class RecycleBin {
 
-    public enum ConveyorSide { RIGHT, LEFT };
+    public enum ConveyorSide {RIGHT, LEFT}
+
+    ;
     private double minY;
     private double maxY;
     private ConveyorSide side;
