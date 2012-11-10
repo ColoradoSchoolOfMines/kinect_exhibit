@@ -31,15 +31,15 @@ public class GameScreen {
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private LinkedList<Sprite> spritesToRemove = new LinkedList<Sprite>();
     private Iterator it = sprites.iterator();
-    private double scaledX;
-    private double scaledY;
+    private double scaledWidth;
+    private double scaledHeight;
 
     private GameScreen() {
         backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
         backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH*3/4+100, 0);
         s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT -200);
-        scaledX = GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR;
-        scaledY = GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR;
+        scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR;
+        scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR;
     }
 
     public static final GameScreen getInstance()
@@ -68,19 +68,19 @@ public class GameScreen {
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.black);
-        g2d.drawString("Paper ", (int)(scaledX*GraphicsConstants.LEFT_X_SCALE), (int)(scaledY*GraphicsConstants.LEFT_TOP_Y_SCALE));
+        g2d.drawString("Paper ", (int)(scaledWidth*GraphicsConstants.LEFT_X_SCALE), (int)(scaledHeight*GraphicsConstants.LEFT_TOP_Y_SCALE));
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.black);
-        g2d.drawString("Glass", (int)(scaledX*GraphicsConstants.LEFT_X_SCALE), (int)(scaledY*GraphicsConstants.LEFT_BOTTOM_Y_SCALE));
+        g2d.drawString("Glass", (int)(scaledWidth*GraphicsConstants.LEFT_X_SCALE), (int)(scaledHeight*GraphicsConstants.LEFT_BOTTOM_Y_SCALE));
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.black);
-        g2d.drawString("Plastic", (int)(scaledX*GraphicsConstants.RIGHT_X_SCALE), (int)(scaledY*GraphicsConstants.RIGHT_TOP_Y_SCALE));
+        g2d.drawString("Plastic", (int)(scaledWidth*GraphicsConstants.RIGHT_X_SCALE), (int)(scaledHeight*GraphicsConstants.RIGHT_TOP_Y_SCALE));
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.black);
-        g2d.drawString("Plastic", (int)(scaledX*GraphicsConstants.RIGHT_X_SCALE), (int)(scaledY*GraphicsConstants.RIGHT_BOTTOM_Y_SCALE));
+        g2d.drawString("Plastic", (int)(scaledWidth*GraphicsConstants.RIGHT_X_SCALE), (int)(scaledHeight*GraphicsConstants.RIGHT_BOTTOM_Y_SCALE));
 
         for(Sprite sprite : sprites){
         	try{
