@@ -66,7 +66,7 @@ public class GameLogic extends GameState {
         lastGenerationTime = 0;
         currentTimeSec = 0;
         itemGenerationDelay = 0;
-        debugCollision = true;
+        debugCollision = false;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
 
