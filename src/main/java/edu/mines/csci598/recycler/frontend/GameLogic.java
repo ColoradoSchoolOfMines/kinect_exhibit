@@ -51,8 +51,8 @@ public class GameLogic extends GameState {
     private int timeToMaxDifficulty;
     private int gameOverStrikes;
 
-    private GameLogic(GameManager gameManager) {
-        this.gameManager = gameManager;
+    private GameLogic() {
+        gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
         
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
@@ -108,8 +108,7 @@ public class GameLogic extends GameState {
 
     public static final GameLogic getInstance() {
         if (INSTANCE == null) {
-            GameManager gameManager = new GameManager("Recycler", false);
-            INSTANCE = new GameLogic(gameManager);
+            INSTANCE = new GameLogic();
         }
         return INSTANCE;
     }
