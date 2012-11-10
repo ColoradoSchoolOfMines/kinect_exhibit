@@ -10,6 +10,7 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
 import java.awt.*;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
+import java.util.Random;
 
 
 /**
@@ -35,6 +36,7 @@ public class GameLogic extends GameState {
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
     private ConveyorBelt conveyor;
     private LinkedList<Recyclable> recyclablesToRemove = new LinkedList<Recyclable>();
+    private Random random;
     private double lastGenerationTime;
     private double currentTimeSec;
     private long startTime;
@@ -55,6 +57,7 @@ public class GameLogic extends GameState {
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
 
+        random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         itemType2ActivationTime = GameConstants.ITEM_TYPE_2_ACTIVATION_TIME;
         itemType3ActivationTime = GameConstants.ITEM_TYPE_3_ACTIVATION_TIME;
@@ -125,6 +128,7 @@ public class GameLogic extends GameState {
             generate = true;
         }
 
+        //random.nextGaussian();
         if ((currentTimeSec - lastGenerationTime) > (minTimeBetweenGenerations + itemGenerationDelay)) {
             timeToGenerate = true;
         }
@@ -154,10 +158,8 @@ public class GameLogic extends GameState {
                 Sprite sprite = recyclable.getSprite();
                 try {
                     sprite.updateLocation(currentTimeSec);
-                    //if(sprite.getX()>=700) sprites.remove(sprite);
                     if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
-                        recyclablesToRemove.addLast(recyclable);
-                        gameScreen.removeSprite(recyclable.getSprite());
+                        removeRecyclable(recyclable);
                         handleScore(recyclable, RecyclableType.TRASH);
                     }
                     if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
@@ -201,7 +203,8 @@ public class GameLogic extends GameState {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
-        conveyor.removeRecyclable(r);
+        recyclablesToRemove.addLast(r);
+        gameScreen.removeSprite(r.getSprite());
     }
 
     private synchronized void checkCollision(Recyclable r) {
@@ -337,9 +340,9 @@ public class GameLogic extends GameState {
 
         increaseDifficulty();
 
-        if (!debugCollision) {
+       if (!debugCollision) {
             generateItems();
-        }
+       }
 
         // display the hand
         player1.primary.updateLocation();
