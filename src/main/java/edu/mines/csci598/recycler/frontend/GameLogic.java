@@ -23,10 +23,10 @@ import java.util.LinkedList;
  */
 public class GameLogic extends GameState {
     //Needs to be updated
-    private final Logger logger = LogManager.getLogger(GameLogic.class);
+    /*private final Logger logger = LogManager.getLogger(GameLogic.class);
     private final boolean INFO = logger.isInfoEnabled();
     private final boolean DEBUG = logger.isDebugEnabled();
-    private final boolean TRACE = logger.isTraceEnabled();
+    private final boolean TRACE = logger.isTraceEnabled();     */
 
     private static GameLogic INSTANCE;
     private Player player1, player2;
