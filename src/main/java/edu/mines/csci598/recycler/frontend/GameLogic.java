@@ -54,7 +54,7 @@ public class GameLogic extends GameState {
     private GameLogic() {
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
-        
+
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         itemType2ActivationTime = GameConstants.ITEM_TYPE_2_ACTIVATION_TIME;
         itemType3ActivationTime = GameConstants.ITEM_TYPE_3_ACTIVATION_TIME;
@@ -112,44 +112,47 @@ public class GameLogic extends GameState {
         }
         return INSTANCE;
     }
-    
-    /*
-    *Determines if item can be generated
+
+    /**
+     * Determines if item should be generated
+     *
+     * @return true if item should be generated, false otherwise
      */
-    private boolean possiblyGenerateItem(){
-        boolean generated = false;
-        if(Math.random() < itemGenerationProb){
-            generated = true;
+    private boolean needsItemGeneration() {
+        boolean generate = false;
+        boolean timeToGenerate = false;
+
+        if (Math.random() < itemGenerationProb) {
+            generate = true;
         }
-        return generated;
+
+        if ((currentTimeSec - lastGenerationTime) > (minTimeBetweenGenerations + itemGenerationDelay)) {
+            timeToGenerate = true;
+        }
+        return (generate && timeToGenerate);
     }
-    
-    /*
-    *   Generates the item if possible
-     */
-    private void generateItems(double currentTime) {
-        //Function will decide on item type to generate
-        //Function will create a new recyclable of that type
-        //Function will add recyclable to screen
-        if ((currentTime - lastGenerationTime) > minTimeBetweenGenerations + itemGenerationDelay) {
-            try {
-                if(possiblyGenerateItem()){
-                    Recyclable r = new Recyclable(currentTime, RecyclableType.getRandom(numItemTypesInUse));
-                    handleRecyclables(GameConstants.ADD_SPRITE, r);
-                    lastGenerationTime=currentTime;
-                    itemGenerationDelay = 0;
-                }else{
-                    itemGenerationDelay+=GameConstants.ITEM_GENERATION_DELAY;
-                }
-            } catch (ConcurrentModificationException e) {
-                Log.logError("ERROR: ConcurrentModificationException generating a new recyclable!");
+
+    /**
+    *   Generates new item if necessary
+    */
+    private void generateItems() {
+        try {
+            if (needsItemGeneration()) {
+                Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse));
+                handleRecyclables(GameConstants.ADD_SPRITE, r);
+                lastGenerationTime = currentTimeSec;
+                itemGenerationDelay = 0;
+            } else {
+                itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
             }
+        } catch (ConcurrentModificationException e) {
+            Log.logError("ERROR: ConcurrentModificationException generating a new recyclable!");
         }
     }
 
     private synchronized void updateRecyclables() {
         try {
-            for (Recyclable recyclable : conveyor.getRecyclables()){
+            for (Recyclable recyclable : conveyor.getRecyclables()) {
                 Sprite sprite = recyclable.getSprite();
                 try {
                     sprite.updateLocation(currentTimeSec);
@@ -161,8 +164,8 @@ public class GameLogic extends GameState {
                     }
                     if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
                             sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
-                        (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
-                            sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
+                            (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
+                                    sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
                         recyclablesToRemove.addLast(recyclable);
                         gameScreen.removeSprite(recyclable.getSprite());
                     }
@@ -185,7 +188,7 @@ public class GameLogic extends GameState {
             Log.logError("ERROR: ExceptionInInitializerError updating sprites with time " + currentTimeSec);
         }
         for (Recyclable recyclable : recyclablesToRemove) {
-        	conveyor.removeRecyclable(recyclable);
+            conveyor.removeRecyclable(recyclable);
         }
         //drawThis();
     }
@@ -200,23 +203,23 @@ public class GameLogic extends GameState {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
-    	conveyor.removeRecyclable(r);
+        conveyor.removeRecyclable(r);
     }
 
     public synchronized void handleRecyclables(int flag, Recyclable r) {
-        if      (flag == GameConstants.ADD_SPRITE)      addRecyclable(r);
-        else if (flag == GameConstants.REMOVE_SPRITE)   removeRecyclable(r);
-        else if (flag == GameConstants.UPDATE_SPRITES)  updateRecyclables();
+        if (flag == GameConstants.ADD_SPRITE) addRecyclable(r);
+        else if (flag == GameConstants.REMOVE_SPRITE) removeRecyclable(r);
+        else if (flag == GameConstants.UPDATE_SPRITES) updateRecyclables();
     }
 
     private synchronized void checkCollision(Recyclable r) {
         if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
             if (player1.primary.getX() >=
-                  r.getSprite().getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
-                  player1.primary.getX() <=
-                  r.getSprite().getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
+                    r.getSprite().getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
+                    player1.primary.getX() <=
+                            r.getSprite().getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
                 if (player1.primary.getY() >= r.getSprite().getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
-                        player1.primary.getY() <= r.getSprite().getScaledY()+ (GameConstants.SPRITE_Y_OFFSET)) {
+                        player1.primary.getY() <= r.getSprite().getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
                     //Handle collision
 
                     boolean pushed = false;
@@ -284,23 +287,23 @@ public class GameLogic extends GameState {
             strikes++;
         }
 
-        if(strikes >= gameOverStrikes){
+        if (strikes >= gameOverStrikes) {
             gameOver();
         }
     }
 
-    public String getScoreString(){
+    public String getScoreString() {
         return ("" + score);
     }
 
-    public String getStrikesString(){
+    public String getStrikesString() {
         return ("" + strikes);
     }
 
 
-    private void gameOver(){
+    private void gameOver() {
         System.out.println("GAME OVER");
-        Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH/2) -220, (GraphicsConstants.GAME_SCREEN_HEIGHT/2) -200);
+        Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
         gameScreen.addSprite(sprite);
         //If We want it to exit
         //gameManager.destroy();
@@ -308,42 +311,42 @@ public class GameLogic extends GameState {
     }
 
 
-    private void increaseDifficulty(){
-    	// Possibly add more items
-        if(numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime){
-        	Log.logInfo("INFO: Increasing item types to 2!");
-        	numItemTypesInUse++;
+    private void increaseDifficulty() {
+        // Possibly add more items
+        if (numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime) {
+            Log.logInfo("INFO: Increasing item types to 2!");
+            numItemTypesInUse++;
         }
-        if(numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime){
-        	Log.logInfo("INFO: Increasing item types to 3!");
-        	numItemTypesInUse++;
+        if (numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime) {
+            Log.logInfo("INFO: Increasing item types to 3!");
+            numItemTypesInUse++;
         }
-        if(numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime){
-        	Log.logInfo("INFO: Increasing item types to 4!");
-        	numItemTypesInUse++;
+        if (numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime) {
+            Log.logInfo("INFO: Increasing item types to 4!");
+            numItemTypesInUse++;
         }
-        
-        double pctToMaxDifficulty = Math.min(1, currentTimeSec/timeToMaxDifficulty);
+
+        double pctToMaxDifficulty = Math.min(1, currentTimeSec / timeToMaxDifficulty);
         conveyor.setSpeed(pctToMaxDifficulty);
-        
+
         // increase probability of item generation
         double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        itemGenerationProb = startProbability + (1-startProbability) * pctToMaxDifficulty;
+        itemGenerationProb = startProbability + (1 - startProbability) * pctToMaxDifficulty;
     }
 
     public GameManager getGameManager() {
-       return this.gameManager;
+        return this.gameManager;
     }
 
     protected GameState updateThis(float elapsedTime) {
 
-         //in seconds
+        //in seconds
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
-        
+
         increaseDifficulty();
-        
+
         if (!debugCollision) {
-            generateItems(currentTimeSec);
+            generateItems();
         }
 
         // display the hand
