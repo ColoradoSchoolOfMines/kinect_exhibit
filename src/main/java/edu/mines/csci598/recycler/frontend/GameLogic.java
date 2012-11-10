@@ -24,7 +24,7 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLogic extends GameState {
-
+    //Needs to be updated
     private final Logger logger = LogManager.getLogger(GameLogic.class);
     private final boolean INFO = logger.isInfoEnabled();
     private final boolean DEBUG = logger.isDebugEnabled();
@@ -42,7 +42,7 @@ public class GameLogic extends GameState {
     private long startTime;
     private double minTimeBetweenGenerations;
     private double itemGenerationDelay;
-    private boolean generateMultiple;
+    private boolean debugCollision;
     private double itemGenerationProb;
     private int numItemTypesInUse;
     private int score;
@@ -66,13 +66,13 @@ public class GameLogic extends GameState {
         lastGenerationTime = 0;
         currentTimeSec = 0;
         itemGenerationDelay = 0;
-        generateMultiple = true;
+        debugCollision = true;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
 
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
-        if (!generateMultiple) {
+        if (debugCollision) {
             Recyclable r = new Recyclable(0, RecyclableType.getRandom(numItemTypesInUse));
             handleRecyclables(GameConstants.ADD_SPRITE, r);
         }
@@ -216,11 +216,6 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void checkCollision(Recyclable r) {
-        //Log.logInfo("(x1,y1)-P1:("+player1.primary.getX()+"," + player1.primary.getY() +"),s:(" +
-        //            r.getSprite().getScaledX()+","+r.getSprite().getScaledY()+"),state="+
-        //            r.getSprite().getState());
-        //Log.logInfo("P1("+player1.primary.getVelocityX()+","+player1.primary.getVelocityY()+")");
-
         if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
             if (player1.primary.getX() >=
                   r.getSprite().getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
@@ -362,7 +357,7 @@ public class GameLogic extends GameState {
         
         increaseDifficulty();
         
-        if (generateMultiple) {
+        if (!debugCollision) {
             generateItems(currentTimeSec);
         }
 

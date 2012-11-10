@@ -23,14 +23,11 @@ import java.util.LinkedList;
  */
 public class GameScreen {
 	private static GameScreen INSTANCE;
-    private LinkedList<Displayable> drawableLinkedList;
     private Sprite s;
     private Sprite backgroundLeft;
     private Sprite backgroundRight;
     private Sprite player1PrimaryHand;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
-    private LinkedList<Sprite> spritesToRemove = new LinkedList<Sprite>();
-    private Iterator it = sprites.iterator();
     private double scaledWidth;
     private double scaledHeight;
 
@@ -42,8 +39,7 @@ public class GameScreen {
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR;
     }
 
-    public static final GameScreen getInstance()
-    {
+    public static final GameScreen getInstance() {
     	if(INSTANCE == null){
     		INSTANCE = new GameScreen();
     	}
@@ -52,7 +48,6 @@ public class GameScreen {
 
 
     public synchronized void paint(Graphics2D g2d, Component canvas) {
-
         g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
         g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
 
@@ -102,17 +97,6 @@ public class GameScreen {
 
     public synchronized boolean removeSprite(Sprite s){
         return sprites.remove(s);
-    }
-
-    /**
-     * @param flag
-     * Not sure we need now that functions are synchronized.
-     * I was attempting to funnel all sprite edits through this function,
-     * to keep from having the ConcurrentAccessException occur.
-     */
-    public synchronized void handleSprite(int flag, Sprite s, double time){
-        if(flag == GameConstants.ADD_SPRITE) addSprite(s);
-        else if (flag == GameConstants.REMOVE_SPRITE) removeSprite(s);
     }
 
     public void addHandSprite(Sprite s) {
