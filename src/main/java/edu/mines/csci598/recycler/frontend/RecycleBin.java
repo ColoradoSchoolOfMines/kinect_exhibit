@@ -14,13 +14,15 @@ package edu.mines.csci598.recycler.frontend;
  */
 public class RecycleBin {
 
-    public enum ConveyorSide {RIGHT, LEFT}
-
-    ;
+    public enum ConveyorSide {RIGHT, LEFT};
     private double minY;
     private double maxY;
     private ConveyorSide side;
     private RecyclableType type;
+
+    public RecycleBin(RecyclableType type) {
+        this.type = type;
+    }
 
     public RecycleBin(ConveyorSide side, double minY, double maxY, RecyclableType type) {
         this.side = side;
@@ -43,6 +45,14 @@ public class RecycleBin {
 
     public RecyclableType getType() {
         return type;
+    }
+
+    // returns true if the incoming recyclable type is the same as the bin type
+    public boolean isCorrectRecyclableType(Recyclable r) {
+        if (r.getType() == type) {
+            return true;
+        }
+        return false;
     }
 
 }

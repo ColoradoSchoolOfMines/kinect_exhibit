@@ -84,6 +84,7 @@ public class GameLogic extends GameState {
         gameScreen.addHandSprite(player1.primary.getSprite());
     }
 
+    // sets up the location of each of the bins with trash last since it is the last accessed bin
     private void setUpBins() {
         RecycleBin bin1 = new RecycleBin(
                 GameConstants.BIN_1_SIDE, GameConstants.BIN_1_MIN_Y,
@@ -100,12 +101,14 @@ public class GameLogic extends GameState {
         RecycleBin bin5 = new RecycleBin(
                 GameConstants.BIN_5_SIDE, GameConstants.BIN_5_MIN_Y,
                 GameConstants.BIN_5_MAX_Y, GameConstants.BIN_5_TYPE);
+        RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);
         recycleBins.add(bin3);
         recycleBins.add(bin4);
         recycleBins.add(bin5);
+        recycleBins.add(trash);
     }
 
     public static final GameLogic getInstance() {
@@ -160,7 +163,7 @@ public class GameLogic extends GameState {
                     sprite.updateLocation(currentTimeSec);
                     if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
                         removeRecyclable(recyclable);
-                        handleScore(recyclable, RecyclableType.TRASH);
+                        handleScore(recyclable, recycleBins.getLast());
                     }
                     if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
                             sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
@@ -248,8 +251,8 @@ public class GameLogic extends GameState {
                     }
                     if (pushed) {
                         r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-                        RecyclableType binType = findRecycledBin(r);
-                        handleScore(r, binType);
+                        RecycleBin bin = findRecycledBin(r);
+                        handleScore(r, bin);
                     }
                 }
             }
@@ -257,7 +260,8 @@ public class GameLogic extends GameState {
 
     }
 
-    private RecyclableType findRecycledBin(Recyclable r) {
+    // returns the bin that the recyclable is currently falling into
+    private RecycleBin findRecycledBin(Recyclable r) {
         int yCord = r.getSprite().getScaledY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
@@ -267,16 +271,16 @@ public class GameLogic extends GameState {
                     (r.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
 
                 if (yCord >= bin.getMinY() && yCord <= bin.getMaxY()) {
-                    return bin.getType();
+                    return bin;
                 }
             }
         }
-        return RecyclableType.SKULL;
+        return recycleBins.getLast();
     }
 
     // given the recyclable and the bin it went into this function either increments the score or adds a strike
-    private void handleScore(Recyclable r, RecyclableType binType) {
-        if (r.getType() == binType) {
+    private void handleScore(Recyclable r, RecycleBin bin) {
+        if (bin.isCorrectRecyclableType(r)) {
             score++;
         } else {
             strikes++;
