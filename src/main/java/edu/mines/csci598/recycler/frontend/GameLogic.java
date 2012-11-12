@@ -212,49 +212,42 @@ public class GameLogic extends GameState {
 
     private synchronized void checkCollision(Recyclable r) {
         if (r.getSprite().getState() == Sprite.TouchState.TOUCHABLE) {
-            if (player1.primary.getX() >=
-                    r.getSprite().getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
-                    player1.primary.getX() <=
-                            r.getSprite().getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
-                if (player1.primary.getY() >= r.getSprite().getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
-                        player1.primary.getY() <= r.getSprite().getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
-                    //Handle collision
+            if(r.getSprite().isPointInside(player1.primary.getX(), player1.primary.getY())) {
+                boolean pushed = false;
 
-                    boolean pushed = false;
+                //Handle sprite collision
+                if (player1.primary.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
+                    Path path = new Path();
+                    Log.logInfo("INFO: Pushed Right");
+                    Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                            r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
+                            GameConstants.ITEM_PATH_TIME);
+                    path.addLine(collideLine);
+                    r.getSprite().setPath(path);
+                    r.getSprite().setStartTime(currentTimeSec);
+                    r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
+                    pushed = true;
 
-                    //Handle sprite collision
-                    if (player1.primary.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
-                        Path path = new Path();
-                        Log.logInfo("INFO: Pushed Right");
-                        Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                                r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
-                                GameConstants.ITEM_PATH_TIME);
-                        path.addLine(collideLine);
-                        r.getSprite().setPath(path);
-                        r.getSprite().setStartTime(currentTimeSec);
-                        r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
-                        pushed = true;
-
-                        //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
-                    } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
-                        Path path = new Path();
-                        Log.logInfo("INFO: Pushed Left");
-                        Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                                r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
-                                GameConstants.ITEM_PATH_TIME);
-                        path.addLine(collideLine);
-                        r.getSprite().setPath(path);
-                        r.getSprite().setStartTime(currentTimeSec);
-                        r.setMotionState(Recyclable.MotionState.FALL_LEFT);
-                        pushed = true;
-                        //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
-                    }
-                    if (pushed) {
-                        r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-                        RecycleBin bin = findRecycledBin(r);
-                        handleScore(r, bin);
-                    }
+                    //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
+                } else if (player1.primary.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
+                    Path path = new Path();
+                    Log.logInfo("INFO: Pushed Left");
+                    Line collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                            r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
+                            GameConstants.ITEM_PATH_TIME);
+                    path.addLine(collideLine);
+                    r.getSprite().setPath(path);
+                    r.getSprite().setStartTime(currentTimeSec);
+                    r.setMotionState(Recyclable.MotionState.FALL_LEFT);
+                    pushed = true;
+                    //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
                 }
+                if (pushed) {
+                    r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+                    RecycleBin bin = findRecycledBin(r);
+                    handleScore(r, bin);
+                }
+
             }
         }
 

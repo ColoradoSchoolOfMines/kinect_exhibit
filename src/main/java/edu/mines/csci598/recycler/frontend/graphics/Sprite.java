@@ -191,4 +191,22 @@ public class Sprite {
         }
     }
 
+    /**
+     * Checks to see if a given point is within the bounds of the sprite
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean isPointInside(int x, int y) {
+        if (x >= getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
+                x <= getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
+            if (y >= getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
+                    y <= getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
