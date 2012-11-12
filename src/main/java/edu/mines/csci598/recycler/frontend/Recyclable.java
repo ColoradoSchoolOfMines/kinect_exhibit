@@ -18,9 +18,8 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
  * To change this template use File | Settings | File Templates.
  */
 public class Recyclable implements Displayable {
-    public enum MotionState {CHUTE, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE}
 
-    ;
+    public enum MotionState {CHUTE, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE};
     private Sprite sprite;
     private RecyclableType type;
     private MotionState currentMotion = MotionState.CONVEYOR;
@@ -60,7 +59,6 @@ public class Recyclable implements Displayable {
     public boolean hasCollisionWithHand(Hand hand, double currentTimeSec) {
         if (sprite.getState() == Sprite.TouchState.TOUCHABLE) {
             if(sprite.isPointInside(hand.getX(), hand.getY())) {
-
                 if (hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
                     Path path = new Path();
                     Log.logInfo("INFO: Pushed Right");
@@ -72,9 +70,8 @@ public class Recyclable implements Displayable {
                     sprite.setStartTime(currentTimeSec);
                     setMotionState(Recyclable.MotionState.FALL_RIGHT);
                     return true;
-
-                    //r.getSprite().setHorizontalVelocity(GameConstants.HORIZONTAL_VELOCITY);
-                } else if (hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
+                }
+                else if (hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
                     Path path = new Path();
                     Log.logInfo("INFO: Pushed Left");
                     Line collideLine = new Line(sprite.getX(), sprite.getY(),
@@ -84,11 +81,11 @@ public class Recyclable implements Displayable {
                     sprite.setPath(path);
                     sprite.setStartTime(currentTimeSec);
                     setMotionState(Recyclable.MotionState.FALL_LEFT);
-                    //r.getSprite().setHorizontalVelocity(-1 * GameConstants.HORIZONTAL_VELOCITY);
                     return true;
                 }
             }
         }
         return false;
     }
+
 }

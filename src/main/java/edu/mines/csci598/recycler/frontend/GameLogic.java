@@ -213,13 +213,19 @@ public class GameLogic extends GameState {
     private synchronized void checkCollision(Recyclable r) {
         if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
             r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-            RecycleBin bin = findRecycledBin(r);
+            RecycleBin bin = findBinForFallingRecyclable(r);
             handleScore(r, bin);
         }
     }
 
-    // returns the bin that the recyclable is currently falling into
-    private RecycleBin findRecycledBin(Recyclable r) {
+    /**
+     * Returns the bin that the recyclable is currently falling into. If it is not falling into any then it is going
+     * into the trash.
+     *
+     * @param r
+     * @return
+     */
+    private RecycleBin findBinForFallingRecyclable(Recyclable r) {
         int yCord = r.getSprite().getScaledY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
@@ -236,7 +242,12 @@ public class GameLogic extends GameState {
         return recycleBins.getLast();
     }
 
-    // given the recyclable and the bin it went into this function either increments the score or adds a strike
+    /**
+     *  Given the recyclable and the bin it went into this function either increments the score or adds a strike
+     *
+     * @param r
+     * @param bin
+     */
     private void handleScore(Recyclable r, RecycleBin bin) {
         if (bin.isCorrectRecyclableType(r)) {
             score++;
@@ -335,4 +346,5 @@ public class GameLogic extends GameState {
         gm.getGameManager().run();
         gm.getGameManager().destroy();
     }
+
 }
