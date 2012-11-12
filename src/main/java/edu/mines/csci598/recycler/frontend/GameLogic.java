@@ -130,10 +130,11 @@ public class GameLogic extends GameState {
         if (Math.random() < itemGenerationProb) {
             generate = true;
         }
-
         //random.nextGaussian();
-        if ((currentTimeSec - lastGenerationTime) > (minTimeBetweenGenerations + itemGenerationDelay)) {
+        //TODO: itemGenerationDelay
+        if ((currentTimeSec - lastGenerationTime) > minTimeBetweenGenerations) {
             timeToGenerate = true;
+            Log.logInfo("TimetoGenerate");
         }
         return (generate && timeToGenerate);
     }
