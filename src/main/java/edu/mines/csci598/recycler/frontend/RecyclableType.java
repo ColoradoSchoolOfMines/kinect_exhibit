@@ -14,7 +14,6 @@ public enum RecyclableType {
     PLASTIC("src/main/resources/SpriteImages/plastic.png"),
     PAPER("src/main/resources/SpriteImages/paper.png"),
     GLASS("src/main/resources/SpriteImages/glass.png"),
-    SKULL("src/main/resources/SpriteImages/skull_crossbones.png"),
     TRASH("");
     //TRASH("not yet drawn");
     // TODO get trash going
