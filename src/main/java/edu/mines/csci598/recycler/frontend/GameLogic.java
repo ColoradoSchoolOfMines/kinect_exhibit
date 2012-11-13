@@ -7,13 +7,15 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import edu.mines.csci598.recycler.frontend.utils.Log;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
+
 
 
 /**
@@ -27,10 +29,10 @@ import java.util.Random;
  */
 public class GameLogic extends GameState {
     //Needs to be updated
-    /*private final Logger logger = LogManager.getLogger(GameLogic.class);
+    private final Logger logger = LogManager.getLogger(GameLogic.class);
     private final boolean INFO = logger.isInfoEnabled();
     private final boolean DEBUG = logger.isDebugEnabled();
-    private final boolean TRACE = logger.isTraceEnabled();     */
+    private final boolean TRACE = logger.isTraceEnabled();
 
     private static GameLogic INSTANCE;
     private Player player1, player2;
@@ -155,7 +157,7 @@ public class GameLogic extends GameState {
                 itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
             }
         } catch (ConcurrentModificationException e) {
-            Log.logError("ERROR: ConcurrentModificationException generating a new recyclable!");
+            logger.error("ConcurrentModificationException generating a new recyclable!");
         }
     }
 
@@ -190,11 +192,11 @@ public class GameLogic extends GameState {
                     checkCollision(recyclable);
 
                 } catch (ConcurrentModificationException e) {
-                    Log.logError("ERROR: ConcurrentModificationException updating recyclable " + recyclable + " with time " + currentTimeSec);
+                    logger.error("ConcurrentModificationException updating recyclable " + recyclable + " with time " + currentTimeSec);
                 }
             }
         } catch (ExceptionInInitializerError e) {
-            Log.logError("ERROR: ExceptionInInitializerError updating sprites with time " + currentTimeSec);
+            logger.error("ExceptionInInitializerError updating sprites with time " + currentTimeSec);
         }
         for (Recyclable recyclable : recyclablesToRemove) {
             removeRecyclable(recyclable);
@@ -207,7 +209,7 @@ public class GameLogic extends GameState {
             conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
         } catch (ExceptionInInitializerError e) {
-            Log.logError("ERROR: ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
+            logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
         }
     }
 
@@ -260,18 +262,18 @@ public class GameLogic extends GameState {
         } else {
             strikes++;
         }
-
-        if (strikes >= gameOverStrikes) {
-            gameOver();
-        }
+//
+//        if (strikes >= gameOverStrikes) {
+//            gameOver();
+//        }
     }
 
     public String getScoreString() {
-        return ("" + score);
+        return Integer.toString(score);
     }
 
     public String getStrikesString() {
-        return ("" + strikes);
+        return Integer.toString(strikes);
     }
 
 
@@ -289,15 +291,15 @@ public class GameLogic extends GameState {
     private void increaseDifficulty() {
         // Possibly add more items
         if (numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime) {
-            Log.logInfo("INFO: Increasing item types to 2!");
+            if(INFO) logger.info("Increasing item types to 2!");
             numItemTypesInUse++;
         }
         if (numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime) {
-            Log.logInfo("INFO: Increasing item types to 3!");
+            if(INFO) logger.info("Increasing item types to 3!");
             numItemTypesInUse++;
         }
         if (numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime) {
-            Log.logInfo("INFO: Increasing item types to 4!");
+            if(INFO) logger.info("Increasing item types to 4!");
             numItemTypesInUse++;
         }
 
