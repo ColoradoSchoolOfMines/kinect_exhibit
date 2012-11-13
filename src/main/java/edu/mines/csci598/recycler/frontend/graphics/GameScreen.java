@@ -1,16 +1,11 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.GameLogic;
-import edu.mines.csci598.recycler.frontend.Hand;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -27,7 +22,7 @@ public class GameScreen {
     private Sprite backgroundLeft;
     private Sprite backgroundRight;
     private Sprite player1PrimaryHand;
-    private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
+    private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
     private double scaledWidth;
     private double scaledHeight;
 
@@ -91,13 +86,14 @@ public class GameScreen {
     public synchronized void addSprite(Sprite s) {
         try {
             s.setState(Sprite.TouchState.UNTOUCHABLE);
-            sprites.addLast(s);
+            sprites.add(s);
         } catch (ConcurrentModificationException e) {
             Log.logError("ERROR: ConcurrentModificationException trying to add sprite " + s);
         }
     }
 
     public synchronized boolean removeSprite(Sprite s) {
+        Log.logInfo("Sprites left" +sprites.size());
         return sprites.remove(s);
     }
 

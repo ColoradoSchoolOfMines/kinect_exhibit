@@ -1,14 +1,15 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.LinkedList;
-
+import com.sun.javafx.tools.packager.Log;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
+import java.util.ArrayList;
+
 public class ConveyorBelt {
     private Path p;
-    private LinkedList<Recyclable> recyclables;
+    private ArrayList<Recyclable> recyclables;
     private double bottomLineStartTime = GameConstants.BOTTOM_PATH_START_TIME;
     private double bottomLineEndTime = GameConstants.BOTTOM_PATH_END_TIME;
     private double verticalLineStartTime = GameConstants.VERTICAL_PATH_START_TIME;
@@ -24,7 +25,7 @@ public class ConveyorBelt {
             GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y, topLineStartTime);
 
     public ConveyorBelt() {
-        recyclables = new LinkedList<Recyclable>();
+        recyclables = new ArrayList<Recyclable>();
 
         p = new Path();
         p.addLine(bottomLine);
@@ -32,7 +33,7 @@ public class ConveyorBelt {
         p.addLine(topLine);
     }
 
-    public synchronized LinkedList<Recyclable> getRecyclables() {
+    public synchronized ArrayList<Recyclable> getRecyclables() {
         return recyclables;
     }
 
@@ -42,6 +43,7 @@ public class ConveyorBelt {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
+        Log.info("Recycleables Left: "+  recyclables.size());
         recyclables.remove(r);
     }
 

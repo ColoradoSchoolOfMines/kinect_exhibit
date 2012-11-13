@@ -3,11 +3,14 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
-import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
@@ -35,7 +38,6 @@ public class GameLogic extends GameState {
     private GameManager gameManager;
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
     private ConveyorBelt conveyor;
-    private LinkedList<Recyclable> recyclablesToRemove = new LinkedList<Recyclable>();
     private Random random;
     private double lastGenerationTime;
     private double currentTimeSec;
@@ -52,7 +54,9 @@ public class GameLogic extends GameState {
     private int itemType4ActivationTime;
     private int timeToMaxDifficulty;
     private int gameOverStrikes;
-
+    //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
+    //over and over again too many times ont otp of each other
+    private boolean gameOverNotified=false;
     private GameLogic() {
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
@@ -134,7 +138,6 @@ public class GameLogic extends GameState {
         //TODO: itemGenerationDelay
         if ((currentTimeSec - lastGenerationTime) > minTimeBetweenGenerations) {
             timeToGenerate = true;
-            Log.logInfo("TimetoGenerate");
         }
         return (generate && timeToGenerate);
     }
@@ -157,21 +160,23 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void updateRecyclables() {
+        ArrayList<Recyclable> recyclablesToRemove = new ArrayList<Recyclable>();
+
         try {
             for (Recyclable recyclable : conveyor.getRecyclables()) {
                 Sprite sprite = recyclable.getSprite();
                 try {
                     sprite.updateLocation(currentTimeSec);
                     if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
-                        removeRecyclable(recyclable);
+                        recyclablesToRemove.add(recyclable);
                         handleScore(recyclable, recycleBins.getLast());
                     }
                     if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
                             sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
                             (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
                                     sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
-                        recyclablesToRemove.addLast(recyclable);
-                        gameScreen.removeSprite(recyclable.getSprite());
+                        recyclablesToRemove.add(recyclable);
+
                     }
                     // make sure the item is still on the conveyor before changing it's touch status
                     if (recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_RIGHT &&
@@ -192,9 +197,9 @@ public class GameLogic extends GameState {
             Log.logError("ERROR: ExceptionInInitializerError updating sprites with time " + currentTimeSec);
         }
         for (Recyclable recyclable : recyclablesToRemove) {
-            conveyor.removeRecyclable(recyclable);
+            removeRecyclable(recyclable);
         }
-        //drawThis();
+        recyclablesToRemove.clear();
     }
 
     public synchronized void addRecyclable(Recyclable r) {
@@ -207,7 +212,7 @@ public class GameLogic extends GameState {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
-        recyclablesToRemove.addLast(r);
+        conveyor.removeRecyclable(r);
         gameScreen.removeSprite(r.getSprite());
     }
 
@@ -271,9 +276,10 @@ public class GameLogic extends GameState {
 
 
     private void gameOver() {
-        System.out.println("GAME OVER");
+        if (gameOverNotified) return;
         Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
         gameScreen.addSprite(sprite);
+        gameOverNotified=true;
         //If We want it to exit
         //gameManager.destroy();
 
