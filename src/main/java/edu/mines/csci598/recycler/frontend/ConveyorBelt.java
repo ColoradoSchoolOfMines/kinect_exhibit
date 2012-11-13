@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import com.sun.javafx.tools.packager.Log;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
@@ -43,7 +42,6 @@ public class ConveyorBelt {
     }
 
     public synchronized void removeRecyclable(Recyclable r) {
-        Log.info("Recycleables Left: "+  recyclables.size());
         recyclables.remove(r);
     }
 

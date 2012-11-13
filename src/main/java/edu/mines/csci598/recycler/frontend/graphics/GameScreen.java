@@ -93,7 +93,6 @@ public class GameScreen {
     }
 
     public synchronized boolean removeSprite(Sprite s) {
-        Log.logInfo("Sprites left" +sprites.size());
         return sprites.remove(s);
     }
 
