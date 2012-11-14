@@ -62,7 +62,7 @@ public class GameLogic extends GameState {
     private boolean gameOverNotified=false;
     private GameLogic() {
         debugCollision = false;
-        debugComputerPlayer = true;
+        debugComputerPlayer = false;
 
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
