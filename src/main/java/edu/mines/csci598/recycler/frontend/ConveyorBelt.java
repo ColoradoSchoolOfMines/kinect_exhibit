@@ -2,9 +2,11 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ConveyorBelt {
     private Path p;
@@ -40,6 +42,21 @@ public class ConveyorBelt {
     }
     public Recyclable getRecyclable(int index){
         return recyclables.get(index);
+    }
+    /*
+     * Returns the next touchable recyclable
+     */
+    public Recyclable getNextRecyclableThatIsTouchable(){
+        Recyclable ret;
+        int index=0;
+        ret = recyclables.get(index);
+        while(ret.getSprite().getState()== Sprite.TouchState.UNTOUCHABLE && index < recyclables.size()){
+            index++;
+            if(index<recyclables.size()-1)
+                ret = recyclables.get(index);
+        }
+
+        return ret;
     }
 
     public  void addRecyclable(Recyclable r) {

@@ -62,7 +62,7 @@ public class GameLogic extends GameState {
     private boolean gameOverNotified=false;
     private GameLogic() {
         debugCollision = false;
-        debugComputerPlayer = false;
+        debugComputerPlayer = true;
 
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
@@ -341,10 +341,9 @@ public class GameLogic extends GameState {
             // display the hand
             player1.primary.updateLocation();
         }else {
-            //call update to computer hand
+            //call update to computer hand on next recyclable that is touchable
             if(conveyor.getNumRecyclables()>0){
-                if(conveyor.getRecyclable(computerPlayer.targetRecyclable).getSprite().getState()== Sprite.TouchState.TOUCHABLE)
-                computerPlayer.updateAI(conveyor.getRecyclable(computerPlayer.targetRecyclable),currentTimeSec);
+                computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(),currentTimeSec);
             }
         }
 
