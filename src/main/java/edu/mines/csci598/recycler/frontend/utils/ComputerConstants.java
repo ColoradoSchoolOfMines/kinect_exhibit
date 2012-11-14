@@ -9,4 +9,6 @@ package edu.mines.csci598.recycler.frontend.utils;
  */
 public class ComputerConstants {
     public static final int MIN_GENERATION_THRESHOLD = 90;
+    public static final int MAX_GENERATION_NUMBER = 100;
+    public static final double LAST_STRIKE_UPDATE = 0.33;
 }
