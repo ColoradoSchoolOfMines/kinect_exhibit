@@ -65,7 +65,7 @@ public class GameLogic extends GameState {
         debugComputerPlayer = false;
 
         gameManager = new GameManager("Recycler", false);
-        gameScreen = GameScreen.getInstance();
+        gameScreen = GameScreen.getInstance(debugComputerPlayer);
 
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
@@ -227,39 +227,16 @@ public class GameLogic extends GameState {
         if(!debugComputerPlayer){
             if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
                 r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-                RecycleBin bin = findBinForFallingRecyclable(r);
+                //Retrieves bin
+                RecycleBin bin = RecycleBin.findBinForFallingRecyclable(recycleBins,r);
                 handleScore(r, bin);
             }
         }else {
             //Computer collision detection
-            //computerPlayer.followRecyclable(r,currentTimeSec);
-            //if(computerPlayer.hasCollisionWithRecyclable(r,currentTimeSec));
         }
     }
 
-    /**
-     * Returns the bin that the recyclable is currently falling into. If it is not falling into any then it is going
-     * into the trash.
-     *
-     * @param r
-     * @return
-     */
-    private RecycleBin findBinForFallingRecyclable(Recyclable r) {
-        int yCord = r.getSprite().getScaledY();
 
-        // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
-        // left of the conveyor we only need to check which way it's going and the y coordinates
-        for (RecycleBin bin : recycleBins) {
-            if ((r.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT && bin.getSide() == RecycleBin.ConveyorSide.LEFT) ||
-                    (r.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
-
-                if (yCord >= bin.getMinY() && yCord <= bin.getMaxY()) {
-                    return bin;
-                }
-            }
-        }
-        return recycleBins.getLast();
-    }
 
     /**
      *  Given the recyclable and the bin it went into this function either increments the score or adds a strike

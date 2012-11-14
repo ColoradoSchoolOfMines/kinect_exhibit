@@ -22,17 +22,19 @@ public class GameScreen {
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private double scaledWidth;
     private double scaledHeight;
+    private boolean debugComputerPlayer;
 
-    private GameScreen() {
+    private GameScreen(boolean debugComputerPlayer) {
         backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
         backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
+        this.debugComputerPlayer = debugComputerPlayer;
     }
 
-    public static final GameScreen getInstance() {
+    public static final GameScreen getInstance(boolean debugComputerPlayer) {
         if (INSTANCE == null) {
-            INSTANCE = new GameScreen();
+            INSTANCE = new GameScreen(debugComputerPlayer);
         }
         return INSTANCE;
     }
@@ -73,7 +75,10 @@ public class GameScreen {
 
         }
 
-        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
+        if(debugComputerPlayer)
+            g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
+        else
+            g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
     }
 
     public void addSprite(Sprite s) {
