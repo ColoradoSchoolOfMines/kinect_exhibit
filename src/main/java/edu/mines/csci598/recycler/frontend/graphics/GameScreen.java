@@ -1,11 +1,9 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.GameLogic;
-import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -18,18 +16,16 @@ import java.util.ConcurrentModificationException;
  */
 public class GameScreen {
     private static GameScreen INSTANCE;
-    private Sprite s;
     private Sprite backgroundLeft;
     private Sprite backgroundRight;
     private Sprite player1PrimaryHand;
-    private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+    private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private double scaledWidth;
     private double scaledHeight;
 
     private GameScreen() {
         backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
         backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
-        s = new Sprite("src/main/resources/SpriteImages/glass.png", 0, GraphicsConstants.GAME_SCREEN_HEIGHT - 200);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
     }
@@ -42,7 +38,7 @@ public class GameScreen {
     }
 
 
-    public synchronized void paint(Graphics2D g2d, Component canvas) {
+    public void paint(Graphics2D g2d, Component canvas) {
         g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
         g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
 
@@ -73,26 +69,20 @@ public class GameScreen {
         g2d.drawString("Plastic", (int) (scaledWidth * GraphicsConstants.RIGHT_X_SCALE), (int) (scaledHeight * GraphicsConstants.RIGHT_BOTTOM_Y_SCALE));
 
         for (Sprite sprite : sprites) {
-            try {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
-            } catch (ConcurrentModificationException e) {
-                Log.logError("ERROR: ConcurrentModificationException trying to draw sprite " + s);
-            }
+
         }
 
         g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
     }
 
-    public synchronized void addSprite(Sprite s) {
-        try {
+    public void addSprite(Sprite s) {
             s.setState(Sprite.TouchState.UNTOUCHABLE);
             sprites.add(s);
-        } catch (ConcurrentModificationException e) {
-            Log.logError("ERROR: ConcurrentModificationException trying to add sprite " + s);
-        }
+
     }
 
-    public synchronized boolean removeSprite(Sprite s) {
+    public boolean removeSprite(Sprite s) {
         return sprites.remove(s);
     }
 

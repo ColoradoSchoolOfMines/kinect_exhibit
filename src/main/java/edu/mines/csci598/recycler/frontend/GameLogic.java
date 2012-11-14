@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -156,7 +155,6 @@ public class GameLogic extends GameState {
     *   Generates new item if necessary
     */
     private void generateItems() {
-        try {
             if (needsItemGeneration()) {
                 addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
                 lastGenerationTime = currentTimeSec;
@@ -164,18 +162,16 @@ public class GameLogic extends GameState {
             } else {
                 itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
             }
-        } catch (ConcurrentModificationException e) {
-            logger.error("ConcurrentModificationException generating a new recyclable!");
-        }
+
     }
 
-    private synchronized void updateRecyclables() {
+    private  void updateRecyclables() {
         ArrayList<Recyclable> recyclablesToRemove = new ArrayList<Recyclable>();
 
         try {
             for (Recyclable recyclable : conveyor.getRecyclables()) {
                 Sprite sprite = recyclable.getSprite();
-                try {
+
                     sprite.updateLocation(currentTimeSec);
                     if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
                         recyclablesToRemove.add(recyclable);
@@ -199,9 +195,7 @@ public class GameLogic extends GameState {
                     }
                     checkCollision(recyclable);
 
-                } catch (ConcurrentModificationException e) {
-                    logger.error("ConcurrentModificationException updating recyclable " + recyclable + " with time " + currentTimeSec);
-                }
+
             }
         } catch (ExceptionInInitializerError e) {
             logger.error("ExceptionInInitializerError updating sprites with time " + currentTimeSec);
@@ -212,7 +206,7 @@ public class GameLogic extends GameState {
         recyclablesToRemove.clear();
     }
 
-    public synchronized void addRecyclable(Recyclable r) {
+    public  void addRecyclable(Recyclable r) {
         try {
             conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
@@ -221,12 +215,12 @@ public class GameLogic extends GameState {
         }
     }
 
-    public synchronized void removeRecyclable(Recyclable r) {
+    public  void removeRecyclable(Recyclable r) {
         conveyor.removeRecyclable(r);
         gameScreen.removeSprite(r.getSprite());
     }
 
-    private synchronized void checkCollision(Recyclable r) {
+    private  void checkCollision(Recyclable r) {
         if(!debugComputerPlayer){
             if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
                 r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);

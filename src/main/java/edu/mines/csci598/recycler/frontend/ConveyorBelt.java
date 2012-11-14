@@ -32,20 +32,20 @@ public class ConveyorBelt {
         p.addLine(topLine);
     }
 
-    public synchronized ArrayList<Recyclable> getRecyclables() {
+    public ArrayList<Recyclable> getRecyclables() {
         return recyclables;
     }
 
-    public synchronized void addRecyclable(Recyclable r) {
+    public  void addRecyclable(Recyclable r) {
         recyclables.add(r);
         r.getSprite().setPath(p);
     }
 
-    public synchronized void removeRecyclable(Recyclable r) {
+    public  void removeRecyclable(Recyclable r) {
         recyclables.remove(r);
     }
 
-    public synchronized void setSpeed(double pctOfFullSpeed) {
+    public  void setSpeed(double pctOfFullSpeed) {
         bottomLine.setTotalTime(bottomLineStartTime + pctOfFullSpeed * (bottomLineEndTime - bottomLineStartTime));
         verticalLine.setTotalTime(verticalLineStartTime + pctOfFullSpeed * (verticalLineEndTime - verticalLineStartTime));
         topLine.setTotalTime(topLineStartTime + pctOfFullSpeed * (topLineEndTime - topLineStartTime));
