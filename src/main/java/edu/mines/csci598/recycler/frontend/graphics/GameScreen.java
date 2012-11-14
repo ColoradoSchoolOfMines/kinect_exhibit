@@ -73,7 +73,7 @@ public class GameScreen {
 
         }
 
-        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
+        g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
     }
 
     public void addSprite(Sprite s) {

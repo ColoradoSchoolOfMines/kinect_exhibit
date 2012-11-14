@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.*;
@@ -23,13 +24,16 @@ public class ComputerHand {
     private int oldY;
 
     public ComputerHand() {
-        x = GameConstants.VERTICAL_PATH_END_X;
-        y = GameConstants.VERTICAL_PATH_START_Y - 300;
+        resetHandPosition();
         oldX = 0;
         oldY = 0;
         velocityX = 0;
         velocityY = 0;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
+    }
+    public void resetHandPosition(){
+        x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        y = (int)(GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
     }
     public void updateLocation() {
         oldX = x;

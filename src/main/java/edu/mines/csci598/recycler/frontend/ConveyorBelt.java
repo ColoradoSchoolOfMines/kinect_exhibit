@@ -35,6 +35,12 @@ public class ConveyorBelt {
     public ArrayList<Recyclable> getRecyclables() {
         return recyclables;
     }
+    public int getNumRecyclables(){
+        return recyclables.size();
+    }
+    public Recyclable getRecyclable(int index){
+        return recyclables.get(index);
+    }
 
     public  void addRecyclable(Recyclable r) {
         recyclables.add(r);

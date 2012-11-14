@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
@@ -22,16 +23,47 @@ public class ComputerPlayer {
     private Random random;
     private double lastStrikeTime;
     private double lastStrikeDelay;
-    private double currentTime;
+    public int targetRecyclable;
 
-    public ComputerPlayer(double cts){
+
+    public ComputerPlayer(){
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
         lastStrikeDelay=0.25;
-        currentTime = cts;
+        targetRecyclable = 0;
+    }
+    public void updateAI(Recyclable r,double currentTimeSec){
+        //Follow target recyclable
+        followRecyclable(r,currentTimeSec);
+        //Strike target recyclable
+        strike(r,currentTimeSec);
 
-
+    }
+    public void followRecyclable(Recyclable r, double currentTimeSec){
+        primary.getSprite().setY(r.getSprite().getY());
+    }
+    public boolean hasCollisionWithRecyclable(Recyclable r,double currentTime){
+        boolean ret = false;
+        return ret;
+    }
+    private void strike(Recyclable r, double currentTimeSec){
+        if(r.getSprite().isTouchable()){
+            if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
+                //Log.logInfo("hx="+primary.getSprite().getX()+",hy"+primary.getSprite().getY()+
+                //            ",hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
+                //            ",rx"+r.getSprite().getX()+",ry"+r.getSprite().getY()+
+                //            ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY());
+                if(ICanStrike()){
+                    Log.logInfo("Strike");
+                    strikeRecyclable(r,currentTimeSec);
+                    lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
+                    lastStrikeTime = currentTimeSec;
+                }else {
+                    lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
+                }
+            }
+        }
     }
     public boolean ICanStrike(){
         boolean ret = false;
@@ -41,36 +73,36 @@ public class ComputerPlayer {
         }
         return ret;
     }
-    public void followRecyclable(Recyclable r, double currentTimeSec){
-        //Log.logInfo("rx="+r.getSprite().getScaledX()+",ry="+r.getSprite().getScaledY()+",hx="+primary.getSprite().getX()+
-        //            ",hy="+primary.getSprite().getY());
-        primary.getSprite().setY(r.getSprite().getScaledY());
-        if(r.getSprite().isTouchable()){
-            if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
-                Log.logInfo("hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
-                            ",rsx="+r.getSprite().getScaledX()+",rx"+r.getSprite().getX());
-                if(ICanStrike()){
-                    Log.logInfo("Strike");
-                    strikeRecyclable(r);
-                    lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
-                    lastStrikeTime = currentTimeSec;
-                }else {
-                    lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
-                }
-            }
-        }
-
-
-    }
-    public void strikeRecyclable(Recyclable r){
-        int newX = r.getSprite().getX()-100;
+    public void strikeRecyclable(Recyclable r,double currentTimeSec){
+        int newX = r.getSprite().getX();
         int newY = r.getSprite().getY();
 
-        primary.getSprite().setX(newX);
-
+        if(newX<primary.getSprite().getX()){
+            handleCollision(r,currentTimeSec,newX,-1 * ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
+        } else {
+            handleCollision(r, currentTimeSec, newX, ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
+        }
     }
-    public void updateHandPosition(){
-
+    private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
+        Path path = new Path();
+        Line collideLine;
+        primary.getSprite().setX(newX + pathOffset);
+        if(pathOffset>0){
+            Log.logInfo("INFO: Pushed Right");
+            r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
+            collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
+                    GameConstants.ITEM_PATH_TIME);
+        } else {
+            Log.logInfo("INFO: Pushed Left");
+            r.setMotionState(Recyclable.MotionState.FALL_LEFT);
+            collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
+                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
+                    GameConstants.ITEM_PATH_TIME);
+        }
+        path.addLine(collideLine);
+        r.getSprite().setPath(path);
+        r.getSprite().setStartTime(currentTimeSec);
+        r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
     }
-
 }

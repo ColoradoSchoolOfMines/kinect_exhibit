@@ -11,4 +11,5 @@ public class ComputerConstants {
     public static final int MIN_GENERATION_THRESHOLD = 90;
     public static final int MAX_GENERATION_NUMBER = 100;
     public static final double LAST_STRIKE_UPDATE = 0.33;
+    public static final int HAND_X_OFFSET_FROM_CONVEYER = 100;
 }

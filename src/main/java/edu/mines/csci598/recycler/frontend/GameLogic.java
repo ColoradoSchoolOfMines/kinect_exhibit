@@ -81,6 +81,7 @@ public class GameLogic extends GameState {
         gameOverStrikes = 3;
 
 
+
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
         if (debugCollision) {
@@ -94,7 +95,7 @@ public class GameLogic extends GameState {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
-            computerPlayer = new ComputerPlayer(currentTimeSec);
+            computerPlayer = new ComputerPlayer();
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
     }
@@ -231,7 +232,8 @@ public class GameLogic extends GameState {
             }
         }else {
             //Computer collision detection
-            computerPlayer.followRecyclable(r,currentTimeSec);
+            //computerPlayer.followRecyclable(r,currentTimeSec);
+            //if(computerPlayer.hasCollisionWithRecyclable(r,currentTimeSec));
         }
     }
 
@@ -340,7 +342,10 @@ public class GameLogic extends GameState {
             player1.primary.updateLocation();
         }else {
             //call update to computer hand
-
+            if(conveyor.getNumRecyclables()>0){
+                if(conveyor.getRecyclable(computerPlayer.targetRecyclable).getSprite().getState()== Sprite.TouchState.TOUCHABLE)
+                computerPlayer.updateAI(conveyor.getRecyclable(computerPlayer.targetRecyclable),currentTimeSec);
+            }
         }
 
         updateRecyclables();
