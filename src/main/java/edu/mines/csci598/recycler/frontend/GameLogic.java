@@ -75,9 +75,9 @@ public class GameLogic extends GameState {
         lastGenerationTime = 0;
         currentTimeSec = 0;
         itemGenerationDelay = 0;
-        debugCollision = false;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
+        debugCollision = false;
         debugComputerPlayer = false;
 
         conveyor = new ConveyorBelt();

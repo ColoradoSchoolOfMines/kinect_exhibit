@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.*;
 
@@ -22,8 +23,8 @@ public class ComputerHand {
     private int oldY;
 
     public ComputerHand() {
-        x = GraphicsConstants.GAME_SCREEN_WIDTH/2;
-        y = GraphicsConstants.GAME_SCREEN_HEIGHT/2;
+        x = GameConstants.VERTICAL_PATH_END_X;
+        y = GameConstants.VERTICAL_PATH_START_Y - 300;
         oldX = 0;
         oldY = 0;
         velocityX = 0;
