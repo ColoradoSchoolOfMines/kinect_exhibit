@@ -7,6 +7,7 @@ import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.Log;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 
@@ -24,14 +25,20 @@ public class ComputerPlayer {
     private double lastStrikeTime;
     private double lastStrikeDelay;
     public int targetRecyclable;
+    private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+    private int score;
+    private int strikes;
 
 
-    public ComputerPlayer(){
+    public ComputerPlayer(LinkedList<RecycleBin> rbs){
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
         lastStrikeDelay=0.25;
         targetRecyclable = 0;
+        score=0;
+        strikes=0;
+        recycleBins=rbs;
     }
     public void updateAI(Recyclable r,double currentTimeSec){
         //Follow target recyclable
@@ -55,7 +62,7 @@ public class ComputerPlayer {
                 //            ",rx"+r.getSprite().getX()+",ry"+r.getSprite().getY()+
                 //            ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY());
                 if(ICanStrike()){
-                    Log.logInfo("Strike");
+                    //Log.logInfo("Strike");
                     strikeRecyclable(r,currentTimeSec);
                     lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                     lastStrikeTime = currentTimeSec;
@@ -104,5 +111,18 @@ public class ComputerPlayer {
         r.getSprite().setPath(path);
         r.getSprite().setStartTime(currentTimeSec);
         r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+        RecycleBin bin = RecycleBin.findBinForFallingRecyclable(recycleBins,r);
+        if(bin.isCorrectRecyclableType(r)){
+            score++;
+        }else {
+            strikes++;
+        }
+        //Log.logInfo("Score="+score+",Strikes="+strikes);
+    }
+    public int getAIScore(){
+        return score;
+    }
+    public int getAIStrikes() {
+        return strikes;
     }
 }

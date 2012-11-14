@@ -95,7 +95,7 @@ public class GameLogic extends GameState {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
-            computerPlayer = new ComputerPlayer();
+            computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
     }
@@ -245,15 +245,23 @@ public class GameLogic extends GameState {
      * @param bin
      */
     private void handleScore(Recyclable r, RecycleBin bin) {
-        if (bin.isCorrectRecyclableType(r)) {
-            score++;
+        if(!debugComputerPlayer){
+            if (bin.isCorrectRecyclableType(r)) {
+                score++;
+            } else {
+                strikes++;
+            }
         } else {
-            strikes++;
+            handleAIScore();
         }
 //
 //        if (strikes >= gameOverStrikes) {
 //            gameOver();
 //        }
+    }
+    public void handleAIScore(){
+        score = computerPlayer.getAIScore();
+        strikes = computerPlayer.getAIStrikes();
     }
 
     public String getScoreString() {
@@ -322,6 +330,7 @@ public class GameLogic extends GameState {
             if(conveyor.getNumRecyclables()>0){
                 computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(),currentTimeSec);
             }
+            handleAIScore();
         }
 
         updateRecyclables();
