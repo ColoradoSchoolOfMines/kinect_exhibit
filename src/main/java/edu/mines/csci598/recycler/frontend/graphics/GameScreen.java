@@ -79,7 +79,6 @@ public class GameScreen {
     public void addSprite(Sprite s) {
             s.setState(Sprite.TouchState.UNTOUCHABLE);
             sprites.add(s);
-
     }
 
     public boolean removeSprite(Sprite s) {

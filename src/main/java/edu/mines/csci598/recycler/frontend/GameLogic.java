@@ -61,6 +61,9 @@ public class GameLogic extends GameState {
     //over and over again too many times ont otp of each other
     private boolean gameOverNotified=false;
     private GameLogic() {
+        debugCollision = false;
+        debugComputerPlayer = false;
+
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance();
 
@@ -76,8 +79,7 @@ public class GameLogic extends GameState {
         itemGenerationDelay = 0;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
-        debugCollision = false;
-        debugComputerPlayer = false;
+
 
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
@@ -92,7 +94,7 @@ public class GameLogic extends GameState {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
-            computerPlayer = new ComputerPlayer();
+            computerPlayer = new ComputerPlayer(currentTimeSec);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
     }
@@ -227,6 +229,9 @@ public class GameLogic extends GameState {
                 RecycleBin bin = findBinForFallingRecyclable(r);
                 handleScore(r, bin);
             }
+        }else {
+            //Computer collision detection
+            computerPlayer.followRecyclable(r,currentTimeSec);
         }
     }
 
@@ -333,6 +338,9 @@ public class GameLogic extends GameState {
         if(!debugComputerPlayer){
             // display the hand
             player1.primary.updateLocation();
+        }else {
+            //call update to computer hand
+
         }
 
         updateRecyclables();

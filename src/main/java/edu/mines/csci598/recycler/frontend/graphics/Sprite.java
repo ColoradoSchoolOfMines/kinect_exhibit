@@ -72,6 +72,12 @@ public class Sprite {
     public TouchState getState() {
         return state;
     }
+    public boolean isTouchable(){
+        boolean ret=false;
+        if(state == TouchState.TOUCHABLE)ret = true;
+
+        return  ret;
+    }
 
     /*
       * Moves the sprite based on current velocities.
