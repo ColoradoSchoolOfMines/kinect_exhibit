@@ -39,7 +39,7 @@ public class GameLogic extends GameState {
     private boolean debugComputerPlayer;
     private GameScreen gameScreen;
     private GameManager gameManager;
-    private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+    private RecycleBins recycleBins;
     private ConveyorBelt conveyor;
     private Random random;
     private double lastGenerationTime;
@@ -66,6 +66,7 @@ public class GameLogic extends GameState {
 
         gameManager = new GameManager("Recycler", false);
         gameScreen = GameScreen.getInstance(debugComputerPlayer);
+        recycleBins = new RecycleBins();
 
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
@@ -87,7 +88,7 @@ public class GameLogic extends GameState {
         if (debugCollision) {
             addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
         }
-        setUpBins();
+
 
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
@@ -98,33 +99,6 @@ public class GameLogic extends GameState {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
-    }
-
-    // sets up the location of each of the bins with trash last since it is the last accessed bin
-    private void setUpBins() {
-        RecycleBin bin1 = new RecycleBin(
-                GameConstants.BIN_1_SIDE, GameConstants.BIN_1_MIN_Y,
-                GameConstants.BIN_1_MAX_Y, GameConstants.BIN_1_TYPE);
-        RecycleBin bin2 = new RecycleBin(
-                GameConstants.BIN_2_SIDE, GameConstants.BIN_2_MIN_Y,
-                GameConstants.BIN_2_MAX_Y, GameConstants.BIN_2_TYPE);
-        RecycleBin bin3 = new RecycleBin(
-                GameConstants.BIN_3_SIDE, GameConstants.BIN_3_MIN_Y,
-                GameConstants.BIN_3_MAX_Y, GameConstants.BIN_3_TYPE);
-        RecycleBin bin4 = new RecycleBin(
-                GameConstants.BIN_4_SIDE, GameConstants.BIN_4_MIN_Y,
-                GameConstants.BIN_4_MAX_Y, GameConstants.BIN_4_TYPE);
-        RecycleBin bin5 = new RecycleBin(
-                GameConstants.BIN_5_SIDE, GameConstants.BIN_5_MIN_Y,
-                GameConstants.BIN_5_MAX_Y, GameConstants.BIN_5_TYPE);
-        RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
-
-        recycleBins.add(bin1);
-        recycleBins.add(bin2);
-        recycleBins.add(bin3);
-        recycleBins.add(bin4);
-        recycleBins.add(bin5);
-        recycleBins.add(trash);
     }
 
     public static final GameLogic getInstance() {
@@ -228,7 +202,7 @@ public class GameLogic extends GameState {
             if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
                 r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
                 //Retrieves bin
-                RecycleBin bin = RecycleBin.findBinForFallingRecyclable(recycleBins,r);
+                RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
                 handleScore(r, bin);
             }
         }else {

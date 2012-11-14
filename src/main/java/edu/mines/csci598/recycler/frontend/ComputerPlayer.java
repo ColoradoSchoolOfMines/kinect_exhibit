@@ -25,12 +25,12 @@ public class ComputerPlayer {
     private double lastStrikeTime;
     private double lastStrikeDelay;
     public int targetRecyclable;
-    private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+    private RecycleBins recycleBins;
     private int score;
     private int strikes;
 
 
-    public ComputerPlayer(LinkedList<RecycleBin> rbs){
+    public ComputerPlayer(RecycleBins recycleBins){
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
@@ -38,7 +38,7 @@ public class ComputerPlayer {
         targetRecyclable = 0;
         score=0;
         strikes=0;
-        recycleBins=rbs;
+        this.recycleBins=recycleBins;
     }
     public void updateAI(Recyclable r,double currentTimeSec){
         //Follow target recyclable
@@ -111,7 +111,7 @@ public class ComputerPlayer {
         r.getSprite().setPath(path);
         r.getSprite().setStartTime(currentTimeSec);
         r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-        RecycleBin bin = RecycleBin.findBinForFallingRecyclable(recycleBins,r);
+        RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
         if(bin.isCorrectRecyclableType(r)){
             score++;
         }else {
