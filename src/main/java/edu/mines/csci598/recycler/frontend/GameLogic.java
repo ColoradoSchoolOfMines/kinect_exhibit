@@ -36,6 +36,8 @@ public class GameLogic extends GameState {
 
     private static GameLogic INSTANCE;
     private Player player1, player2;
+    private ComputerPlayer computerPlayer;
+    private boolean debugComputerPlayer;
     private GameScreen gameScreen;
     private GameManager gameManager;
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
@@ -76,6 +78,7 @@ public class GameLogic extends GameState {
         debugCollision = false;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
         gameOverStrikes = 3;
+        debugComputerPlayer = false;
 
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
@@ -86,8 +89,13 @@ public class GameLogic extends GameState {
 
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
-        player1 = new Player(gameManager);
-        gameScreen.addHandSprite(player1.primary.getSprite());
+        if (!debugComputerPlayer){
+            player1 = new Player(gameManager);
+            gameScreen.addHandSprite(player1.primary.getSprite());
+        } else {
+            computerPlayer = new ComputerPlayer();
+            gameScreen.addHandSprite(computerPlayer.primary.getSprite());
+        }
     }
 
     // sets up the location of each of the bins with trash last since it is the last accessed bin
@@ -219,10 +227,12 @@ public class GameLogic extends GameState {
     }
 
     private synchronized void checkCollision(Recyclable r) {
-        if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
-            r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
-            RecycleBin bin = findBinForFallingRecyclable(r);
-            handleScore(r, bin);
+        if(!debugComputerPlayer){
+            if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
+                r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+                RecycleBin bin = findBinForFallingRecyclable(r);
+                handleScore(r, bin);
+            }
         }
     }
 
@@ -326,16 +336,10 @@ public class GameLogic extends GameState {
             generateItems();
        }
 
-        // display the hand
-        player1.primary.updateLocation();
-
-        //see if hand is going through item and handle it
-        // check coordinates here
-        //gameScreen.checkCollisions();
-
-        //see if hand hits powerup and handle it
-
-        //Recyclable r = new Recyclable(currentTime, RecyclableType.SKULL);
+        if(!debugComputerPlayer){
+            // display the hand
+            player1.primary.updateLocation();
+        }
 
         updateRecyclables();
 
