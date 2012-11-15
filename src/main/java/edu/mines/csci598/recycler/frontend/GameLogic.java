@@ -50,14 +50,11 @@ public class GameLogic extends GameState {
     private int numItemTypesInUse;
     private int score;
     private int strikes;
-    private int itemType2ActivationTime;
-    private int itemType3ActivationTime;
-    private int itemType4ActivationTime;
-    private int timeToMaxDifficulty;
     private int gameOverStrikes;
     //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
     //over and over again too many times ont otp of each other
     private boolean gameOverNotified = false;
+	private int nextItemGenerationTime;
 
     private GameLogic() {
         debugCollision = false;
@@ -69,15 +66,12 @@ public class GameLogic extends GameState {
 
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
-        itemType2ActivationTime = GameConstants.ITEM_TYPE_2_ACTIVATION_TIME;
-        itemType3ActivationTime = GameConstants.ITEM_TYPE_3_ACTIVATION_TIME;
-        itemType4ActivationTime = GameConstants.ITEM_TYPE_4_ACTIVATION_TIME;
-        timeToMaxDifficulty = GameConstants.TIME_TO_MAX_DIFFICULTY;
         minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         lastGenerationTime = 0;
         currentTimeSec = 0;
         itemGenerationDelay = 0;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
+    	nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         gameOverStrikes = 3;
 
 
@@ -257,27 +251,29 @@ public class GameLogic extends GameState {
 
 
     private void increaseDifficulty() {
-        // Possibly add more items
-        if (numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime) {
-            if (INFO) logger.info("Increasing item types to 2!");
-            numItemTypesInUse++;
-        }
-        if (numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime) {
-            if (INFO) logger.info("Increasing item types to 3!");
-            numItemTypesInUse++;
-        }
-        if (numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime) {
-            if (INFO) logger.info("Increasing item types to 4!");
-            numItemTypesInUse++;
-        }
-
-        double pctToMaxDifficulty = Math.min(1, currentTimeSec / timeToMaxDifficulty);
-        conveyor.setSpeed(pctToMaxDifficulty);
-
-        // increase probability of item generation
-        double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        itemGenerationProb = startProbability + (1 - startProbability) * pctToMaxDifficulty;
+    	possiblyIncreaseItemCount();
+        increaseSpeed();
+        increaseItemGenerationProbability();
     }
+    
+    private void possiblyIncreaseItemCount(){
+        if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemGenerationTime) {
+            numItemTypesInUse++;
+            if (INFO) logger.info("Increasing item types to " + numItemTypesInUse + "!");
+            nextItemGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+        }
+    }
+
+	private void increaseSpeed() {
+		double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+        conveyor.setSpeed(pctToMaxDifficulty);
+	}
+
+	private void increaseItemGenerationProbability() {
+        double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
+        itemGenerationProb = startProbability + (1 - startProbability) * GameConstants.TIME_TO_MAX_DIFFICULTY;
+	}
+    
 
     public GameManager getGameManager() {
         return this.gameManager;

@@ -101,21 +101,17 @@ public final class GameConstants {
 
 
     /**
-     * The amount of time, in seconds from the game start, that it takes before a second item is added to the game
+     * The amount of time, in seconds from the game start or last item, that it takes before a new item is added to the game
      */
-    public static final int ITEM_TYPE_2_ACTIVATION_TIME = 15;
-    /**
-     * The amount of time, in seconds from the game start, that it takes before a third item is added to the game
-     */
-    public static final int ITEM_TYPE_3_ACTIVATION_TIME = 30;
-    /**
-     * The amount of time, in seconds from the game start, that it takes before a fourth item is added to the game
-     */
-    public static final int ITEM_TYPE_4_ACTIVATION_TIME = 10000; // TODO reduce this when we have a reasonable graphic
+    public static final int TIME_TO_ADD_NEW_ITEM_TYPE = 15;
     /**
      * The amount of time it takes from the start of the game, in seconds, to reach its maximum difficulty
      */
     public static final int TIME_TO_MAX_DIFFICULTY = 300;
+    /**
+     * The number of items we can include, not including powerups
+     */
+	public static final int MAX_ITEM_COUNT = 3;
 
 }
 
