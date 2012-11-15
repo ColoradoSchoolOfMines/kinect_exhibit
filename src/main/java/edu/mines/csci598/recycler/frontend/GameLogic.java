@@ -35,11 +35,12 @@ public class GameLogic extends GameState {
     private RecycleBins recycleBins;
     private ConveyorBelt conveyor;
     private Random random;
-    private double nextTimeToGenerate;
     private double currentTimeSec;
     private long startTime;
-    private double minTimeBetweenGenerations;
+    private double meanTimeBetweenItems;
+    private double nextItemTypeGenerationTime;
     private double lastGenerationTime;
+    private double nextItemGenerationTime;
     private boolean debugCollision;
     private int numItemTypesInUse;
     private int score;
@@ -48,7 +49,7 @@ public class GameLogic extends GameState {
     //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
     //over and over again too many times ont otp of each other
     private boolean gameOverNotified = false;
-    private int nextItemGenerationTime;
+
 
     private GameLogic() {
         debugCollision = false;
@@ -60,12 +61,12 @@ public class GameLogic extends GameState {
 
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
-        minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         lastGenerationTime = 0;
         currentTimeSec = 0;
-        nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+        nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+        meanTimeBetweenItems = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
+        nextItemGenerationTime = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
         gameOverStrikes = 3;
-
 
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
@@ -99,11 +100,11 @@ public class GameLogic extends GameState {
      */
     private boolean needsItemGeneration() {
         //TODO: Make it harder - faster generation
-        if (currentTimeSec > nextTimeToGenerate) {
-            double timeToAdd = random.nextGaussian() + GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
+        if (currentTimeSec > nextItemGenerationTime) {
+            double timeToAdd = random.nextGaussian() + meanTimeBetweenItems;
             //TODO: Double check this logic
-            nextTimeToGenerate = Math.max(timeToAdd + currentTimeSec,
-                    GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS + lastGenerationTime);
+            nextItemGenerationTime = Math.max(timeToAdd + currentTimeSec,
+                    GameConstants.MIN_TIME_BETWEEN_GENERATIONS + lastGenerationTime);
             lastGenerationTime = currentTimeSec;
             return true;
         }
@@ -243,10 +244,10 @@ public class GameLogic extends GameState {
     }
 
     private void possiblyIncreaseItemCount() {
-        if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemGenerationTime) {
+        if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
-            nextItemGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+            nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         }
     }
 
