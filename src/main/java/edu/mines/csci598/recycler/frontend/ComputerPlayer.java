@@ -5,10 +5,10 @@ import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import edu.mines.csci598.recycler.frontend.utils.Log;
 
-import java.util.LinkedList;
 import java.util.Random;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -19,6 +19,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class ComputerPlayer {
+    private static final Logger logger = Logger.getLogger(ComputerPlayer.class);
     public ComputerHand primary;
     public Path p;
     private Random random;
@@ -95,13 +96,13 @@ public class ComputerPlayer {
         Line collideLine;
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
-            Log.logInfo("INFO: Pushed Right");
+            logger.info("Pushed Right");
             r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
                     GameConstants.ITEM_PATH_TIME);
         } else {
-            Log.logInfo("INFO: Pushed Left");
+            logger.info("Pushed Left");
             r.setMotionState(Recyclable.MotionState.FALL_LEFT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),

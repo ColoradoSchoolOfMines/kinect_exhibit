@@ -1,11 +1,13 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import edu.mines.csci598.recycler.frontend.utils.Log;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.
@@ -18,7 +20,8 @@ import edu.mines.csci598.recycler.frontend.utils.Log;
  * To change this template use File | Settings | File Templates.
  */
 public class Recyclable implements Displayable {
-
+    private static final Logger logger = Logger.getLogger(Recyclable.class);
+    
     public enum MotionState {CHUTE, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE};
     private Sprite sprite;
     private RecyclableType type;
@@ -61,7 +64,7 @@ public class Recyclable implements Displayable {
             if(sprite.isPointInside(hand.getX(), hand.getY())) {
                 if (hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
                     Path path = new Path();
-                    Log.logInfo("INFO: Pushed Right");
+                    logger.info("Pushed Right");
                     Line collideLine = new Line(sprite.getX(), sprite.getY(),
                             sprite.getX() + GameConstants.ITEM_PATH_END, sprite.getY(),
                             GameConstants.ITEM_PATH_TIME);
@@ -73,7 +76,7 @@ public class Recyclable implements Displayable {
                 }
                 else if (hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
                     Path path = new Path();
-                    Log.logInfo("INFO: Pushed Left");
+                    logger.info("Pushed Left");
                     Line collideLine = new Line(sprite.getX(), sprite.getY(),
                             sprite.getX() - GameConstants.ITEM_PATH_END, sprite.getY(),
                             GameConstants.ITEM_PATH_TIME);

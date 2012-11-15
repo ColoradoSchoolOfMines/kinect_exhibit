@@ -1,14 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
-import edu.mines.csci598.recycler.frontend.utils.Log;
-
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 /**
  * The "hand" represents a user's hand. It can be displayed on the screen and its motion will
@@ -22,7 +16,7 @@ import java.awt.event.MouseMotionListener;
  * To change this template use File | Settings | File Templates.
  */
 public class Hand implements Displayable {
-
+    
     private Sprite sprite;
     private int velocityX;
     private int velocityY;

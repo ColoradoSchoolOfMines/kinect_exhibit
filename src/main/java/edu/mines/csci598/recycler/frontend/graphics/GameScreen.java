@@ -1,9 +1,11 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.GameLogic;
-
 import java.awt.*;
 import java.util.LinkedList;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.GameLogic;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -15,6 +17,8 @@ import java.util.LinkedList;
  * Time: 9:13 PM
  */
 public class GameScreen {
+    private static final Logger logger = Logger.getLogger(GameScreen.class);
+    
     private static GameScreen INSTANCE;
     private Sprite backgroundLeft;
     private Sprite backgroundRight;

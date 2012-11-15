@@ -7,7 +7,6 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -25,11 +24,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLogic extends GameState {
-    //Needs to be updated
-    private final Logger logger = LogManager.getLogger(GameLogic.class);
-    private final boolean INFO = logger.isInfoEnabled();
-    private final boolean DEBUG = logger.isDebugEnabled();
-    private final boolean TRACE = logger.isTraceEnabled();
+    private static final Logger logger = Logger.getLogger(GameLogic.class);
 
     private static GameLogic INSTANCE;
     private Player player1, player2;
@@ -259,7 +254,7 @@ public class GameLogic extends GameState {
     private void possiblyIncreaseItemCount(){
         if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemGenerationTime) {
             numItemTypesInUse++;
-            if (INFO) logger.info("Increasing item types to " + numItemTypesInUse + "!");
+            logger.info("Increasing item types to " + numItemTypesInUse + "!");
             nextItemGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         }
     }
