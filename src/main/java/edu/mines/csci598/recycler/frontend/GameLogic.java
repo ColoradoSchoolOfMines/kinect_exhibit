@@ -35,13 +35,12 @@ public class GameLogic extends GameState {
     private RecycleBins recycleBins;
     private ConveyorBelt conveyor;
     private Random random;
-    private double lastGenerationTime;
+    private double nextTimeToGenerate;
     private double currentTimeSec;
     private long startTime;
     private double minTimeBetweenGenerations;
-    private double itemGenerationDelay;
+    private double lastGenerationTime;
     private boolean debugCollision;
-    private double itemGenerationProb;
     private int numItemTypesInUse;
     private int score;
     private int strikes;
@@ -49,7 +48,7 @@ public class GameLogic extends GameState {
     //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
     //over and over again too many times ont otp of each other
     private boolean gameOverNotified = false;
-	private int nextItemGenerationTime;
+    private int nextItemGenerationTime;
 
     private GameLogic() {
         debugCollision = false;
@@ -64,9 +63,7 @@ public class GameLogic extends GameState {
         minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
         lastGenerationTime = 0;
         currentTimeSec = 0;
-        itemGenerationDelay = 0;
-        itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
-    	nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+        nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         gameOverStrikes = 3;
 
 
@@ -101,18 +98,16 @@ public class GameLogic extends GameState {
      * @return true if item should be generated, false otherwise
      */
     private boolean needsItemGeneration() {
-        boolean generate = false;
-        boolean timeToGenerate = false;
-
-        if (Math.random() < itemGenerationProb) {
-            generate = true;
+        //TODO: Make it harder - faster generation
+        if (currentTimeSec > nextTimeToGenerate) {
+            double timeToAdd = random.nextGaussian() + GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
+            //TODO: Double check this logic
+            nextTimeToGenerate = Math.max(timeToAdd + currentTimeSec,
+                    GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS + lastGenerationTime);
+            lastGenerationTime = currentTimeSec;
+            return true;
         }
-        //random.nextGaussian();
-        //TODO: itemGenerationDelay
-        if ((currentTimeSec - lastGenerationTime) > minTimeBetweenGenerations) {
-            timeToGenerate = true;
-        }
-        return (generate && timeToGenerate);
+        return false;
     }
 
     /**
@@ -122,11 +117,7 @@ public class GameLogic extends GameState {
         if (needsItemGeneration()) {
             addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
             lastGenerationTime = currentTimeSec;
-            itemGenerationDelay = 0;
-        } else {
-            itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
         }
-
     }
 
     private void updateRecyclables() {
@@ -246,12 +237,12 @@ public class GameLogic extends GameState {
 
 
     private void increaseDifficulty() {
-    	possiblyIncreaseItemCount();
+        possiblyIncreaseItemCount();
         increaseSpeed();
         increaseItemGenerationProbability();
     }
-    
-    private void possiblyIncreaseItemCount(){
+
+    private void possiblyIncreaseItemCount() {
         if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemGenerationTime) {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
@@ -259,16 +250,16 @@ public class GameLogic extends GameState {
         }
     }
 
-	private void increaseSpeed() {
-		double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+    private void increaseSpeed() {
+        double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         conveyor.setSpeed(pctToMaxDifficulty);
-	}
+    }
 
-	private void increaseItemGenerationProbability() {
+    private void increaseItemGenerationProbability() {
         double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        itemGenerationProb = startProbability + (1 - startProbability) * GameConstants.TIME_TO_MAX_DIFFICULTY;
-	}
-    
+        //itemGenerationProb = startProbability + (1 - startProbability) * GameConstants.TIME_TO_MAX_DIFFICULTY;
+    }
+
 
     public GameManager getGameManager() {
         return this.gameManager;
