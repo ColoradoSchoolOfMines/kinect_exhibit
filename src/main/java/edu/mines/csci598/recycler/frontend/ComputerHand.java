@@ -4,6 +4,8 @@ import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 
@@ -15,6 +17,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ComputerHand {
+    private static final Logger logger = Logger.getLogger(ComputerHand.class);
     private Sprite sprite;
     private int velocityX;
     private int velocityY;
@@ -24,6 +27,7 @@ public class ComputerHand {
     private int oldY;
 
     public ComputerHand() {
+        //logger.setLevel(Level.INFO);
         resetHandPosition();
         oldX = 0;
         oldY = 0;
@@ -35,16 +39,13 @@ public class ComputerHand {
         x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         y = (int)(GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
     }
-    public void updateLocation() {
-        oldX = x;
-        oldY = y;
-        x = 10;
-        y = 10;
-        velocityX = x - oldX;
-        velocityY = y - oldY;
-        sprite.setX(x);
-        sprite.setY(y);
+    public boolean isHandOnLeftSide(){
+        boolean ret=false;
+        logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
+        if(sprite.getX()<GameConstants.VERTICAL_PATH_START_X)ret=true;
+        return ret;
     }
+
     /*
      * Get hand image
      */

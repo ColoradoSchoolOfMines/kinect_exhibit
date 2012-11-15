@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.LinkedList;
@@ -43,6 +44,19 @@ public class RecycleBins {
             }
         }
         return recycleBins.getLast();
+    }
+    /*
+     * Find bin type
+     */
+    public RecycleBin findCorrectBin(Recyclable r){
+        RecyclableType recycleType = r.getType();
+        RecycleBin correctBin=null;
+        for(RecycleBin recycleBin: recycleBins){
+            if(recycleBin.getType()==recycleType){
+                correctBin=recycleBin;
+            }
+        }
+        return correctBin;
     }
     // sets up the location of each of the bins with trash last since it is the last accessed bin
     private void setUpBins() {

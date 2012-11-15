@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
@@ -8,6 +9,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.Random;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
@@ -16,7 +18,8 @@ import org.apache.log4j.Logger;
  * User: Marshall
  * Date: 11/13/12
  * Time: 6:09 PM
- * To change this template use File | Settings | File Templates.
+ *
+ *
  */
 public class ComputerPlayer {
     private static final Logger logger = Logger.getLogger(ComputerPlayer.class);
@@ -32,6 +35,7 @@ public class ComputerPlayer {
 
 
     public ComputerPlayer(RecycleBins recycleBins){
+        logger.setLevel(Level.INFO);
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
@@ -44,9 +48,10 @@ public class ComputerPlayer {
     public void updateAI(Recyclable r,double currentTimeSec){
         //Follow target recyclable
         followRecyclable(r,currentTimeSec);
+        //Set hand to correct side
+        setHandToCorrectSide(r);
         //Strike target recyclable
         strike(r,currentTimeSec);
-
     }
     public void followRecyclable(Recyclable r, double currentTimeSec){
         primary.getSprite().setY(r.getSprite().getY());
@@ -80,6 +85,23 @@ public class ComputerPlayer {
             ret = true;
         }
         return ret;
+    }
+
+    public void setHandToCorrectSide(Recyclable r){
+        if(r.getSprite().getState()== Sprite.TouchState.TOUCHABLE){
+            RecycleBin bin = recycleBins.findCorrectBin(r);
+            RecycleBin.ConveyorSide binSide = bin.getSide();
+            if(binSide==RecycleBin.ConveyorSide.RIGHT){
+                if(!primary.isHandOnLeftSide()){
+                    primary.getSprite().setX(r.getSprite().getX() - ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
+                }
+            } else {
+                if(primary.isHandOnLeftSide()){
+                    primary.getSprite().setX(r.getSprite().getX() + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
+                }
+            }
+            //logger.info("LeftSide="+primary.isHandOnLeftSide()+",px="+primary.getSprite().getX()+",bt="+bin.getType()+",bs="+binSide);
+        }
     }
     public void strikeRecyclable(Recyclable r,double currentTimeSec){
         int newX = r.getSprite().getX();
