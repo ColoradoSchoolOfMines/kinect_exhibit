@@ -1,7 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import edu.mines.csci598.recycler.frontend.utils.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -213,6 +212,10 @@ public class Sprite {
             }
         }
         return false;
+    }
+
+    public boolean hasFinishedPath(double referenceTime){
+       return path.pathFinished(startTime,referenceTime);
     }
 
 }

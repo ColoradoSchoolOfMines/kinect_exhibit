@@ -32,7 +32,7 @@ public class Path {
 
     /**
      * @param startTime     The time the path starts
-     * @param referenceTime The time where you want to see it is along the path.
+     * @param referenceTime The time where you want to see where it is along the path.
      * @return
      */
     // TODO this needs better documentation
@@ -48,5 +48,19 @@ public class Path {
             time = time - currentLineTotalTime;
         }
         return coordinate;
+    }
+
+    /**
+     * Returns true if the current path has completed
+     * @param startTime
+     * @param referenceTime
+     * @return
+     */
+    public boolean pathFinished(double startTime, double referenceTime){
+        double totalTime = 0;
+        for(Line l:path){
+            totalTime+=l.getTotalTime();
+        }
+        return totalTime <= (referenceTime-startTime);
     }
 }

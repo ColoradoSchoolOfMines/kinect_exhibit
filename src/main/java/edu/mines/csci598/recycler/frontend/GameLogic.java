@@ -12,9 +12,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
-
 
 
 /**
@@ -59,7 +57,8 @@ public class GameLogic extends GameState {
     private int gameOverStrikes;
     //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
     //over and over again too many times ont otp of each other
-    private boolean gameOverNotified=false;
+    private boolean gameOverNotified = false;
+
     private GameLogic() {
         debugCollision = false;
         debugComputerPlayer = false;
@@ -82,7 +81,6 @@ public class GameLogic extends GameState {
         gameOverStrikes = 3;
 
 
-
         conveyor = new ConveyorBelt();
         startTime = System.currentTimeMillis();
         if (debugCollision) {
@@ -92,7 +90,7 @@ public class GameLogic extends GameState {
 
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
-        if (!debugComputerPlayer){
+        if (!debugComputerPlayer) {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
@@ -129,61 +127,61 @@ public class GameLogic extends GameState {
     }
 
     /**
-    *   Generates new item if necessary
-    */
+     * Generates new item if necessary
+     */
     private void generateItems() {
-            if (needsItemGeneration()) {
-                addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
-                lastGenerationTime = currentTimeSec;
-                itemGenerationDelay = 0;
-            } else {
-                itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
-            }
+        if (needsItemGeneration()) {
+            addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
+            lastGenerationTime = currentTimeSec;
+            itemGenerationDelay = 0;
+        } else {
+            itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
+        }
 
     }
 
-    private  void updateRecyclables() {
+    private void updateRecyclables() {
         ArrayList<Recyclable> recyclablesToRemove = new ArrayList<Recyclable>();
 
         try {
             for (Recyclable recyclable : conveyor.getRecyclables()) {
                 Sprite sprite = recyclable.getSprite();
 
-                    sprite.updateLocation(currentTimeSec);
-                    if (sprite.getX() >= GameConstants.TOP_PATH_END_X) {
-                        recyclablesToRemove.add(recyclable);
-                        handleScore(recyclable, recycleBins.getLast());
-                    }
-                    if ((recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_RIGHT &&
-                            sprite.getX() >= GameConstants.VERTICAL_PATH_START_X + GameConstants.IN_BIN_OFFSET) ||
-                            (recyclable.getCurrentMotion() == Recyclable.MotionState.FALL_LEFT &&
-                                    sprite.getX() <= GameConstants.VERTICAL_PATH_START_X - GameConstants.IN_BIN_OFFSET)) {
-                        recyclablesToRemove.add(recyclable);
+                sprite.updateLocation(currentTimeSec);
 
+                //If the item has reached its final point on the path.
+                //Remove it and update the score.
+                if (sprite.hasFinishedPath(currentTimeSec)) {
+                    recyclablesToRemove.add(recyclable);
+                    handleScore(recyclable, recycleBins.getLast());
+                }
+
+
+                // make sure the item is still on the conveyor before changing it's touch status
+                if (recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_RIGHT &&
+                        recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_LEFT) {
+                    if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
+                        sprite.setState(Sprite.TouchState.UNTOUCHABLE);
+                    } else if (sprite.getY() <= GameConstants.SPRITE_BECOMES_TOUCHABLE) {
+                        sprite.setState(Sprite.TouchState.TOUCHABLE);
                     }
-                    // make sure the item is still on the conveyor before changing it's touch status
-                    if (recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_RIGHT &&
-                            recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_LEFT) {
-                        if (sprite.getY() <= GameConstants.SPRITE_BECOMES_UNTOUCHABLE) {
-                            sprite.setState(Sprite.TouchState.UNTOUCHABLE);
-                        } else if (sprite.getY() <= GameConstants.SPRITE_BECOMES_TOUCHABLE) {
-                            sprite.setState(Sprite.TouchState.TOUCHABLE);
-                        }
-                    }
-                    checkCollision(recyclable);
+                }
+                checkCollision(recyclable);
 
 
             }
         } catch (ExceptionInInitializerError e) {
             logger.error("ExceptionInInitializerError updating sprites with time " + currentTimeSec);
         }
+
+        //Can't modify in previous loop because it is iterating need this to avoid
+        //a concurrent modification exception.
         for (Recyclable recyclable : recyclablesToRemove) {
             removeRecyclable(recyclable);
         }
-        recyclablesToRemove.clear();
     }
 
-    public  void addRecyclable(Recyclable r) {
+    public void addRecyclable(Recyclable r) {
         try {
             conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
@@ -192,34 +190,33 @@ public class GameLogic extends GameState {
         }
     }
 
-    public  void removeRecyclable(Recyclable r) {
+    public void removeRecyclable(Recyclable r) {
         conveyor.removeRecyclable(r);
         gameScreen.removeSprite(r.getSprite());
     }
 
-    private  void checkCollision(Recyclable r) {
-        if(!debugComputerPlayer){
+    private void checkCollision(Recyclable r) {
+        if (!debugComputerPlayer) {
             if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
                 r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
                 //Retrieves bin
                 RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
                 handleScore(r, bin);
             }
-        }else {
+        } else {
             //Computer collision detection
         }
     }
 
 
-
     /**
-     *  Given the recyclable and the bin it went into this function either increments the score or adds a strike
+     * Given the recyclable and the bin it went into this function either increments the score or adds a strike
      *
      * @param r
      * @param bin
      */
     private void handleScore(Recyclable r, RecycleBin bin) {
-        if(!debugComputerPlayer){
+        if (!debugComputerPlayer) {
             if (bin.isCorrectRecyclableType(r)) {
                 score++;
             } else {
@@ -233,7 +230,8 @@ public class GameLogic extends GameState {
 //            gameOver();
 //        }
     }
-    public void handleAIScore(){
+
+    public void handleAIScore() {
         score = computerPlayer.getAIScore();
         strikes = computerPlayer.getAIStrikes();
     }
@@ -251,7 +249,7 @@ public class GameLogic extends GameState {
         if (gameOverNotified) return;
         Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
         gameScreen.addSprite(sprite);
-        gameOverNotified=true;
+        gameOverNotified = true;
         //If We want it to exit
         //gameManager.destroy();
 
@@ -261,15 +259,15 @@ public class GameLogic extends GameState {
     private void increaseDifficulty() {
         // Possibly add more items
         if (numItemTypesInUse < 2 && Math.round(currentTimeSec) > itemType2ActivationTime) {
-            if(INFO) logger.info("Increasing item types to 2!");
+            if (INFO) logger.info("Increasing item types to 2!");
             numItemTypesInUse++;
         }
         if (numItemTypesInUse < 3 && Math.round(currentTimeSec) > itemType3ActivationTime) {
-            if(INFO) logger.info("Increasing item types to 3!");
+            if (INFO) logger.info("Increasing item types to 3!");
             numItemTypesInUse++;
         }
         if (numItemTypesInUse < 4 && Math.round(currentTimeSec) > itemType4ActivationTime) {
-            if(INFO) logger.info("Increasing item types to 4!");
+            if (INFO) logger.info("Increasing item types to 4!");
             numItemTypesInUse++;
         }
 
@@ -292,17 +290,17 @@ public class GameLogic extends GameState {
 
         increaseDifficulty();
 
-       if (!debugCollision) {
+        if (!debugCollision) {
             generateItems();
-       }
+        }
 
-        if(!debugComputerPlayer){
+        if (!debugComputerPlayer) {
             // display the hand
             player1.primary.updateLocation();
-        }else {
+        } else {
             //call update to computer hand on next recyclable that is touchable
-            if(conveyor.getNumRecyclables()>0){
-                computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(),currentTimeSec);
+            if (conveyor.getNumRecyclables() > 0) {
+                computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
             handleAIScore();
         }
