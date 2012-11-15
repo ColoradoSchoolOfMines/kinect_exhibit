@@ -2,11 +2,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -27,7 +23,6 @@ public class Sprite {
     private int dy;
     private int x;
     private int y;
-    private Image image;
     private String fileName;
     private Path path;
     private double startTime;
@@ -50,18 +45,7 @@ public class Sprite {
       * 		The name of the file to be loaded.
       */
     public void setImage(String fileName) {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(fileName));
-        } catch (IOException e) {
-            throw new RuntimeException("File error: " + fileName);
-        }
-        //Calculate the rounded scaled height
-        int newHeight = (int) Math.round(img.getHeight() * GraphicsConstants.SCALE_FACTOR);
-        int newWidth = (int) Math.round(img.getWidth() * GraphicsConstants.SCALE_FACTOR);
-        //scale the image
-        image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-
+        this.fileName = fileName;
     }
 
     public void setState(TouchState newState) {
@@ -164,7 +148,7 @@ public class Sprite {
     * return {Image}
     */
     public Image getImage() {
-        return image;
+        return ResourceManager.getInstance().getImage(fileName);
     }
 
     public void setPath(Path p) {
