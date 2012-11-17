@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.GameLogic;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -26,19 +27,17 @@ public class GameScreen {
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private double scaledWidth;
     private double scaledHeight;
-    private boolean debugComputerPlayer;
 
-    private GameScreen(boolean debugComputerPlayer) {
+    private GameScreen() {
         backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
         backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
-        this.debugComputerPlayer = debugComputerPlayer;
     }
 
-    public static final GameScreen getInstance(boolean debugComputerPlayer) {
+    public static final GameScreen getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new GameScreen(debugComputerPlayer);
+            INSTANCE = new GameScreen();
         }
         return INSTANCE;
     }
@@ -79,7 +78,7 @@ public class GameScreen {
 
         }
 
-        if(debugComputerPlayer)
+        if(GameConstants.DEBUG_COMPUTER_PLAYER)
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
         else
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);

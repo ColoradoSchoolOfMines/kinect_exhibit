@@ -53,7 +53,7 @@ public class ConveyorBelt {
         itemGenerationDelay = 0;
         
         logger.setLevel(Level.DEBUG);
-        random = new Random();
+        random = new Random(System.currentTimeMillis());
     }
 
     public ArrayList<Recyclable> getRecyclables() {

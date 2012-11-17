@@ -29,53 +29,36 @@ public class GameLogic extends GameState {
     private static GameLogic INSTANCE;
     private Player player1, player2;
     private ComputerPlayer computerPlayer;
-    private boolean debugComputerPlayer;
     private GameScreen gameScreen;
     private GameManager gameManager;
     private RecycleBins recycleBins;
     private ConveyorBelt conveyor;
-    private Random random;
     private double currentTimeSec;
     private long startTime;
-    private double minTimeBetweenGenerations;
-    private double meanTimeBetweenItems;
     private double nextItemTypeGenerationTime;
-    private double lastGenerationTime;
-    private double nextItemGenerationTime;
-    private boolean debugCollision;
     private int numItemTypesInUse;
     private int score;
     private int strikes;
-    private int gameOverStrikes;
     //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
     //over and over again too many times ont otp of each other
     private boolean gameOverNotified = false;
 
 
     private GameLogic() {
-        debugComputerPlayer = false;
-
         gameManager = new GameManager("Recycler", false);
-        gameScreen = GameScreen.getInstance(debugComputerPlayer);
+        gameScreen = GameScreen.getInstance();
         recycleBins = new RecycleBins();
 
-        random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
-        lastGenerationTime = 0;
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
-        meanTimeBetweenItems = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
-        nextItemGenerationTime = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
-        nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
-        gameOverStrikes = 3;
 
         conveyor = new ConveyorBelt(this);
         startTime = System.currentTimeMillis();
 
-
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
-        if (!debugComputerPlayer) {
+        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
@@ -106,7 +89,6 @@ public class GameLogic extends GameState {
                     recyclablesToRemove.add(recyclable);
                     handleScore(recyclable, recycleBins.getLast());
                 }
-
 
                 // make sure the item is still on the conveyor before changing it's touch status
                 if (recyclable.getCurrentMotion() != Recyclable.MotionState.FALL_RIGHT &&
@@ -146,7 +128,7 @@ public class GameLogic extends GameState {
     }
 
     private void checkCollision(Recyclable r) {
-        if (!debugComputerPlayer) {
+        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
             if (r.hasCollisionWithHand(player1.primary, currentTimeSec)) {
                 r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
                 //Retrieves bin
@@ -166,7 +148,7 @@ public class GameLogic extends GameState {
      * @param bin
      */
     private void handleScore(Recyclable r, RecycleBin bin) {
-        if (!debugComputerPlayer) {
+        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
             if (bin.isCorrectRecyclableType(r)) {
                 score++;
             } else {
@@ -245,7 +227,7 @@ public class GameLogic extends GameState {
 
         conveyor.update(currentTimeSec);
 
-        if (!debugComputerPlayer) {
+        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
             // display the hand
             player1.primary.updateLocation();
         } else {
