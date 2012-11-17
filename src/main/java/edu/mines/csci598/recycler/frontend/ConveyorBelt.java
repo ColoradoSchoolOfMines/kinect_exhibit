@@ -7,6 +7,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -15,8 +16,10 @@ public class ConveyorBelt {
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
 	
     private Path p;
+    private Random random;
     private ArrayList<Recyclable> recyclables;
     private double lastGenerationTime;
+	private double nextTimeToGenerate;
     private double itemGenerationDelay;
     private GameLogic game;
     
@@ -35,6 +38,7 @@ public class ConveyorBelt {
     private Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
             GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y, topLineStartTime);
 
+
     public ConveyorBelt(GameLogic game) {
         this.game = game;
     	
@@ -49,6 +53,7 @@ public class ConveyorBelt {
         itemGenerationDelay = 0;
         
         logger.setLevel(Level.DEBUG);
+        random = new Random();
     }
 
     public ArrayList<Recyclable> getRecyclables() {
@@ -119,22 +124,21 @@ public class ConveyorBelt {
      * @return true if item should be generated, false otherwise
      */
     private boolean needsItemGeneration(double currentTimeSec) {
-        boolean generateOK_probability = false;
-        boolean generateOK_timePassed = false;
+    	
+      	//TODO: Make it harder - faster generation
+    	if (currentTimeSec > nextTimeToGenerate) {
+    		double timeToAdd = random.nextGaussian() + GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
 
-        if (Math.random() < game.getItemGenerationProb()) {
-            generateOK_probability = true;
-        }
-        //random.nextGaussian();
-        //TODO: itemGenerationDelay
-        if ((currentTimeSec - lastGenerationTime) > itemGenerationDelay) {
-            generateOK_timePassed = true;
-        }
-    	logger.debug("currentTimeSec: " + currentTimeSec);
-    	logger.debug("lastGenerationTime: " + lastGenerationTime);
-    	logger.debug("itemGenerationDelay: " + itemGenerationDelay);
-    	logger.debug("Generate: " + generateOK_probability);
-    	logger.debug("timeToGenerate: " + generateOK_timePassed);
-        return (generateOK_probability && generateOK_timePassed);
+      	   //TODO: Double check this logic
+
+      	  	nextTimeToGenerate = Math.max(timeToAdd + currentTimeSec,
+
+      	  			GameConstants.MIN_TIME_BETWEEN_GENERATIONS + lastGenerationTime);
+
+      	  	lastGenerationTime = currentTimeSec;
+
+      	  	return true;
+    	}
+    	return false;
     }
 }

@@ -62,13 +62,11 @@ public class GameLogic extends GameState {
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         lastGenerationTime = 0;
-        minTimeBetweenGenerations = GameConstants.INITIAL_MIN_TIME_BETWEEN_ITEM_GENERATIONS;
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         meanTimeBetweenItems = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
         nextItemGenerationTime = GameConstants.INITIAL_MEAN_TIME_BETWEEN_GENERATIONS;
-        itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
-    	nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+        nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         gameOverStrikes = 3;
 
         conveyor = new ConveyorBelt(this);
@@ -195,10 +193,6 @@ public class GameLogic extends GameState {
     public String getStrikesString() {
         return Integer.toString(strikes);
     }
-
-	public double getItemGenerationProb() {
-		return itemGenerationProb;
-	}
 
 	public int getNumItemTypesInUse() {
 		return numItemTypesInUse;

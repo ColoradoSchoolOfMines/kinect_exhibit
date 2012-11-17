@@ -25,6 +25,8 @@ public final class GameConstants {
     public static final double MIN_TIME_BETWEEN_GENERATIONS = 3;
 
     public static final double INITIAL_MEAN_TIME_BETWEEN_GENERATIONS = 3;
+    
+    
 
     /**
      * If an item is not generated, this is the minimum delay before it can be attempted again.  As item
