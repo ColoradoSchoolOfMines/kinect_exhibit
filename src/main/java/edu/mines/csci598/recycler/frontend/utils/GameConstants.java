@@ -22,7 +22,9 @@ public final class GameConstants {
     /**
      * The minimum amount of time between object generations, at the beginning of the game
      */
-    public static final double INITIAL_MIN_TIME_BETWEEN_ITEM_GENERATIONS = 3;
+    public static final double MIN_TIME_BETWEEN_GENERATIONS = 3;
+
+    public static final double INITIAL_MEAN_TIME_BETWEEN_GENERATIONS = 3;
 
     /**
      * If an item is not generated, this is the minimum delay before it can be attempted again.  As item
