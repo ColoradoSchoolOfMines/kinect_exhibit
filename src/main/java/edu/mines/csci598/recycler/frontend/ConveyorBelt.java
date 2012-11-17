@@ -8,15 +8,25 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class ConveyorBelt {
+	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
+	
     private Path p;
     private ArrayList<Recyclable> recyclables;
+    private double lastGenerationTime;
+    private double itemGenerationDelay;
+    private GameLogic game;
+    
     private double bottomLineStartTime = GameConstants.BOTTOM_PATH_START_TIME;
     private double bottomLineEndTime = GameConstants.BOTTOM_PATH_END_TIME;
     private double verticalLineStartTime = GameConstants.VERTICAL_PATH_START_TIME;
     private double verticalLineEndTime = GameConstants.VERTICAL_PATH_END_TIME;
     private double topLineStartTime = GameConstants.TOP_PATH_START_TIME;
     private double topLineEndTime = GameConstants.TOP_PATH_END_TIME;
+    private static final boolean debugCollisions = GameConstants.DEBUG_COLLISIONS;
 
     private Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y,
             GameConstants.BOTTOM_PATH_END_X, GameConstants.BOTTOM_PATH_END_Y, bottomLineStartTime);
@@ -25,13 +35,20 @@ public class ConveyorBelt {
     private Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
             GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y, topLineStartTime);
 
-    public ConveyorBelt() {
-        recyclables = new ArrayList<Recyclable>();
+    public ConveyorBelt(GameLogic game) {
+        this.game = game;
+    	
+    	recyclables = new ArrayList<Recyclable>();
 
         p = new Path();
         p.addLine(bottomLine);
         p.addLine(verticalLine);
         p.addLine(topLine);
+        
+        lastGenerationTime = 0;
+        itemGenerationDelay = 0;
+        
+        logger.setLevel(Level.DEBUG);
     }
 
     public ArrayList<Recyclable> getRecyclables() {
@@ -59,21 +76,65 @@ public class ConveyorBelt {
         return ret;
     }
 
-    public  void addRecyclable(Recyclable r) {
+    public void addRecyclable(Recyclable r) {
         recyclables.add(r);
         r.getSprite().setPath(p);
     }
 
-    public  void removeRecyclable(Recyclable r) {
+    public void removeRecyclable(Recyclable r) {
         recyclables.remove(r);
     }
 
-    public  void setSpeed(double pctOfFullSpeed) {
+    public void setSpeed(double pctOfFullSpeed) {
         bottomLine.setTotalTime(bottomLineStartTime + pctOfFullSpeed * (bottomLineEndTime - bottomLineStartTime));
         verticalLine.setTotalTime(verticalLineStartTime + pctOfFullSpeed * (verticalLineEndTime - verticalLineStartTime));
         topLine.setTotalTime(topLineStartTime + pctOfFullSpeed * (topLineEndTime - topLineStartTime));
     }
+
+	public void update(double currentTimeSec) {
+        if (!debugCollisions) {
+            generateItems(currentTimeSec);
+        }
+	}
+
+    /**
+     * Generates new item if necessary
+     */
+    private void generateItems(double currentTimeSec) {
+        if (needsItemGeneration(currentTimeSec)) {
+            Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(game.getNumItemTypesInUse()));
+        	addRecyclable(r);
+            game.addRecyclable(r);
+            lastGenerationTime = currentTimeSec;
+            itemGenerationDelay = 0;
+            logger.debug("Item generated");
+        } else {
+            itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
+        }
+
+    }
+    /**
+     * Determines if item should be generated
+     *
+     * @return true if item should be generated, false otherwise
+     */
+    private boolean needsItemGeneration(double currentTimeSec) {
+        boolean generateOK_probability = false;
+        boolean generateOK_timePassed = false;
+
+        if (Math.random() < game.getItemGenerationProb()) {
+            generateOK_probability = true;
+        }
+        //random.nextGaussian();
+        //TODO: itemGenerationDelay
+        if ((currentTimeSec - lastGenerationTime) > itemGenerationDelay) {
+            generateOK_timePassed = true;
+        }
+    	logger.debug("currentTimeSec: " + currentTimeSec);
+    	logger.debug("lastGenerationTime: " + lastGenerationTime);
+    	logger.debug("itemGenerationDelay: " + itemGenerationDelay);
+    	logger.debug("Generate: " + generateOK_probability);
+    	logger.debug("timeToGenerate: " + generateOK_timePassed);
+        return (generateOK_probability && generateOK_timePassed);
+    }
 }
-
-
-

@@ -35,12 +35,9 @@ public class GameLogic extends GameState {
     private RecycleBins recycleBins;
     private ConveyorBelt conveyor;
     private Random random;
-    private double lastGenerationTime;
     private double currentTimeSec;
     private long startTime;
     private double minTimeBetweenGenerations;
-    private double itemGenerationDelay;
-    private boolean debugCollision;
     private double itemGenerationProb;
     private int numItemTypesInUse;
     private int score;
@@ -52,7 +49,6 @@ public class GameLogic extends GameState {
 	private int nextItemGenerationTime;
 
     private GameLogic() {
-        debugCollision = false;
         debugComputerPlayer = false;
 
         gameManager = new GameManager("Recycler", false);
@@ -61,20 +57,15 @@ public class GameLogic extends GameState {
 
         random = new Random(System.currentTimeMillis());
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
-        minTimeBetweenGenerations = GameConstants.INITIAL_ITEM_GENERATION_DELAY_SECONDS;
-        lastGenerationTime = 0;
+        minTimeBetweenGenerations = GameConstants.INITIAL_MIN_TIME_BETWEEN_ITEM_GENERATIONS;
         currentTimeSec = 0;
-        itemGenerationDelay = 0;
         itemGenerationProb = GameConstants.START_ITEM_GENERATION_PROB;
     	nextItemGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         gameOverStrikes = 3;
 
 
-        conveyor = new ConveyorBelt();
+        conveyor = new ConveyorBelt(this);
         startTime = System.currentTimeMillis();
-        if (debugCollision) {
-            addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
-        }
 
 
         // sets up the first player and adds its primary hand to the gameScreen
@@ -93,40 +84,6 @@ public class GameLogic extends GameState {
             INSTANCE = new GameLogic();
         }
         return INSTANCE;
-    }
-
-    /**
-     * Determines if item should be generated
-     *
-     * @return true if item should be generated, false otherwise
-     */
-    private boolean needsItemGeneration() {
-        boolean generate = false;
-        boolean timeToGenerate = false;
-
-        if (Math.random() < itemGenerationProb) {
-            generate = true;
-        }
-        //random.nextGaussian();
-        //TODO: itemGenerationDelay
-        if ((currentTimeSec - lastGenerationTime) > minTimeBetweenGenerations) {
-            timeToGenerate = true;
-        }
-        return (generate && timeToGenerate);
-    }
-
-    /**
-     * Generates new item if necessary
-     */
-    private void generateItems() {
-        if (needsItemGeneration()) {
-            addRecyclable(new Recyclable(currentTimeSec, RecyclableType.getRandom(numItemTypesInUse)));
-            lastGenerationTime = currentTimeSec;
-            itemGenerationDelay = 0;
-        } else {
-            itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
-        }
-
     }
 
     private void updateRecyclables() {
@@ -172,7 +129,6 @@ public class GameLogic extends GameState {
 
     public void addRecyclable(Recyclable r) {
         try {
-            conveyor.addRecyclable(r);
             gameScreen.addSprite(r.getSprite());
         } catch (ExceptionInInitializerError e) {
             logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
@@ -233,6 +189,13 @@ public class GameLogic extends GameState {
         return Integer.toString(strikes);
     }
 
+	public double getItemGenerationProb() {
+		return itemGenerationProb;
+	}
+
+	public int getNumItemTypesInUse() {
+		return numItemTypesInUse;
+	}
 
     private void gameOver() {
         if (gameOverNotified) return;
@@ -241,9 +204,7 @@ public class GameLogic extends GameState {
         gameOverNotified = true;
         //If We want it to exit
         //gameManager.destroy();
-
     }
-
 
     private void increaseDifficulty() {
     	possiblyIncreaseItemCount();
@@ -281,9 +242,7 @@ public class GameLogic extends GameState {
 
         increaseDifficulty();
 
-        if (!debugCollision) {
-            generateItems();
-        }
+        conveyor.update(currentTimeSec);
 
         if (!debugComputerPlayer) {
             // display the hand
