@@ -232,7 +232,7 @@ public class GameLogic extends GameState {
             player1.primary.updateLocation();
         } else {
             //call update to computer hand on next recyclable that is touchable
-            if (conveyor.getNumRecyclables() > 0) {
+            if (conveyor.getNumRecyclablesOnConveyor() > 0) {
                 computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
             handleAIScore();

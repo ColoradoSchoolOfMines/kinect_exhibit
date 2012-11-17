@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.util.LinkedList;
@@ -45,20 +44,24 @@ public class RecycleBins {
         }
         return recycleBins.getLast();
     }
+    
     /*
      * Find bin type
      */
     public RecycleBin findCorrectBin(Recyclable r){
         RecyclableType recycleType = r.getType();
-        RecycleBin correctBin=null;
         for(RecycleBin recycleBin: recycleBins){
             if(recycleBin.getType()==recycleType){
-                correctBin=recycleBin;
+                return recycleBin;
             }
         }
-        return correctBin;
+        
+        throw new IllegalStateException("No bin found for recyclable " + r);
     }
-    // sets up the location of each of the bins with trash last since it is the last accessed bin
+    
+    /**
+     *  sets up the location of each of the bins with trash last since it is the last accessed bin
+     */
     private void setUpBins() {
         RecycleBin bin1 = new RecycleBin(
                 GameConstants.BIN_1_SIDE, GameConstants.BIN_1_MIN_Y,
@@ -84,6 +87,7 @@ public class RecycleBins {
         recycleBins.add(bin5);
         recycleBins.add(trash);
     }
+    
     public RecycleBin getLast(){
         return recycleBins.getLast();
     }

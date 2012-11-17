@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.LinkedList;
-
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.
  * The drawing of bins will be in the background.

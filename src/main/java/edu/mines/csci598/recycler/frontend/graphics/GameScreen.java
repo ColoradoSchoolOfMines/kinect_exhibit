@@ -42,7 +42,6 @@ public class GameScreen {
         return INSTANCE;
     }
 
-
     public void paint(Graphics2D g2d, Component canvas) {
         g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
         g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
@@ -75,7 +74,6 @@ public class GameScreen {
 
         for (Sprite sprite : sprites) {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
-
         }
 
         if(GameConstants.DEBUG_COMPUTER_PLAYER)
@@ -84,6 +82,10 @@ public class GameScreen {
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
     }
 
+    /**
+     * Adds a sprite in an initially untouchable state
+     * @param s - The sprite to add
+     */
     public void addSprite(Sprite s) {
             s.setState(Sprite.TouchState.UNTOUCHABLE);
             sprites.add(s);

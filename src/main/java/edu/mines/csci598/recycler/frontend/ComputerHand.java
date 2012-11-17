@@ -35,10 +35,12 @@ public class ComputerHand {
         velocityY = 0;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
     }
+    
     public void resetHandPosition(){
         x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         y = (int)(GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
     }
+    
     public boolean isHandOnLeftSide(){
         boolean ret=false;
         logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
@@ -52,12 +54,14 @@ public class ComputerHand {
     public Sprite getSprite() {
         return sprite;
     }
+    
     /*
      * Get X velocity for computer player
      */
     public int getVelocityX() {
         return velocityX;
     }
+    
     /*
      * Get Y velocity for computer player
      */

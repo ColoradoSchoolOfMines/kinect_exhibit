@@ -20,7 +20,6 @@ public class ConveyorBelt {
     private ArrayList<Recyclable> recyclables;
     private double lastGenerationTime;
 	private double nextTimeToGenerate;
-    private double itemGenerationDelay;
     private GameLogic game;
     
     private double bottomLineStartTime = GameConstants.BOTTOM_PATH_START_TIME;
@@ -50,7 +49,6 @@ public class ConveyorBelt {
         p.addLine(topLine);
         
         lastGenerationTime = 0;
-        itemGenerationDelay = 0;
         
         logger.setLevel(Level.DEBUG);
         random = new Random(System.currentTimeMillis());
@@ -59,12 +57,11 @@ public class ConveyorBelt {
     public ArrayList<Recyclable> getRecyclables() {
         return recyclables;
     }
-    public int getNumRecyclables(){
+    
+    public int getNumRecyclablesOnConveyor(){
         return recyclables.size();
     }
-    public Recyclable getRecyclable(int index){
-        return recyclables.get(index);
-    }
+    
     /*
      * Returns the next touchable recyclable
      */
@@ -84,6 +81,7 @@ public class ConveyorBelt {
     public void addRecyclable(Recyclable r) {
         recyclables.add(r);
         r.getSprite().setPath(p);
+		game.addRecyclable(r);
     }
 
     public void removeRecyclable(Recyclable r) {
@@ -102,43 +100,36 @@ public class ConveyorBelt {
         }
 	}
 
-    /**
-     * Generates new item if necessary
-     */
-    private void generateItems(double currentTimeSec) {
-        if (needsItemGeneration(currentTimeSec)) {
-            Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(game.getNumItemTypesInUse()));
-        	addRecyclable(r);
-            game.addRecyclable(r);
-            lastGenerationTime = currentTimeSec;
-            itemGenerationDelay = 0;
-            logger.debug("Item generated");
-        } else {
-            itemGenerationDelay += GameConstants.ITEM_GENERATION_DELAY;
-        }
+	/**
+	 * Generates new item if necessary
+	 */
+	private void generateItems(double currentTimeSec) {
+		if (needsItemGeneration(currentTimeSec)) {
+			Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(game.getNumItemTypesInUse()));
+			addRecyclable(r);
+			lastGenerationTime = currentTimeSec;
+			//logger.debug("Item generated: " + r);
+		}
 
     }
     /**
-     * Determines if item should be generated
+     * Determines if item should be generated.  If true, sets the time for the next object to be generated
      *
      * @return true if item should be generated, false otherwise
      */
     private boolean needsItemGeneration(double currentTimeSec) {
-    	
-      	//TODO: Make it harder - faster generation
-    	if (currentTimeSec > nextTimeToGenerate) {
-    		double timeToAdd = random.nextGaussian() + GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
-
-      	   //TODO: Double check this logic
-
-      	  	nextTimeToGenerate = Math.max(timeToAdd + currentTimeSec,
-
-      	  			GameConstants.MIN_TIME_BETWEEN_GENERATIONS + lastGenerationTime);
-
-      	  	lastGenerationTime = currentTimeSec;
-
-      	  	return true;
-    	}
-    	return false;
+		// TODO: Make it harder - faster generation
+		if (currentTimeSec > nextTimeToGenerate) {
+			double timeToAdd = random.nextGaussian()
+					+ GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
+			nextTimeToGenerate = currentTimeSec + Math.max(timeToAdd, GameConstants.MIN_TIME_BETWEEN_GENERATIONS);
+			lastGenerationTime = currentTimeSec;
+			
+			logger.debug("Current time: " + currentTimeSec);
+			logger.debug("Next generation: " + nextTimeToGenerate);
+			
+			return true;
+		}
+		return false;
     }
 }

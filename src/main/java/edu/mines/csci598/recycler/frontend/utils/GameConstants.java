@@ -20,9 +20,11 @@ public final class GameConstants {
      */
     public static final int TOTAL_NUMBER_OF_ITEM_TYPES = 4; // TODO this needs to be 5 eventually
     /**
-     * The minimum amount of time between object generations, at the beginning of the game
+     * The minimum amount of time between object generations.  Even when the game is running at full speed,
+     * items will never be kicked out faster than this.  It should be set high enough to prevent, at the
+     * minimum, items from coliding with each other during creation.
      */
-    public static final double MIN_TIME_BETWEEN_GENERATIONS = 3;
+    public static final double MIN_TIME_BETWEEN_GENERATIONS = 1;
 
     public static final double INITIAL_MEAN_TIME_BETWEEN_GENERATIONS = 3;
     
