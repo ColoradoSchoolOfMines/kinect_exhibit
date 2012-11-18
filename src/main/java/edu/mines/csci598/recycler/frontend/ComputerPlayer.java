@@ -121,16 +121,15 @@ public class ComputerPlayer {
             logger.info("Pushed Right");
             r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(),
-                    GameConstants.ITEM_PATH_TIME);
+                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY());
         } else {
             logger.info("Pushed Left");
             r.setMotionState(Recyclable.MotionState.FALL_LEFT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(),
-                    GameConstants.ITEM_PATH_TIME);
+                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY());
         }
         path.addLine(collideLine);
+        path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
         r.getSprite().setPath(path);
         r.getSprite().setStartTime(currentTimeSec);
         r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);

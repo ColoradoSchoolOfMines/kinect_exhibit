@@ -66,9 +66,9 @@ public class Recyclable implements Displayable {
                     Path path = new Path();
                     logger.info("Pushed Right");
                     Line collideLine = new Line(sprite.getX(), sprite.getY(),
-                            sprite.getX() + GameConstants.ITEM_PATH_END, sprite.getY(),
-                            GameConstants.ITEM_PATH_TIME);
+                            sprite.getX() + GameConstants.ITEM_PATH_END, sprite.getY());
                     path.addLine(collideLine);
+                    path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
                     sprite.setPath(path);
                     sprite.setStartTime(currentTimeSec);
                     setMotionState(Recyclable.MotionState.FALL_RIGHT);
@@ -78,9 +78,9 @@ public class Recyclable implements Displayable {
                     Path path = new Path();
                     logger.info("Pushed Left");
                     Line collideLine = new Line(sprite.getX(), sprite.getY(),
-                            sprite.getX() - GameConstants.ITEM_PATH_END, sprite.getY(),
-                            GameConstants.ITEM_PATH_TIME);
+                            sprite.getX() - GameConstants.ITEM_PATH_END, sprite.getY());
                     path.addLine(collideLine);
+                    path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
                     sprite.setPath(path);
                     sprite.setStartTime(currentTimeSec);
                     setMotionState(Recyclable.MotionState.FALL_LEFT);

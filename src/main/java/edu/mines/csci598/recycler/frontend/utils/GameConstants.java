@@ -50,22 +50,22 @@ public final class GameConstants {
     public static final int BOTTOM_PATH_START_Y = 880;
     public static final int BOTTOM_PATH_END_X = 445;
     public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
-    public static final double BOTTOM_PATH_START_TIME = 5;
-    public static final double BOTTOM_PATH_END_TIME = 5;
+    /*public static final double BOTTOM_PATH_START_TIME = 5;
+    public static final double BOTTOM_PATH_END_TIME = 5;*/
 
     public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_END_Y = 40;
-    public static final double VERTICAL_PATH_START_TIME = 15;
-    public static final double VERTICAL_PATH_END_TIME = 1.5;
+    /*public static final double VERTICAL_PATH_START_TIME = 15;
+    public static final double VERTICAL_PATH_END_TIME = 1.5;*/
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_END_X = 750;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
-    public static final double TOP_PATH_START_TIME = BOTTOM_PATH_START_TIME;
-    public static final double TOP_PATH_END_TIME = BOTTOM_PATH_END_TIME;
+    /*public static final double TOP_PATH_START_TIME = BOTTOM_PATH_START_TIME;
+    public static final double TOP_PATH_END_TIME = BOTTOM_PATH_END_TIME;*/
 
     public static final int ITEM_PATH_END = 250;
     public static final int ITEM_PATH_TIME = 5;
@@ -130,6 +130,18 @@ public final class GameConstants {
 	 * Set to true when debugging the computer player
 	 */
 	public static final boolean DEBUG_COMPUTER_PLAYER = false;
+	/**
+	 * The initial speed of the conveyor belt, measured in pixels per second
+	 */
+	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 50;
+	/**
+	 * The speed of the conveyor belt at maximum difficulty, measured in pixels per second
+	 */
+	public static final double FINAL_SPEED_IN_PIXELS_PER_SECOND = 75;
+	/**
+	 * The speed that an item flies off the conveyor into a bin when hit with a hand, measured in pixels per second
+	 */
+	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
 }
 

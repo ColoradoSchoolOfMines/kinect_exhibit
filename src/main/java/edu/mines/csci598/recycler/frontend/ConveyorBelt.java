@@ -18,24 +18,21 @@ public class ConveyorBelt {
     private Path p;
     private Random random;
     private ArrayList<Recyclable> recyclables;
-    private double lastGenerationTime;
+    private double lastMotionTimeSec;
 	private double nextTimeToGenerate;
     private GameLogic game;
     
-    private double bottomLineStartTime = GameConstants.BOTTOM_PATH_START_TIME;
-    private double bottomLineEndTime = GameConstants.BOTTOM_PATH_END_TIME;
-    private double verticalLineStartTime = GameConstants.VERTICAL_PATH_START_TIME;
-    private double verticalLineEndTime = GameConstants.VERTICAL_PATH_END_TIME;
-    private double topLineStartTime = GameConstants.TOP_PATH_START_TIME;
-    private double topLineEndTime = GameConstants.TOP_PATH_END_TIME;
+    private double speedPixPerSecond;
+    private final double maxSpeedPixPerSecond;
+    
     private static final boolean debugCollisions = GameConstants.DEBUG_COLLISIONS;
 
     private Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y,
-            GameConstants.BOTTOM_PATH_END_X, GameConstants.BOTTOM_PATH_END_Y, bottomLineStartTime);
+            GameConstants.BOTTOM_PATH_END_X, GameConstants.BOTTOM_PATH_END_Y);
     private Line verticalLine = new Line(GameConstants.VERTICAL_PATH_START_X, GameConstants.VERTICAL_PATH_START_Y,
-            GameConstants.VERTICAL_PATH_END_X, GameConstants.VERTICAL_PATH_END_Y, verticalLineStartTime);
+            GameConstants.VERTICAL_PATH_END_X, GameConstants.VERTICAL_PATH_END_Y);
     private Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
-            GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y, topLineStartTime);
+            GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y);
 
 
     public ConveyorBelt(GameLogic game) {
@@ -48,9 +45,10 @@ public class ConveyorBelt {
         p.addLine(verticalLine);
         p.addLine(topLine);
         
-        lastGenerationTime = 0;
+        speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
+        maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
         
-        logger.setLevel(Level.DEBUG);
+        //logger.setLevel(Level.DEBUG);
         random = new Random(System.currentTimeMillis());
     }
 
@@ -89,26 +87,50 @@ public class ConveyorBelt {
     }
 
     public void setSpeed(double pctOfFullSpeed) {
-        bottomLine.setTotalTime(bottomLineStartTime + pctOfFullSpeed * (bottomLineEndTime - bottomLineStartTime));
-        verticalLine.setTotalTime(verticalLineStartTime + pctOfFullSpeed * (verticalLineEndTime - verticalLineStartTime));
-        topLine.setTotalTime(topLineStartTime + pctOfFullSpeed * (topLineEndTime - topLineStartTime));
+    	if(pctOfFullSpeed >= 1){
+    		speedPixPerSecond = maxSpeedPixPerSecond;
+    	}
+    	
+    	speedPixPerSecond = speedPixPerSecond + (maxSpeedPixPerSecond - speedPixPerSecond) * pctOfFullSpeed;
     }
 
 	public void update(double currentTimeSec) {
+        moveConveyorBelt(currentTimeSec);
+        
         if (!debugCollisions) {
-            generateItems(currentTimeSec);
+            possiblyGenerateItem(currentTimeSec);
         }
+        
+	}
+
+	/**
+	 * Advances the conveyor belt.  All the items on it will get carried along for the ride!
+	 * @param currentTimeMsec
+	 */
+	private void moveConveyorBelt(double currentTimeSec) {
+		double timePassedSec = currentTimeSec - lastMotionTimeSec;
+		for(Recyclable r : recyclables){
+			updateItemPosition(timePassedSec);
+		}
+		lastMotionTimeSec = currentTimeSec;
+	}
+	
+	/**
+	 * Moves a recyclable to wherever it should be after the given amount of time.
+	 * @param timePassedMsec
+	 */
+	private void updateItemPosition(double timePassedSec){
+		throw new Exception("Not implemented");
 	}
 
 	/**
 	 * Generates new item if necessary
 	 */
-	private void generateItems(double currentTimeSec) {
+	private void possiblyGenerateItem(double currentTimeSec) {
 		if (needsItemGeneration(currentTimeSec)) {
 			Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(game.getNumItemTypesInUse()));
 			addRecyclable(r);
-			lastGenerationTime = currentTimeSec;
-			//logger.debug("Item generated: " + r);
+			logger.debug("Item generated: " + r);
 		}
 
     }
@@ -118,15 +140,13 @@ public class ConveyorBelt {
      * @return true if item should be generated, false otherwise
      */
     private boolean needsItemGeneration(double currentTimeSec) {
-		// TODO: Make it harder - faster generation
 		if (currentTimeSec > nextTimeToGenerate) {
 			double timeToAdd = random.nextGaussian()
 					+ GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
 			nextTimeToGenerate = currentTimeSec + Math.max(timeToAdd, GameConstants.MIN_TIME_BETWEEN_GENERATIONS);
-			lastGenerationTime = currentTimeSec;
 			
 			logger.debug("Current time: " + currentTimeSec);
-			logger.debug("Next generation: " + nextTimeToGenerate);
+			logger.debug("Time for next item generation: " + nextTimeToGenerate);
 			
 			return true;
 		}
