@@ -5,8 +5,11 @@ import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Level;
@@ -15,9 +18,8 @@ import org.apache.log4j.Logger;
 public class ConveyorBelt {
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
 	
-    private Path p;
     private Random random;
-    private ArrayList<Recyclable> recyclables;
+    private List<Recyclable> recyclables;
     private double lastMotionTimeSec;
 	private double nextTimeToGenerate;
     private GameLogic game;
@@ -27,23 +29,19 @@ public class ConveyorBelt {
     
     private static final boolean debugCollisions = GameConstants.DEBUG_COLLISIONS;
 
-    private Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y,
+    private static final Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y,
             GameConstants.BOTTOM_PATH_END_X, GameConstants.BOTTOM_PATH_END_Y);
-    private Line verticalLine = new Line(GameConstants.VERTICAL_PATH_START_X, GameConstants.VERTICAL_PATH_START_Y,
+    private static final Line verticalLine = new Line(GameConstants.VERTICAL_PATH_START_X, GameConstants.VERTICAL_PATH_START_Y,
             GameConstants.VERTICAL_PATH_END_X, GameConstants.VERTICAL_PATH_END_Y);
-    private Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
+    private static final Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
             GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y);
+    private static final Path CONVEYOR_BELT_PATH = new Path(Arrays.asList(bottomLine, verticalLine, topLine));
 
 
     public ConveyorBelt(GameLogic game) {
         this.game = game;
     	
     	recyclables = new ArrayList<Recyclable>();
-
-        p = new Path();
-        p.addLine(bottomLine);
-        p.addLine(verticalLine);
-        p.addLine(topLine);
         
         speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
         maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
@@ -52,7 +50,7 @@ public class ConveyorBelt {
         random = new Random(System.currentTimeMillis());
     }
 
-    public ArrayList<Recyclable> getRecyclables() {
+    public List<Recyclable> getRecyclables() {
         return recyclables;
     }
     
@@ -67,7 +65,7 @@ public class ConveyorBelt {
         Recyclable ret;
         int index=0;
         ret = recyclables.get(index);
-        while(ret.getSprite().getState()== Sprite.TouchState.UNTOUCHABLE && index < recyclables.size()){
+        while(!(ret.isTouchable()) && index < recyclables.size()){
             index++;
             if(index<recyclables.size()-1)
                 ret = recyclables.get(index);
@@ -78,7 +76,6 @@ public class ConveyorBelt {
 
     public void addRecyclable(Recyclable r) {
         recyclables.add(r);
-        r.getSprite().setPath(p);
 		game.addRecyclable(r);
     }
 
@@ -94,41 +91,13 @@ public class ConveyorBelt {
     	speedPixPerSecond = speedPixPerSecond + (maxSpeedPixPerSecond - speedPixPerSecond) * pctOfFullSpeed;
     }
 
-	public void update(double currentTimeSec) {
-        moveConveyorBelt(currentTimeSec);
-        
-        if (!debugCollisions) {
-            possiblyGenerateItem(currentTimeSec);
-        }
-        
-	}
-
-	/**
-	 * Advances the conveyor belt.  All the items on it will get carried along for the ride!
-	 * @param currentTimeMsec
-	 */
-	private void moveConveyorBelt(double currentTimeSec) {
-		double timePassedSec = currentTimeSec - lastMotionTimeSec;
-		for(Recyclable r : recyclables){
-			updateItemPosition(timePassedSec);
-		}
-		lastMotionTimeSec = currentTimeSec;
-	}
-	
-	/**
-	 * Moves a recyclable to wherever it should be after the given amount of time.
-	 * @param timePassedMsec
-	 */
-	private void updateItemPosition(double timePassedSec){
-		throw new Exception("Not implemented");
-	}
-
 	/**
 	 * Generates new item if necessary
 	 */
 	private void possiblyGenerateItem(double currentTimeSec) {
 		if (needsItemGeneration(currentTimeSec)) {
-			Recyclable r = new Recyclable(currentTimeSec, RecyclableType.getRandom(game.getNumItemTypesInUse()));
+			// Recyclables initially take the path of the conveyor belt
+			Recyclable r = new Recyclable(RecyclableType.getRandom(game.getNumItemTypesInUse()), CONVEYOR_BELT_PATH);
 			addRecyclable(r);
 			logger.debug("Item generated: " + r);
 		}
@@ -152,4 +121,50 @@ public class ConveyorBelt {
 		}
 		return false;
     }
+
+	public void update(double currentTimeSec) {
+		// Move the conveyor
+        moveConveyorBelt(currentTimeSec);
+        
+        // Generate more items, if we feel like it
+        if (!debugCollisions) {
+            possiblyGenerateItem(currentTimeSec);
+        }
+	}    
+
+	/**
+	 * Advances the conveyor belt.  All the items on it will get carried along for the ride!
+	 * @param currentTimeMsec
+	 */
+	private void moveConveyorBelt(double currentTimeSec) {
+		ArrayList<Recyclable> recyclablesToRemove = new ArrayList<Recyclable>();
+        
+		// Figure out how much time has passed since we last moved
+		double timePassedSec = currentTimeSec - lastMotionTimeSec;
+        
+        // Update all the current items
+		for(Recyclable recyclable : recyclables){
+			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
+			
+			if(newPosition.equals(GameConstants.END_POSITION)){
+                recyclablesToRemove.add(recyclable);
+                game.handleScore(recyclable, RecycleBin.TRASH_BIN);
+			}
+			else{
+				recyclable.setPosition(newPosition);		
+			}
+		}
+		
+		// Some need to be removed
+        // Can't modify in previous loop because it is iterating need this to avoid
+        // a concurrent modification exception.
+        for (Recyclable recyclable : recyclablesToRemove) {
+        	// Removal involves the item in the linked list
+            removeRecyclable(recyclable);
+            
+            // And the image on the screen
+            game.getGameScreen().removeSprite(recyclable.getSprite());
+        }
+		lastMotionTimeSec = currentTimeSec;
+	}
 }

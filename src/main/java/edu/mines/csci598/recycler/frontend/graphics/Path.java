@@ -2,10 +2,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-
-import org.apache.log4j.Logger;
+import java.util.List;
 
 /**
  * A Path is a representation of the path an item is to follow on the screen. It consists
@@ -18,11 +15,16 @@ import org.apache.log4j.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class Path {
-	private static final Logger logger = Logger.getLogger(Path.class);
     ArrayList<Line> path = new ArrayList<Line>();
 
     public Path() {
-
+    	
+    }
+    
+    public Path(List<Line> lines) {
+    	for(Line l : lines){
+    		path.add(l);
+    	}
     }
 
     /**
@@ -34,29 +36,6 @@ public class Path {
     public boolean addLine(Line l) {
         return path.add(l);
     }
-
-
-    /**
-     * @param startTime     The time the path starts
-     * @param referenceTime The time where you want to see where it is along the path.
-     * @return
-     */
-/*
-    // TODO this needs better documentation
-    public Coordinate getLocation(double startTime, double referenceTime) {
-        Coordinate coordinate = new Coordinate(0, 0);
-        double time = referenceTime - startTime;
-        for (Line l : path) {
-            double currentLineTotalTime = l.getTotalTime();
-            if (time <= currentLineTotalTime || l == path.get(path.size() - 1)) {
-                coordinate = l.getLocation(time);
-                break;
-            }
-            time = time - currentLineTotalTime;
-        }
-        return coordinate;
-    }
-*/
     
     /**
      * This method calculates the new position of an object along this path given the item’s
@@ -108,31 +87,4 @@ public class Path {
     	
 		return endLocation;
     }
-
-    /**
-     * Returns true if the current path has completed
-     * @param startTime
-     * @param referenceTime
-     * @return
-     */
-    public boolean pathFinished(double startTime, double referenceTime){
-        double totalTime = 0;
-        for(Line l:path){
-            totalTime+=l.getTotalTime();
-        }
-        return totalTime <= (referenceTime-startTime);
-    }
-
-	public void setSpeed(double handCollisionPathSpeed) {
-		throw new Exception("Not implemented");		
-	}
-	
-	/*private boolean intersectsPoint(Coordinate c){
-		for(Line l : path){
-			if(l.intersectsPoint(c)){
-				return true;
-			}
-		}
-		return false;
-	}*/
 }

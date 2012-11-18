@@ -14,6 +14,8 @@ package edu.mines.csci598.recycler.frontend;
  */
 public class RecycleBin {
 
+	public static final RecycleBin TRASH_BIN = new RecycleBin(RecyclableType.TRASH);
+	
     public enum ConveyorSide {RIGHT, LEFT};
     private double minY;
     private double maxY;

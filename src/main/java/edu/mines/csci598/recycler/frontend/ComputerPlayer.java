@@ -61,7 +61,7 @@ public class ComputerPlayer {
         return ret;
     }
     private void strike(Recyclable r, double currentTimeSec){
-        if(r.getSprite().isTouchable()){
+        if(r.isTouchable()){
             if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
                 //Log.logInfo("hx="+primary.getSprite().getX()+",hy"+primary.getSprite().getY()+
                 //            ",hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
@@ -88,7 +88,7 @@ public class ComputerPlayer {
     }
 
     public void setHandToCorrectSide(Recyclable r){
-        if(r.getSprite().getState()== Sprite.TouchState.TOUCHABLE){
+        if(r.isTouchable()){
             RecycleBin bin = recycleBins.findCorrectBin(r);
             RecycleBin.ConveyorSide binSide = bin.getSide();
             if(binSide==RecycleBin.ConveyorSide.RIGHT){
@@ -119,12 +119,12 @@ public class ComputerPlayer {
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
             logger.info("Pushed Right");
-            r.setMotionState(Recyclable.MotionState.FALL_RIGHT);
+            r.setMotionState(MotionState.FALL_RIGHT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY());
         } else {
             logger.info("Pushed Left");
-            r.setMotionState(Recyclable.MotionState.FALL_LEFT);
+            r.setMotionState(MotionState.FALL_LEFT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY());
         }
@@ -132,7 +132,7 @@ public class ComputerPlayer {
         path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
         r.getSprite().setPath(path);
         r.getSprite().setStartTime(currentTimeSec);
-        r.getSprite().setState(Sprite.TouchState.UNTOUCHABLE);
+        r.getSprite().setTouchableState(Sprite.TouchState.UNTOUCHABLE);
         RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
         if(bin.isCorrectRecyclableType(r)){
             score++;

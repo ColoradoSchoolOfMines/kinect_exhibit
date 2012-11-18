@@ -83,11 +83,10 @@ public class GameScreen {
     }
 
     /**
-     * Adds a sprite in an initially untouchable state
+     * Adds a sprite
      * @param s - The sprite to add
      */
     public void addSprite(Sprite s) {
-            s.setState(Sprite.TouchState.UNTOUCHABLE);
             sprites.add(s);
     }
 

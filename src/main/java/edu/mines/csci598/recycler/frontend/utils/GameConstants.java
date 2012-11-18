@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
+import java.awt.geom.Point2D;
+
 import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
 
@@ -41,38 +43,27 @@ public final class GameConstants {
      */
     public static final double START_ITEM_GENERATION_PROB = 0.5;
 
-    // TODO these three should become an enum, so that ADD_SPRITE != BOTTOM_PATH_START_X
-    public static final int ADD_SPRITE = 0;
-    public static final int REMOVE_SPRITE = 1;
-    public static final int UPDATE_SPRITES = 2;
-
     public static final int BOTTOM_PATH_START_X = 0;
     public static final int BOTTOM_PATH_START_Y = 880;
     public static final int BOTTOM_PATH_END_X = 445;
     public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
-    /*public static final double BOTTOM_PATH_START_TIME = 5;
-    public static final double BOTTOM_PATH_END_TIME = 5;*/
-
+    
     public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
     public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
     public static final int VERTICAL_PATH_END_Y = 40;
-    /*public static final double VERTICAL_PATH_START_TIME = 15;
-    public static final double VERTICAL_PATH_END_TIME = 1.5;*/
 
     public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
     public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
     public static final int TOP_PATH_END_X = 750;
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
-    /*public static final double TOP_PATH_START_TIME = BOTTOM_PATH_START_TIME;
-    public static final double TOP_PATH_END_TIME = BOTTOM_PATH_END_TIME;*/
+
+	public static final Point2D END_POSITION = new Point2D.Double(TOP_PATH_END_X, TOP_PATH_END_Y);
 
     public static final int ITEM_PATH_END = 250;
-    public static final int ITEM_PATH_TIME = 5;
 
     public static final int SPRITE_BECOMES_TOUCHABLE = BOTTOM_PATH_END_Y - 50;
     public static final int SPRITE_BECOMES_UNTOUCHABLE = TOP_PATH_START_Y + 20;
-    public static final int HORIZONTAL_VELOCITY = 2;
 
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;

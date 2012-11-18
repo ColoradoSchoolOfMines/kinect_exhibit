@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -14,19 +16,12 @@ import java.awt.*;
  * Time: 9:37 PM
  * To change this template use File | Settings | File Templates.
  */
-
-
 public class Sprite {
-
-    public enum TouchState {TOUCHABLE, UNTOUCHABLE};
     private int dx;
     private int dy;
     private int x;
     private int y;
     private String fileName;
-    private Path path;
-    private double startTime;
-    private TouchState state;
 
     public Sprite(String fileName, int x, int y) {
         this.x = x;
@@ -35,7 +30,6 @@ public class Sprite {
         setImage(fileName);
         setHorizontalVelocity(0);
         setVerticalVelocity(0);
-        state = TouchState.UNTOUCHABLE;
     }
 
     /*
@@ -46,20 +40,6 @@ public class Sprite {
       */
     public void setImage(String fileName) {
         this.fileName = fileName;
-    }
-
-    public void setState(TouchState newState) {
-        state = newState;
-    }
-
-    public TouchState getState() {
-        return state;
-    }
-    public boolean isTouchable(){
-        boolean ret=false;
-        if(state == TouchState.TOUCHABLE)ret = true;
-
-        return  ret;
     }
 
     /*
@@ -151,35 +131,6 @@ public class Sprite {
         return ResourceManager.getInstance().getImage(fileName);
     }
 
-    public void setPath(Path p) {
-        path = p;
-    }
-
-    ;
-
-    /**
-     * Set the time the sprite is supposed to start moving along its path.
-     * This is usually whatever the current time is.
-     *
-     * @param time
-     */
-    public void setStartTime(double time) {
-        startTime = time;
-    }
-
-    /**
-     * Based on the time the sprite will update it's x and y location.
-     *
-     * @param time
-     */
-    public synchronized void updateLocation(double time) {
-        if (path != null) {
-            Coordinate c = path.getLocation(startTime, time);
-            x = (int) c.x;
-            y = (int) c.y;
-        }
-    }
-
     /**
      * Checks to see if a given point is within the bounds of the sprite
      *
@@ -197,9 +148,14 @@ public class Sprite {
         }
         return false;
     }
-
-    public boolean hasFinishedPath(double referenceTime){
-       return path.pathFinished(startTime,referenceTime);
+    
+    public Point2D getPosition(){
+    	return new Point2D.Double(x, y);
     }
+
+	public synchronized void setPosition(Point2D location) {
+		setX((int)Math.round(location.getX()));
+		setY((int)Math.round(location.getY()));
+	}
 
 }

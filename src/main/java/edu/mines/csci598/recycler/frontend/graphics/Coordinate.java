@@ -14,7 +14,6 @@ import java.awt.geom.Point2D;
 public class Coordinate extends Point2D.Double{
 	private double x, y;
 	
-	// Our coordinates measure pixels.  To avoid loss of precision
     public Coordinate(double x, double y) {
     	super(x, y);
     }

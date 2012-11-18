@@ -34,28 +34,6 @@ public class Line extends Line2D.Double{
         //TODO: Add error detection
 
     }
-
-    /**
-     * Based on the time this function will return the location along the line it is in.
-     *
-     * @param time
-     * @return
-     */
-    /*public Coordinate getLocation(double time) {
-        double x, y;
-        if (time <= 0) {
-            x = startX;
-            y = startY;
-        } else if (time >= totalTime) {
-            x = endX;
-            y = endY;
-        } else { //we are somewhere in the middle of the line
-            double fraction = time / totalTime;
-            x = (endX - startX) * fraction + startX;
-            y = (endY - startY) * fraction + startY;
-        }
-        return new Coordinate(x, y);
-    }*/
     
     public boolean intersectsPoint(Point2D point){
     	return ptLineDist(point) == 0.0;

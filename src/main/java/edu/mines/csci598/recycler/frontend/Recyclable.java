@@ -1,10 +1,10 @@
 package edu.mines.csci598.recycler.frontend;
 
-import org.apache.log4j.Level;
+import java.awt.geom.Point2D;
+
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
@@ -21,18 +21,17 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
  */
 public class Recyclable implements Displayable {
     private static final Logger logger = Logger.getLogger(Recyclable.class);
+    public enum CollisionState{HIT_LEFT, HIT_RIGHT, NONE};
     
-    public enum MotionState {CHUTE, CONVEYOR, FALL_LEFT, FALL_RIGHT, FALL_TRASH, STRIKE};
     private Sprite sprite;
     private RecyclableType type;
-    private MotionState currentMotion = MotionState.CONVEYOR;
+    private MotionState currentMotion;
+    private Path path;
 
-    public Recyclable(double currentTime, RecyclableType type) {
+    public Recyclable(RecyclableType type, Path path) {
         this.type = type;
-
+        currentMotion = MotionState.CONVEYOR;
         sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y);
-        sprite.setStartTime(currentTime);
-        // TODO should recyclables really need to know the time???
     }
 
     @Override
@@ -48,8 +47,20 @@ public class Recyclable implements Displayable {
         this.currentMotion = motion;
     }
 
-    public MotionState getCurrentMotion() {
+    public MotionState getMotionState() {
         return currentMotion;
+    }
+    
+    public boolean isTouchable(){
+        return currentMotion.isTouchable();
+    }
+    
+    public Path getPath(){
+    	return path;
+    }
+    
+    public void setPath(Path path){
+    	this.path = path;
     }
 
     /**
@@ -59,36 +70,26 @@ public class Recyclable implements Displayable {
      * @param currentTimeSec
      * @return
      */
-    public boolean hasCollisionWithHand(Hand hand, double currentTimeSec) {
-        if (sprite.getState() == Sprite.TouchState.TOUCHABLE) {
-            if(sprite.isPointInside(hand.getX(), hand.getY())) {
-                if (hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY) {
-                    Path path = new Path();
-                    logger.info("Pushed Right");
-                    Line collideLine = new Line(sprite.getX(), sprite.getY(),
-                            sprite.getX() + GameConstants.ITEM_PATH_END, sprite.getY());
-                    path.addLine(collideLine);
-                    path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
-                    sprite.setPath(path);
-                    sprite.setStartTime(currentTimeSec);
-                    setMotionState(Recyclable.MotionState.FALL_RIGHT);
-                    return true;
-                }
-                else if (hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY) {
-                    Path path = new Path();
-                    logger.info("Pushed Left");
-                    Line collideLine = new Line(sprite.getX(), sprite.getY(),
-                            sprite.getX() - GameConstants.ITEM_PATH_END, sprite.getY());
-                    path.addLine(collideLine);
-                    path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
-                    sprite.setPath(path);
-                    sprite.setStartTime(currentTimeSec);
-                    setMotionState(Recyclable.MotionState.FALL_LEFT);
-                    return true;
-                }
-            }
-        }
-        return false;
+    public CollisionState hasCollisionWithHand(Hand hand, double currentTimeSec) {
+    	if(!isTouchable() || !sprite.isPointInside(hand.getX(), hand.getY())){
+    		return CollisionState.NONE;
+    	}
+    	if(hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY){
+    		return CollisionState.HIT_RIGHT;
+    	}
+    	if(hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY){
+    		return CollisionState.HIT_LEFT;
+    	}
+    	
+    	return CollisionState.NONE;
     }
+
+	public Point2D getPosition() {
+		return sprite.getPosition();
+	}
+
+	public void setPosition(Point2D location) {
+		sprite.setPosition(location);
+	}
 
 }
