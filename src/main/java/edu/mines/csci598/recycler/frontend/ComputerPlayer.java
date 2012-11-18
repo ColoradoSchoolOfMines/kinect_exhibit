@@ -47,7 +47,7 @@ public class ComputerPlayer {
         //Follow target recyclable
         followRecyclable(r,currentTimeSec);
         //Set hand to correct side
-        setHandToCorrectSide(r);
+        //setHandToCorrectSide(r);
         //Strike target recyclable
         strike(r,currentTimeSec);
     }

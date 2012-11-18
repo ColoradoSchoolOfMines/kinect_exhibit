@@ -14,6 +14,14 @@ import edu.mines.csci598.recycler.frontend.RecycleBin;
  */
 public final class GameConstants {
     /**
+     * Set to true to have only one item generated on the screen at a time
+     */
+    public static final boolean DEBUG_COLLISIONS = false;
+    /**
+     * Set to true when debugging the computer player
+     */
+    public static final boolean DEBUG_COMPUTER_PLAYER = false;
+    /**
      * The number of item types which are generated at the start of the game
      */
     public static final int INITIAL_NUMBER_OF_ITEM_TYPES = 1;
@@ -109,18 +117,6 @@ public final class GameConstants {
      * The number of items we can include, not including powerups
      */
 	public static final int MAX_ITEM_COUNT = 3;
-	
-	
-	
-	
-	/**
-	 * Set to true to have only one item generated on the screen at a time
-	 */
-	public static final boolean DEBUG_COLLISIONS = false;
-	/**
-	 * Set to true when debugging the computer player
-	 */
-	public static final boolean DEBUG_COMPUTER_PLAYER = false;
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
