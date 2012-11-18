@@ -1,9 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
@@ -129,10 +127,17 @@ public class ComputerPlayer {
                     r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY());
         }
         path.addLine(collideLine);
-        path.setSpeed(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
-        r.getSprite().setPath(path);
-        r.getSprite().setStartTime(currentTimeSec);
-        r.getSprite().setTouchableState(Sprite.TouchState.UNTOUCHABLE);
+        r.setPath(path);
+        
+        // Marshall: I'm trying to stay out of this code, but you'll need something
+        // like this to get it to work again:
+        // fallingItems.add(r);
+        // elsewhere: 
+        //      for(Recyclable r : fallingItems){
+		//			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
+		//			r.setPosition(newPosition);
+        //		}
+        
         RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
         if(bin.isCorrectRecyclableType(r)){
             score++;

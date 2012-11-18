@@ -2,9 +2,8 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
-import java.awt.*;
+import java.awt.Image;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.

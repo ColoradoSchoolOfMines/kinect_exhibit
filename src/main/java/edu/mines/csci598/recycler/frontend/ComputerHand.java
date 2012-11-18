@@ -4,10 +4,7 @@ import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.

@@ -124,7 +124,7 @@ public final class GameConstants {
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
-	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 50;
+	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 500;
 	/**
 	 * The speed of the conveyor belt at maximum difficulty, measured in pixels per second
 	 */

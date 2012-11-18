@@ -2,17 +2,14 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class ConveyorBelt {
@@ -125,7 +122,6 @@ public class ConveyorBelt {
 	public void update(double currentTimeSec) {
 		// Move the conveyor
         moveConveyorBelt(currentTimeSec);
-        logger.info(currentTimeSec);
         
         // Generate more items, if we feel like it
         if (!debugCollisions) {
@@ -145,7 +141,6 @@ public class ConveyorBelt {
         
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
-			Path p = recyclable.getPath();
 			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
 			
 			if(newPosition.equals(GameConstants.END_POSITION)){

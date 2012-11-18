@@ -12,11 +12,10 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -30,7 +29,7 @@ import java.util.Random;
  */
 public class GameLogic extends GameState {
     private static final Logger logger = Logger.getLogger(GameLogic.class);
-
+    
     private static GameLogic INSTANCE;
     private Player player1, player2;
     private ComputerPlayer computerPlayer;
@@ -96,6 +95,7 @@ public class GameLogic extends GameState {
         	// Find out what kind of collision happened, if any
         	CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
         	if(collisionState == CollisionState.NONE){
+        		logger.info("Item is untouchable");
         		return;
         	}
         	else{
@@ -213,6 +213,8 @@ public class GameLogic extends GameState {
 	}
 
     protected GameState updateThis(float elapsedTime) {
+    	logger.debug("Entering main update loop");
+    	
         //in seconds
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
