@@ -15,7 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Path {
-    ArrayList<Line> path = new ArrayList<Line>();
+    List<Line> path = new ArrayList<Line>();
 
     public Path() {
     	
@@ -27,7 +27,13 @@ public class Path {
     	}
     }
 
-    /**
+    public Path(Path conveyorBeltPath) {
+    	for(Line l : conveyorBeltPath.path){
+    		path.add(l);
+    	}
+	}
+
+	/**
      * This function adds the Line to the end of the path.
      *
      * @param l

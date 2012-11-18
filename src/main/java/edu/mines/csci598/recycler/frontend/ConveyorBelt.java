@@ -125,6 +125,7 @@ public class ConveyorBelt {
 	public void update(double currentTimeSec) {
 		// Move the conveyor
         moveConveyorBelt(currentTimeSec);
+        logger.info(currentTimeSec);
         
         // Generate more items, if we feel like it
         if (!debugCollisions) {
@@ -144,6 +145,7 @@ public class ConveyorBelt {
         
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
+			Path p = recyclable.getPath();
 			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
 			
 			if(newPosition.equals(GameConstants.END_POSITION)){

@@ -37,13 +37,13 @@ public class PathTest extends TestCase {
         Point2D end;
         
         // Test trying to move a point not on the line does nothing
-        start = new Coordinate(2, 1);
+        start = new Point2D.Double(2, 1);
         end = p.getLocation(start, 5, 5);
         assertEquals(2.0, end.getX());
         assertEquals(1.0, end.getY());
 
 
-        start = new Coordinate(0, 0);
+        start = new Point2D.Double(0, 0);
         
         
         // Test normal cases
@@ -51,7 +51,7 @@ public class PathTest extends TestCase {
         assertEquals(3.6, end.getX(), precision);
         assertEquals(0.0, end.getY(), precision);
 
-        start = new Coordinate(0, 0);
+        start = new Point2D.Double(0, 0);
         end = p.getLocation(start, 1.2, 3);
         assertEquals(3.6, end.getX(), precision);
         assertEquals(0.0, end.getY(), precision);
@@ -83,7 +83,7 @@ public class PathTest extends TestCase {
         assertEquals(15, end.getY(), precision);
         
         // Test backwards - around a corner!
-        start = new Coordinate(5, 2);
+        start = new Point2D.Double(5, 2);
         end = p.getLocation(start, -0.5, 5);
         assertEquals(4.5, end.getX(), precision);
         assertEquals(0, end.getY(), precision);
@@ -97,7 +97,7 @@ public class PathTest extends TestCase {
         p = new Path();
         p.addLine(new Line(0, 0, 5, 0));
         p.addLine(new Line(5, 15, 10, 15));
-        start = new Coordinate(0, 0);
+        start = new Point2D.Double(0, 0);
         end = p.getLocation(start, 1, 10);
         assertEquals(5, end.getX(), precision);
         assertEquals(0, end.getY(), precision);

@@ -30,6 +30,7 @@ public class Recyclable implements Displayable {
 
     public Recyclable(RecyclableType type, Path path) {
         this.type = type;
+        this.path = path;
         currentMotion = MotionState.CONVEYOR;
         sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y);
     }

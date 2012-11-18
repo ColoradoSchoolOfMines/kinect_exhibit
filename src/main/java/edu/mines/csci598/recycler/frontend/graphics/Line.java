@@ -14,7 +14,7 @@ import java.awt.geom.Point2D;
  */
 public class Line extends Line2D.Double{
 
-	private final Coordinate startPoint, endPoint;
+	private final Point2D startPoint, endPoint;
 	
     /**
      * Begining coordinates, ending coordinates and how long the line takes to be traversed. This way based on a time
@@ -29,10 +29,8 @@ public class Line extends Line2D.Double{
     public Line(double startX, double startY, double endX, double endY) {
         super(startX, startY, endX, endY);
                 
-        startPoint = new Coordinate(startX, startY);
-        endPoint = new Coordinate(endX, endY);
-        //TODO: Add error detection
-
+        startPoint = new Point2D.Double(startX, startY);
+        endPoint = new Point2D.Double(endX, endY);
     }
     
     public boolean intersectsPoint(Point2D point){
@@ -60,7 +58,7 @@ public class Line extends Line2D.Double{
 		
 		double x = (lineLimit.getX() - currentLocation.getX()) * fractionOfLineTravelling + currentLocation.getX();
 		double y = (lineLimit.getY() - currentLocation.getY()) * fractionOfLineTravelling + currentLocation.getY();
-		return new Coordinate(x, y);
+		return new Point2D.Double(x, y);
 	}
     
 }
