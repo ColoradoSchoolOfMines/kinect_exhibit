@@ -34,7 +34,7 @@ public final class GameConstants {
      * items will never be kicked out faster than this.  It should be set high enough to prevent, at the
      * minimum, items from coliding with each other during creation.
      */
-    public static final double MIN_TIME_BETWEEN_GENERATIONS = 1;
+    public static final double MIN_TIME_BETWEEN_GENERATIONS = 2;
 
     public static final double INITIAL_MEAN_TIME_BETWEEN_GENERATIONS = 3;
     
@@ -67,6 +67,8 @@ public final class GameConstants {
     public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
 
 	public static final Point2D END_POSITION = new Point2D.Double(TOP_PATH_END_X, TOP_PATH_END_Y);
+    public static final Point2D BECOMES_TOUCHABLE_POSITION = new Point2D.Double(VERTICAL_PATH_START_X,VERTICAL_PATH_START_Y);
+    public static final Point2D BECOMES_UNTOUCHABLE_POSITION = new Point2D.Double(VERTICAL_PATH_END_X,VERTICAL_PATH_END_Y);
 
     public static final int ITEM_PATH_END = 250;
 

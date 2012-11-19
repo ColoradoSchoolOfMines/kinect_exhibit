@@ -8,7 +8,7 @@ public enum MotionState {
     FALL_TRASH(TouchState.UNTOUCHABLE), 
     STRIKE(TouchState.UNTOUCHABLE);
     
-    private enum TouchState {TOUCHABLE, UNTOUCHABLE};
+    public enum TouchState {TOUCHABLE, UNTOUCHABLE};
     private TouchState touchable;
     
     MotionState(TouchState touchable){

@@ -91,41 +91,44 @@ public class GameLogic extends GameState {
     private void potentiallyHandleCollision(Recyclable r) {
         if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
         	Hand hand = player1.primary;
-        	
-        	// Find out what kind of collision happened, if any
-        	CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
-        	if(collisionState == CollisionState.NONE){
-        		logger.info("Item is untouchable");
-        		return;
-        	}
-        	else{
-            	Point2D position = r.getPosition();
-                Path path = new Path();
-                Line collideLine;
-                if (collisionState == CollisionState.HIT_RIGHT) {
-                    logger.info("Pushed Right");
-                    collideLine = new Line(position.getX(), position.getY(),
-                    		position.getX() + GameConstants.ITEM_PATH_END, position.getY());
-                    r.setMotionState(MotionState.FALL_RIGHT);
-                }
-                else if (collisionState == CollisionState.HIT_LEFT) {
-                    logger.info("Pushed Left");
-                    collideLine = new Line(position.getX(), position.getY(),
-                    		position.getX() - GameConstants.ITEM_PATH_END, position.getY());
-                    r.setMotionState(MotionState.FALL_LEFT);
+            //if(r.isTouchable()) {
+                // Find out what kind of collision happened, if any
+                CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
+                if(collisionState == CollisionState.NONE){
+                    //logger.info("Item is untouchable");
+                    return;
                 }
                 else{
-                	throw new IllegalStateException("Collision handling can't handle collision states other than right and left");
+                    Point2D position = r.getPosition();
+                    Path path = new Path();
+                    Line collideLine;
+                    if (collisionState == CollisionState.HIT_RIGHT) {
+                        logger.info("Pushed Right");
+                        collideLine = new Line(position.getX(), position.getY(),
+                                position.getX() + GameConstants.ITEM_PATH_END, position.getY());
+                        //TODO: Items still touchable when falling
+                        r.setMotionState(MotionState.FALL_RIGHT);
+                    }
+                    else if (collisionState == CollisionState.HIT_LEFT) {
+                        logger.info("Pushed Left");
+                        collideLine = new Line(position.getX(), position.getY(),
+                                position.getX() - GameConstants.ITEM_PATH_END, position.getY());
+                        //TODO: Items still touchable when falling
+                        r.setMotionState(MotionState.FALL_LEFT);
+                    }
+                    else{
+                        throw new IllegalStateException("Collision handling can't handle collision states other than right and left");
+                    }
+                    path.addLine(collideLine);
+                    r.setPath(path);
+
+                    fallingItems.add(r);
+
+                    //Retrieves bin
+                    RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
+                    handleScore(r, bin);
                 }
-                path.addLine(collideLine);
-                r.setPath(path);
-                
-                fallingItems.add(r);
-                
-                //Retrieves bin
-                RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
-                handleScore(r, bin);
-        	}
+            //}
         } else {
             //Computer collision detection
         }

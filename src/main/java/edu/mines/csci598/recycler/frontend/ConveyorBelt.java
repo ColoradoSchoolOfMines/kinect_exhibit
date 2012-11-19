@@ -131,7 +131,7 @@ public class ConveyorBelt {
 
 	/**
 	 * Advances the conveyor belt.  All the items on it will get carried along for the ride!
-	 * @param currentTimeMsec
+	 * @param currentTimeSec in milliseconds
 	 */
 	private void moveConveyorBelt(double currentTimeSec) {
 		ArrayList<Recyclable> recyclablesToRemove = new ArrayList<Recyclable>();
@@ -142,14 +142,16 @@ public class ConveyorBelt {
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
 			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
-			
-			if(newPosition.equals(GameConstants.END_POSITION)){
+			if(newPosition.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
+                //recyclable.setMotionState(MotionState.CHUTE);
+
+            } if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
+                recyclable.setMotionState(MotionState.CONVEYOR);
+            } else if(newPosition.equals(GameConstants.END_POSITION)){
                 recyclablesToRemove.add(recyclable);
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
 			}
-			else{
-				recyclable.setPosition(newPosition);		
-			}
+            recyclable.setPosition(newPosition);
 		}
 		
 		// Some need to be removed
