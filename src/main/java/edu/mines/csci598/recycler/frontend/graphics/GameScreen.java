@@ -21,16 +21,20 @@ public class GameScreen {
     private static final Logger logger = Logger.getLogger(GameScreen.class);
     
     private static GameScreen INSTANCE;
-    private Sprite backgroundLeft;
-    private Sprite backgroundRight;
+    private Sprite backgroundBottom;
+    private Sprite backgroundTop;
+    //private Sprite backgroundLeft;
+    //private Sprite backgroundRight;
     private Sprite player1PrimaryHand;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
     private double scaledWidth;
     private double scaledHeight;
 
     private GameScreen() {
-        backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
-        backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
+        backgroundBottom = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/background_doubled.jpg",0,0);
+        backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_Frame.png",0,0);
+        //backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
+        //backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
     }
@@ -43,8 +47,8 @@ public class GameScreen {
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
-        g2d.drawImage(backgroundLeft.getImage(), backgroundLeft.getX(), backgroundLeft.getY(), canvas);
-        g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
+        g2d.drawImage(backgroundBottom.getImage(), backgroundBottom.getX(), backgroundBottom.getY(), canvas);
+       // g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.green);
@@ -56,22 +60,6 @@ public class GameScreen {
         g2d.drawString("STRIKES: ", 130, 20);
         g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.black);
-        g2d.drawString("Paper ", (int) (scaledWidth * GraphicsConstants.LEFT_X_SCALE), (int) (scaledHeight * GraphicsConstants.LEFT_TOP_Y_SCALE));
-
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.black);
-        g2d.drawString("Glass", (int) (scaledWidth * GraphicsConstants.LEFT_X_SCALE), (int) (scaledHeight * GraphicsConstants.LEFT_BOTTOM_Y_SCALE));
-
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.black);
-        g2d.drawString("Plastic", (int) (scaledWidth * GraphicsConstants.RIGHT_X_SCALE), (int) (scaledHeight * GraphicsConstants.RIGHT_TOP_Y_SCALE));
-
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.black);
-        g2d.drawString("Plastic", (int) (scaledWidth * GraphicsConstants.RIGHT_X_SCALE), (int) (scaledHeight * GraphicsConstants.RIGHT_BOTTOM_Y_SCALE));
-
         for (Sprite sprite : sprites) {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         }
@@ -80,6 +68,9 @@ public class GameScreen {
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
         else
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
+
+        g2d.drawImage(backgroundTop.getImage(), backgroundTop.getX(), backgroundTop.getY(), canvas);
+
     }
 
     /**

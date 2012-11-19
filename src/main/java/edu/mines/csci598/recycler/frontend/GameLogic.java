@@ -71,6 +71,10 @@ public class GameLogic extends GameState {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
+        if(GameConstants.DEBUG_COLLISIONS){
+            Recyclable r = new Recyclable(RecyclableType.PLASTIC, ConveyorBelt.CONVEYOR_BELT_PATH);
+              conveyor.addRecyclable(r);
+        }
     }
 
     public static final GameLogic getInstance() {
@@ -91,7 +95,8 @@ public class GameLogic extends GameState {
     private void potentiallyHandleCollision(Recyclable r) {
         if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
         	Hand hand = player1.primary;
-            //if(r.isTouchable()) {
+            //logger.info("rms="+r.getMotionState()+",msc="+MotionState.CONVEYOR);
+            if(r.getMotionState()== MotionState.CONVEYOR) {
                 // Find out what kind of collision happened, if any
                 CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
                 if(collisionState == CollisionState.NONE){
@@ -103,14 +108,14 @@ public class GameLogic extends GameState {
                     Path path = new Path();
                     Line collideLine;
                     if (collisionState == CollisionState.HIT_RIGHT) {
-                        logger.info("Pushed Right");
+                        //logger.debug("Pushed Right");
                         collideLine = new Line(position.getX(), position.getY(),
                                 position.getX() + GameConstants.ITEM_PATH_END, position.getY());
                         //TODO: Items still touchable when falling
                         r.setMotionState(MotionState.FALL_RIGHT);
                     }
                     else if (collisionState == CollisionState.HIT_LEFT) {
-                        logger.info("Pushed Left");
+                        //logger.debug("Pushed Left");
                         collideLine = new Line(position.getX(), position.getY(),
                                 position.getX() - GameConstants.ITEM_PATH_END, position.getY());
                         //TODO: Items still touchable when falling
@@ -128,7 +133,7 @@ public class GameLogic extends GameState {
                     RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
                     handleScore(r, bin);
                 }
-            //}
+            }
         } else {
             //Computer collision detection
         }

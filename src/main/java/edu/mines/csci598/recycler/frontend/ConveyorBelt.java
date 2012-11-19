@@ -32,7 +32,7 @@ public class ConveyorBelt {
             GameConstants.VERTICAL_PATH_END_X, GameConstants.VERTICAL_PATH_END_Y);
     private static final Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
             GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y);
-    private static final Path CONVEYOR_BELT_PATH = new Path(Arrays.asList(bottomLine, verticalLine, topLine));
+    public static final Path CONVEYOR_BELT_PATH = new Path(Arrays.asList(bottomLine, verticalLine, topLine));
 
 
     public ConveyorBelt(GameLogic game) {
@@ -143,15 +143,21 @@ public class ConveyorBelt {
 		for(Recyclable recyclable : recyclables){
 			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
 			if(newPosition.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
-                //recyclable.setMotionState(MotionState.CHUTE);
+                recyclable.setMotionState(MotionState.CHUTE);
 
             } if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
-                recyclable.setMotionState(MotionState.CONVEYOR);
+                if(recyclable.getMotionState()==MotionState.CHUTE)recyclable.setMotionState(MotionState.CONVEYOR);
             } else if(newPosition.equals(GameConstants.END_POSITION)){
                 recyclablesToRemove.add(recyclable);
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
 			}
             recyclable.setPosition(newPosition);
+
+            if(recyclable.getMotionState()==MotionState.FALL_LEFT){
+                //if(newPosition.getY()<GameConstants)
+            }else if(recyclable.getMotionState()==MotionState.FALL_RIGHT){
+
+            }
 		}
 		
 		// Some need to be removed

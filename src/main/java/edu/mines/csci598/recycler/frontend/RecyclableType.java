@@ -11,12 +11,11 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public enum RecyclableType {
-    PLASTIC("src/main/resources/SpriteImages/plastic.png"),
-    PAPER("src/main/resources/SpriteImages/paper.png"),
-    GLASS("src/main/resources/SpriteImages/glass.png"),
-    TRASH("");
-    //TRASH("not yet drawn");
-    // TODO get trash going
+    PLASTIC("src/main/resources/SpriteImages/finalSpriteImages/plastic_01.png"),
+    PAPER("src/main/resources/SpriteImages/finalSpriteImages/paper_01.png"),
+    GLASS("src/main/resources/SpriteImages/finalSpriteImages/glass_01.png"),
+    TRASH("src/main/resources/SpriteImages/finalSpriteImages/trash_01.png"),
+    HAZARD("src/main/resources/SpriteImages/finalSpriteImages/hazard_01.png");
 
     private String imageFilePath;
 
