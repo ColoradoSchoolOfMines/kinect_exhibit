@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
@@ -20,6 +21,7 @@ public class ConveyorBelt {
     private double lastMotionTimeSec;
 	private double nextTimeToGenerate;
     private GameLogic game;
+    private GameScreen gameScreen;
     
     private double speedPixPerSecond;
     private final double maxSpeedPixPerSecond;
@@ -35,8 +37,9 @@ public class ConveyorBelt {
     public static final Path CONVEYOR_BELT_PATH = new Path(Arrays.asList(bottomLine, verticalLine, topLine));
 
 
-    public ConveyorBelt(GameLogic game) {
+    public ConveyorBelt(GameLogic game,GameScreen gameScreen) {
         this.game = game;
+        this.gameScreen = gameScreen;
     	
     	recyclables = new ArrayList<Recyclable>();
         
@@ -138,25 +141,33 @@ public class ConveyorBelt {
         
 		// Figure out how much time has passed since we last moved
 		double timePassedSec = currentTimeSec - lastMotionTimeSec;
-        
+
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
-			Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec); 
+            Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec);
 			if(newPosition.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
                 recyclable.setMotionState(MotionState.CHUTE);
 
-            } if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
+            }else if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
                 if(recyclable.getMotionState()==MotionState.CHUTE)recyclable.setMotionState(MotionState.CONVEYOR);
-            } else if(newPosition.equals(GameConstants.END_POSITION)){
+            }
+            if(newPosition.equals(GameConstants.END_POSITION)){
                 recyclablesToRemove.add(recyclable);
+                gameScreen.removeSprite(recyclable.getSprite());
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
 			}
             recyclable.setPosition(newPosition);
 
             if(recyclable.getMotionState()==MotionState.FALL_LEFT){
-                //if(newPosition.getY()<GameConstants)
+                if(newPosition.getX()<=GameConstants.VERTICAL_PATH_START_X-(GameConstants.ITEM_PATH_END*3/4)){
+                    recyclablesToRemove.add(recyclable);
+                    gameScreen.removeSprite(recyclable.getSprite());
+                }
             }else if(recyclable.getMotionState()==MotionState.FALL_RIGHT){
-
+                if(newPosition.getX()>=GameConstants.VERTICAL_PATH_START_X+(GameConstants.ITEM_PATH_END*3/4)){
+                    recyclablesToRemove.add(recyclable);
+                    gameScreen.removeSprite(recyclable.getSprite());
+                }
             }
 		}
 		

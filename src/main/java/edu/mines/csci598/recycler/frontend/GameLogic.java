@@ -59,7 +59,7 @@ public class GameLogic extends GameState {
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
-        conveyor = new ConveyorBelt(this);
+        conveyor = new ConveyorBelt(this,gameScreen);
         startTime = System.currentTimeMillis();
 
         // sets up the first player and adds its primary hand to the gameScreen
@@ -111,14 +111,12 @@ public class GameLogic extends GameState {
                         //logger.debug("Pushed Right");
                         collideLine = new Line(position.getX(), position.getY(),
                                 position.getX() + GameConstants.ITEM_PATH_END, position.getY());
-                        //TODO: Items still touchable when falling
                         r.setMotionState(MotionState.FALL_RIGHT);
                     }
                     else if (collisionState == CollisionState.HIT_LEFT) {
                         //logger.debug("Pushed Left");
                         collideLine = new Line(position.getX(), position.getY(),
                                 position.getX() - GameConstants.ITEM_PATH_END, position.getY());
-                        //TODO: Items still touchable when falling
                         r.setMotionState(MotionState.FALL_LEFT);
                     }
                     else{
