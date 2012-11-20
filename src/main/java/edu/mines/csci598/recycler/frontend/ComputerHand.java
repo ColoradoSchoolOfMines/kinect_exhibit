@@ -27,6 +27,7 @@ public class ComputerHand {
     private int goalY;
 
     private boolean followingPath;
+    private boolean aboveRecyclable;
 
     public ComputerHand() {
         //logger.setLevel(Level.INFO);
@@ -40,6 +41,7 @@ public class ComputerHand {
         goalX=0;
         goalY=0;
         followingPath=false;
+        aboveRecyclable=false;
         int x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         int y = GameConstants.VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
@@ -73,6 +75,15 @@ public class ComputerHand {
     }
     public boolean isFollowingPath(){
         return followingPath;
+    }
+    public boolean isAboveRecyclable(){
+        return aboveRecyclable;
+    }
+    public void setAboveRecyclable(boolean aboveRecyclable){
+        this.aboveRecyclable=aboveRecyclable;
+    }
+    public void resetAboveRecyclable(){
+        aboveRecyclable=false;
     }
     /*public void resetHandPosition(){
         position.setLocation(GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
