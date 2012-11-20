@@ -36,7 +36,7 @@ public class GameLogic extends GameState {
     private GameScreen gameScreen;
     private GameManager gameManager;
     private RecycleBins recycleBins;
-    private ConveyorBelt conveyor;
+    private ConveyorBelt leftConveyor, rightConveyor;
     private List<Recyclable> fallingItems;
     private double currentTimeSec;
     private long startTime;
@@ -44,8 +44,6 @@ public class GameLogic extends GameState {
     private int numItemTypesInUse;
     private int score;
     private int strikes;
-    //TODO I (Joe) am adding this game over notfied stuff because it was causing game over to be displayed
-    //over and over again too many times ont otp of each other
     private boolean gameOverNotified = false;
 
 
@@ -59,7 +57,8 @@ public class GameLogic extends GameState {
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
-        conveyor = new ConveyorBelt(this,gameScreen);
+        leftConveyor = new ConveyorBelt(this,gameScreen,ConveyorBelt.CONVEYOR_BELT_PATH_LEFT);
+        rightConveyor = new ConveyorBelt(this,gameScreen,ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT);
         startTime = System.currentTimeMillis();
 
         // sets up the first player and adds its primary hand to the gameScreen
@@ -72,8 +71,10 @@ public class GameLogic extends GameState {
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
         if(GameConstants.DEBUG_COLLISIONS){
-            Recyclable r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH);
-              conveyor.addRecyclable(r);
+            Recyclable r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH_LEFT);
+            leftConveyor.addRecyclable(r);
+            r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT);
+            rightConveyor.addRecyclable(r);
         }
     }
 
@@ -201,7 +202,9 @@ public class GameLogic extends GameState {
 
     private void increaseSpeed() {
         double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
-        conveyor.setSpeed(pctToMaxDifficulty);
+        leftConveyor.setSpeed(pctToMaxDifficulty);
+        rightConveyor.setSpeed(pctToMaxDifficulty);
+
     }
 
     private void increaseItemGenerationProbability() {
@@ -229,17 +232,20 @@ public class GameLogic extends GameState {
             player1.primary.updateLocation();
         } else {
             //call update to computer hand on next recyclable that is touchable
-            if (conveyor.getNumRecyclablesOnConveyor() > 0) {
-                computerPlayer.updateAI(conveyor.getNextRecyclableThatIsTouchable(), currentTimeSec);
+            if (leftConveyor.getNumRecyclablesOnConveyor() > 0) {
+                computerPlayer.updateAI(leftConveyor.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
             handleAIScore();
         }
 
-        // Move conveyor and generate items
-        conveyor.update(currentTimeSec);
-
+        // Move conveyors and generate items
+        leftConveyor.update(currentTimeSec);
+        rightConveyor.update(currentTimeSec);
         // Handle existing item collisions
-        for (Recyclable r : conveyor.getRecyclables()) {
+        for (Recyclable r : leftConveyor.getRecyclables()) {
+            potentiallyHandleCollision(r);
+        }
+        for (Recyclable r : rightConveyor.getRecyclables()) {
             potentiallyHandleCollision(r);
         }
         

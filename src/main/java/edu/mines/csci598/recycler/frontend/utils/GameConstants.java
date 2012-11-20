@@ -1,9 +1,9 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
-import java.awt.geom.Point2D;
-
 import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
+
+import java.awt.geom.Point2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,29 +51,49 @@ public final class GameConstants {
      */
     public static final double START_ITEM_GENERATION_PROB = 0.5;
 
-    public static final int BOTTOM_PATH_START_X = 0;
-    public static final int BOTTOM_PATH_START_Y = 880;
-    public static final int BOTTOM_PATH_END_X = 445;
-    public static final int BOTTOM_PATH_END_Y = BOTTOM_PATH_START_Y;
+    public static final int LEFT_BOTTOM_PATH_START_X = 0;
+    public static final int LEFT_BOTTOM_PATH_START_Y = 880;
+    public static final int LEFT_BOTTOM_PATH_END_X = 390;
+    public static final int LEFT_BOTTOM_PATH_END_Y = LEFT_BOTTOM_PATH_START_Y;
     
-    public static final int VERTICAL_PATH_START_X = BOTTOM_PATH_END_X;
-    public static final int VERTICAL_PATH_START_Y = BOTTOM_PATH_END_Y;
-    public static final int VERTICAL_PATH_END_X = BOTTOM_PATH_END_X;
-    public static final int VERTICAL_PATH_END_Y = 40;
+    public static final int LEFT_VERTICAL_PATH_START_X = LEFT_BOTTOM_PATH_END_X;
+    public static final int LEFT_VERTICAL_PATH_START_Y = LEFT_BOTTOM_PATH_END_Y;
+    public static final int LEFT_VERTICAL_PATH_END_X = LEFT_BOTTOM_PATH_END_X;
+    public static final int LEFT_VERTICAL_PATH_END_Y = 40;
 
-    public static final int TOP_PATH_START_X = VERTICAL_PATH_END_X;
-    public static final int TOP_PATH_START_Y = VERTICAL_PATH_END_Y;
-    public static final int TOP_PATH_END_X = 750;
-    public static final int TOP_PATH_END_Y = VERTICAL_PATH_END_Y;
+    public static final int LEFT_TOP_PATH_START_X = LEFT_VERTICAL_PATH_END_X;
+    public static final int LEFT_TOP_PATH_START_Y = LEFT_VERTICAL_PATH_END_Y;
+    public static final int LEFT_TOP_PATH_END_X = 750;
+    public static final int LEFT_TOP_PATH_END_Y = LEFT_VERTICAL_PATH_END_Y;
 
-	public static final Point2D END_POSITION = new Point2D.Double(TOP_PATH_END_X, TOP_PATH_END_Y);
-    public static final Point2D BECOMES_TOUCHABLE_POSITION = new Point2D.Double(VERTICAL_PATH_START_X,VERTICAL_PATH_START_Y);
-    public static final Point2D BECOMES_UNTOUCHABLE_POSITION = new Point2D.Double(VERTICAL_PATH_END_X,VERTICAL_PATH_END_Y);
+	public static final Point2D LEFT_END_POSITION = new Point2D.Double(LEFT_TOP_PATH_END_X, LEFT_TOP_PATH_END_Y);
+    public static final Point2D LEFT_BECOMES_TOUCHABLE_POSITION = new Point2D.Double(LEFT_VERTICAL_PATH_START_X, LEFT_VERTICAL_PATH_START_Y);
+    public static final Point2D LEFT_BECOMES_UNTOUCHABLE_POSITION = new Point2D.Double(LEFT_VERTICAL_PATH_END_X, LEFT_VERTICAL_PATH_END_Y);
+
+    public static final int RIGHT_BOTTOM_PATH_START_X = 1920-LEFT_BOTTOM_PATH_START_X-100;
+    public static final int RIGHT_BOTTOM_PATH_START_Y = 880;
+    public static final int RIGHT_BOTTOM_PATH_END_X = 1920-LEFT_BOTTOM_PATH_END_X-100;
+    public static final int RIGHT_BOTTOM_PATH_END_Y = RIGHT_BOTTOM_PATH_START_Y;
+
+    public static final int RIGHT_VERTICAL_PATH_START_X = RIGHT_BOTTOM_PATH_END_X;
+    public static final int RIGHT_VERTICAL_PATH_START_Y = RIGHT_BOTTOM_PATH_END_Y;
+    public static final int RIGHT_VERTICAL_PATH_END_X = RIGHT_BOTTOM_PATH_END_X;
+    public static final int RIGHT_VERTICAL_PATH_END_Y = 40;
+
+    public static final int RIGHT_TOP_PATH_START_X = RIGHT_VERTICAL_PATH_END_X;
+    public static final int RIGHT_TOP_PATH_START_Y = RIGHT_VERTICAL_PATH_END_Y;
+    public static final int RIGHT_TOP_PATH_END_X = 1920-LEFT_TOP_PATH_END_X-100;
+    public static final int RIGHT_TOP_PATH_END_Y = RIGHT_VERTICAL_PATH_END_Y;
+
+    public static final Point2D RIGHT_END_POSITION = new Point2D.Double(RIGHT_TOP_PATH_END_X, RIGHT_TOP_PATH_END_Y);
+    public static final Point2D RIGHT_BECOMES_TOUCHABLE_POSITION = new Point2D.Double(RIGHT_VERTICAL_PATH_START_X, RIGHT_VERTICAL_PATH_START_Y);
+    public static final Point2D RIGHT_BECOMES_UNTOUCHABLE_POSITION = new Point2D.Double(RIGHT_VERTICAL_PATH_END_X, RIGHT_VERTICAL_PATH_END_Y);
+
+
 
     public static final int ITEM_PATH_END = 250;
-
-    public static final int SPRITE_BECOMES_TOUCHABLE = BOTTOM_PATH_END_Y - 50;
-    public static final int SPRITE_BECOMES_UNTOUCHABLE = TOP_PATH_START_Y + 20;
+    public static final int SPRITE_BECOMES_TOUCHABLE = LEFT_BOTTOM_PATH_END_Y - 50;
+    public static final int SPRITE_BECOMES_UNTOUCHABLE = LEFT_TOP_PATH_START_Y + 20;
 
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
