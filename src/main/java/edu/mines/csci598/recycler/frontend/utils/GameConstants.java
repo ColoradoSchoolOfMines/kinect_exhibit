@@ -34,7 +34,7 @@ public final class GameConstants {
      * items will never be kicked out faster than this.  It should be set high enough to prevent, at the
      * minimum, items from colliding with each other during creation.
      */
-    public static final double MIN_TIME_BETWEEN_GENERATIONS = 2;
+    public static final double MIN_TIME_BETWEEN_GENERATIONS = 6;
 
     public static final double INITIAL_MEAN_TIME_BETWEEN_GENERATIONS = 3;
     
