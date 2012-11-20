@@ -212,9 +212,6 @@ public class GameLogic  {
 
     protected void updateThis(float elapsedTime) {    	
         //in seconds
-    	if(System.currentTimeMillis() % 10 != 0){
-    		return;
-    	}
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
         if (!playerIsAComputer) {
