@@ -9,7 +9,7 @@ import org.OpenNI.Point3D;
  * Note that this class completely takes over pointer tracking, and will
  * override the mouse driver if present.
  */
-class OpenNIHandTrackerInputDriver {
+public class OpenNIHandTrackerInputDriver implements InputDriver {
   private HandTracker handTracker;
   /* Maps hand IDs to pointer indices, or -1 for none. */
   private final int pointerMap[] = new int[new InputStatus().pointers.length];

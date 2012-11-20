@@ -65,6 +65,8 @@ public class Entejagd extends GameState {
         ModalMouseMotionInputDriver mmmid = new ModalMouseMotionInputDriver();
         mmmid.setPointerMode(true);
         man.installInputDriver(mmmid);
+        OpenNIHandTrackerInputDriver onihtid = new OpenNIHandTrackerInputDriver();
+        man.installInputDriver(onihtid);
 
         Entejagd entejagd = new Entejagd(man);
         man.setState(entejagd);
