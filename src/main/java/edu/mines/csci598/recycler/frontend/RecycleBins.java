@@ -13,9 +13,13 @@ import java.util.LinkedList;
  */
 public class RecycleBins {
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
-
-    RecycleBins(){
-        setUpBins();
+    public enum Side {LEFT, RIGHT};
+    RecycleBins(Side s){
+        if(s.equals(Side.LEFT)){
+            setUpLeftBins();
+        } else {
+            setUpRightBins();
+        }
     }
 
     /**
@@ -62,22 +66,51 @@ public class RecycleBins {
     /**
      *  sets up the location of each of the bins with trash last since it is the last accessed bin
      */
-    private void setUpBins() {
+    private void setUpLeftBins() {
         RecycleBin bin1 = new RecycleBin(
-                GameConstants.BIN_1_SIDE, GameConstants.BIN_1_MIN_Y,
-                GameConstants.BIN_1_MAX_Y, GameConstants.BIN_1_TYPE);
+                GameConstants.LEFT_BIN_1_SIDE, GameConstants.LEFT_BIN_1_MIN_Y,
+                GameConstants.LEFT_BIN_1_MAX_Y, GameConstants.LEFT_BIN_1_TYPE);
         RecycleBin bin2 = new RecycleBin(
-                GameConstants.BIN_2_SIDE, GameConstants.BIN_2_MIN_Y,
-                GameConstants.BIN_2_MAX_Y, GameConstants.BIN_2_TYPE);
+                GameConstants.LEFT_BIN_2_SIDE, GameConstants.LEFT_BIN_2_MIN_Y,
+                GameConstants.LEFT_BIN_2_MAX_Y, GameConstants.LEFT_BIN_2_TYPE);
         RecycleBin bin3 = new RecycleBin(
-                GameConstants.BIN_3_SIDE, GameConstants.BIN_3_MIN_Y,
-                GameConstants.BIN_3_MAX_Y, GameConstants.BIN_3_TYPE);
+                GameConstants.LEFT_BIN_3_SIDE, GameConstants.LEFT_BIN_3_MIN_Y,
+                GameConstants.LEFT_BIN_3_MAX_Y, GameConstants.LEFT_BIN_3_TYPE);
         RecycleBin bin4 = new RecycleBin(
-                GameConstants.BIN_4_SIDE, GameConstants.BIN_4_MIN_Y,
-                GameConstants.BIN_4_MAX_Y, GameConstants.BIN_4_TYPE);
+                GameConstants.LEFT_BIN_4_SIDE, GameConstants.LEFT_BIN_4_MIN_Y,
+                GameConstants.LEFT_BIN_4_MAX_Y, GameConstants.LEFT_BIN_4_TYPE);
         RecycleBin bin5 = new RecycleBin(
-                GameConstants.BIN_5_SIDE, GameConstants.BIN_5_MIN_Y,
-                GameConstants.BIN_5_MAX_Y, GameConstants.BIN_5_TYPE);
+                GameConstants.LEFT_BIN_5_SIDE, GameConstants.LEFT_BIN_5_MIN_Y,
+                GameConstants.LEFT_BIN_5_MAX_Y, GameConstants.LEFT_BIN_5_TYPE);
+        RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
+
+        recycleBins.add(bin1);
+        recycleBins.add(bin2);
+        recycleBins.add(bin3);
+        recycleBins.add(bin4);
+        recycleBins.add(bin5);
+        recycleBins.add(trash);
+    }
+
+    /**
+     *  sets up the location of each of the bins with trash last since it is the last accessed bin
+     */
+    private void setUpRightBins() {
+        RecycleBin bin1 = new RecycleBin(
+                GameConstants.RIGHT_BIN_1_SIDE, GameConstants.RIGHT_BIN_1_MIN_Y,
+                GameConstants.RIGHT_BIN_1_MAX_Y, GameConstants.RIGHT_BIN_1_TYPE);
+        RecycleBin bin2 = new RecycleBin(
+                GameConstants.RIGHT_BIN_2_SIDE, GameConstants.RIGHT_BIN_2_MIN_Y,
+                GameConstants.RIGHT_BIN_2_MAX_Y, GameConstants.RIGHT_BIN_2_TYPE);
+        RecycleBin bin3 = new RecycleBin(
+                GameConstants.RIGHT_BIN_3_SIDE, GameConstants.RIGHT_BIN_3_MIN_Y,
+                GameConstants.RIGHT_BIN_3_MAX_Y, GameConstants.RIGHT_BIN_3_TYPE);
+        RecycleBin bin4 = new RecycleBin(
+                GameConstants.RIGHT_BIN_4_SIDE, GameConstants.RIGHT_BIN_4_MIN_Y,
+                GameConstants.RIGHT_BIN_4_MAX_Y, GameConstants.RIGHT_BIN_4_TYPE);
+        RecycleBin bin5 = new RecycleBin(
+                GameConstants.RIGHT_BIN_5_SIDE, GameConstants.RIGHT_BIN_5_MIN_Y,
+                GameConstants.RIGHT_BIN_5_MAX_Y, GameConstants.RIGHT_BIN_5_TYPE);
         RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
 
         recycleBins.add(bin1);

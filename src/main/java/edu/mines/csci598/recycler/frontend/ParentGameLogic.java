@@ -21,8 +21,8 @@ public class ParentGameLogic extends GameState {
         public ParentGameLogic (){
             gameManager = new GameManager("Recycler", false);
             gameScreen = GameScreen.getInstance();
-            leftGame = new GameLogic(new RecycleBins(), ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,gameManager);
-            rightGame = new GameLogic(new RecycleBins(), ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT,gameManager);
+            leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT), ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,gameManager);
+            rightGame = new GameLogic(new RecycleBins(RecycleBins.Side.RIGHT), ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT,gameManager);
         }
         protected void drawThis(Graphics2D g2d) {
             gameScreen.paint(g2d, gameManager.getCanvas());

@@ -101,31 +101,58 @@ public final class GameConstants {
 
     public static final int IN_BIN_OFFSET = 150;
 
-    public static final RecyclableType BIN_1_TYPE = RecyclableType.PLASTIC;
-    public static final RecycleBin.ConveyorSide BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double BIN_1_MIN_Y = 40;
-    public static final double BIN_1_MAX_Y = 440;
+    
+    //Left recycle bins
+    public static final RecyclableType LEFT_BIN_1_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double LEFT_BIN_1_MIN_Y = 40;
+    public static final double LEFT_BIN_1_MAX_Y = 440;
 
-    public static final RecyclableType BIN_2_TYPE = RecyclableType.PAPER;
-    public static final RecycleBin.ConveyorSide BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double BIN_2_MIN_Y = 441;
-    public static final double BIN_2_MAX_Y = 838;
+    public static final RecyclableType LEFT_BIN_2_TYPE = RecyclableType.PAPER;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double LEFT_BIN_2_MIN_Y = 441;
+    public static final double LEFT_BIN_2_MAX_Y = 838;
 
-    public static final RecyclableType BIN_3_TYPE = RecyclableType.HAZARD;
-    public static final RecycleBin.ConveyorSide BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double BIN_3_MIN_Y = 140;
-    public static final double BIN_3_MAX_Y = 540;
+    public static final RecyclableType LEFT_BIN_3_TYPE = RecyclableType.HAZARD;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_3_MIN_Y = 140;
+    public static final double LEFT_BIN_3_MAX_Y = 540;
 
-    public static final RecyclableType BIN_4_TYPE = RecyclableType.GLASS;
-    public static final RecycleBin.ConveyorSide BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double BIN_4_MIN_Y = 541;
-    public static final double BIN_4_MAX_Y = 938;
+    public static final RecyclableType LEFT_BIN_4_TYPE = RecyclableType.GLASS;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_4_MIN_Y = 541;
+    public static final double LEFT_BIN_4_MAX_Y = 938;
 
-    public static final RecyclableType BIN_5_TYPE = RecyclableType.TRASH;
-    public static final RecycleBin.ConveyorSide BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double BIN_5_MIN_Y = 0;
-    public static final double BIN_5_MAX_Y = 140;
+    public static final RecyclableType LEFT_BIN_5_TYPE = RecyclableType.TRASH;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_5_MIN_Y = 0;
+    public static final double LEFT_BIN_5_MAX_Y = 140;
 
+    //Right recycle bins
+    public static final RecyclableType RIGHT_BIN_1_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_1_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double RIGHT_BIN_1_MIN_Y = 40;
+    public static final double RIGHT_BIN_1_MAX_Y = 440;
+
+    public static final RecyclableType RIGHT_BIN_2_TYPE = RecyclableType.PAPER;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_2_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double RIGHT_BIN_2_MIN_Y = 441;
+    public static final double RIGHT_BIN_2_MAX_Y = 838;
+
+    public static final RecyclableType RIGHT_BIN_3_TYPE = RecyclableType.HAZARD;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_3_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_3_MIN_Y = 140;
+    public static final double RIGHT_BIN_3_MAX_Y = 540;
+
+    public static final RecyclableType RIGHT_BIN_4_TYPE = RecyclableType.GLASS;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_4_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_4_MIN_Y = 541;
+    public static final double RIGHT_BIN_4_MAX_Y = 938;
+
+    public static final RecyclableType RIGHT_BIN_5_TYPE = RecyclableType.TRASH;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_5_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_5_MIN_Y = 0;
+    public static final double RIGHT_BIN_5_MAX_Y = 140;
 
     /**
      * The amount of time, in seconds from the game start or last item, that it takes before a new item is added to the game
