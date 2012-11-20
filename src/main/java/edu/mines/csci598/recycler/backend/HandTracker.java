@@ -33,7 +33,7 @@ public class HandTracker {
     private int width, height;
 
     // the XML file to read for configuration information
-    private static final String SAMPLE_XML_FILE = "SamplesConfig.xml";
+    private static final String CONFIG_XML_FILE = "openni_config.xml";
 
     /**
      * A gesture observer to begin tracking a hand when a gesture is observed.
@@ -102,7 +102,7 @@ public class HandTracker {
         try {
             // context setup
             scriptNode = new OutArg<ScriptNode>();
-            context = Context.createFromXmlFile(SAMPLE_XML_FILE, scriptNode);
+            context = Context.createFromXmlFile(CONFIG_XML_FILE, scriptNode);
 
             // wave to start tracking a hand
             gestureGen = GestureGenerator.create(context);
