@@ -178,12 +178,12 @@ public class GameLogic  {
     }
 
     private void increaseDifficulty() {
-        possiblyIncreaseItemCount();
+        possiblyIncreaseTypesInUse();
         increaseSpeed();
         increaseItemGenerationProbability();
     }
 
-    private void possiblyIncreaseItemCount() {
+    private void possiblyIncreaseTypesInUse() {
         if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
@@ -194,7 +194,6 @@ public class GameLogic  {
     private void increaseSpeed() {
         double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         conveyorBelt.setSpeed(pctToMaxDifficulty);
-
     }
 
     private void increaseItemGenerationProbability() {

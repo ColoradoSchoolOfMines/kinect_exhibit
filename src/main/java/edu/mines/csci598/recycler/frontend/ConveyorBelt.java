@@ -24,7 +24,6 @@ public class ConveyorBelt {
     private GameScreen gameScreen;
     private Path path;
     private double speedPixPerSecond;
-    private final double maxSpeedPixPerSecond;
     
     private  boolean debuggingCollisions;
 
@@ -57,7 +56,6 @@ public class ConveyorBelt {
         meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
         
         speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
-        maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
         
         //logger.setLevel(Level.DEBUG);
         random = new Random(System.currentTimeMillis());
@@ -97,11 +95,16 @@ public class ConveyorBelt {
     }
 
     public void setSpeed(double pctOfFullSpeed) {
+    	final double baseSpeedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
+        final double maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
+        
     	if(pctOfFullSpeed >= 1){
     		speedPixPerSecond = maxSpeedPixPerSecond;
     	}
     	
-    	speedPixPerSecond = speedPixPerSecond + (maxSpeedPixPerSecond - speedPixPerSecond) * pctOfFullSpeed;
+    	speedPixPerSecond = baseSpeedPixPerSecond + (maxSpeedPixPerSecond - baseSpeedPixPerSecond) * pctOfFullSpeed;
+    	
+    	logger.info("speed is " + speedPixPerSecond);
     }
 
 	/**
@@ -114,8 +117,8 @@ public class ConveyorBelt {
 			addRecyclable(r);
 			logger.debug("Item generated: " + r);
 		}
-
     }
+	
     /**
      * Determines if item should be generated.  If true, sets the time for the next object to be generated
      *
