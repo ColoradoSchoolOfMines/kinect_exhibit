@@ -1,10 +1,13 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
+
+import java.awt.geom.Point2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,29 +21,68 @@ public class ComputerHand {
     private Sprite sprite;
     private int velocityX;
     private int velocityY;
-    public int x;
-    public int y;
-    private int oldX;
-    private int oldY;
+    Point2D position;
+    private Path path;
+    private int goalX;
+    private int goalY;
+
+    private boolean followingPath;
 
     public ComputerHand() {
         //logger.setLevel(Level.INFO);
-        resetHandPosition();
-        oldX = 0;
-        oldY = 0;
+        //resetHandPosition();
+        //position.setLocation(GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR*3/4,
+        //                     GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR*1/4);
+        //sprite.setPosition(position);
+
         velocityX = 0;
         velocityY = 0;
-        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
+        goalX=0;
+        goalY=0;
+        followingPath=false;
+        int x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        int y = GameConstants.VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
+        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
     }
-    
-    public void resetHandPosition(){
-        x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-        y = (int)(GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
+    public Point2D getPosition(){
+        return sprite.getPosition();
     }
+    public void setPosition(Point2D position){
+        sprite.setPosition(position);
+    }
+    public int getGoalX(){
+        return goalX;
+    }
+    public int getGoalY(){
+        return goalY;
+    }
+    public void setGoal(int goalX,int goalY){
+        this.goalX=goalX;
+        this.goalY=goalY;
+    }
+    public void setPath(Path p){
+        logger.info("Hand following path");
+        path = p;
+        followingPath=true;
+    }
+    public Path getPath(){
+        return path;
+    }
+    public void resetFollowingPath(){
+        followingPath=false;
+    }
+    public boolean isFollowingPath(){
+        return followingPath;
+    }
+    /*public void resetHandPosition(){
+        position.setLocation(GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
+                             GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
+        sprite.setPosition(position);
+    } */
     
     public boolean isHandOnLeftSide(){
         boolean ret=false;
-        logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
+        //logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
         if(sprite.getX()<GameConstants.VERTICAL_PATH_START_X)ret=true;
         return ret;
     }

@@ -72,7 +72,7 @@ public class GameLogic extends GameState {
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
         if(GameConstants.DEBUG_COLLISIONS){
-            Recyclable r = new Recyclable(RecyclableType.PLASTIC, ConveyorBelt.CONVEYOR_BELT_PATH);
+            Recyclable r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH);
               conveyor.addRecyclable(r);
         }
     }
