@@ -4,14 +4,13 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Logger;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
 
 public class ConveyorBelt {
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
@@ -22,25 +21,35 @@ public class ConveyorBelt {
 	private double nextTimeToGenerate;
     private GameLogic game;
     private GameScreen gameScreen;
-    
+    private Path path;
     private double speedPixPerSecond;
     private final double maxSpeedPixPerSecond;
     
     private static final boolean debugCollisions = GameConstants.DEBUG_COLLISIONS;
 
-    private static final Line bottomLine = new Line(GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y,
-            GameConstants.BOTTOM_PATH_END_X, GameConstants.BOTTOM_PATH_END_Y);
-    private static final Line verticalLine = new Line(GameConstants.VERTICAL_PATH_START_X, GameConstants.VERTICAL_PATH_START_Y,
-            GameConstants.VERTICAL_PATH_END_X, GameConstants.VERTICAL_PATH_END_Y);
-    private static final Line topLine = new Line(GameConstants.TOP_PATH_START_X, GameConstants.TOP_PATH_START_Y,
-            GameConstants.TOP_PATH_END_X, GameConstants.TOP_PATH_END_Y);
-    public static final Path CONVEYOR_BELT_PATH = new Path(Arrays.asList(bottomLine, verticalLine, topLine));
 
+    //Left Path
+    private static final Line bottomLineLeft = new Line(GameConstants.LEFT_BOTTOM_PATH_START_X, GameConstants.LEFT_BOTTOM_PATH_START_Y,
+            GameConstants.LEFT_BOTTOM_PATH_END_X, GameConstants.LEFT_BOTTOM_PATH_END_Y);
+    private static final Line verticalLineLeft = new Line(GameConstants.LEFT_VERTICAL_PATH_START_X, GameConstants.LEFT_VERTICAL_PATH_START_Y,
+            GameConstants.LEFT_VERTICAL_PATH_END_X, GameConstants.LEFT_VERTICAL_PATH_END_Y);
+    private static final Line topLineLeft = new Line(GameConstants.LEFT_TOP_PATH_START_X, GameConstants.LEFT_TOP_PATH_START_Y,
+            GameConstants.LEFT_TOP_PATH_END_X, GameConstants.LEFT_TOP_PATH_END_Y);
+    public static final Path CONVEYOR_BELT_PATH_LEFT = new Path(Arrays.asList(bottomLineLeft, verticalLineLeft, topLineLeft));
 
-    public ConveyorBelt(GameLogic game,GameScreen gameScreen) {
+    //Right Path
+    private static final Line bottomLineRight= new Line(GameConstants.RIGHT_BOTTOM_PATH_START_X, GameConstants.RIGHT_BOTTOM_PATH_START_Y,
+            GameConstants.RIGHT_BOTTOM_PATH_END_X, GameConstants.RIGHT_BOTTOM_PATH_END_Y);
+    private static final Line verticalLineRight = new Line(GameConstants.RIGHT_VERTICAL_PATH_START_X, GameConstants.RIGHT_VERTICAL_PATH_START_Y,
+            GameConstants.RIGHT_VERTICAL_PATH_END_X, GameConstants.RIGHT_VERTICAL_PATH_END_Y);
+    private static final Line topLineRight = new Line(GameConstants.RIGHT_TOP_PATH_START_X, GameConstants.RIGHT_TOP_PATH_START_Y,
+            GameConstants.RIGHT_TOP_PATH_END_X, GameConstants.RIGHT_TOP_PATH_END_Y);
+    public static final Path CONVEYOR_BELT_PATH_RIGHT = new Path(Arrays.asList(bottomLineRight,verticalLineRight,topLineRight));
+
+    public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path) {
         this.game = game;
         this.gameScreen = gameScreen;
-    	
+    	this.path = path;
     	recyclables = new ArrayList<Recyclable>();
         
         speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
@@ -97,7 +106,7 @@ public class ConveyorBelt {
 	private void possiblyGenerateItem(double currentTimeSec) {
 		if (needsItemGeneration(currentTimeSec)) {
 			// Recyclables initially take the path of the conveyor belt
-			Recyclable r = new Recyclable(RecyclableType.getRandom(game.getNumItemTypesInUse()), CONVEYOR_BELT_PATH);
+			Recyclable r = new Recyclable(RecyclableType.getRandom(game.getNumItemTypesInUse()), path);
 			addRecyclable(r);
 			logger.debug("Item generated: " + r);
 		}
@@ -151,7 +160,7 @@ public class ConveyorBelt {
             }else if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
                 if(recyclable.getMotionState()==MotionState.CHUTE)recyclable.setMotionState(MotionState.CONVEYOR);
             }
-            if(newPosition.equals(GameConstants.END_POSITION)){
+            if(newPosition.equals(recyclable.getPath().finalPosition())){
                 recyclablesToRemove.add(recyclable);
                 gameScreen.removeSprite(recyclable.getSprite());
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
@@ -159,12 +168,12 @@ public class ConveyorBelt {
             recyclable.setPosition(newPosition);
 
             if(recyclable.getMotionState()==MotionState.FALL_LEFT){
-                if(newPosition.getX()<=GameConstants.VERTICAL_PATH_START_X-(GameConstants.ITEM_PATH_END*3/4)){
+                if(newPosition.getX()<=GameConstants.LEFT_VERTICAL_PATH_START_X -(GameConstants.ITEM_PATH_END*3/4)){
                     recyclablesToRemove.add(recyclable);
                     gameScreen.removeSprite(recyclable.getSprite());
                 }
             }else if(recyclable.getMotionState()==MotionState.FALL_RIGHT){
-                if(newPosition.getX()>=GameConstants.VERTICAL_PATH_START_X+(GameConstants.ITEM_PATH_END*3/4)){
+                if(newPosition.getX()>=GameConstants.LEFT_VERTICAL_PATH_START_X +(GameConstants.ITEM_PATH_END*3/4)){
                     recyclablesToRemove.add(recyclable);
                     gameScreen.removeSprite(recyclable.getSprite());
                 }

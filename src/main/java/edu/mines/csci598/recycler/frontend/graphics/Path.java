@@ -93,4 +93,16 @@ public class Path {
     	
 		return endLocation;
     }
+
+    public Point2D finalPosition(){
+        return path.get(path.size()-1).getP2();
+    }
+    public Point2D initialPosition(){
+         Line l = path.get(0);
+         if(l!=null){
+             return l.getP1();
+         } else{
+             return null;
+         }
+    }
 }

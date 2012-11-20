@@ -1,13 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.awt.geom.Point2D;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Logger;
+
+import java.awt.geom.Point2D;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.
@@ -32,7 +31,7 @@ public class Recyclable implements Displayable {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(type.getFilePath(), GameConstants.BOTTOM_PATH_START_X, GameConstants.BOTTOM_PATH_START_Y);
+        sprite = new Sprite(type.getFilePath(), (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
     }
 
     @Override
@@ -92,5 +91,6 @@ public class Recyclable implements Displayable {
 	public void setPosition(Point2D location) {
 		sprite.setPosition(location);
 	}
+
 
 }
