@@ -158,7 +158,9 @@ public class ConveyorBelt {
                 recyclable.setMotionState(MotionState.CHUTE);
 
             }else if(newPosition.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
-                if(recyclable.getMotionState()==MotionState.CHUTE)recyclable.setMotionState(MotionState.CONVEYOR);
+                if(recyclable.getMotionState()==MotionState.CHUTE){
+                	recyclable.setMotionState(MotionState.CONVEYOR);
+                }
             }
             if(newPosition.equals(recyclable.getPath().finalPosition())){
                 recyclablesToRemove.add(recyclable);

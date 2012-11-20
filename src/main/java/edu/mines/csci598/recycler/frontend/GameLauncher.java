@@ -15,34 +15,40 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLauncher extends GameState {
-        private GameManager gameManager;
-        private GameLogic leftGame,rightGame;
-    private GameScreen gameScreen;
-        public GameLauncher(){
-            gameManager = new GameManager("Recycler", false);
-            gameScreen = GameScreen.getInstance();
-            leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT), ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,gameManager);
-            rightGame = new GameLogic(new RecycleBins(RecycleBins.Side.RIGHT), ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT,gameManager);
-        }
-        protected void drawThis(Graphics2D g2d) {
-            gameScreen.paint(g2d, gameManager.getCanvas());
-        }
-        public GameManager getGameManager(){
-              return gameManager;
-        }
-        public static void main(String[] args) {
-            GameLauncher gm = new GameLauncher();
-            ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-            gm.getGameManager().installInputDriver(mouse);
-            gm.getGameManager().setState(gm);
-            gm.getGameManager().run();
-            gm.getGameManager().destroy();
-        }
+	private GameManager gameManager;
+	private GameLogic leftGame, rightGame;
+	private GameScreen gameScreen;
 
-        public GameLauncher updateThis(float time){
-            leftGame.updateThis(time);
-            rightGame.updateThis(time);
-            return this;
-        }
+	public GameLauncher() {
+		gameManager = new GameManager("Recycler", false);
+		gameScreen = GameScreen.getInstance();
+		leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT),
+				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, gameManager);
+		rightGame = new GameLogic(new RecycleBins(RecycleBins.Side.RIGHT),
+				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, gameManager);
+	}
+
+	protected void drawThis(Graphics2D g2d) {
+		gameScreen.paint(g2d, gameManager.getCanvas());
+	}
+
+	public GameManager getGameManager() {
+		return gameManager;
+	}
+
+	public static void main(String[] args) {
+		GameLauncher gm = new GameLauncher();
+		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+		gm.getGameManager().installInputDriver(mouse);
+		gm.getGameManager().setState(gm);
+		gm.getGameManager().run();
+		gm.getGameManager().destroy();
+	}
+
+	public GameLauncher updateThis(float time) {
+		leftGame.updateThis(time);
+		rightGame.updateThis(time);
+		return this;
+	}
 
 }

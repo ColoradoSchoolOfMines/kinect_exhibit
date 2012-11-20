@@ -193,7 +193,6 @@ public class GameLogic  {
 
     private void increaseItemGenerationProbability() {
         double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        logger.debug("Item generation probability not increasing...");
         //itemGenerationProb = startProbability + (1 - startProbability) * GameConstants.TIME_TO_MAX_DIFFICULTY;
     }
 
@@ -205,10 +204,11 @@ public class GameLogic  {
 		return gameScreen;
 	}
 
-    protected void updateThis(float elapsedTime) {
-    	logger.debug("Entering main update loop");
-    	
+    protected void updateThis(float elapsedTime) {    	
         //in seconds
+    	if(System.currentTimeMillis() % 10 != 0){
+    		return;
+    	}
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
         if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
