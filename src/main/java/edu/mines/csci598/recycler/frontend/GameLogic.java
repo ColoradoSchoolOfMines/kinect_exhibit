@@ -1,18 +1,11 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.backend.GameState;
-import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.Recyclable.CollisionState;
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +20,14 @@ import java.util.List;
  * Time: 9:35 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameLogic extends GameState {
+public class GameLogic  {
     private static final Logger logger = Logger.getLogger(GameLogic.class);
     
-    private static GameLogic INSTANCE;
     private Player player1, player2;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
-    private GameManager gameManager;
     private RecycleBins recycleBins;
-    private ConveyorBelt leftConveyor, rightConveyor;
+    private ConveyorBelt conveyorBelt;
     private List<Recyclable> fallingItems;
     private double currentTimeSec;
     private long startTime;
@@ -45,20 +36,21 @@ public class GameLogic extends GameState {
     private int score;
     private int strikes;
     private boolean gameOverNotified = false;
+    //TODO game manager should be removed from this class when the idea of players having hands is dissolved
+    private GameManager gameManager;
 
 
-    private GameLogic() {
-        gameManager = new GameManager("Recycler", false);
+
+    public GameLogic( RecycleBins recycleBins, Path conveyorPath, GameManager gameManager) {
+        this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
-        recycleBins = new RecycleBins();
+        this.recycleBins = recycleBins;
         fallingItems = new ArrayList<Recyclable>();
-
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
-        leftConveyor = new ConveyorBelt(this,gameScreen,ConveyorBelt.CONVEYOR_BELT_PATH_LEFT);
-        rightConveyor = new ConveyorBelt(this,gameScreen,ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT);
+        conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
         startTime = System.currentTimeMillis();
 
         // sets up the first player and adds its primary hand to the gameScreen
@@ -72,18 +64,11 @@ public class GameLogic extends GameState {
         }
         if(GameConstants.DEBUG_COLLISIONS){
             Recyclable r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH_LEFT);
-            leftConveyor.addRecyclable(r);
-            r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT);
-            rightConveyor.addRecyclable(r);
+            conveyorBelt.addRecyclable(r);
         }
     }
 
-    public static final GameLogic getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new GameLogic();
-        }
-        return INSTANCE;
-    }
+
 
     public void addRecyclable(Recyclable r) {
         try {
@@ -202,8 +187,7 @@ public class GameLogic extends GameState {
 
     private void increaseSpeed() {
         double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
-        leftConveyor.setSpeed(pctToMaxDifficulty);
-        rightConveyor.setSpeed(pctToMaxDifficulty);
+        conveyorBelt.setSpeed(pctToMaxDifficulty);
 
     }
 
@@ -221,7 +205,7 @@ public class GameLogic extends GameState {
 		return gameScreen;
 	}
 
-    protected GameState updateThis(float elapsedTime) {
+    protected void updateThis(float elapsedTime) {
     	logger.debug("Entering main update loop");
     	
         //in seconds
@@ -232,22 +216,19 @@ public class GameLogic extends GameState {
             player1.primary.updateLocation();
         } else {
             //call update to computer hand on next recyclable that is touchable
-            if (leftConveyor.getNumRecyclablesOnConveyor() > 0) {
-                computerPlayer.updateAI(leftConveyor.getNextRecyclableThatIsTouchable(), currentTimeSec);
+            if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {
+                computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
             handleAIScore();
         }
 
-        // Move conveyors and generate items
-        leftConveyor.update(currentTimeSec);
-        rightConveyor.update(currentTimeSec);
+        // Move conveyor and generate items
+        conveyorBelt.update(currentTimeSec);
         // Handle existing item collisions
-        for (Recyclable r : leftConveyor.getRecyclables()) {
+        for (Recyclable r : conveyorBelt.getRecyclables()) {
             potentiallyHandleCollision(r);
         }
-        for (Recyclable r : rightConveyor.getRecyclables()) {
-            potentiallyHandleCollision(r);
-        }
+
         
         for(Recyclable r : fallingItems){
 			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
@@ -255,20 +236,7 @@ public class GameLogic extends GameState {
         }
         
         increaseDifficulty();
-        return this;
     }
 
-    protected void drawThis(Graphics2D g2d) {
-        gameScreen.paint(g2d, gameManager.getCanvas());
-    }
-
-    public static void main(String[] args) {
-        GameLogic gm = GameLogic.getInstance();
-        ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-        gm.getGameManager().installInputDriver(mouse);
-        gm.getGameManager().setState(gm);
-        gm.getGameManager().run();
-        gm.getGameManager().destroy();
-    }
 
 }

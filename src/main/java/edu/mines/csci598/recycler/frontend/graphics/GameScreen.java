@@ -1,12 +1,10 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import java.awt.*;
-import java.util.LinkedList;
-
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.GameLogic;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import java.awt.*;
+import java.util.LinkedList;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -53,12 +51,12 @@ public class GameScreen {
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.green);
         g2d.drawString("SCORE: ", 0, 20);
-        g2d.drawString(GameLogic.getInstance().getScoreString(), 100, 20);
+        //g2d.drawString(GameLogic.getInstance().getScoreString(), 100, 20);
 
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g2d.setColor(Color.red);
         g2d.drawString("STRIKES: ", 130, 20);
-        g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
+        //g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
         for (Sprite sprite : sprites) {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
