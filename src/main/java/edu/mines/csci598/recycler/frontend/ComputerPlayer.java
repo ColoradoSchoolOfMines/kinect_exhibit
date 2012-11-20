@@ -11,6 +11,8 @@ import java.util.Random;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import javax.swing.text.Position;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +35,6 @@ public class ComputerPlayer {
     private int strikes;
     private double lastMotionTimeSec;
 
-
     public ComputerPlayer(RecycleBins recycleBins){
         logger.setLevel(Level.INFO);
         primary = new ComputerHand();
@@ -55,22 +56,26 @@ public class ComputerPlayer {
         //strike(r,currentTimeSec);
     }
     public void followRecyclable(Recyclable r, double currentTimeSec){
+        //logger.info("FollowRecyclable");
         if(!primary.isFollowingPath()){
             //logger.info("following recyclable");
             primary.getSprite().setY(r.getSprite().getY());
         }else {
+            logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath());
             double timePassedSec = currentTimeSec-lastMotionTimeSec;
-            logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY());
-            //Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec);
             Point2D newPosition = primary.getPath().getLocation(primary.getPosition(),200,timePassedSec);
             lastMotionTimeSec=currentTimeSec;
             primary.setPosition(newPosition);
 
-
-            if(primary.getSprite().getX()==primary.getGoalX() && primary.getSprite().getY()==primary.getGoalY()){
-                logger.info("***Reset following");
-                primary.resetFollowingPath();
+            if(!primary.isOnCorrectSide()){
+                if(primary.isHandOnLeftSide())
+                    primary.getSprite().setX((int)r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET);
+                else
+                    primary.getSprite().setX((int)r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET);
             }
+            //if(primary.getSprite().getY()<primary.getGoalY()+10){
+                //primary.resetFollowingPath();
+
         }
     }
     public boolean hasCollisionWithRecyclable(Recyclable r,double currentTime){
@@ -106,38 +111,44 @@ public class ComputerPlayer {
 
     public void setHandToCorrectSide(Recyclable r){
         if(r.isTouchable()){
-            RecycleBin bin = recycleBins.findCorrectBin(r);
-            RecycleBin.ConveyorSide binSide = bin.getSide();
-            Path p = new Path();
-            //collideLine = new Line(position.getX(), position.getY(),
-            //              position.getX() + GameConstants.ITEM_PATH_END, position.getY());
-            Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
-                            primary.getSprite().getX(),primary.getSprite().getY()+50);
-            Line moveAcrossConveyer = new Line(0,0,0,0);
-            if(binSide==RecycleBin.ConveyorSide.RIGHT){
-                if(!primary.isHandOnLeftSide()){
-                    //primary.getSprite().setX(r.getSprite().getX() - ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
-                    int goalX = r.getSprite().getX()-ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-                    int goalY = r.getSprite().getY();
-                    moveAcrossConveyer = new Line(primary.getSprite().getX(),primary.getSprite().getY(), goalX,goalY);
-                    p.addLine(moveAboveRecyclable);
-                    p.addLine(moveAcrossConveyer);
-                    primary.setPath(p);
-                    primary.setGoal(goalX,goalY);
-                    logger.info("**SetPath right");
+            if(!primary.isFollowingPath()){
+                Path p = new Path();
+                Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
+                        primary.getSprite().getX(),primary.getSprite().getY()-50);
+                int goalY = r.getSprite().getY()-50;
+                //int goalX = r.getSprite().getX();
+                p.addLine(moveAboveRecyclable);
+                primary.setPath(p);
+                primary.setGoal(primary.getSprite().getX(),goalY);
+
+            }else{
+                //Check goal x and y
+                double newX=0;
+                RecycleBin bin = recycleBins.findCorrectBin(r);
+                RecycleBin.ConveyorSide binSide = bin.getSide();
+                if(binSide==RecycleBin.ConveyorSide.RIGHT){
+                    if(!primary.isHandOnLeftSide()){
+                        logger.info("**SetPath left");
+                        primary.setOnCorrectSide(false);
+                        //newX=r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET;
+                        //primary.getSprite().setX((int)newX);
+                    } else {
+                        primary.setOnCorrectSide(true);
+                    }
+                } else {
+                    if(primary.isHandOnLeftSide()){
+                        logger.info("**SetPath right");
+                        primary.setOnCorrectSide(false);
+                        //newX=r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET;
+                        //primary.getSprite().setX((int)newX);
+                    } else {
+                        primary.setOnCorrectSide(true);
+                    }
                 }
-            } else {
-                if(primary.isHandOnLeftSide()){
-                    //primary.getSprite().setX(r.getSprite().getX() + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
-                    int goalX = r.getSprite().getX()+ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-                    int goalY = r.getSprite().getY();
-                    moveAcrossConveyer = new Line(primary.getSprite().getX(),primary.getSprite().getY(),goalX,goalY);
-                    p.addLine(moveAboveRecyclable);
-                    p.addLine(moveAcrossConveyer);
-                    primary.setPath(p);
-                    primary.setGoal(goalX,goalY);
-                    logger.info("**SetPath left");
-                }
+
+                primary.resetFollowingPath();
+
+
             }
 
             //logger.info("LeftSide="+primary.isHandOnLeftSide()+",px="+primary.getSprite().getX()+",bt="+bin.getType()+",bs="+binSide);
