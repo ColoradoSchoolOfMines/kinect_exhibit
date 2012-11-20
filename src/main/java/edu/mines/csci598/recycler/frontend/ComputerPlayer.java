@@ -40,7 +40,7 @@ public class ComputerPlayer {
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
-        lastStrikeDelay=0.25;
+        lastStrikeDelay=0.65;
         targetRecyclable = 0;
         score=0;
         strikes=0;
@@ -54,7 +54,7 @@ public class ComputerPlayer {
         //Follow target recyclable
         followRecyclable(r,currentTimeSec);
         //Strike target recyclable
-        //strike(r,currentTimeSec);
+        strike(r,currentTimeSec);
     }
     public void followRecyclable(Recyclable r, double currentTimeSec){
         //logger.info("FollowRecyclable");
@@ -76,6 +76,7 @@ public class ComputerPlayer {
                     }else{
                         primary.getSprite().setX((int)r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET);
                     }
+                    lastStrikeTime=currentTimeSec;
                 }else {
                     //logger.info("Hand is on correct side");
                 }
@@ -163,6 +164,7 @@ public class ComputerPlayer {
         }
     }
     public void strikeRecyclable(Recyclable r,double currentTimeSec){
+        primary.setOnCorrectSide(false);
         int newX = r.getSprite().getX();
         int newY = r.getSprite().getY();
 
