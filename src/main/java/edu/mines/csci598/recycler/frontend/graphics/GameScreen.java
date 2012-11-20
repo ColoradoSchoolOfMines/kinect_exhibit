@@ -63,7 +63,7 @@ public class GameScreen {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         }
 
-        if(GameConstants.DEBUG_COMPUTER_PLAYER)
+        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER)
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
         else
             g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);

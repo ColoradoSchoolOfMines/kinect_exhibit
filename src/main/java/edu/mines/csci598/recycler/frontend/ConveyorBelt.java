@@ -25,7 +25,7 @@ public class ConveyorBelt {
     private double speedPixPerSecond;
     private final double maxSpeedPixPerSecond;
     
-    private static final boolean debugCollisions = GameConstants.DEBUG_COLLISIONS;
+    private  boolean debuggingCollisions;
 
 
     //Left Path
@@ -46,11 +46,12 @@ public class ConveyorBelt {
             GameConstants.RIGHT_TOP_PATH_END_X, GameConstants.RIGHT_TOP_PATH_END_Y);
     public static final Path CONVEYOR_BELT_PATH_RIGHT = new Path(Arrays.asList(bottomLineRight,verticalLineRight,topLineRight));
 
-    public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path) {
+    public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path,boolean debuggingCollisions) {
         this.game = game;
         this.gameScreen = gameScreen;
     	this.path = path;
     	recyclables = new ArrayList<Recyclable>();
+        this.debuggingCollisions=debuggingCollisions;
         
         speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
         maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
@@ -136,7 +137,7 @@ public class ConveyorBelt {
         moveConveyorBelt(currentTimeSec);
         
         // Generate more items, if we feel like it
-        if (!debugCollisions) {
+        if (!debuggingCollisions) {
             possiblyGenerateItem(currentTimeSec);
         }
 	}    
