@@ -42,8 +42,8 @@ public class ComputerHand {
         goalY=0;
         followingPath=false;
         aboveRecyclable=false;
-        int x = GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-        int y = GameConstants.VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
+        int x = GameConstants.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        int y = GameConstants.RIGHT_VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
     }
     public Point2D getPosition(){
@@ -94,7 +94,7 @@ public class ComputerHand {
     public boolean isHandOnLeftSide(){
         boolean ret=false;
         //logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
-        if(sprite.getX()<GameConstants.VERTICAL_PATH_START_X)ret=true;
+        if(sprite.getX()<GameConstants.RIGHT_VERTICAL_PATH_START_X)ret=true;
         return ret;
     }
 
