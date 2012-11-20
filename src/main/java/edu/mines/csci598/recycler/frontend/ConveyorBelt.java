@@ -167,17 +167,6 @@ public class ConveyorBelt {
 			}
             recyclable.setPosition(newPosition);
 
-            if(recyclable.getMotionState()==MotionState.FALL_LEFT){
-                if(newPosition.getX()<=GameConstants.LEFT_VERTICAL_PATH_START_X -(GameConstants.ITEM_PATH_END*3/4)){
-                    recyclablesToRemove.add(recyclable);
-                    gameScreen.removeSprite(recyclable.getSprite());
-                }
-            }else if(recyclable.getMotionState()==MotionState.FALL_RIGHT){
-                if(newPosition.getX()>=GameConstants.LEFT_VERTICAL_PATH_START_X +(GameConstants.ITEM_PATH_END*3/4)){
-                    recyclablesToRemove.add(recyclable);
-                    gameScreen.removeSprite(recyclable.getSprite());
-                }
-            }
 		}
 		
 		// Some need to be removed

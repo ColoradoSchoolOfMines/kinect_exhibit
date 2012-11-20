@@ -63,7 +63,7 @@ public final class GameConstants {
 
     public static final int LEFT_TOP_PATH_START_X = LEFT_VERTICAL_PATH_END_X;
     public static final int LEFT_TOP_PATH_START_Y = LEFT_VERTICAL_PATH_END_Y;
-    public static final int LEFT_TOP_PATH_END_X = 750;
+    public static final int LEFT_TOP_PATH_END_X = 650;
     public static final int LEFT_TOP_PATH_END_Y = LEFT_VERTICAL_PATH_END_Y;
 
 	public static final Point2D LEFT_END_POSITION = new Point2D.Double(LEFT_TOP_PATH_END_X, LEFT_TOP_PATH_END_Y);
