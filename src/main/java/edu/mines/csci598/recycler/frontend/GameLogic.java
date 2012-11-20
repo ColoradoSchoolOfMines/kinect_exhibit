@@ -36,12 +36,15 @@ public class GameLogic  {
     private int score;
     private int strikes;
     private boolean gameOverNotified = false;
+    private boolean playerIsAComputer;
+    private boolean debuggingCollision;
     //TODO game manager should be removed from this class when the idea of players having hands is dissolved
     private GameManager gameManager;
 
 
 
-    public GameLogic( RecycleBins recycleBins, Path conveyorPath, GameManager gameManager) {
+    public GameLogic( RecycleBins recycleBins, Path conveyorPath, GameManager gameManager,
+                      boolean playerIsAComputer,boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         this.recycleBins = recycleBins;
@@ -50,20 +53,23 @@ public class GameLogic  {
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
-        conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
+        conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath,debuggingCollision);
         startTime = System.currentTimeMillis();
+
+        this.playerIsAComputer = playerIsAComputer;
+        this.debuggingCollision = debuggingCollision;
 
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
-        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
+        if (!this.playerIsAComputer) {
             player1 = new Player(gameManager);
             gameScreen.addHandSprite(player1.primary.getSprite());
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
-        if(GameConstants.DEBUG_COLLISIONS){
-            Recyclable r = RecyclableFactory.generateRandom(ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, 1);
+        if(this.debuggingCollision){
+            Recyclable r = RecyclableFactory.generateRandom(ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, 1);
             conveyorBelt.addRecyclable(r);
         }
     }
@@ -79,7 +85,7 @@ public class GameLogic  {
     }
 
     private void potentiallyHandleCollision(Recyclable r) {
-        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
+        if (!playerIsAComputer) {
         	Hand hand = player1.primary;
             //logger.info("rms="+r.getMotionState()+",msc="+MotionState.CONVEYOR);
             if(r.getMotionState()== MotionState.CONVEYOR) {
@@ -130,7 +136,7 @@ public class GameLogic  {
      * @param bin
      */
     public void handleScore(Recyclable r, RecycleBin bin) {
-        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
+        if (!playerIsAComputer) {
             if (bin.isCorrectRecyclableType(r)) {
                 score++;
             } else {
@@ -211,7 +217,7 @@ public class GameLogic  {
     	}
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
-        if (!GameConstants.DEBUG_COMPUTER_PLAYER) {
+        if (!playerIsAComputer) {
             // display the hand
             player1.primary.updateLocation();
         } else {

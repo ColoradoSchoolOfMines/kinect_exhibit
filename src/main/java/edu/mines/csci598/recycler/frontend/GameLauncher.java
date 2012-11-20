@@ -4,6 +4,7 @@ import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.*;
 
@@ -23,9 +24,10 @@ public class GameLauncher extends GameState {
 		gameManager = new GameManager("Recycler", false);
 		gameScreen = GameScreen.getInstance();
 		leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, gameManager);
+				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, gameManager,false,false);
 		rightGame = new GameLogic(new RecycleBins(RecycleBins.Side.RIGHT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, gameManager);
+				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, gameManager, GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
+                GameConstants.DEBUG_COLLISIONS);
 	}
 
 	protected void drawThis(Graphics2D g2d) {
