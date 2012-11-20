@@ -19,6 +19,7 @@ public class ConveyorBelt {
     private List<Recyclable> recyclables;
     private double lastMotionTimeSec;
 	private double nextTimeToGenerate;
+    private double meanTimeBetweenItemGeneration;
     private GameLogic game;
     private GameScreen gameScreen;
     private Path path;
@@ -52,6 +53,8 @@ public class ConveyorBelt {
     	this.path = path;
     	recyclables = new ArrayList<Recyclable>();
         this.debuggingCollisions=debuggingCollisions;
+        nextTimeToGenerate = 0;
+        meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
         
         speedPixPerSecond = GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND;
         maxSpeedPixPerSecond = GameConstants.FINAL_SPEED_IN_PIXELS_PER_SECOND;
@@ -121,7 +124,7 @@ public class ConveyorBelt {
     private boolean needsItemGeneration(double currentTimeSec) {
 		if (currentTimeSec > nextTimeToGenerate) {
 			double timeToAdd = random.nextGaussian()
-					+ GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
+					+ meanTimeBetweenItemGeneration;
 			nextTimeToGenerate = currentTimeSec + Math.max(timeToAdd, GameConstants.MIN_TIME_BETWEEN_GENERATIONS);
 			
 			logger.debug("Current time: " + currentTimeSec);
