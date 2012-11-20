@@ -67,11 +67,15 @@ public class ComputerPlayer {
             lastMotionTimeSec=currentTimeSec;
             primary.setPosition(newPosition);
 
-            if(primary.getSprite().getY()<primary.getGoalY()+10){
-                //primary.resetFollowingPath();
-                primary.setAboveRecyclable(true);
-
+            if(!primary.isOnCorrectSide()){
+                if(primary.isHandOnLeftSide())
+                    primary.getSprite().setX((int)r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET);
+                else
+                    primary.getSprite().setX((int)r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET);
             }
+            //if(primary.getSprite().getY()<primary.getGoalY()+10){
+                //primary.resetFollowingPath();
+
         }
     }
     public boolean hasCollisionWithRecyclable(Recyclable r,double currentTime){
@@ -119,27 +123,31 @@ public class ComputerPlayer {
 
             }else{
                 //Check goal x and y
-                if(primary.isAboveRecyclable()){
-                    double newX=0;
-                    RecycleBin bin = recycleBins.findCorrectBin(r);
-                    RecycleBin.ConveyorSide binSide = bin.getSide();
-                    if(binSide==RecycleBin.ConveyorSide.RIGHT){
-                        if(!primary.isHandOnLeftSide()){
-                            logger.info("**SetPath left");
-                            newX=r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET;
-                            primary.getSprite().setX((int)newX);
-                        }
+                double newX=0;
+                RecycleBin bin = recycleBins.findCorrectBin(r);
+                RecycleBin.ConveyorSide binSide = bin.getSide();
+                if(binSide==RecycleBin.ConveyorSide.RIGHT){
+                    if(!primary.isHandOnLeftSide()){
+                        logger.info("**SetPath left");
+                        primary.setOnCorrectSide(false);
+                        //newX=r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET;
+                        //primary.getSprite().setX((int)newX);
                     } else {
-                        if(primary.isHandOnLeftSide()){
-                            logger.info("**SetPath right");
-                            newX=r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET;
-                            primary.getSprite().setX((int)newX);
-                        }
+                        primary.setOnCorrectSide(true);
                     }
-
-                    primary.resetAboveRecyclable();
-                    primary.resetFollowingPath();
+                } else {
+                    if(primary.isHandOnLeftSide()){
+                        logger.info("**SetPath right");
+                        primary.setOnCorrectSide(false);
+                        //newX=r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET;
+                        //primary.getSprite().setX((int)newX);
+                    } else {
+                        primary.setOnCorrectSide(true);
+                    }
                 }
+
+                primary.resetFollowingPath();
+
 
             }
 
