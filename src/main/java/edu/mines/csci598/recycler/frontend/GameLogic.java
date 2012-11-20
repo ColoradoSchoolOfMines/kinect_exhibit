@@ -63,7 +63,7 @@ public class GameLogic  {
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
         }
         if(GameConstants.DEBUG_COLLISIONS){
-            Recyclable r = new Recyclable(RecyclableType.HAZARD, ConveyorBelt.CONVEYOR_BELT_PATH_LEFT);
+            Recyclable r = RecyclableFactory.generateRandom(ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, 1);
             conveyorBelt.addRecyclable(r);
         }
     }

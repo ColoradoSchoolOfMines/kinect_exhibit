@@ -53,7 +53,7 @@ public class RecycleBins {
      * Find bin type
      */
     public RecycleBin findCorrectBin(Recyclable r){
-        RecyclableType recycleType = r.getType();
+    	RecyclableType recycleType = r.getType();
         for(RecycleBin recycleBin: recycleBins){
             if(recycleBin.getType()==recycleType){
                 return recycleBin;

@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
@@ -22,16 +23,17 @@ public class Recyclable implements Displayable {
     private static final Logger logger = Logger.getLogger(Recyclable.class);
     public enum CollisionState{HIT_LEFT, HIT_RIGHT, NONE};
     
+    
     private Sprite sprite;
     private RecyclableType type;
     private MotionState currentMotion;
     private Path path;
 
-    public Recyclable(RecyclableType type, Path path) {
+    public Recyclable(RecyclableType type, Path path, String imagePath) {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(type.getFilePath(), (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
+        sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
     }
 
     @Override

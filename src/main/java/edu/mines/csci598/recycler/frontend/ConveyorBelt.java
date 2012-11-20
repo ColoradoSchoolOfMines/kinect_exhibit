@@ -106,7 +106,7 @@ public class ConveyorBelt {
 	private void possiblyGenerateItem(double currentTimeSec) {
 		if (needsItemGeneration(currentTimeSec)) {
 			// Recyclables initially take the path of the conveyor belt
-			Recyclable r = new Recyclable(RecyclableType.getRandom(game.getNumItemTypesInUse()), path);
+			Recyclable r = RecyclableFactory.generateRandom(path, game.getNumItemTypesInUse());
 			addRecyclable(r);
 			logger.debug("Item generated: " + r);
 		}

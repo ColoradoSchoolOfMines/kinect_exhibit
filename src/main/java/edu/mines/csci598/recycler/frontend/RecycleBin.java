@@ -22,8 +22,8 @@ public class RecycleBin {
     private ConveyorSide side;
     private RecyclableType type;
 
-    public RecycleBin(RecyclableType type) {
-        this.type = type;
+    public RecycleBin(RecyclableType trash) {
+        this.type = trash;
     }
 
     public RecycleBin(ConveyorSide side, double minY, double maxY, RecyclableType type) {
