@@ -8,17 +8,17 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import java.awt.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * This class launches 2 instances of GameLogic which represent the left and right games being played.
  * User: jzeimen
  * Date: 11/19/12
  * Time: 8:17 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ParentGameLogic extends GameState {
+public class GameLauncher extends GameState {
         private GameManager gameManager;
         private GameLogic leftGame,rightGame;
     private GameScreen gameScreen;
-        public ParentGameLogic (){
+        public GameLauncher(){
             gameManager = new GameManager("Recycler", false);
             gameScreen = GameScreen.getInstance();
             leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT), ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,gameManager);
@@ -31,7 +31,7 @@ public class ParentGameLogic extends GameState {
               return gameManager;
         }
         public static void main(String[] args) {
-            ParentGameLogic gm = new ParentGameLogic();
+            GameLauncher gm = new GameLauncher();
             ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
             gm.getGameManager().installInputDriver(mouse);
             gm.getGameManager().setState(gm);
@@ -39,7 +39,7 @@ public class ParentGameLogic extends GameState {
             gm.getGameManager().destroy();
         }
 
-        public ParentGameLogic updateThis(float time){
+        public GameLauncher updateThis(float time){
             leftGame.updateThis(time);
             rightGame.updateThis(time);
             return this;
