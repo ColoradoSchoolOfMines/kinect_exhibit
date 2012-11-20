@@ -30,7 +30,7 @@ public class HandTracker {
     private Map<Integer, List<Point3D>> history;
 
     // width and height of the depth image
-    int width, height;
+    private int width, height;
 
     // the XML file to read for configuration information
     private static final String SAMPLE_XML_FILE = "SamplesConfig.xml";
@@ -156,5 +156,19 @@ public class HandTracker {
         }
 
         return positions;
+    }
+
+    /**
+     * Returns the width component of the OpenNI space.
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
+     * Returns the width component of the OpenNI space.
+     */
+    public int getHeight() {
+        return this.height;
     }
 }
