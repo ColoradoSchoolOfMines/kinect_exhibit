@@ -12,4 +12,8 @@ public class ComputerConstants {
     public static final int MAX_GENERATION_NUMBER = 100;
     public static final double LAST_STRIKE_UPDATE = 0.33;
     public static final int HAND_X_OFFSET_FROM_CONVEYER = 100;
+    public static final double LAST_STRIKE_DELAY = 0.65;
+    public static final double LAST_MOVE_DELAY = 0.20;
+    public static final int HAND_GOAL_OFFSET = 60;
+    public static final int HAND_Y_OFFSET = 100;
 }

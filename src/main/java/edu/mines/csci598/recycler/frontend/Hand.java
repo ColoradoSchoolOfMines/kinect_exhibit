@@ -26,8 +26,9 @@ public class Hand implements Displayable {
     private int oldY;
     private int velocityCount;
     GameManager gameManager;
+    int handNum;
 
-    public Hand(GameManager manager) {
+    public Hand(GameManager manager, int handNum) {
         x = 0;
         y = 0;
         oldX = 0;
@@ -36,14 +37,15 @@ public class Hand implements Displayable {
         velocityY = 0;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
         gameManager = manager;
+        this.handNum = handNum;
     }
 
     public void updateLocation() {
         oldX = x;
         oldY = y;
 
-        x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[0][0]);
-        y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[0][1]);
+        x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[handNum][0]);
+        y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[handNum][1]);
 
         velocityX = x - oldX;
         velocityY = y - oldY;

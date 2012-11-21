@@ -29,6 +29,8 @@ public class ComputerPlayer {
     private Random random;
     private double lastStrikeTime;
     private double lastStrikeDelay;
+    private double lastMoveTime;
+    private double lastMoveDelay;
     public int targetRecyclable;
     private RecycleBins recycleBins;
     private int score;
@@ -40,7 +42,9 @@ public class ComputerPlayer {
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
-        lastStrikeDelay=0.65;
+        lastStrikeDelay=ComputerConstants.LAST_STRIKE_DELAY;
+        lastMoveTime=0;
+        lastMoveDelay=ComputerConstants.LAST_MOVE_DELAY;
         targetRecyclable = 0;
         score=0;
         strikes=0;
@@ -60,7 +64,8 @@ public class ComputerPlayer {
         //logger.info("FollowRecyclable");
         if(!primary.isFollowingPath()){
             //logger.info("following recyclable");
-            primary.getSprite().setY(r.getSprite().getY());
+            if(currentTimeSec>lastMoveTime+lastMoveDelay)
+                primary.getSprite().setY(r.getSprite().getY());
         }else {
             logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
             double timePassedSec = currentTimeSec-lastMotionTimeSec;
@@ -77,6 +82,7 @@ public class ComputerPlayer {
                         primary.getSprite().setX((int)r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET);
                     }
                     lastStrikeTime=currentTimeSec;
+                    lastMoveTime = currentTimeSec;
                 }else {
                     //logger.info("Hand is on correct side");
                 }
@@ -146,8 +152,8 @@ public class ComputerPlayer {
                     //logger.info("Setting path");
                     Path p = new Path();
                     Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
-                            r.getSprite().getX(),primary.getSprite().getY()-100);
-                    int goalY = r.getSprite().getY()-60;
+                            r.getSprite().getX(),primary.getSprite().getY()-ComputerConstants.HAND_Y_OFFSET);
+                    int goalY = r.getSprite().getY()-ComputerConstants.HAND_GOAL_OFFSET;
                     //int goalX = r.getSprite().getX();
                     p.addLine(moveAboveRecyclable);
                     primary.setPath(p);
