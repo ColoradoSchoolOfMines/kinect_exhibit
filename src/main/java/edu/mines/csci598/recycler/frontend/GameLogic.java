@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class GameLogic  {
     private static final Logger logger = Logger.getLogger(GameLogic.class);
-    
-    private Player player1, player2;
+
+    private List<Hand> hands;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
     private RecycleBins recycleBins;
@@ -59,11 +59,17 @@ public class GameLogic  {
         this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollision = debuggingCollision;
 
+        hands = new ArrayList<Hand>();
+
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
         if (!this.playerIsAComputer) {
-            player1 = new Player(gameManager);
-            gameScreen.addHandSprite(player1.primary.getSprite());
+         //   player1 = new Player(gameManager);
+            // creates the max number of hands that can be displayed which is 4
+            for (int i = 0; i < 4; i++) {
+                hands.add(new Hand(gameManager, i));
+                gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
+            }
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
@@ -73,8 +79,6 @@ public class GameLogic  {
             conveyorBelt.addRecyclable(r);
         }
     }
-
-
 
     public void addRecyclable(Recyclable r) {
         try {
@@ -86,42 +90,44 @@ public class GameLogic  {
 
     private void potentiallyHandleCollision(Recyclable r) {
         if (!playerIsAComputer) {
-        	Hand hand = player1.primary;
-            //logger.info("rms="+r.getMotionState()+",msc="+MotionState.CONVEYOR);
-            if(r.getMotionState()== MotionState.CONVEYOR) {
-                // Find out what kind of collision happened, if any
-                CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
-                if(collisionState == CollisionState.NONE){
-                    //logger.info("Item is untouchable");
-                    return;
-                }
-                else{
-                    Point2D position = r.getPosition();
-                    Path path = new Path();
-                    Line collideLine;
-                    if (collisionState == CollisionState.HIT_RIGHT) {
-                        //logger.debug("Pushed Right");
-                        collideLine = new Line(position.getX(), position.getY(),
-                                position.getX() + GameConstants.ITEM_PATH_END, position.getY());
-                        r.setMotionState(MotionState.FALL_RIGHT);
-                    }
-                    else if (collisionState == CollisionState.HIT_LEFT) {
-                        //logger.debug("Pushed Left");
-                        collideLine = new Line(position.getX(), position.getY(),
-                                position.getX() - GameConstants.ITEM_PATH_END, position.getY());
-                        r.setMotionState(MotionState.FALL_LEFT);
+            // checks to see if there is a collision with any one of the hands
+            for (Hand hand: hands) {
+                //logger.info("rms="+r.getMotionState()+",msc="+MotionState.CONVEYOR);
+                if(r.getMotionState()== MotionState.CONVEYOR) {
+                    // Find out what kind of collision happened, if any
+                    CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
+                    if(collisionState == CollisionState.NONE){
+                        //logger.info("Item is untouchable");
+                        return;
                     }
                     else{
-                        throw new IllegalStateException("Collision handling can't handle collision states other than right and left");
+                        Point2D position = r.getPosition();
+                        Path path = new Path();
+                        Line collideLine;
+                        if (collisionState == CollisionState.HIT_RIGHT) {
+                            //logger.debug("Pushed Right");
+                            collideLine = new Line(position.getX(), position.getY(),
+                                    position.getX() + GameConstants.ITEM_PATH_END, position.getY());
+                            r.setMotionState(MotionState.FALL_RIGHT);
+                        }
+                        else if (collisionState == CollisionState.HIT_LEFT) {
+                            //logger.debug("Pushed Left");
+                            collideLine = new Line(position.getX(), position.getY(),
+                                    position.getX() - GameConstants.ITEM_PATH_END, position.getY());
+                            r.setMotionState(MotionState.FALL_LEFT);
+                        }
+                        else{
+                            throw new IllegalStateException("Collision handling can't handle collision states other than right and left");
+                        }
+                        path.addLine(collideLine);
+                        r.setPath(path);
+
+                        fallingItems.add(r);
+
+                        //Retrieves bin
+                        RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
+                        handleScore(r, bin);
                     }
-                    path.addLine(collideLine);
-                    r.setPath(path);
-
-                    fallingItems.add(r);
-
-                    //Retrieves bin
-                    RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
-                    handleScore(r, bin);
                 }
             }
         } else {
@@ -209,13 +215,19 @@ public class GameLogic  {
 		return gameScreen;
 	}
 
-    protected void updateThis(float elapsedTime) {    	
+    protected void updateThis(float elapsedTime) {
+        if(System.currentTimeMillis() % 10 != 0){
+            return;
+        }
+
         //in seconds
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
         if (!playerIsAComputer) {
-            // display the hand
-            player1.primary.updateLocation();
+            // display the hands
+            for (Hand hand: hands) {
+                hand.updateLocation();
+            }
         } else {
             //call update to computer hand on next recyclable that is touchable
             if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {

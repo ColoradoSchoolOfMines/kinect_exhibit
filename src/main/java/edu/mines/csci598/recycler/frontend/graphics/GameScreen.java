@@ -1,9 +1,11 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -23,8 +25,8 @@ public class GameScreen {
     private Sprite backgroundTop;
     //private Sprite backgroundLeft;
     //private Sprite backgroundRight;
-    private Sprite player1PrimaryHand;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
+    private ArrayList<Sprite> handSprites;
     private double scaledWidth;
     private double scaledHeight;
 
@@ -35,6 +37,8 @@ public class GameScreen {
         //backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
+
+        handSprites = new ArrayList<Sprite>();
     }
 
     public static final GameScreen getInstance() {
@@ -63,13 +67,26 @@ public class GameScreen {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         }
 
-        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER)
-            g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
-        else
-            g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getX(), player1PrimaryHand.getY(), canvas);
-
         g2d.drawImage(backgroundTop.getImage(), backgroundTop.getX(), backgroundTop.getY(), canvas);
 
+        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER) {
+         //   g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
+            // draws 2 hands for the first player if hands are available - not sure if this is correct!
+            for (int i = 0; i < 2; i++) {
+                if (handSprites.get(i).getX() > -1) {
+                g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getScaledX(), handSprites.get(i).getScaledY(), canvas);
+                }
+            }
+        }
+        else {
+            // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
+            // a hand is not available.
+            for (Sprite hand: handSprites) {
+                if (hand.getX() > -1) {
+                    g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                }
+            }
+        }
     }
 
     /**
@@ -84,8 +101,12 @@ public class GameScreen {
         return sprites.remove(s);
     }
 
+    /**
+     * Adds a hand sprite to the hands array
+     * @param s
+     */
     public void addHandSprite(Sprite s) {
-        player1PrimaryHand = s;
+        handSprites.add(s);
     }
 
 }

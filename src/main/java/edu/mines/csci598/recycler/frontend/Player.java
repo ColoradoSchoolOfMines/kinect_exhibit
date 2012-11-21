@@ -17,8 +17,7 @@ public class Player {
     Hand auxiliary;
 
     public Player(GameManager manager) {
-        primary = new Hand(manager);
-        auxiliary = new Hand(manager);
+
     }
 
 }
