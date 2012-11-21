@@ -104,7 +104,7 @@ public class ConveyorBelt {
     	
     	speedPixPerSecond = baseSpeedPixPerSecond + (maxSpeedPixPerSecond - baseSpeedPixPerSecond) * pctOfFullSpeed;
     	
-    	logger.info("speed is " + speedPixPerSecond);
+    	logger.debug("speed is " + speedPixPerSecond);
     }
 
 	/**
@@ -181,7 +181,6 @@ public class ConveyorBelt {
             }
             if(newPosition.equals(recyclable.getPath().finalPosition())){
                 recyclablesToRemove.add(recyclable);
-                gameScreen.removeSprite(recyclable.getSprite());
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
 			}
             recyclable.setPosition(newPosition);
