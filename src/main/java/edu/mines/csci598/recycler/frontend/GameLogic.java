@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.Recyclable.CollisionState;
 import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.TheForce;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
@@ -28,6 +30,7 @@ public class GameLogic  {
     private GameScreen gameScreen;
     private RecycleBins recycleBins;
     private ConveyorBelt conveyorBelt;
+    private TheForce theForce;
     private List<Recyclable> fallingItems;
     private double currentTimeSec;
     private long startTime;
@@ -37,7 +40,7 @@ public class GameLogic  {
     private int strikes;
     private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
-    private boolean debuggingCollision;
+    private boolean debuggingCollisions;
     //TODO game manager should be removed from this class when the idea of players having hands is dissolved
     private GameManager gameManager;
 
@@ -53,11 +56,13 @@ public class GameLogic  {
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
-        conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath,debuggingCollision);
+        conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
+        theForce = new TheForce();
+        RecyclableFactory.setOutputPath(conveyorPath);
         startTime = System.currentTimeMillis();
 
         this.playerIsAComputer = playerIsAComputer;
-        this.debuggingCollision = debuggingCollision;
+        this.debuggingCollisions = debuggingCollision;
 
         hands = new ArrayList<Hand>();
 
@@ -73,18 +78,6 @@ public class GameLogic  {
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
-        }
-        if(this.debuggingCollision){
-            Recyclable r = RecyclableFactory.generateRandom(ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, 1);
-            conveyorBelt.addRecyclable(r);
-        }
-    }
-
-    public void addRecyclable(Recyclable r) {
-        try {
-            gameScreen.addSprite(r.getSprite());
-        } catch (ExceptionInInitializerError e) {
-            logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
         }
     }
 
@@ -182,10 +175,6 @@ public class GameLogic  {
         return Integer.toString(strikes);
     }
 
-	public int getNumItemTypesInUse() {
-		return numItemTypesInUse;
-	}
-
     private void gameOver() {
         if (gameOverNotified) return;
         Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
@@ -206,6 +195,7 @@ public class GameLogic  {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
             nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+            RecyclableFactory.setNumItemTypesInUse(numItemTypesInUse);
         }
     }
 
@@ -228,9 +218,9 @@ public class GameLogic  {
 	}
 
     protected void updateThis(float elapsedTime) {
-       // if(System.currentTimeMillis() % 10 != 0){
-       //     return;
-       // }
+        if(System.currentTimeMillis() % 10 != 0){
+            return;
+        }
 
         //in seconds
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
@@ -247,29 +237,41 @@ public class GameLogic  {
             }
             handleAIScore();
         }
-
-        // Move conveyor and generate items
-        conveyorBelt.update(currentTimeSec);
+        
         // Handle existing item collisions
         for (Recyclable r : conveyorBelt.getRecyclables()) {
             potentiallyHandleCollision(r);
         }
 
-        ArrayList<Recyclable> doneFalling = new ArrayList<Recyclable>();
-        for(Recyclable r : fallingItems){
-			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
-			r.setPosition(newPosition);
-			logger.debug("Falling items size is " + fallingItems.size());
-			if(newPosition.equals(r.getPath().finalPosition())){
-				doneFalling.add(r);
-			}
+        // Move Items
+        conveyorBelt.moveItems(currentTimeSec);
+        theForce.moveItems(currentTimeSec);
+        
+        // Release items at the end of the path
+        List<Recyclable> itemsToRemove = conveyorBelt.releaseControlOfRecyclablesAtEndOfPath();
+        for(Recyclable r : itemsToRemove){
+        	handleScore(r, RecycleBin.TRASH_BIN);
+            gameScreen.removeSprite(r.getSprite());
         }
-        for(Recyclable r : doneFalling){
-        	fallingItems.remove(r);
+        itemsToRemove = theForce.releaseControlOfRecyclablesAtEndOfPath();
+        for(Recyclable r : itemsToRemove){
+        	handleScore(r, recycleBins.findBinForFallingRecyclable(r));
+            gameScreen.removeSprite(r.getSprite());
+        }
+        
+        // Generate more items, if we feel like it
+        if (!debuggingCollisions) {
+            Recyclable r = RecyclableFactory.possiblyGenerateItem(currentTimeSec);
+            if(r != null){
+                try {
+                	conveyorBelt.takeControlOfRecyclable(r);
+                    gameScreen.addSprite(r.getSprite());
+                } catch (ExceptionInInitializerError e) {
+                    logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
+                }
+            }
         }
         
         increaseDifficulty();
     }
-
-
 }
