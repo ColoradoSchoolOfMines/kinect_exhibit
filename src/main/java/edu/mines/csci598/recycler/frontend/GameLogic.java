@@ -243,10 +243,17 @@ public class GameLogic  {
             potentiallyHandleCollision(r);
         }
 
-        
+        ArrayList<Recyclable> doneFalling = new ArrayList<Recyclable>();
         for(Recyclable r : fallingItems){
 			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
 			r.setPosition(newPosition);
+			logger.debug("Falling items size is " + fallingItems.size());
+			if(newPosition.equals(r.getPath().finalPosition())){
+				doneFalling.add(r);
+			}
+        }
+        for(Recyclable r : doneFalling){
+        	fallingItems.remove(r);
         }
         
         increaseDifficulty();

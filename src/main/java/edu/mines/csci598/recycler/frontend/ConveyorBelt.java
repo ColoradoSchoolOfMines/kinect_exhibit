@@ -103,8 +103,6 @@ public class ConveyorBelt {
     	}
     	
     	speedPixPerSecond = baseSpeedPixPerSecond + (maxSpeedPixPerSecond - baseSpeedPixPerSecond) * pctOfFullSpeed;
-    	
-    	logger.debug("speed is " + speedPixPerSecond);
     }
 
 	/**
