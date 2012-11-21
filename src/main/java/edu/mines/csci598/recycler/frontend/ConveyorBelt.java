@@ -110,10 +110,19 @@ public class ConveyorBelt {
 	 */
 	private void possiblyGenerateItem(double currentTimeSec) {
 		if (needsItemGeneration(currentTimeSec)) {
-			// Recyclables initially take the path of the conveyor belt
-			Recyclable r = RecyclableFactory.generateRandom(path, game.getNumItemTypesInUse());
-			addRecyclable(r);
-			logger.debug("Item generated: " + r);
+            // a very simple way to have powerups not generated frequently
+            Random randomGenerator = new Random();
+            int ranNum = randomGenerator.nextInt(100);
+            if (ranNum < GameConstants.POWERUP_FREQUENCY_PERCENTAGE) {
+                Recyclable r = RecyclableFactory.generateRandomPowerUp(path);
+                addRecyclable(r);
+            }
+            else {
+                // Recyclables initially take the path of the conveyor belt
+                Recyclable r = RecyclableFactory.generateRandom(path, game.getNumItemTypesInUse());
+                addRecyclable(r);
+                logger.debug("Item generated: " + r);
+            }
 		}
     }
 	

@@ -137,7 +137,7 @@ public final class GameConstants {
     /**
      * The number of items we can include, not including powerups
      */
-	public static final int MAX_ITEM_COUNT = 3;
+	public static final int MAX_ITEM_COUNT = 4;
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
@@ -151,5 +151,10 @@ public final class GameConstants {
 	 */
 	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
+    /**
+     * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
+     * generated
+     */
+    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
 }
 

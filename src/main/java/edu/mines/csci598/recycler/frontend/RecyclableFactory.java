@@ -37,4 +37,12 @@ public final class RecyclableFactory {
 		String[] possibleImages = type.getImagePaths();
         return new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
     }
+
+    // TODO this shouldn't really depend on the order we typed RecycledType enum items
+    public static Recyclable generateRandomPowerUp(Path path) {
+        int randomChoiceIndex = rand.nextInt(3) + 5;
+        RecyclableType type = RecyclableType.values()[randomChoiceIndex];
+        String[] possibleImages = type.getImagePaths();
+        return new Recyclable(type, path, possibleImages[0]);
+    }
 }
