@@ -1,10 +1,10 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import java.awt.geom.Point2D;
-
-import junit.framework.TestCase;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import java.awt.geom.Point2D;
 
 /**
  * Testing Path class
@@ -101,5 +101,36 @@ public class PathTest extends TestCase {
         end = p.getLocation(start, 1, 10);
         assertEquals(5, end.getX(), precision);
         assertEquals(0, end.getY(), precision);
+    }
+
+    public void testNumericStability(){
+        int iterations = 100000; //100k
+        double timeStep = 0.001; //total example time is 100 seconds
+        double pixPerSec = 1;
+        double finalPosition = Math.sqrt(100*100+100*100)/2;
+        Path p = new Path();
+
+        Line l = new Line(0,0,100,100);
+        p.addLine(l);
+
+        Point2D expected = new Point2D.Double(finalPosition,finalPosition);
+        Point2D start = new Point2D.Double(0,0);
+        //If it is going at 1px/second and travels for 100 seconds it should reach (70.71...,70.71...)
+        Point2D actualInOneStep = p.getLocation(start,pixPerSec,iterations*timeStep);
+
+        assertEquals(expected.getX(),actualInOneStep.getX(),0.1);
+        assertEquals(expected.getY(),actualInOneStep.getY(),0.1);
+
+
+        Point2D actualInManySteps = new Point2D.Double(0,0);
+        //Simulating calling the git position every 0.001 seconds
+        for(int i =0; i<iterations; i++){
+            actualInManySteps = p.getLocation(actualInManySteps,pixPerSec,timeStep);
+            System.out.println(actualInManySteps);
+        }
+
+        assertEquals(expected.getX(),actualInManySteps.getX(),0.1);
+        assertEquals(expected.getY(),actualInManySteps.getY(),0.1);
+
     }
 }
