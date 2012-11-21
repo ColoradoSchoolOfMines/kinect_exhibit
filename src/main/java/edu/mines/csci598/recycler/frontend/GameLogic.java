@@ -124,9 +124,21 @@ public class GameLogic  {
 
                         fallingItems.add(r);
 
-                        //Retrieves bin
-                        RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
-                        handleScore(r, bin);
+                        // handle powerups
+                        if (r.getType() == RecyclableType.ANVIL) {
+                            strikes--;
+                        }
+                        else if (r.getType() == RecyclableType.RABBIT) {
+                            logger.info("Rabbit Powerup");
+                        }
+                        else if(r.getType() == RecyclableType.TURTLE) {
+                            logger.info("Turtle Powerup");
+                        }
+                        else {
+                            //Retrieves bin
+                            RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
+                            handleScore(r, bin);
+                        }
                     }
                 }
             }

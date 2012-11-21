@@ -125,7 +125,6 @@ public class ConveyorBelt {
                 addRecyclable(r);
                 logger.debug("Item generated: " + r);
             }
-
 		}
     }
 	
