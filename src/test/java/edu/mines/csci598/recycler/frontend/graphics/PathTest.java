@@ -126,7 +126,6 @@ public class PathTest extends TestCase {
         //Simulating calling the git position every 0.001 seconds
         for(int i =0; i<iterations; i++){
             actualInManySteps = p.getLocation(actualInManySteps,pixPerSec,timeStep);
-            System.out.println(actualInManySteps);
         }
 
         assertEquals(expected.getX(),actualInManySteps.getX(),0.1);
