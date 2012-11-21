@@ -144,6 +144,11 @@ public class HandTracker {
      * @return A map of hand ID to the position of the hand in 2D space.
      */
     public Map<Integer, Point3D> getCurrentPositions() {
+        try {
+          context.waitAnyUpdateAll();
+        } catch (StatusException e) {
+          e.printStackTrace();
+        }
         Map<Integer, Point3D> positions = new HashMap<Integer, Point3D>();
 
         for(Integer id : history.keySet()) {

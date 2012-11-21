@@ -51,10 +51,12 @@ public class OpenNIHandTrackerInputDriver implements InputDriver {
       }
 
       //If not found, see if there is a free pointer
-      if (freeMapEntry != -1)
+      if (pointer == -1 && freeMapEntry != -1) {
         pointer = freeMapEntry;
-      else
+        pointerMap[freeMapEntry] = point.getKey();
+      } else if (pointer == -1 && freeMapEntry == -1) {
         continue; //Ignore this hand, since we're out of points to track
+      }
 
       float x = (float)point.getValue().getX(),
             y = (float)point.getValue().getY();
@@ -69,5 +71,10 @@ public class OpenNIHandTrackerInputDriver implements InputDriver {
       dst.receiveInput(new InputEvent(InputEvent.TYPE_POINTER_MOVEMENT,
                                       pointer, x, y));
     }
+
+    //Clear pointers which are no longer mapped
+    for (int i = 0; i < pointerMap.length; ++i)
+      if (pointerMap[i] == -1)
+        inputStatus.pointers[i][0] = inputStatus.pointers[i][1] = -1;
   }
 }
