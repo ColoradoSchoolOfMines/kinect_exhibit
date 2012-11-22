@@ -21,7 +21,7 @@ import java.awt.geom.Point2D;
  */
 public class Recyclable implements Displayable {
     private static final Logger logger = Logger.getLogger(Recyclable.class);
-    public enum CollisionState{HIT_LEFT, HIT_RIGHT, NONE};
+    //public enum CollisionState{HIT_LEFT, HIT_RIGHT, NONE};
     
     
     private Sprite sprite;
@@ -66,24 +66,14 @@ public class Recyclable implements Displayable {
     }
 
     /**
-     * checks for a collision with the given hand
+     * checks for a collision with the given point.
+     * Does *not* check if the item is touchable.
      *
-     * @param hand
-     * @param currentTimeSec
+     * @param point
      * @return
      */
-    public CollisionState hasCollisionWithHand(Hand hand, double currentTimeSec) {
-    	if(!isTouchable() || !sprite.isPointInside(hand.getX(), hand.getY())){
-    		return CollisionState.NONE;
-    	}
-    	if(hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY){
-    		return CollisionState.HIT_RIGHT;
-    	}
-    	if(hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY){
-    		return CollisionState.HIT_LEFT;
-    	}
-    	
-    	return CollisionState.NONE;
+    public boolean collidesWithPoint(Point2D point) {
+    	return sprite.isPointInside(point.getX(), point.getY());
     }
 
 	public Point2D getPosition() {

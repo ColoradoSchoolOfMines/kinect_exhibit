@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
+import java.awt.geom.Point2D;
+
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
@@ -82,6 +84,10 @@ public class Hand implements Displayable {
 
     public int getVelocityY() {
         return velocityY;
+    }
+    
+    public Point2D getPosition(){
+    	return new Point2D.Double(x, y);
     }
 
 }

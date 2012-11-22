@@ -56,6 +56,17 @@ public abstract class ItemMover {
     }
     
     /**
+     * Registers each of the given recyclables with this ItemMover.
+     * They will now be moved with each call to moveItems
+     * @param r
+     */
+    public final void takeControlOfRecyclables(List<Recyclable> newItems){
+    	for(Recyclable r : newItems){
+    		recyclables.add(r);
+    	}
+    }
+    
+    /**
      * Transfers ownership of any items managed by this ItemMover that are at the end of their path.
      * The ItemMover will no longer be aware of these items after calling this method.
      * @return The items no longer owned by this ItemMover
@@ -71,5 +82,29 @@ public abstract class ItemMover {
     		recyclables.remove(r);
     	}
     	return atEnd;
+    }
+    
+    /**
+     * Transfers ownership of any items managed by this ItemMover that are touchable at the given point.
+     * The ItemMover will no longer be aware of these items after calling this method.
+     * @param - the point that may have items
+     * @return - any items that existed at that point, which will no longer be managed by this ItemMover
+     */
+    public final List<Recyclable> releaseTouchableItemsAtPoint(Point2D point){
+    	List<Recyclable> releasing = new ArrayList<Recyclable>();
+    	for(Recyclable r : recyclables){
+    		if(!(r.isTouchable())){
+    			continue; // can't return this one, go to next
+    		}
+    		
+    		if(r.collidesWithPoint(point)){
+    			releasing.add(r);
+    		}
+    		
+    	}
+    	for(Recyclable r : releasing){
+    		recyclables.remove(r);
+    	}
+    	return releasing;
     }
 }

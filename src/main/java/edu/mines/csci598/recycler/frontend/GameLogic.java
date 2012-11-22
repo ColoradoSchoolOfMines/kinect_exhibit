@@ -1,7 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.Recyclable.CollisionState;
 import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
@@ -31,7 +30,6 @@ public class GameLogic  {
     private RecycleBins recycleBins;
     private ConveyorBelt conveyorBelt;
     private TheForce theForce;
-    private List<Recyclable> fallingItems;
     private double currentTimeSec;
     private long startTime;
     private double nextItemTypeGenerationTime;
@@ -51,7 +49,6 @@ public class GameLogic  {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         this.recycleBins = recycleBins;
-        fallingItems = new ArrayList<Recyclable>();
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
@@ -81,59 +78,60 @@ public class GameLogic  {
         }
     }
 
-    private void potentiallyHandleCollision(Recyclable r) {
+    private void potentiallyHandleCollisions() {
         if (!playerIsAComputer) {
             // checks to see if there is a collision with any one of the hands
             for (Hand hand: hands) {
-                //logger.info("rms="+r.getMotionState()+",msc="+MotionState.CONVEYOR);
-                if(r.getMotionState()== MotionState.CONVEYOR) {
-                    // Find out what kind of collision happened, if any
-                    CollisionState collisionState = r.hasCollisionWithHand(hand, currentTimeSec);
-                    if(collisionState == CollisionState.NONE){
-                        //logger.info("Item is untouchable");
-                        return;
-                    }
-                    else{
-                        Point2D position = r.getPosition();
-                        Path path = new Path();
-                        Line collideLine;
-                        if (collisionState == CollisionState.HIT_RIGHT) {
-                            //logger.debug("Pushed Right");
-                            collideLine = new Line(position.getX(), position.getY(),
-                                    position.getX() + GameConstants.ITEM_PATH_END, position.getY());
-                            r.setMotionState(MotionState.FALL_RIGHT);
-                        }
-                        else if (collisionState == CollisionState.HIT_LEFT) {
-                            //logger.debug("Pushed Left");
-                            collideLine = new Line(position.getX(), position.getY(),
-                                    position.getX() - GameConstants.ITEM_PATH_END, position.getY());
-                            r.setMotionState(MotionState.FALL_LEFT);
-                        }
-                        else{
-                            throw new IllegalStateException("Collision handling can't handle collision states other than right and left");
-                        }
-                        path.addLine(collideLine);
-                        r.setPath(path);
+            	
+            	if(!(Math.abs(hand.getVelocityX()) > GameConstants.MIN_HAND_VELOCITY)){
+            		// This hand isn't moving fast enough to swipe anything, so we can skip it!
+            		continue;
+            	}
+            	// If we get here, it is causing collisions with anything at this location.
+            	
+            	List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
+            	// We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
+            	
+            	for(Recyclable r : swipedOffConveyor){
+                    Point2D position = r.getPosition();
+                    Path path = new Path();
+                    Line collideLine;
 
-                        fallingItems.add(r);
-
-                        // handle powerups
-                        if (r.getType() == RecyclableType.ANVIL) {
-                            strikes--;
-                        }
-                        else if (r.getType() == RecyclableType.RABBIT) {
-                            logger.info("Rabbit Powerup");
-                        }
-                        else if(r.getType() == RecyclableType.TURTLE) {
-                            logger.info("Turtle Powerup");
-                        }
-                        else {
-                            //Retrieves bin
-                            RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
-                            handleScore(r, bin);
-                        }
+                	if(hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY){
+                        //logger.debug("Pushed Right");
+                        collideLine = new Line(position.getX(), position.getY(),
+                                position.getX() + GameConstants.ITEM_PATH_END, position.getY());
+                        r.setMotionState(MotionState.FALL_RIGHT);
+                	}
+                	else if(hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY){
+                        //logger.debug("Pushed Left");
+                        collideLine = new Line(position.getX(), position.getY(),
+                                position.getX() - GameConstants.ITEM_PATH_END, position.getY());
+                        r.setMotionState(MotionState.FALL_LEFT);
+                	}
+                	else{
+                		throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
+                	}
+                	
+                    path.addLine(collideLine);
+                    r.setPath(path);
+                    
+                    
+                    // handle powerups
+                    if (r.getType() == RecyclableType.ANVIL) {
+                        strikes--;
                     }
-                }
+                    else if (r.getType() == RecyclableType.RABBIT) {
+                        logger.info("Rabbit Powerup");
+                    }
+                    else if(r.getType() == RecyclableType.TURTLE) {
+                        logger.info("Turtle Powerup");
+                    }
+            	}
+
+            	// We now have a list of items that the conveyor belt has released, and they know where they are going.
+            	// Handing control to TheForce!
+            	theForce.takeControlOfRecyclables(swipedOffConveyor);
             }
         } else {
             //Computer collision detection
@@ -239,10 +237,8 @@ public class GameLogic  {
         }
         
         // Handle existing item collisions
-        for (Recyclable r : conveyorBelt.getRecyclables()) {
-            potentiallyHandleCollision(r);
-        }
-
+        potentiallyHandleCollisions();
+        
         // Move Items
         conveyorBelt.moveItems(currentTimeSec);
         theForce.moveItems(currentTimeSec);
