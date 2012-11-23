@@ -45,18 +45,18 @@ public class Path {
     
     /**
      * This method calculates the new position of an object along this path given the item’s
-     * current location, speed, and time in motion.  It handles turning corners.  Though the
+     * current location, speed, and time since last motion.  It handles turning corners.  Though the
      * game is continuously changing the conveyor speed, we neglect calculus, use the item’s
      * speed at the instant the method is called, and assume it is constant until the item
      * arrives at the end destination at the end of the method.
      * @param currentLocation - The coordinate the object is currently located at
      * @param speedPixPerSec - The speed the object is travelling, measured in pixels per second
-     * @param timeInMotionSec - The time elapsed at this speed
+     * @param timeInMotionSinceLastMoveSec - The time elapsed at this speed since the item last moved
      * @return - The new coordinate of the object
      */
-    public Coordinate getLocation(Coordinate currentLocation, double speedPixPerSec, double timeInMotionSec){
+    public Coordinate getLocation(Coordinate currentLocation, double speedPixPerSec, double timeInMotionSinceLastMoveSec){
 	    // Calculate and store how far item will travel at given speed in given time
-    	double pixelsToTravel = speedPixPerSec * timeInMotionSec;
+    	double pixelsToTravel = speedPixPerSec * timeInMotionSinceLastMoveSec;
 		Coordinate endLocation = currentLocation;
 		final boolean goingForwards = speedPixPerSec > 0;
 		

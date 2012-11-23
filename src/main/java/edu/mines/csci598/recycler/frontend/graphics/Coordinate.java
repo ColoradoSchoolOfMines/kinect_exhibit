@@ -25,12 +25,7 @@ public final class Coordinate extends Point2D{
 
 	@Override
 	public void setLocation(double x, double y) {
-		throw new IllegalArgumentException("Don't set Coordinates using doubles.  Use the int method instead!");
-	}
-	
-	public void setLocation(int x, int y){
-		this.x = x;
-		this.y = y;
+		throw new IllegalArgumentException("Don't setLocation.  Use the constructor instead!");
 	}
 	
 	@Override
