@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +12,7 @@ import edu.mines.csci598.recycler.frontend.MotionState;
 import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.RecyclableFactory;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -96,7 +96,7 @@ public class ConveyorBelt extends ItemMover{
 		
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
-            Point2D position = recyclable.getPosition();
+            Coordinate position = recyclable.getPosition();
 			if(position.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
                 recyclable.setMotionState(MotionState.CHUTE);
 

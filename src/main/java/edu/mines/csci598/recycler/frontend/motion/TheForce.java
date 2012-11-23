@@ -1,10 +1,5 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 /**

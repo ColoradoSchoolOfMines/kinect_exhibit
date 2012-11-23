@@ -1,7 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -91,7 +90,7 @@ public class Line extends Line2D{
 	}
 
 	@Override
-	public Point2D getP1() {
+	public Coordinate getP1() {
 		return startPoint;
 	}
 
@@ -106,7 +105,7 @@ public class Line extends Line2D{
 	}
 
 	@Override
-	public Point2D getP2() {
+	public Coordinate getP2() {
 		return endPoint;
 	}
 

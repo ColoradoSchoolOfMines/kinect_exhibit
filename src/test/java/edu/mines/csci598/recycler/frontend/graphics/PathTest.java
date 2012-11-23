@@ -18,7 +18,6 @@ public class PathTest extends TestCase {
         super(testName);
     }
 
-
     public static Test suite() {
         return new TestSuite(PathTest.class);
     }
