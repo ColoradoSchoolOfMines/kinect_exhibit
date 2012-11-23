@@ -27,6 +27,7 @@ public abstract class ItemMover {
 	 * Given the current time, moves the items under the ItemMover's control
 	 * @param currentTimeSec
 	 */
+	// TODO OJC - rework this to put lastMotionTime into the recyclables themselves
 	public void moveItems(double currentTimeSec){
 		// Figure out how much time has passed since we last moved
 		double timePassedSec = currentTimeSec - lastMotionTimeSec;
