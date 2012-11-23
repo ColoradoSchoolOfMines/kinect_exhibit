@@ -17,12 +17,12 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
  * To change this template use File | Settings | File Templates.
  */
 public final class RecyclableFactory {    
-    private static final Logger logger = Logger.getLogger(RecyclableFactory.class);
+    private final Logger logger = Logger.getLogger(RecyclableFactory.class);
     
-    private static final Random rand = new Random();
-	private static double nextTimeToGenerate = 0;
-    private static double meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
-    private static int numberOfItemTypes = 1;
+    private final Random rand = new Random();
+	private double nextTimeToGenerate = 0;
+    private double meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
+    private int numberOfItemTypes = 1;
 
     /**
      * Returns a random RecyclableType of the first <em>numberOfItemTypesInUse</em> types.
@@ -33,7 +33,7 @@ public final class RecyclableFactory {
      * @return
      */
     // TODO this shouldn't really depend on the order we typed items above
-    private static Recyclable generateRandom(Path path, int numberOfItemTypesInUse) {
+    private Recyclable generateRandom(Path path, int numberOfItemTypesInUse) {
         int numRecyclableTypes = RecyclableType.values().length;
 
         if (numberOfItemTypesInUse > numRecyclableTypes) { // error checking, just use the number of recyclables instead
@@ -47,7 +47,7 @@ public final class RecyclableFactory {
         return new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
     }
 
-    private static Recyclable generateRandomPowerUp(Path path) {
+    private Recyclable generateRandomPowerUp(Path path) {
         int randomChoiceIndex = rand.nextInt(3) + 5;
         RecyclableType type = RecyclableType.values()[randomChoiceIndex];
         String[] possibleImages = type.getImagePaths();
@@ -60,7 +60,7 @@ public final class RecyclableFactory {
 	 * Generates new item if necessary
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
-	public static Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
+	public Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
 		logger.setLevel(Level.DEBUG);
 		Recyclable returned = null;
 		if (needsItemGeneration(currentTimeSec)) {
@@ -68,12 +68,12 @@ public final class RecyclableFactory {
             Random randomGenerator = new Random();
             int ranNum = randomGenerator.nextInt(100);
             if (ranNum < GameConstants.POWERUP_FREQUENCY_PERCENTAGE) {
-            	returned = RecyclableFactory.generateRandomPowerUp(outputPath);
+            	returned = generateRandomPowerUp(outputPath);
                 logger.debug("Powerup generated: " + returned);
             }
             else {
                 // Recyclables initially take the path of the conveyor belt
-            	returned = RecyclableFactory.generateRandom(outputPath, numberOfItemTypes);
+            	returned = generateRandom(outputPath, numberOfItemTypes);
                 logger.debug("Item generated: " + returned);
             }
 		}
@@ -85,7 +85,7 @@ public final class RecyclableFactory {
      *
      * @return true if item should be generated, false otherwise
      */
-    private static boolean needsItemGeneration(double currentTimeSec) {
+    private boolean needsItemGeneration(double currentTimeSec) {
 		if (currentTimeSec > nextTimeToGenerate) {
 			double timeToAdd = rand.nextGaussian()
 					+ meanTimeBetweenItemGeneration;
@@ -99,7 +99,7 @@ public final class RecyclableFactory {
 		return false;
     }
 
-	public static void setNumItemTypesInUse(int numItemTypesInUse) {
+	public void setNumItemTypesInUse(int numItemTypesInUse) {
 		numberOfItemTypes = numItemTypesInUse;
 	}
 }

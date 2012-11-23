@@ -31,6 +31,7 @@ public class GameLogic  {
     private List<Hand> hands;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
+    private RecyclableFactory factory;
     private RecycleBins recycleBins;
     private ConveyorBelt conveyorBelt;
     private TheForce theForce;
@@ -52,6 +53,7 @@ public class GameLogic  {
                       boolean playerIsAComputer,boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
+        factory = new RecyclableFactory();
         this.recycleBins = recycleBins;
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
@@ -196,7 +198,7 @@ public class GameLogic  {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
             nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
-            RecyclableFactory.setNumItemTypesInUse(numItemTypesInUse);
+            factory.setNumItemTypesInUse(numItemTypesInUse);
         }
     }
 
@@ -256,7 +258,7 @@ public class GameLogic  {
         
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Recyclable r = RecyclableFactory.possiblyGenerateItem(conveyorBelt.getPath(), currentTimeSec);
+            Recyclable r = factory.possiblyGenerateItem(conveyorBelt.getPath(), currentTimeSec);
             if(r != null){
                 try {
                 	conveyorBelt.takeControlOfRecyclable(r);

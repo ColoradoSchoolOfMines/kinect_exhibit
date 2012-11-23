@@ -14,7 +14,7 @@ public final class GameConstants {
     /**
      * Set to true to have only one item generated on the screen at a time
      */
-    public static final boolean DEBUG_COLLISIONS = true;
+    public static final boolean DEBUG_COLLISIONS = false;
     /**
      * Set to true when debugging the computer player
      */
