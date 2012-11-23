@@ -18,7 +18,6 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 public class ConveyorBelt extends ItemMover{
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
 	
-    private List<Recyclable> recyclables;
     private final Path path;
 
     //Left Path
