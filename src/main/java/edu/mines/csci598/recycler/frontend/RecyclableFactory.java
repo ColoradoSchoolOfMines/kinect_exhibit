@@ -61,7 +61,6 @@ public final class RecyclableFactory {
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
 	public Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
-		logger.setLevel(Level.DEBUG);
 		Recyclable returned = null;
 		if (needsItemGeneration(currentTimeSec)) {
             // a very simple way to have powerups not generated frequently
