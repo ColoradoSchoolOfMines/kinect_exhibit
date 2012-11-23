@@ -1,13 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.RecyclableType;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
-
-import java.awt.geom.Point2D;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.
@@ -86,11 +85,11 @@ public class Recyclable implements Displayable {
     	return CollisionState.NONE;
     }
 
-	public Point2D getPosition() {
+	public Coordinate getPosition() {
 		return sprite.getPosition();
 	}
 
-	public void setPosition(Point2D location) {
+	public void setPosition(Coordinate location) {
 		sprite.setPosition(location);
 	}
 

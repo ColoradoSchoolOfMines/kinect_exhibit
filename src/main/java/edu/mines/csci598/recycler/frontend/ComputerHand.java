@@ -1,13 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
-
-import java.awt.geom.Point2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,7 +20,7 @@ public class ComputerHand {
     private Sprite sprite;
     private int velocityX;
     private int velocityY;
-    Point2D position;
+    private Coordinate position;
     private Path path;
     private int goalX;
     private int goalY;
@@ -46,10 +45,10 @@ public class ComputerHand {
         int y = GameConstants.RIGHT_VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
     }
-    public Point2D getPosition(){
+    public Coordinate getPosition(){
         return sprite.getPosition();
     }
-    public void setPosition(Point2D position){
+    public void setPosition(Coordinate position){
         sprite.setPosition(position);
     }
     public int getGoalX(){

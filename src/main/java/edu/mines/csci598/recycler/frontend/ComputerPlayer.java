@@ -1,11 +1,11 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
-import java.awt.geom.Point2D;
 import java.util.Random;
 
 import org.apache.log4j.Level;
@@ -69,9 +69,11 @@ public class ComputerPlayer {
         }else {
             logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
             double timePassedSec = currentTimeSec-lastMotionTimeSec;
-            Point2D newPosition = primary.getPath().getLocation(primary.getPosition(),200,timePassedSec);
-            lastMotionTimeSec=currentTimeSec;
-            primary.setPosition(newPosition);
+            Coordinate newPosition = primary.getPath().getLocation(primary.getPosition(),200,timePassedSec);
+            if(!(newPosition.equals(primary.getPosition()))){
+                lastMotionTimeSec=currentTimeSec;
+                primary.setPosition(newPosition);
+            }
             if(primary.getSprite().getY()<primary.getGoalY()){
                 primary.resetFollowingPath();
                 if(!primary.isOnCorrectSide()){
@@ -203,7 +205,7 @@ public class ComputerPlayer {
         // fallingItems.add(r);
         // elsewhere: 
         //      for(Recyclable r : fallingItems){
-		//			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
+		//			Coordinate newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
 		//			r.setPosition(newPosition);
         //		}
         

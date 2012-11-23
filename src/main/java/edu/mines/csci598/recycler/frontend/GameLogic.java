@@ -2,11 +2,15 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.Recyclable.CollisionState;
-import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
+import edu.mines.csci598.recycler.frontend.graphics.Line;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,19 +105,19 @@ public class GameLogic  {
                         return;
                     }
                     else{
-                        Point2D position = r.getPosition();
+                        Coordinate position = r.getPosition();
                         Path path = new Path();
                         Line collideLine;
                         if (collisionState == CollisionState.HIT_RIGHT) {
                             //logger.debug("Pushed Right");
-                            collideLine = new Line(position.getX(), position.getY(),
-                                    position.getX() + GameConstants.ITEM_PATH_END, position.getY());
+                            collideLine = new Line((int)position.getX(), (int)position.getY(),
+                            		(int)(position.getX() + GameConstants.ITEM_PATH_END), (int)position.getY());
                             r.setMotionState(MotionState.FALL_RIGHT);
                         }
                         else if (collisionState == CollisionState.HIT_LEFT) {
                             //logger.debug("Pushed Left");
-                            collideLine = new Line(position.getX(), position.getY(),
-                                    position.getX() - GameConstants.ITEM_PATH_END, position.getY());
+                            collideLine = new Line((int)position.getX(), (int)position.getY(),
+                            		(int)(position.getX() - GameConstants.ITEM_PATH_END), (int)position.getY());
                             r.setMotionState(MotionState.FALL_LEFT);
                         }
                         else{
@@ -257,7 +261,7 @@ public class GameLogic  {
 
         ArrayList<Recyclable> doneFalling = new ArrayList<Recyclable>();
         for(Recyclable r : fallingItems){
-			Point2D newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
+			Coordinate newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
 			r.setPosition(newPosition);
 			logger.debug("Falling items size is " + fallingItems.size());
 			if(newPosition.equals(r.getPath().finalPosition())){

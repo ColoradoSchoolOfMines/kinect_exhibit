@@ -1,12 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,6 @@ public class ConveyorBelt {
 	private double nextTimeToGenerate;
     private double meanTimeBetweenItemGeneration;
     private GameLogic game;
-    private GameScreen gameScreen;
     private Path path;
     private double speedPixPerSecond;
     
@@ -48,7 +47,6 @@ public class ConveyorBelt {
 
     public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path,boolean debuggingCollisions) {
         this.game = game;
-        this.gameScreen = gameScreen;
     	this.path = path;
     	recyclables = new ArrayList<Recyclable>();
         this.debuggingCollisions=debuggingCollisions;
@@ -167,7 +165,7 @@ public class ConveyorBelt {
 
         // Update all the current items
 		for(Recyclable recyclable : recyclables){
-            Point2D newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec);
+			Coordinate newPosition = recyclable.getPath().getLocation(recyclable.getPosition(), speedPixPerSecond, timePassedSec);
 			if(newPosition.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
                 recyclable.setMotionState(MotionState.CHUTE);
 
@@ -180,7 +178,11 @@ public class ConveyorBelt {
                 recyclablesToRemove.add(recyclable);
                 game.handleScore(recyclable, RecycleBin.TRASH_BIN);
 			}
-            recyclable.setPosition(newPosition);
+            
+            if(!(newPosition.equals(recyclable.getPosition()))){
+                recyclable.setPosition(newPosition);
+        		lastMotionTimeSec = currentTimeSec;              
+            }
 
 		}
 		
@@ -194,6 +196,5 @@ public class ConveyorBelt {
             // And the image on the screen
             game.getGameScreen().removeSprite(recyclable.getSprite());
         }
-		lastMotionTimeSec = currentTimeSec;
 	}
 }
