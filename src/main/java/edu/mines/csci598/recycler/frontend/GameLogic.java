@@ -59,7 +59,6 @@ public class GameLogic  {
 
         conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
         theForce = new TheForce();
-        RecyclableFactory.setOutputPath(conveyorPath);
         startTime = System.currentTimeMillis();
 
         this.playerIsAComputer = playerIsAComputer;
@@ -220,10 +219,6 @@ public class GameLogic  {
 	}
 
     protected void updateThis(float elapsedTime) {
-        if(System.currentTimeMillis() % 10 != 0){
-            return;
-        }
-
         //in seconds
         currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
 
@@ -261,7 +256,7 @@ public class GameLogic  {
         
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Recyclable r = RecyclableFactory.possiblyGenerateItem(currentTimeSec);
+            Recyclable r = RecyclableFactory.possiblyGenerateItem(conveyorBelt.getPath(), currentTimeSec);
             if(r != null){
                 try {
                 	conveyorBelt.takeControlOfRecyclable(r);

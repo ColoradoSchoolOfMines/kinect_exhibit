@@ -27,7 +27,6 @@ public abstract class ItemMover {
 	 * Given the current time, moves the items under the ItemMover's control
 	 * @param currentTimeSec
 	 */
-	//public abstract void moveItems(double currentTimeSec);
 	public void moveItems(double currentTimeSec){
 		// Figure out how much time has passed since we last moved
 		double timePassedSec = currentTimeSec - lastMotionTimeSec;
@@ -39,7 +38,6 @@ public abstract class ItemMover {
 				lastMotionTimeSec = currentTimeSec;
 			}
 		}
-		
 	}
 
 	/**

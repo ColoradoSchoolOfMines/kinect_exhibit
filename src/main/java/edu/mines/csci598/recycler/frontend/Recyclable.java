@@ -19,9 +19,7 @@ import org.apache.log4j.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class Recyclable implements Displayable {
-    private static final Logger logger = Logger.getLogger(Recyclable.class);
-    //public enum CollisionState{HIT_LEFT, HIT_RIGHT, NONE};
-    
+    private static final Logger logger = Logger.getLogger(Recyclable.class);    
     
     private Sprite sprite;
     private RecyclableType type;
@@ -81,6 +79,11 @@ public class Recyclable implements Displayable {
 
 	public void setPosition(Coordinate location) {
 		sprite.setPosition(location);
+	}
+	
+	@Override
+	public String toString(){
+		return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
 	}
 
 

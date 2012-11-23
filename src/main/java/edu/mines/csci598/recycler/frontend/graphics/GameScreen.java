@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 

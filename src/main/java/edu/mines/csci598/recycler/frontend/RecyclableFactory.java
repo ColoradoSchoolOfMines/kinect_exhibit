@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import java.util.Random;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -21,7 +22,6 @@ public final class RecyclableFactory {
     private static final Random rand = new Random();
 	private static double nextTimeToGenerate = 0;
     private static double meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
-    private static Path outputPath;
     private static int numberOfItemTypes = 1;
 
     /**
@@ -60,7 +60,8 @@ public final class RecyclableFactory {
 	 * Generates new item if necessary
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
-	public static Recyclable possiblyGenerateItem(double currentTimeSec) {
+	public static Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
+		logger.setLevel(Level.DEBUG);
 		Recyclable returned = null;
 		if (needsItemGeneration(currentTimeSec)) {
             // a very simple way to have powerups not generated frequently
@@ -96,14 +97,6 @@ public final class RecyclableFactory {
 			return true;
 		}
 		return false;
-    }
-    
-    /**
-     * Sets the path that any items generated will follow
-     * @param p the path items will follow
-     */
-    public static void setOutputPath(Path p){
-    	outputPath = p;
     }
 
 	public static void setNumItemTypesInUse(int numItemTypesInUse) {

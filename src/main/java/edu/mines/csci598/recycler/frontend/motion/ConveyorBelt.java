@@ -3,15 +3,12 @@ package edu.mines.csci598.recycler.frontend.motion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.GameLogic;
 import edu.mines.csci598.recycler.frontend.MotionState;
 import edu.mines.csci598.recycler.frontend.Recyclable;
-import edu.mines.csci598.recycler.frontend.RecyclableFactory;
-import edu.mines.csci598.recycler.frontend.RecycleBin;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
@@ -22,9 +19,7 @@ public class ConveyorBelt extends ItemMover{
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
 	
     private List<Recyclable> recyclables;
-    private GameLogic game;
-    private GameScreen gameScreen; // TODO remove
-    private Path path;
+    private final Path path;
 
     //Left Path
     private static final Line bottomLineLeft = new Line(GameConstants.LEFT_BOTTOM_PATH_START_X, GameConstants.LEFT_BOTTOM_PATH_START_Y,
@@ -46,11 +41,8 @@ public class ConveyorBelt extends ItemMover{
 
     public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path) {
         super(GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND);
-        
-        this.game = game;
-        this.gameScreen = gameScreen;
-    	this.path = path;
     	recyclables = new ArrayList<Recyclable>();
+    	this.path = path;
     }
     
     public int getNumRecyclablesOnConveyor(){
@@ -107,5 +99,9 @@ public class ConveyorBelt extends ItemMover{
                 }
             }
 		}
+	}
+
+	public Path getPath() {
+		return path;
 	}
 }
