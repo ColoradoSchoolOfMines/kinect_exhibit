@@ -1,4 +1,4 @@
-package edu.mines.csci598.entejagd;
+package edu.mines.csci598.recycler.entejagd;
 
 import static java.lang.Math.*;
 

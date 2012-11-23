@@ -1,12 +1,12 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A Path is a representation of the path an item is to follow on the screen. It consists
- * of a list of Lines.
+ * of a list of Lines.  Lines on the path should *not* intersect or figuring out which
+ * line a point is on will break.
  * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
@@ -27,8 +27,8 @@ public class Path {
     	}
     }
 
-    public Path(Path conveyorBeltPath) {
-    	for(Line l : conveyorBeltPath.path){
+    public Path(Path existingPath) {
+    	for(Line l : existingPath.path){
     		path.add(l);
     	}
 	}
@@ -45,19 +45,19 @@ public class Path {
     
     /**
      * This method calculates the new position of an object along this path given the item’s
-     * current location, speed, and time in motion.  It handles turning corners.  Though the
+     * current location, speed, and time since last motion.  It handles turning corners.  Though the
      * game is continuously changing the conveyor speed, we neglect calculus, use the item’s
      * speed at the instant the method is called, and assume it is constant until the item
      * arrives at the end destination at the end of the method.
      * @param currentLocation - The coordinate the object is currently located at
      * @param speedPixPerSec - The speed the object is travelling, measured in pixels per second
-     * @param timeInMotionSec - The time elapsed at this speed
+     * @param timeInMotionSinceLastMoveSec - The time elapsed at this speed since the item last moved
      * @return - The new coordinate of the object
      */
-    public Point2D getLocation(Point2D currentLocation, double speedPixPerSec, double timeInMotionSec){
+    public Coordinate getLocation(Coordinate currentLocation, double speedPixPerSec, double timeInMotionSinceLastMoveSec){
 	    // Calculate and store how far item will travel at given speed in given time
-    	double pixelsToTravel = speedPixPerSec * timeInMotionSec;
-		Point2D endLocation = currentLocation;
+    	double pixelsToTravel = speedPixPerSec * timeInMotionSinceLastMoveSec;
+		Coordinate endLocation = currentLocation;
 		final boolean goingForwards = speedPixPerSec > 0;
 		
 		int currentLineIndex;
@@ -68,7 +68,16 @@ public class Path {
 			currentLineIndex = path.size() - 1;
 		}
 		
-    	while(currentLineIndex >= 0 && currentLineIndex < path.size() && pixelsToTravel != 0){    		
+		// We now go through each line in our list and follow it.  Probably, you won't need more than one.
+		// But if you go around a corner, it'll first go to the end of the first line, and then follow part of the
+		// second.  Why use |pixelsToTravel|>0.5?  If it's less than that, we can guarantee motion won't happen again
+		// as currentLine.getCoordinateAfterMovingDistance will always round it right back to where it is now.
+		// It *is* possible to have the line at such an angle that no motion will occur after rounding and yet
+		// pixelsToTravel is greater than 0.5.  For example, think of y=x, and use pixelsToTravel=0.6.  We know from
+		// trig that the change in x and y will both be 0.42, and no motion will occur.  This is OK - first it's a 
+		// rare case as we don't go around many corners.  Second, getCoordinateAfterMovingDistance will just return
+		// the same point if necessary, so the worst case is that we'll iterate briefly over each line.
+    	while(currentLineIndex >= 0 && currentLineIndex < path.size() && (pixelsToTravel >= 0.5 || pixelsToTravel <= -0.5)){    		
     		Line currentLine = path.get(currentLineIndex);
     		
     		if(currentLine.intersectsPoint(currentLocation)){
@@ -94,13 +103,14 @@ public class Path {
 		return endLocation;
     }
 
-    public Point2D finalPosition(){
-        return path.get(path.size()-1).getP2();
+    public Coordinate finalPosition(){
+        return (Coordinate) path.get(path.size()-1).getP2();
     }
-    public Point2D initialPosition(){
+    
+    public Coordinate initialPosition(){
          Line l = path.get(0);
          if(l!=null){
-             return l.getP1();
+             return (Coordinate) l.getP1();
          } else{
              return null;
          }

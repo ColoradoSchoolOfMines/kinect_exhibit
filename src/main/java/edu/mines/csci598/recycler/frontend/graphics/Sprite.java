@@ -3,7 +3,6 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 import java.awt.Image;
-import java.awt.geom.Point2D;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -148,11 +147,11 @@ public class Sprite {
         return false;
     }
     
-    public Point2D getPosition(){
-    	return new Point2D.Double(x, y);
+    public Coordinate getPosition(){
+    	return new Coordinate(x, y);
     }
 
-	public synchronized void setPosition(Point2D location) {
+	public synchronized void setPosition(Coordinate location) {
 		setX((int)Math.round(location.getX()));
 		setY((int)Math.round(location.getY()));
 	}

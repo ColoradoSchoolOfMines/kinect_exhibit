@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.mines.csci598.recycler.frontend.Recyclable;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 
 /**
  * Manages a list of items and causes them to move on demand.
@@ -33,11 +34,13 @@ public abstract class ItemMover {
 		double timePassedSec = currentTimeSec - lastMotionTimeSec;
 		
 		for(Recyclable r : recyclables){
-			Point2D newPosition = r.getPath().getLocation(r.getPosition(), speedPixPerSecond, timePassedSec); 
-			r.setPosition(newPosition);
+			Coordinate newPosition = r.getPath().getLocation(r.getPosition(), speedPixPerSecond, timePassedSec); 
+			if(!(newPosition.equals(r.getPosition()))){
+				r.setPosition(newPosition);
+				lastMotionTimeSec = currentTimeSec;
+			}
 		}
 		
-		lastMotionTimeSec = currentTimeSec;
 	}
 
 	/**
@@ -90,7 +93,7 @@ public abstract class ItemMover {
      * @param - the point that may have items
      * @return - any items that existed at that point, which will no longer be managed by this ItemMover
      */
-    public final List<Recyclable> releaseTouchableItemsAtPoint(Point2D point){
+    public final List<Recyclable> releaseTouchableItemsAtPoint(Coordinate point){
     	List<Recyclable> releasing = new ArrayList<Recyclable>();
     	for(Recyclable r : recyclables){
     		if(!(r.isTouchable())){

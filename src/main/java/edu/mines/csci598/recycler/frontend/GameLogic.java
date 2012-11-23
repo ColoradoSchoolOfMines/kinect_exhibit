@@ -1,13 +1,17 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
+import edu.mines.csci598.recycler.frontend.graphics.Line;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,20 +97,20 @@ public class GameLogic  {
             	// We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
             	
             	for(Recyclable r : swipedOffConveyor){
-                    Point2D position = r.getPosition();
+                    Coordinate position = r.getPosition();
                     Path path = new Path();
                     Line collideLine;
 
                 	if(hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY){
                         //logger.debug("Pushed Right");
-                        collideLine = new Line(position.getX(), position.getY(),
-                                position.getX() + GameConstants.ITEM_PATH_END, position.getY());
+                        collideLine = new Line((int)position.getX(), (int)position.getY(),
+                        		(int)position.getX() + GameConstants.ITEM_PATH_END, (int)position.getY());
                         r.setMotionState(MotionState.FALL_RIGHT);
                 	}
                 	else if(hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY){
                         //logger.debug("Pushed Left");
-                        collideLine = new Line(position.getX(), position.getY(),
-                                position.getX() - GameConstants.ITEM_PATH_END, position.getY());
+                        collideLine = new Line((int)position.getX(), (int)position.getY(),
+                        		(int)position.getX() - GameConstants.ITEM_PATH_END, (int)position.getY());
                         r.setMotionState(MotionState.FALL_LEFT);
                 	}
                 	else{
