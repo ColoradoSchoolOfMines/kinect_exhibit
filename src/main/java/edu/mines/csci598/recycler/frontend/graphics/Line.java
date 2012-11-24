@@ -15,7 +15,6 @@ import java.awt.geom.Rectangle2D;
 public class Line extends Line2D{
 
 	private final Coordinate startPoint, endPoint;
-    private double velocity;
 	private double timeToComplete;
     /**
      * Begining coordinates, ending coordinates and how long the line takes to be traversed. This way based on a time
@@ -33,10 +32,13 @@ public class Line extends Line2D{
     public Line(double startX, double startY, double endX, double endY, double timeToComplete ) {
         startPoint = new Coordinate(startX, startY);
         endPoint = new Coordinate(endX, endY);
-        double length = startPoint.distance(endPoint);
         this.timeToComplete =timeToComplete;
     }
-    
+    public Line(Coordinate start, Coordinate end, double timeToComplete ) {
+        startPoint = start;
+        endPoint = end;
+        this.timeToComplete =timeToComplete;
+    }
     /**
      * Checks whether the given point, with integer coordinates, is on this line.
      * @param point - the point we're wondering about

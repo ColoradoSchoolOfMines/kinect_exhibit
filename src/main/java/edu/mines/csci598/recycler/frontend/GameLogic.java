@@ -8,6 +8,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
@@ -37,6 +38,7 @@ public class GameLogic  {
     private TheForce theForce;
     private double currentTimeSec;
     private double wallTimeSec;
+    private FeedbackDisplay feedbackDisplay;
     private double lastWallTimeSec;
     private double timeSpeedFactor;
     private double powerUpSpeedFactor;
@@ -64,6 +66,7 @@ public class GameLogic  {
         lastWallTimeSec = 0;
         timeSpeedFactor = 1;
         powerUpSpeedFactor=1;
+        feedbackDisplay = new FeedbackDisplay(0);
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         this.gameStatusDisplay = gameStatusDisplay;
         conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
@@ -170,9 +173,12 @@ public class GameLogic  {
     public void handleScore(Recyclable r, RecycleBin bin) {
         if (!playerIsAComputer) {
             if (bin.isCorrectRecyclableType(r)) {
-                gameStatusDisplay.incrementScore(1);
+                gameStatusDisplay.incrementScore(10);
+                feedbackDisplay.addRight(r.getPosition(),currentTimeSec);
             } else {
+                //TODO Need to make sure power ups are not counted here
                 strikes++;
+                feedbackDisplay.addWrong(r.getPosition(),currentTimeSec);
             }
         } else {
             handleAIScore();
@@ -184,7 +190,7 @@ public class GameLogic  {
     }
 
     public void handleAIScore() {
-        gameStatusDisplay.setScore( computerPlayer.getAIScore());
+        gameStatusDisplay.setScore(computerPlayer.getAIScore());
         strikes = computerPlayer.getAIStrikes();
     }
 
@@ -257,7 +263,7 @@ public class GameLogic  {
         // Move Items
         conveyorBelt.moveItems(currentTimeSec);
         theForce.moveItems(currentTimeSec);
-        
+        feedbackDisplay.moveItems(currentTimeSec);
         // Release items at the end of the path
         List<Recyclable> itemsToRemove = conveyorBelt.releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
         for(Recyclable r : itemsToRemove){
@@ -269,7 +275,7 @@ public class GameLogic  {
         	handleScore(r, recycleBins.findBinForFallingRecyclable(r));
             gameScreen.removeSprite(r.getSprite());
         }
-        
+
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
             Recyclable r = factory.possiblyGenerateItem(conveyorBelt.getNewPath(), currentTimeSec);
