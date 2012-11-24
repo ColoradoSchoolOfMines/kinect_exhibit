@@ -47,6 +47,7 @@ public class ComputerPlayer {
         strikes=0;
         this.recycleBins=recycleBins;
         lastMotionTimeSec=0;
+
     }
     public void updateAI(Recyclable r,double currentTimeSec){
         //Set hand to correct side
@@ -64,7 +65,7 @@ public class ComputerPlayer {
             if(currentTimeSec>lastMoveTime+lastMoveDelay)
                 primary.getSprite().setY(r.getSprite().getY());
         }else {
-            logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
+            logger.debug("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
             double timePassedSec = currentTimeSec-lastMotionTimeSec;
             Coordinate newPosition = primary.getPath().getLocation(timePassedSec);
             if(!(newPosition.equals(primary.getPosition()))){
@@ -121,7 +122,7 @@ public class ComputerPlayer {
 
     public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
         if(r.isTouchable()){
-            logger.info("setHandToCorrectSide");
+            logger.debug("setHandToCorrectSide");
             if(!primary.isOnCorrectSide()){
                 //logger.info("  onWrongSide");
                 //Check goal x and y
@@ -130,7 +131,7 @@ public class ComputerPlayer {
                 RecycleBin.ConveyorSide binSide = bin.getSide();
                 if(binSide==RecycleBin.ConveyorSide.RIGHT){
                     if(!primary.isHandOnLeftSide()){
-                        logger.info("**SetPath left");
+                        logger.debug("**SetPath left");
                         primary.setOnCorrectSide(false);
                         //newX=r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET;
                         //primary.getSprite().setX((int)newX);
@@ -139,7 +140,7 @@ public class ComputerPlayer {
                     }
                 } else {
                     if(primary.isHandOnLeftSide()){
-                        logger.info("**SetPath right");
+                        logger.debug("**SetPath right");
                         primary.setOnCorrectSide(false);
                         //newX=r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET;
                         //primary.getSprite().setX((int)newX);
@@ -184,12 +185,13 @@ public class ComputerPlayer {
         Line collideLine;
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
-            logger.info("Pushed Right");
+            logger.debug("Pushed Right");
             r.setMotionState(MotionState.FALL_RIGHT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);
         } else {
-            logger.info("Pushed Left");
+            logger.debug("Pushed Left");
+            logger.debug("Pushed Left");
             r.setMotionState(MotionState.FALL_LEFT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
                     r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);

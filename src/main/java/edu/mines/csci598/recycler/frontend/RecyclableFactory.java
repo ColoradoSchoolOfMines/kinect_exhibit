@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.util.Random;
@@ -16,7 +17,7 @@ import java.util.Random;
  */
 public final class RecyclableFactory {    
     private final Logger logger = Logger.getLogger(RecyclableFactory.class);
-    
+    //logger.setLevel(Level.INFO);
     private final Random rand = new Random();
 	private double nextTimeToGenerate = 0;
     private double meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;

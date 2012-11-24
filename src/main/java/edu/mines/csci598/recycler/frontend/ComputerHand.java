@@ -6,6 +6,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -18,25 +19,27 @@ import org.apache.log4j.Logger;
 public class ComputerHand {
     private static final Logger logger = Logger.getLogger(ComputerHand.class);
     private Sprite sprite;
-    private int velocityX;
-    private int velocityY;
-    private Coordinate position;
     private Path path;
     private int goalX;
     private int goalY;
-
+    /*
+     * followingPath
+     * Boolean used to determine if the hand should be following a recyclable or a path
+     */
     private boolean followingPath;
+    /*
+     * onCorrectSide
+     * Keeps track of whether or not the hand is on the opposite side of the bin for striking
+     */
     private boolean onCorrectSide;
 
     public ComputerHand() {
-        //logger.setLevel(Level.INFO);
+        logger.setLevel(Level.INFO);
         //resetHandPosition();
         //position.setLocation(GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR*3/4,
         //                     GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR*1/4);
         //sprite.setPosition(position);
 
-        velocityX = 0;
-        velocityY = 0;
         goalX=0;
         goalY=0;
         followingPath=false;
@@ -62,7 +65,7 @@ public class ComputerHand {
         this.goalY=goalY;
     }
     public void setPath(Path p){
-        logger.info("Hand following path");
+        logger.debug("Hand following path");
         path = p;
         followingPath=true;
     }
@@ -81,37 +84,17 @@ public class ComputerHand {
     public void setOnCorrectSide(boolean onCorrectSide){
         this.onCorrectSide=onCorrectSide;
     }
-    /*public void resetHandPosition(){
-        position.setLocation(GameConstants.VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
-                             GameConstants.VERTICAL_PATH_START_Y * GraphicsConstants.SCALE_FACTOR);
-        sprite.setPosition(position);
-    } */
-    
+
     public boolean isHandOnLeftSide(){
         boolean ret=false;
-        //logger.info("sx="+sprite.getX()+",px="+GameConstants.VERTICAL_PATH_START_X);
+        logger.debug("sx=" + sprite.getX() + ",px=" + GameConstants.RIGHT_VERTICAL_PATH_START_X);
         if(sprite.getX()<GameConstants.RIGHT_VERTICAL_PATH_START_X)ret=true;
         return ret;
     }
-
     /*
      * Get hand image
      */
     public Sprite getSprite() {
         return sprite;
-    }
-    
-    /*
-     * Get X velocity for computer player
-     */
-    public int getVelocityX() {
-        return velocityX;
-    }
-    
-    /*
-     * Get Y velocity for computer player
-     */
-    public int getVelocityY() {
-        return velocityY;
     }
 }

@@ -88,9 +88,10 @@ public class GameScreen {
             // draws 2 hands for the first player if hands are available - not sure if this is correct!
             for (int i = 0; i < 2; i++) {
                 if (handSprites.get(i).getX() > -1) {
-                    g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getScaledX(), handSprites.get(i).getScaledY(), canvas);
+                    g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getX(), handSprites.get(i).getY(), canvas);
                 }
             }
+
         }
         else {
             // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
