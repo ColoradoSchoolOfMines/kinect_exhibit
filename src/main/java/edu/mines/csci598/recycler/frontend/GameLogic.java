@@ -43,17 +43,17 @@ public class GameLogic  {
     private long startTime;
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
-    private int score;
     private int strikes;
     private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
+    private GameStatusDisplay gameStatusDisplay;
     //TODO game manager should be removed from this class when the idea of players having hands is dissolved
     private GameManager gameManager;
 
 
 
-    public GameLogic( RecycleBins recycleBins, Path conveyorPath, GameManager gameManager,
+    public GameLogic( RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                       boolean playerIsAComputer,boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
@@ -65,7 +65,7 @@ public class GameLogic  {
         timeSpeedFactor = 1;
         powerUpSpeedFactor=1;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
-
+        this.gameStatusDisplay = gameStatusDisplay;
         conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
         theForce = new TheForce();
         startTime = System.currentTimeMillis();
@@ -170,7 +170,7 @@ public class GameLogic  {
     public void handleScore(Recyclable r, RecycleBin bin) {
         if (!playerIsAComputer) {
             if (bin.isCorrectRecyclableType(r)) {
-                score++;
+                gameStatusDisplay.incrementScore(1);
             } else {
                 strikes++;
             }
@@ -184,13 +184,10 @@ public class GameLogic  {
     }
 
     public void handleAIScore() {
-        score = computerPlayer.getAIScore();
+        gameStatusDisplay.setScore( computerPlayer.getAIScore());
         strikes = computerPlayer.getAIStrikes();
     }
 
-    public String getScoreString() {
-        return Integer.toString(score);
-    }
 
     public String getStrikesString() {
         return Integer.toString(strikes);
@@ -266,7 +263,6 @@ public class GameLogic  {
         for(Recyclable r : itemsToRemove){
         	handleScore(r, RecycleBin.TRASH_BIN);
             gameScreen.removeSprite(r.getSprite());
-            System.out.println("Removed item");
         }
         itemsToRemove = theForce.releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
         for(Recyclable r : itemsToRemove){

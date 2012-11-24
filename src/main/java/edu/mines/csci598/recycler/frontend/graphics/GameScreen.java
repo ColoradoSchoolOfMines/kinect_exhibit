@@ -22,6 +22,7 @@ public class GameScreen {
     private static GameScreen INSTANCE;
     private Sprite backgroundBottom;
     private Sprite backgroundTop;
+    private ArrayList<TextSpritesHolder> textSpriteHolders;
     //private Sprite backgroundLeft;
     //private Sprite backgroundRight;
     private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
@@ -34,7 +35,7 @@ public class GameScreen {
         backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_Frame.png",0,0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
-
+        textSpriteHolders = new ArrayList<TextSpritesHolder>();
         handSprites = new ArrayList<Sprite>();
     }
 
@@ -47,43 +48,14 @@ public class GameScreen {
 
     public void paint(Graphics2D g2d, Component canvas) {
         g2d.drawImage(backgroundBottom.getImage(), backgroundBottom.getX(), backgroundBottom.getY(), canvas);
-       // g2d.drawImage(backgroundRight.getImage(), backgroundRight.getX(), backgroundRight.getY(), canvas);
-
-
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.green);
-        g2d.drawString("SCORE: ", 0, 20);
-        //g2d.drawString(GameLogic.getInstance().getScoreString(), 100, 20);
-
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g2d.setColor(Color.red);
-        g2d.drawString("STRIKES: ", 130, 20);
-        //g2d.drawString(GameLogic.getInstance().getStrikesString(), 220, 20);
 
         for (Sprite sprite : sprites) {
                 g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
         }
 
         g2d.drawImage(backgroundTop.getImage(), backgroundTop.getX(), backgroundTop.getY(), canvas);
-
-        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER) {
-         //   g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
-            // draws 2 hands for the first player if hands are available - not sure if this is correct!
-            for (int i = 0; i < 2; i++) {
-                if (handSprites.get(i).getX() > -1) {
-                g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getScaledX(), handSprites.get(i).getScaledY(), canvas);
-                }
-            }
-        }
-        else {
-            // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
-            // a hand is not available.
-            for (Sprite hand: handSprites) {
-                if (hand.getX() > -1) {
-                    g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
-                }
-            }
-        }
+        drawHands(g2d, canvas);
+        drawTextSprites(g2d);
     }
 
     /**
@@ -104,6 +76,47 @@ public class GameScreen {
      */
     public void addHandSprite(Sprite s) {
         handSprites.add(s);
+    }
+
+    public boolean addTextSpriteHolder(TextSpritesHolder textSpritesHolder){
+        return textSpriteHolders.add(textSpritesHolder);
+    }
+
+    private void drawHands(Graphics2D g2d, Component canvas){
+        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER) {
+            //   g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
+            // draws 2 hands for the first player if hands are available - not sure if this is correct!
+            for (int i = 0; i < 2; i++) {
+                if (handSprites.get(i).getX() > -1) {
+                    g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getScaledX(), handSprites.get(i).getScaledY(), canvas);
+                }
+            }
+        }
+        else {
+            // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
+            // a hand is not available.
+            for (Sprite hand: handSprites) {
+                if (hand.getX() > -1) {
+                    g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                }
+            }
+        }
+    }
+
+    /**
+     * Draws the text sprites that are held in a TextSpriteHolder
+     * @param g
+     */
+    private void  drawTextSprites(Graphics2D g){
+        for(TextSpritesHolder holder : textSpriteHolders){
+            for(TextSprite textSprite : holder.getTextSprites()){
+                g.setColor(textSprite.getColor());
+                g.setFont(textSprite.getFont());
+                int x = (int)Math.floor(textSprite.getX()*GraphicsConstants.SCALE_FACTOR);
+                int y = (int)Math.floor(textSprite.getY()*GraphicsConstants.SCALE_FACTOR);
+                g.drawString(textSprite.getMessage(), x,y);
+            }
+        }
     }
 
 }

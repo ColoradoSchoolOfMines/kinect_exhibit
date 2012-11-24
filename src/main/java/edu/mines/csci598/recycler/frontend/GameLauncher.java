@@ -19,15 +19,30 @@ import java.awt.*;
 public class GameLauncher extends GameState {
 	private GameManager gameManager;
 	private GameLogic leftGame, rightGame;
+    private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
 	private GameScreen gameScreen;
 
 	public GameLauncher() {
 		gameManager = new GameManager("Recycler", false);
 		gameScreen = GameScreen.getInstance();
-		leftGame = new GameLogic(new RecycleBins(RecycleBins.Side.LEFT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT, gameManager,false,false);
-		rightGame = new GameLogic(new RecycleBins(RecycleBins.Side.RIGHT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT, gameManager, GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
+        leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
+        rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
+
+        gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
+        gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
+        leftGame = new GameLogic(
+                new RecycleBins(RecycleBins.Side.LEFT),
+				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,
+                gameManager,
+                leftGameStatusDisplay,
+                false,
+                false);
+		rightGame = new GameLogic(
+                new RecycleBins(RecycleBins.Side.RIGHT),
+				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT,
+                gameManager,
+                rightGameStatusDisplay,
+                GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
                 GameConstants.DEBUG_COLLISIONS);
 	}
 
