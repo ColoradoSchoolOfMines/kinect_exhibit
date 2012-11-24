@@ -15,7 +15,8 @@ import java.awt.geom.Rectangle2D;
 public class Line extends Line2D{
 
 	private final Coordinate startPoint, endPoint;
-	
+    private double velocity;
+	private double timeToComplete;
     /**
      * Begining coordinates, ending coordinates and how long the line takes to be traversed. This way based on a time
      * later we can calculate where along the path it is.
@@ -24,11 +25,16 @@ public class Line extends Line2D{
      * @param startY
      * @param endX
      * @param endY
-     * @param totalTime
+     * @param timeToComplete
      */
-    public Line(int startX, int startY, int endX, int endY) {                
+
+
+
+    public Line(double startX, double startY, double endX, double endY, double timeToComplete ) {
         startPoint = new Coordinate(startX, startY);
         endPoint = new Coordinate(endX, endY);
+        double length = startPoint.distance(endPoint);
+        this.timeToComplete =timeToComplete;
     }
     
     /**
@@ -50,29 +56,6 @@ public class Line extends Line2D{
     	return ptLineDist(point) <= Math.sqrt(1.0 / Math.sqrt(2.0));
     }
 
-	public Coordinate getCoordinateAfterMovingDistance(
-			Coordinate currentLocation, double pixelsToTravel) {
-		Coordinate lineLimit;
-		if(pixelsToTravel > 0){
-			lineLimit = endPoint;
-		}
-		else if(pixelsToTravel < 0){
-			lineLimit = startPoint;			
-		}
-		else{
-			return currentLocation;
-		}
-		
-		double distanceToEnd = lineLimit.distance(currentLocation);
-		double fractionOfLineTravelling = Math.abs(pixelsToTravel / distanceToEnd);
-		if(fractionOfLineTravelling >= 1){
-			return lineLimit;
-		}
-		
-		int x = (int) Math.round((lineLimit.getX() - currentLocation.getX()) * fractionOfLineTravelling + currentLocation.getX());
-		int y = (int) Math.round((lineLimit.getY() - currentLocation.getY()) * fractionOfLineTravelling + currentLocation.getY());
-		return new Coordinate(x, y);
-	}
 
 	@Override
 	public Rectangle2D getBounds2D() {
@@ -113,5 +96,29 @@ public class Line extends Line2D{
 	public void setLine(double x1, double y1, double x2, double y2) {
 		throw new IllegalArgumentException("Use the coordinate line constructor instead.");
 	}
-    
+
+    public double getTimeToComplete(){
+        return timeToComplete;
+    }
+
+
+    /**
+     * Pass in the elapsed time since this line has started to get the coordinates at that time
+     * @param time
+     * @return Coordinate of where it is at this relative time
+     */
+    public Coordinate getCoordinateAtTime(double time){
+        double x, y;
+        if (time <= 0) {
+            return startPoint;
+        } else if (time >= timeToComplete) {
+            return endPoint;
+        } else { //we are somewhere in the middle of the line
+            double fraction = time / timeToComplete;
+            x = (endPoint.getX()-startPoint.getX()) * fraction + startPoint.getX();
+            y = (endPoint.getY()-startPoint.getY()) * fraction + startPoint.getY();
+            return new Coordinate(x,y);
+        }
+
+    }
 }

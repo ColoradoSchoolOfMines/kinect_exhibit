@@ -3,12 +3,10 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import java.awt.geom.Point2D;
 
 public final class Coordinate extends Point2D{
-	// Our grid is in ints, so is our data structure
-	// We rely on paths to set these correctly
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 	
-	public Coordinate(int x, int y){
+	public Coordinate(double x, double y){
 		this.x = x;
 		this.y = y;
 	}

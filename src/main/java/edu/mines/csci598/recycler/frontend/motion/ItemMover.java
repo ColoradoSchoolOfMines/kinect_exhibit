@@ -1,10 +1,10 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages a list of items and causes them to move on demand.
@@ -14,30 +14,23 @@ import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 public abstract class ItemMover {
 	
 	protected List<Recyclable> recyclables;
-	private double lastMotionTimeSec;
 	protected double speedPixPerSecond;
 	
 	public ItemMover(double initialSpeed){
 		recyclables = new ArrayList<Recyclable>();
-		lastMotionTimeSec = 0;
 		speedPixPerSecond = initialSpeed;
 	}
 	
 	/**
 	 * Given the current time, moves the items under the ItemMover's control
-	 * @param currentTimeSec
+	 * @param currentTimeSec The current time in seconds
 	 */
 	// TODO OJC - rework this to put lastMotionTime into the recyclables themselves
 	public void moveItems(double currentTimeSec){
 		// Figure out how much time has passed since we last moved
-		double timePassedSec = currentTimeSec - lastMotionTimeSec;
-		
 		for(Recyclable r : recyclables){
-			Coordinate newPosition = r.getPath().getLocation(r.getPosition(), speedPixPerSecond, timePassedSec); 
-			if(!(newPosition.equals(r.getPosition()))){
-				r.setPosition(newPosition);
-				lastMotionTimeSec = currentTimeSec;
-			}
+			Coordinate newPosition = r.getPath().getLocation(currentTimeSec);
+            r.setPosition(newPosition);
 		}
 	}
 
@@ -50,7 +43,7 @@ public abstract class ItemMover {
     
     /**
      * Registers the given recyclable with this ItemMover.  It will now be moved with each call to moveItems
-     * @param r
+     * @param r The recyclable you wish to take controll of
      */
     public final void takeControlOfRecyclable(Recyclable r){
     	recyclables.add(r);
@@ -72,10 +65,10 @@ public abstract class ItemMover {
      * The ItemMover will no longer be aware of these items after calling this method.
      * @return The items no longer owned by this ItemMover
      */
-    public final List<Recyclable> releaseControlOfRecyclablesAtEndOfPath(){
+    public final List<Recyclable> releaseControlOfRecyclablesAtEndOfPath(double currentTimeSec){
     	List<Recyclable> atEnd = new ArrayList<Recyclable>();
     	for(Recyclable r : recyclables){
-    		if(r.getPosition().equals(r.getPath().finalPosition())){
+    		if(r.getPath().PathFinished(currentTimeSec)){
     			atEnd.add(r);
     		}
     	}
@@ -107,5 +100,15 @@ public abstract class ItemMover {
     		recyclables.remove(r);
     	}
     	return releasing;
+    }
+
+
+    /**
+     * Tells this itemMover to stop paying attention to said recyclables
+     * @param recyclablesToRemove
+     * @return
+     */
+    public final boolean releaseRecyclables(List<Recyclable> recyclablesToRemove){
+        return recyclables.removeAll(recyclablesToRemove);
     }
 }

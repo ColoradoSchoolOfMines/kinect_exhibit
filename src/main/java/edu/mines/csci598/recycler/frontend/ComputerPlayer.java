@@ -5,13 +5,10 @@ import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-
-import java.util.Random;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import javax.swing.text.Position;
+import java.util.Random;
 
 
 /**
@@ -54,7 +51,7 @@ public class ComputerPlayer {
     public void updateAI(Recyclable r,double currentTimeSec){
         //Set hand to correct side
         if(!primary.isOnCorrectSide())
-            setHandToCorrectSide(r);
+            setHandToCorrectSide(r,currentTimeSec);
         //Follow target recyclable
         followRecyclable(r,currentTimeSec);
         //Strike target recyclable
@@ -69,7 +66,7 @@ public class ComputerPlayer {
         }else {
             logger.info("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
             double timePassedSec = currentTimeSec-lastMotionTimeSec;
-            Coordinate newPosition = primary.getPath().getLocation(primary.getPosition(),200,timePassedSec);
+            Coordinate newPosition = primary.getPath().getLocation(timePassedSec);
             if(!(newPosition.equals(primary.getPosition()))){
                 lastMotionTimeSec=currentTimeSec;
                 primary.setPosition(newPosition);
@@ -122,7 +119,7 @@ public class ComputerPlayer {
         return ret;
     }
 
-    public void setHandToCorrectSide(Recyclable r){
+    public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
         if(r.isTouchable()){
             logger.info("setHandToCorrectSide");
             if(!primary.isOnCorrectSide()){
@@ -152,9 +149,9 @@ public class ComputerPlayer {
                 }
                 if(!primary.isFollowingPath()){
                     //logger.info("Setting path");
-                    Path p = new Path();
+                    Path p = new Path(currentTimeSec);
                     Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
-                            r.getSprite().getX(),primary.getSprite().getY()-ComputerConstants.HAND_Y_OFFSET);
+                            r.getSprite().getX(),primary.getSprite().getY()-ComputerConstants.HAND_Y_OFFSET, 4);
                     int goalY = r.getSprite().getY()-ComputerConstants.HAND_GOAL_OFFSET;
                     //int goalX = r.getSprite().getX();
                     p.addLine(moveAboveRecyclable);
@@ -183,19 +180,19 @@ public class ComputerPlayer {
         }
     }
     private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
-        Path path = new Path();
+        Path path = new Path(currentTimeSec);
         Line collideLine;
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
             logger.info("Pushed Right");
             r.setMotionState(MotionState.FALL_RIGHT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY());
+                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);
         } else {
             logger.info("Pushed Left");
             r.setMotionState(MotionState.FALL_LEFT);
             collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY());
+                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);
         }
         path.addLine(collideLine);
         r.setPath(path);

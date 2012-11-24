@@ -36,6 +36,10 @@ public class GameLogic  {
     private ConveyorBelt conveyorBelt;
     private TheForce theForce;
     private double currentTimeSec;
+    private double wallTimeSec;
+    private double lastWallTimeSec;
+    private double timeSpeedFactor;
+    private double powerUpSpeedFactor;
     private long startTime;
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
@@ -57,6 +61,9 @@ public class GameLogic  {
         this.recycleBins = recycleBins;
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
+        lastWallTimeSec = 0;
+        timeSpeedFactor = 1;
+        powerUpSpeedFactor=1;
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
 
         conveyorBelt = new ConveyorBelt(this,gameScreen,conveyorPath);
@@ -99,19 +106,29 @@ public class GameLogic  {
             	
             	for(Recyclable r : swipedOffConveyor){
                     Coordinate position = r.getPosition();
-                    Path path = new Path();
+                    Path path = new Path(currentTimeSec);
                     Line collideLine;
+
+                    //Rough way to make items fall at different speeds
+                    double travelTime = Math.abs(GameConstants.ITEM_PATH_END/hand.getVelocityX());
+                    //Don't let it go too fast.
+                    travelTime = Math.max(travelTime, 0.3);
+                    //or too slow
+                    travelTime = Math.min(travelTime, 3);
+                    //Account for the speedup
+                    travelTime *= timeSpeedFactor;
+
 
                 	if(hand.getVelocityX() > GameConstants.MIN_HAND_VELOCITY){
                         //logger.debug("Pushed Right");
                         collideLine = new Line((int)position.getX(), (int)position.getY(),
-                        		(int)position.getX() + GameConstants.ITEM_PATH_END, (int)position.getY());
+                        		(int)position.getX() + GameConstants.ITEM_PATH_END, (int)position.getY(), travelTime);
                         r.setMotionState(MotionState.FALL_RIGHT);
                 	}
                 	else if(hand.getVelocityX() < -1 * GameConstants.MIN_HAND_VELOCITY){
                         //logger.debug("Pushed Left");
                         collideLine = new Line((int)position.getX(), (int)position.getY(),
-                        		(int)position.getX() - GameConstants.ITEM_PATH_END, (int)position.getY());
+                        		(int)position.getX() - GameConstants.ITEM_PATH_END, (int)position.getY(),travelTime);
                         r.setMotionState(MotionState.FALL_LEFT);
                 	}
                 	else{
@@ -137,6 +154,7 @@ public class GameLogic  {
             	// We now have a list of items that the conveyor belt has released, and they know where they are going.
             	// Handing control to TheForce!
             	theForce.takeControlOfRecyclables(swipedOffConveyor);
+                conveyorBelt.releaseRecyclables(swipedOffConveyor);
             }
         } else {
             //Computer collision detection
@@ -203,8 +221,8 @@ public class GameLogic  {
     }
 
     private void increaseSpeed() {
-        double pctToMaxDifficulty = Math.min(1, currentTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
-        conveyorBelt.setSpeed(pctToMaxDifficulty);
+        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+        timeSpeedFactor = pctToMaxDifficulty*(GameConstants.FINAL_TIME_SPEED_FACTOR-1)+1;
     }
 
     private void increaseItemGenerationProbability() {
@@ -220,9 +238,8 @@ public class GameLogic  {
 		return gameScreen;
 	}
 
-    protected void updateThis(float elapsedTime) {
-        //in seconds
-        currentTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
+    protected void updateThis() {
+        updateTime();
 
         if (!playerIsAComputer) {
             // display the hands
@@ -245,12 +262,13 @@ public class GameLogic  {
         theForce.moveItems(currentTimeSec);
         
         // Release items at the end of the path
-        List<Recyclable> itemsToRemove = conveyorBelt.releaseControlOfRecyclablesAtEndOfPath();
+        List<Recyclable> itemsToRemove = conveyorBelt.releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
         for(Recyclable r : itemsToRemove){
         	handleScore(r, RecycleBin.TRASH_BIN);
             gameScreen.removeSprite(r.getSprite());
+            System.out.println("Removed item");
         }
-        itemsToRemove = theForce.releaseControlOfRecyclablesAtEndOfPath();
+        itemsToRemove = theForce.releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
         for(Recyclable r : itemsToRemove){
         	handleScore(r, recycleBins.findBinForFallingRecyclable(r));
             gameScreen.removeSprite(r.getSprite());
@@ -258,7 +276,7 @@ public class GameLogic  {
         
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Recyclable r = factory.possiblyGenerateItem(conveyorBelt.getPath(), currentTimeSec);
+            Recyclable r = factory.possiblyGenerateItem(conveyorBelt.getNewPath(), currentTimeSec);
             if(r != null){
                 try {
                 	conveyorBelt.takeControlOfRecyclable(r);
@@ -270,5 +288,12 @@ public class GameLogic  {
         }
         
         increaseDifficulty();
+
+    }
+    private void updateTime(){
+        wallTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
+        currentTimeSec += (wallTimeSec - lastWallTimeSec)*timeSpeedFactor*powerUpSpeedFactor;
+        lastWallTimeSec = wallTimeSec;
+
     }
 }

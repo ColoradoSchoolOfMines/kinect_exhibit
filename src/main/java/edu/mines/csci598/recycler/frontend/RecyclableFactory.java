@@ -1,12 +1,10 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.Random;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import org.apache.log4j.Logger;
+
+import java.util.Random;
 
 /**
  * A factory to create Recyclables
@@ -61,6 +59,7 @@ public final class RecyclableFactory {
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
 	public Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
+        outputPath.setStartTime(currentTimeSec);
 		Recyclable returned = null;
 		if (needsItemGeneration(currentTimeSec)) {
             // a very simple way to have powerups not generated frequently

@@ -49,8 +49,9 @@ public class GameLauncher extends GameState {
 	}
 
 	public GameLauncher updateThis(float time) {
-		leftGame.updateThis(time);
-		rightGame.updateThis(time);
+
+		leftGame.updateThis();
+		rightGame.updateThis();
 		return this;
 	}
 

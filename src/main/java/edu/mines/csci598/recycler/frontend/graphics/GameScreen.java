@@ -32,8 +32,6 @@ public class GameScreen {
     private GameScreen() {
         backgroundBottom = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/background_doubled.jpg",0,0);
         backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_Frame.png",0,0);
-        //backgroundLeft = new Sprite("src/main/resources/SpriteImages/background_b.png", 0, 0);
-        //backgroundRight = new Sprite("src/main/resources/SpriteImages/background_b_R.png", GraphicsConstants.GAME_SCREEN_WIDTH, 0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
 
