@@ -23,6 +23,8 @@ public class GameLauncher extends GameState {
 	private GameScreen gameScreen;
 
 	public GameLauncher() {
+        //Preloading the images will prevent some flickering.
+        RecyclableType.preLoadImages();
 		gameManager = new GameManager("Recycler", false);
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
