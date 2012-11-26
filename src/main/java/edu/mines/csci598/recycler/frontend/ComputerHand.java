@@ -45,8 +45,10 @@ public class ComputerHand {
         followingPath=false;
         onCorrectSide=false;
         int x = GameConstants.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-        int y = GameConstants.RIGHT_VERTICAL_PATH_START_Y * (int)GraphicsConstants.SCALE_FACTOR;
+        //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
+        int y = GameConstants.RIGHT_VERTICAL_PATH_START_Y / 2;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
+        logger.info("Added Computer Hand at ("+x+","+y+")");
     }
     public Coordinate getPosition(){
         return sprite.getPosition();

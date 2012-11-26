@@ -83,25 +83,24 @@ public class GameScreen {
     }
 
     private void drawHands(Graphics2D g2d, Component canvas){
-        if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER) {
-            //   g2d.drawImage(player1PrimaryHand.getImage(), player1PrimaryHand.getScaledX(), player1PrimaryHand.getScaledY(), canvas);
-            // draws 2 hands for the first player if hands are available - not sure if this is correct!
-            for (int i = 0; i < 2; i++) {
-                if (handSprites.get(i).getX() > -1) {
-                    g2d.drawImage(handSprites.get(i).getImage(), handSprites.get(i).getX(), handSprites.get(i).getY(), canvas);
-                }
-            }
 
-        }
-        else {
             // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
             // a hand is not available.
             for (Sprite hand: handSprites) {
                 if (hand.getX() > -1) {
-                    g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                    // Computer hand uses scaled x and y for use of drawing to align properly with recyclables which
+                    // are also drawn using scaling
+                    if(GameConstants.SECOND_PLAYER_IS_A_COMPUTER){
+                        if(hand.getX()<1000)
+                            g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                        else
+                            g2d.drawImage(hand.getImage(), hand.getScaledX(), hand.getScaledY(), canvas);
+                    } else {
+                        g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                    }
                 }
             }
-        }
+
     }
 
     /**

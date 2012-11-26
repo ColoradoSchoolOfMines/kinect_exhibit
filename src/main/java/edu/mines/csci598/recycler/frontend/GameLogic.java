@@ -83,13 +83,20 @@ public class GameLogic  {
         if (!this.playerIsAComputer) {
          //   player1 = new Player(gameManager);
             // creates the max number of hands that can be displayed which is 4
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 2; i++) {
                 hands.add(new Hand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
+        }
+        //Add single item to conveyer for debugging collisions.
+        if(this.debuggingCollisions){
+            logger.debug("Adding recyclable for collision detection");
+            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getNewPath());
+            conveyorBelt.takeControlOfRecyclable(r);
+            gameScreen.addSprite(r.getSprite());
         }
     }
 
@@ -288,7 +295,6 @@ public class GameLogic  {
                 }
             }
         }
-        
         increaseDifficulty();
 
     }

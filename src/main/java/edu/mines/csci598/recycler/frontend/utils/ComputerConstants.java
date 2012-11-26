@@ -39,7 +39,7 @@ public class ComputerConstants {
      * LAST_MOVE_DELAY
      * Delay hand movement when following recyclable.
      */
-    public static final double LAST_MOVE_DELAY = 0.20;
+    public static final double LAST_MOVE_DELAY = 0.30;
     /*
      * HAND_GOAL_OFFSET
      * Goal for moving up and around recyclable.
@@ -49,5 +49,5 @@ public class ComputerConstants {
      * HAND_Y_OFFSET
      * Position for moving up and around recyclable.
      */
-    public static final int HAND_Y_OFFSET = 100;
+    public static final int HAND_Y_OFFSET = 200;
 }

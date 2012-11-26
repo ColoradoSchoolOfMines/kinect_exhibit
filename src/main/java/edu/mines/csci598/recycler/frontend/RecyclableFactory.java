@@ -78,6 +78,10 @@ public final class RecyclableFactory {
 		}
 		return returned;
     }
+    public Recyclable generateItemForDebugging(Path outputPath){
+        Recyclable returned = generateRandom(outputPath,1);
+        return returned;
+    }
 	
     /**
      * Determines if item should be generated.  If true, sets the time for the next object to be generated
