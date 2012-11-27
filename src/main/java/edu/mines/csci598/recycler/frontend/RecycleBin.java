@@ -49,6 +49,15 @@ public class RecycleBin {
         return type;
     }
 
+    public double getMidPoint() {
+        return (minY + maxY) / 2.0;
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+
 
     // returns true if the incoming recyclable type is the same as the bin type
     public boolean isCorrectRecyclableType(Recyclable r) {

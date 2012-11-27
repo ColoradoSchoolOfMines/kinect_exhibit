@@ -104,4 +104,8 @@ public class Path {
     public void setStartTime(double time){
         startTime = time;
     }
+
+    public List<Line> getPath() {
+        return path;
+    }
 }

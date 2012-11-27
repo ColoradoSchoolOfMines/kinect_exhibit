@@ -84,6 +84,10 @@ public class Hand implements Displayable {
     public int getVelocityY() {
         return velocityY;
     }
+
+    public void setVelocityX(int x) {
+        velocityX = x;
+    }
     
     public Coordinate getPosition(){
     	return new Coordinate(x, y);
