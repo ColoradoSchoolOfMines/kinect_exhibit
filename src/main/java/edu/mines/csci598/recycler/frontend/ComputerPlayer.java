@@ -51,20 +51,30 @@ public class ComputerPlayer {
 
     }
     public void updateAI(Recyclable r,double currentTimeSec){
-        int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        //Set hand to correct side
+        if(!primary.isFollowingPath()){
+            if(!primary.isOnCorrectSide())
+                setHandToCorrectSide(r,currentTimeSec);
+        } else {
+            followPath(currentTimeSec);
+        }
+        //Follow target recyclable
+        //followRecyclable(r);
+        //Strike target recyclable
+        //strike(r,currentTimeSec);
+    }
+    private void followRecyclable(Recyclable r){
+        //logger.debug("FollowRecyclable");
+        primary.getSprite().setY(r.getSprite().getY());
+    }
+    private void crossConveyer(Recyclable r,double currentTimeSec,int newX){
+        //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         if(!primary.isFollowingPath()){
             if(r.isTouchable()){
                 setUpPath(r,currentTimeSec,newX);
             }
         } else
             followPath(currentTimeSec);
-        //Set hand to correct side
-        //if(!primary.isOnCorrectSide())
-        //    setHandToCorrectSide(r,currentTimeSec);
-        //Follow target recyclable
-        //followRecyclable(r);
-        //Strike target recyclable
-        //strike(r,currentTimeSec);
     }
     private void setUpPath(Recyclable r,double currentTimeSec,int newX){
         logger.debug("SetUpPath");
@@ -75,8 +85,6 @@ public class ComputerPlayer {
                 ",hsx="+primary.getSprite().getScaledX()+",hsy="+primary.getSprite().getScaledY()+
                 ",gx="+primary.getGoalX()+",gy="+primary.getGoalY());
         Path p = new Path(currentTimeSec);
-        //Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
-        //      primary.getGoalX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
         Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
                 primary.getSprite().getScaledX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
         Line moveAcrossRecyclable = new Line(primary.getSprite().getScaledX(),primary.getGoalY(),
@@ -93,18 +101,47 @@ public class ComputerPlayer {
             logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
             primary.setScaledPosition(newPosition);
         }else{
-            logger.debug("Finished following path");
+            //logger.debug("Finished following path");
             //primary.resetFollowingPath();
         }
+    }
+    public int findBinSide(Recyclable r){
+        int newX =0;
+        RecycleBin bin = recycleBins.findCorrectBin(r);
+        RecycleBin.ConveyorSide binSide = bin.getSide();
+        if(binSide==RecycleBin.ConveyorSide.RIGHT){
+            if(!primary.isHandOnLeftSide()){
+                //logger.debug("**SetPath left");
+                primary.setOnCorrectSide(false);
+                newX=-1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+                //primary.getSprite().setX((int)newX);
+            } else {
+                primary.setOnCorrectSide(true);
+            }
+        } else {
+            if(primary.isHandOnLeftSide()){
+                //logger.debug("**SetPath right");
+                primary.setOnCorrectSide(false);
+                newX=ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+                //primary.getSprite().setX((int)newX);
+            } else {
+                primary.setOnCorrectSide(true);
+            }
+        }
+        return newX;
+    }
+    public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
+        if(r.isTouchable()){
+            //logger.debug("setHandToCorrectSide:"+primary.isOnCorrectSide());
+            if(!primary.isOnCorrectSide()){
+                //logger.info("  onWrongSide");
+                //Check goal x and y
+                int newX=findBinSide(r);
+                crossConveyer(r,currentTimeSec,newX);
+            } else {
 
-    }
-    private void followRecyclable(Recyclable r){
-        //logger.debug("FollowRecyclable");
-        primary.getSprite().setY(r.getSprite().getY());
-    }
-    public boolean hasCollisionWithRecyclable(Recyclable r,double currentTime){
-        boolean ret = false;
-        return ret;
+            }
+        }
     }
     private void strike(Recyclable r, double currentTimeSec){
         if(r.isTouchable()){
@@ -131,57 +168,6 @@ public class ComputerPlayer {
             ret = true;
         }
         return ret;
-    }
-
-    public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
-        if(r.isTouchable()){
-            logger.debug("setHandToCorrectSide");
-            if(!primary.isOnCorrectSide()){
-                //logger.info("  onWrongSide");
-                //Check goal x and y
-                double newX=0;
-                RecycleBin bin = recycleBins.findCorrectBin(r);
-                RecycleBin.ConveyorSide binSide = bin.getSide();
-                if(binSide==RecycleBin.ConveyorSide.RIGHT){
-                    if(!primary.isHandOnLeftSide()){
-                        logger.debug("**SetPath left");
-                        primary.setOnCorrectSide(false);
-                        newX=r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET;
-                        primary.getSprite().setX((int)newX);
-                    } else {
-                        primary.setOnCorrectSide(true);
-                    }
-                } else {
-                    if(primary.isHandOnLeftSide()){
-                        logger.debug("**SetPath right");
-                        primary.setOnCorrectSide(false);
-                        newX=r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET;
-                        primary.getSprite().setX((int)newX);
-                    } else {
-                        primary.setOnCorrectSide(true);
-                    }
-                }
-                if(!primary.isFollowingPath()){
-                    //logger.info("Setting path");
-                    Path p = new Path(currentTimeSec);
-                    Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
-                            r.getSprite().getX()+newX,primary.getSprite().getY()-ComputerConstants.HAND_Y_OFFSET, 4);
-                    int goalY = r.getSprite().getY()-ComputerConstants.HAND_GOAL_OFFSET;
-                    //int goalX = r.getSprite().getX();
-                    p.addLine(moveAboveRecyclable);
-                    primary.setScaledPath(p);
-                    primary.setGoal(primary.getSprite().getX(),goalY);
-                    lastMoveTime=currentTimeSec;
-                }
-
-            } else {
-                primary.resetFollowingPath();
-            }
-
-            //logger.info("LeftSide="+primary.isHandOnLeftSide()+",px="+primary.getSprite().getX()+",bt="+bin.getType()+",bs="+binSide);
-        }else{
-            //logger.info("  onCorrectSide");
-        }
     }
     public void strikeRecyclable(Recyclable r,double currentTimeSec){
         primary.setOnCorrectSide(false);
@@ -212,15 +198,6 @@ public class ComputerPlayer {
         }
         path.addLine(collideLine);
         r.setPath(path);
-        
-        // Marshall: I'm trying to stay out of this code, but you'll need something
-        // like this to get it to work again:
-        // fallingItems.add(r);
-        // elsewhere: 
-        //      for(Recyclable r : fallingItems){
-		//			Coordinate newPosition = r.getPath().getLocation(r.getPosition(), GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND, elapsedTime); 
-		//			r.setPosition(newPosition);
-        //		}
         
         RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
         if(bin.isCorrectRecyclableType(r)){
