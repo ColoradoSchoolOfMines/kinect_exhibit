@@ -29,12 +29,13 @@ public final class GameConstants {
      * items will never be kicked out faster than this.  It should be set high enough to prevent, at the
      * minimum, items from colliding with each other during creation.
      */
-    public static final double MIN_TIME_BETWEEN_GENERATIONS = 6;
+    public static final double MIN_TIME_BETWEEN_GENERATIONS = 2;
 
     /**
-     * The probability, at the start of the game, that an item will be generated
+     * The initial amount of time between object generations.  As the game progresses items will probably
+     * be generated more often than this, but never more often than <code>MIN_TIME_BETWEEN_GENERATIONS</code>
      */
-    public static final double START_ITEM_GENERATION_PROB = 0.5;
+    public static final double INITIAL_TIME_BETWEEN_GENERATIONS = 12;
 
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
@@ -55,11 +56,11 @@ public final class GameConstants {
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
-	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 50;
+	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 20;
 	/**
 	 * The max time speedup. When the game starts it is 1.0
 	 */
-	public static final double FINAL_TIME_SPEED_FACTOR = 5.0;
+	public static final double FINAL_TIME_SPEED_FACTOR = 3.0;
 	/**
 	 * The speed that an item flies off the conveyor into a bin when hit with a hand, measured in pixels per second
 	 */

@@ -244,8 +244,8 @@ public class GameLogic {
     }
 
     private void increaseItemGenerationProbability() {
-        double startProbability = GameConstants.START_ITEM_GENERATION_PROB;
-        //itemGenerationProb = startProbability + (1 - startProbability) * GameConstants.TIME_TO_MAX_DIFFICULTY;
+        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+        factory.increaseGenerationRate(pctToMaxDifficulty);
     }
 
     public GameManager getGameManager() {
