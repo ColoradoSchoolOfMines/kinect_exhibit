@@ -15,7 +15,6 @@ import java.util.Arrays;
 
 public class ConveyorBelt extends ItemMover{
 	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
-	private double speedOfTime;
     private double conveyorTime;
     private final Path path;
 
@@ -61,10 +60,6 @@ public class ConveyorBelt extends ItemMover{
         }
 
         return ret;
-    }
-
-    public void setSpeed(double pctOfFullSpeed) {
-    	speedOfTime = pctOfFullSpeed;
     }
 	
 

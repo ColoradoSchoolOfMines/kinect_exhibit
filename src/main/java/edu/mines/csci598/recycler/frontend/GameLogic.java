@@ -52,6 +52,7 @@ public class GameLogic  {
     private GameStatusDisplay gameStatusDisplay;
     //TODO game manager should be removed from this class when the idea of players having hands is dissolved
     private GameManager gameManager;
+    private double timeToRemovePowerUp;
 
 
 
@@ -65,7 +66,8 @@ public class GameLogic  {
         currentTimeSec = 0;
         lastWallTimeSec = 0;
         timeSpeedFactor = 1;
-        powerUpSpeedFactor=1;
+        powerUpSpeedFactor = 1;
+        timeToRemovePowerUp = 0.0;
         feedbackDisplay = new FeedbackDisplay(0);
         nextItemTypeGenerationTime = GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
         this.gameStatusDisplay = gameStatusDisplay;
@@ -155,9 +157,14 @@ public class GameLogic  {
                     }
                     else if (r.getType() == RecyclableType.RABBIT) {
                         logger.info("Rabbit Powerup");
+                        powerUpSpeedFactor = 1.5;
+                        timeToRemovePowerUp = lastWallTimeSec + 15;
                     }
                     else if(r.getType() == RecyclableType.TURTLE) {
                         logger.info("Turtle Powerup");
+                        powerUpSpeedFactor = 0.5;
+                        timeToRemovePowerUp = lastWallTimeSec + 15;
+
                     }
             	}
 
@@ -250,6 +257,10 @@ public class GameLogic  {
 
     protected void updateThis() {
         updateTime();
+
+        if (wallTimeSec >= timeToRemovePowerUp) {
+            powerUpSpeedFactor = 1;
+        }
 
         if (!playerIsAComputer) {
             // display the hands
