@@ -14,11 +14,11 @@ public final class GameConstants {
     /**
      * Set to true to have only one item generated on the screen at a time
      */
-    public static final boolean DEBUG_COLLISIONS = false;
+    public static final boolean DEBUG_COLLISIONS = true;
     /**
      * Set to true when debugging the computer player
      */
-    public static final boolean SECOND_PLAYER_IS_A_COMPUTER = false;
+    public static final boolean SECOND_PLAYER_IS_A_COMPUTER = true;
     /**
      * The number of item types which are generated at the start of the game
      */

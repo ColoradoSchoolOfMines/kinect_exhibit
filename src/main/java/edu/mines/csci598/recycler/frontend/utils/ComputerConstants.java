@@ -55,4 +55,9 @@ public class ComputerConstants {
      * Starting y position
      */
     public static final int INITIAL_HAND_Y_OFFSET = 50;
+    /*
+     * PATH_TIME_SEC
+     * Time needed to move a line
+     */
+    public  static final double PATH_TIME_SEC = 0.5;
 }

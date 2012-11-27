@@ -68,28 +68,32 @@ public class ComputerPlayer {
     }
     private void setUpPath(Recyclable r,double currentTimeSec,int newX){
         logger.debug("SetUpPath");
-        int goalX = r.getSprite().getScaledX()+newX;
-        int goalY = primary.getSprite().getScaledY()-ComputerConstants.HAND_Y_OFFSET;
+        primary.setGoal(r.getSprite().getScaledX()+newX,primary.getSprite().getScaledY()-ComputerConstants.HAND_Y_OFFSET);
         logger.debug("rx="+r.getSprite().getX()+",ry="+r.getSprite().getY()+
                 ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY()+
                 ",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+
                 ",hsx="+primary.getSprite().getScaledX()+",hsy="+primary.getSprite().getScaledY()+
-                ",gx="+goalX+",gy="+goalY);
+                ",gx="+primary.getGoalX()+",gy="+primary.getGoalY());
         Path p = new Path(currentTimeSec);
+        //Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
+        //      primary.getGoalX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
         Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
-                goalX,goalY, 0.5);
-
+                primary.getSprite().getScaledX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
+        Line moveAcrossRecyclable = new Line(primary.getSprite().getScaledX(),primary.getGoalY(),
+                primary.getGoalX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
         p.addLine(moveAboveRecyclable);
+        p.addLine(moveAcrossRecyclable);
         primary.setScaledPath(p);
 
     }
     private void followPath(double currentTimeSec){
         double timePassedSec = currentTimeSec-lastMotionTimeSec;
         Coordinate newPosition = primary.getScaledPath().getLocation(timePassedSec);
-        if(!(newPosition.equals(primary.getPosition()))){
+        if(newPosition.getX()!=primary.getGoalX()){
             logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
             primary.setScaledPosition(newPosition);
         }else{
+            logger.debug("Finished following path");
             //primary.resetFollowingPath();
         }
 
