@@ -35,7 +35,7 @@ public class ComputerPlayer {
     private double lastMotionTimeSec;
 
     public ComputerPlayer(RecycleBins recycleBins){
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.DEBUG);
         logger.debug("Second player is a computer");
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
@@ -51,48 +51,52 @@ public class ComputerPlayer {
 
     }
     public void updateAI(Recyclable r,double currentTimeSec){
+        int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        if(!primary.isFollowingPath()){
+            if(r.isTouchable()){
+                setUpPath(r,currentTimeSec,newX);
+            }
+        } else
+            followPath(currentTimeSec);
         //Set hand to correct side
-        if(!primary.isOnCorrectSide())
-            setHandToCorrectSide(r,currentTimeSec);
+        //if(!primary.isOnCorrectSide())
+        //    setHandToCorrectSide(r,currentTimeSec);
         //Follow target recyclable
-        followRecyclable(r,currentTimeSec);
+        //followRecyclable(r);
         //Strike target recyclable
         //strike(r,currentTimeSec);
     }
-    public void followRecyclable(Recyclable r, double currentTimeSec){
-        //logger.info("FollowRecyclable");
-        if(!primary.isFollowingPath()){
-            //logger.info("following recyclable");
-            if(currentTimeSec>lastMoveTime+lastMoveDelay)
-                primary.getSprite().setY(r.getSprite().getY());
-        }else {
-            logger.debug("Moving path.gx="+primary.getGoalX()+",gy="+primary.getGoalY()+",hx="+primary.getSprite().getX()+
-                    ",hy="+primary.getSprite().getY()+",rx="+r.getSprite().getX()+",ry="+r.getSprite().getY()+
-                    ",fp="+primary.isFollowingPath()+",cs="+primary.isOnCorrectSide());
-            double timePassedSec = currentTimeSec-lastMotionTimeSec;
-            Coordinate newPosition = primary.getPath().getLocation(timePassedSec);
-            if(!(newPosition.equals(primary.getPosition()))){
-                lastMotionTimeSec=currentTimeSec;
-                primary.setPosition(newPosition);
-            }
-            //if(currentTimeSec>lastMoveTime+lastMoveDelay){
-                if(primary.getSprite().getY()<primary.getGoalY()){
-                    primary.resetFollowingPath();
-                    if(!primary.isOnCorrectSide()){
-                        //logger.info("Hand is on wrong side");
-                        if(primary.isHandOnLeftSide()){
-                            primary.getSprite().setX((int)r.getPosition().getX()+GameConstants.SPRITE_X_OFFSET);
-                        }else{
-                            primary.getSprite().setX((int)r.getPosition().getX()-GameConstants.SPRITE_X_OFFSET);
-                        }
-                        lastStrikeTime=currentTimeSec;
-                        lastMoveTime = currentTimeSec;
-                    }else {
-                        //logger.info("Hand is on correct side");
-                    }
-                }
-            //}
+    private void setUpPath(Recyclable r,double currentTimeSec,int newX){
+        logger.debug("SetUpPath");
+        int goalX = r.getSprite().getScaledX()+newX;
+        int goalY = primary.getSprite().getScaledY()-ComputerConstants.HAND_Y_OFFSET;
+        logger.debug("rx="+r.getSprite().getX()+",ry="+r.getSprite().getY()+
+                ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY()+
+                ",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+
+                ",hsx="+primary.getSprite().getScaledX()+",hsy="+primary.getSprite().getScaledY()+
+                ",gx="+goalX+",gy="+goalY);
+        Path p = new Path(currentTimeSec);
+        Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
+                goalX,goalY, 0.5);
+
+        p.addLine(moveAboveRecyclable);
+        primary.setScaledPath(p);
+
+    }
+    private void followPath(double currentTimeSec){
+        double timePassedSec = currentTimeSec-lastMotionTimeSec;
+        Coordinate newPosition = primary.getScaledPath().getLocation(timePassedSec);
+        if(!(newPosition.equals(primary.getPosition()))){
+            logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
+            primary.setScaledPosition(newPosition);
+        }else{
+            //primary.resetFollowingPath();
         }
+
+    }
+    private void followRecyclable(Recyclable r){
+        //logger.debug("FollowRecyclable");
+        primary.getSprite().setY(r.getSprite().getY());
     }
     public boolean hasCollisionWithRecyclable(Recyclable r,double currentTime){
         boolean ret = false;
@@ -161,7 +165,7 @@ public class ComputerPlayer {
                     int goalY = r.getSprite().getY()-ComputerConstants.HAND_GOAL_OFFSET;
                     //int goalX = r.getSprite().getX();
                     p.addLine(moveAboveRecyclable);
-                    primary.setPath(p);
+                    primary.setScaledPath(p);
                     primary.setGoal(primary.getSprite().getX(),goalY);
                     lastMoveTime=currentTimeSec;
                 }

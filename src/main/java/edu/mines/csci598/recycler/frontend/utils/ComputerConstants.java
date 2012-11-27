@@ -49,5 +49,10 @@ public class ComputerConstants {
      * HAND_Y_OFFSET
      * Position for moving up and around recyclable.
      */
-    public static final int HAND_Y_OFFSET = 200;
+    public static final int HAND_Y_OFFSET = 100;
+    /*
+     * INITIAL_HAND_Y_OFFSET
+     * Starting y position
+     */
+    public static final int INITIAL_HAND_Y_OFFSET = 50;
 }

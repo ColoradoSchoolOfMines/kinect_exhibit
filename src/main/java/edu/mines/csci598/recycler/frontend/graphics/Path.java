@@ -75,6 +75,26 @@ public class Path {
 
         return coordinate;
     }
+    /**
+     * Returns the location the item is based on the current time.
+     * Used by AI
+     * @param time
+     * @return
+     */
+    public Coordinate getScaledLocation(double time){
+        Coordinate coordinate = new Coordinate(0, 0);
+        double elapsedTime = time - startTime;
+        for (Line l : path) {
+            double currentLineTotalTime = l.getTimeToComplete();
+            if (elapsedTime <= currentLineTotalTime || l == path.get(path.size() - 1)) {
+                coordinate = l.getScaledCoordinateAtTime(elapsedTime);
+                break;
+            }
+            elapsedTime = elapsedTime - currentLineTotalTime;
+        }
+
+        return coordinate;
+    }
 
 
     /**

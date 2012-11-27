@@ -123,4 +123,24 @@ public class Line extends Line2D{
         }
 
     }
+    /**
+     * Pass in the elapsed time since this line has started to get the coordinates at that time
+     * @param time
+     * @return Coordinate of where it is at this relative time
+     */
+    public Coordinate getScaledCoordinateAtTime(double time){
+        double x, y;
+        double scale = GraphicsConstants.SCALE_FACTOR;
+        if (time <= 0) {
+            return startPoint;
+        } else if (time >= timeToComplete) {
+            return endPoint;
+        } else { //we are somewhere in the middle of the line
+            double fraction = time / timeToComplete;
+            x = ((endPoint.getX()*scale)-(startPoint.getX()*scale)) * fraction + (startPoint.getX()*scale);
+            y = ((endPoint.getY()*scale)-(startPoint.getY()*scale)) * fraction + (startPoint.getY()*scale);
+            return new Coordinate(x,y);
+        }
+
+    }
 }

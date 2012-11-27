@@ -155,5 +155,9 @@ public class Sprite {
 		setX((int)Math.round(location.getX()));
 		setY((int)Math.round(location.getY()));
 	}
+    public synchronized void setScaledPosition(Coordinate location) {
+        setX((int)Math.round(location.getX()*GraphicsConstants.REVERSE_SCALE_FACTOR));
+        setY((int)Math.round(location.getY()*GraphicsConstants.REVERSE_SCALE_FACTOR));
+    }
 
 }

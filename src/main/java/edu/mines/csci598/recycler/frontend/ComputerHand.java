@@ -46,7 +46,7 @@ public class ComputerHand {
         onCorrectSide=false;
         int x = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
-        int y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y / 2;
+        int y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
         logger.info("Added Computer Hand at ("+x+","+y+")");
     }
@@ -55,6 +55,9 @@ public class ComputerHand {
     }
     public void setPosition(Coordinate position){
         sprite.setPosition(position);
+    }
+    public void setScaledPosition(Coordinate position){
+        sprite.setScaledPosition(position);
     }
     public int getGoalX(){
         return goalX;
@@ -66,12 +69,12 @@ public class ComputerHand {
         this.goalX=goalX;
         this.goalY=goalY;
     }
-    public void setPath(Path p){
+    public void setScaledPath(Path p){
         logger.debug("Hand following path");
         path = p;
         followingPath=true;
     }
-    public Path getPath(){
+    public Path getScaledPath(){
         return path;
     }
     public void resetFollowingPath(){
