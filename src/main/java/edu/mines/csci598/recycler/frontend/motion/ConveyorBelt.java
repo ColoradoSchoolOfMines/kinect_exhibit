@@ -13,82 +13,118 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ConveyorBelt extends ItemMover{
-	private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
+public class ConveyorBelt extends ItemMover {
+    private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
     private double conveyorTime;
     private final Path path;
 
-    //Left Path
-    private static final Line bottomLineLeft = new Line(GameConstants.LEFT_BOTTOM_PATH_START_X, GameConstants.LEFT_BOTTOM_PATH_START_Y,
-            GameConstants.LEFT_BOTTOM_PATH_END_X, GameConstants.LEFT_BOTTOM_PATH_END_Y, 5);
-    private static final Line verticalLineLeft = new Line(GameConstants.LEFT_VERTICAL_PATH_START_X, GameConstants.LEFT_VERTICAL_PATH_START_Y,
-            GameConstants.LEFT_VERTICAL_PATH_END_X, GameConstants.LEFT_VERTICAL_PATH_END_Y, 10);
-    private static final Line topLineLeft = new Line(GameConstants.LEFT_TOP_PATH_START_X, GameConstants.LEFT_TOP_PATH_START_Y,
-            GameConstants.LEFT_TOP_PATH_END_X, GameConstants.LEFT_TOP_PATH_END_Y, 5);
-    public static final Path CONVEYOR_BELT_PATH_LEFT = new Path(Arrays.asList(bottomLineLeft, verticalLineLeft, topLineLeft));
+    public static final int LEFT_BOTTOM_PATH_START_X = 0;
+    public static final int LEFT_BOTTOM_PATH_START_Y = 880;
+    public static final int LEFT_BOTTOM_PATH_END_X = 390;
+    public static final int LEFT_BOTTOM_PATH_END_Y = LEFT_BOTTOM_PATH_START_Y;
 
-    //Right Path
-    private static final Line bottomLineRight= new Line(GameConstants.RIGHT_BOTTOM_PATH_START_X, GameConstants.RIGHT_BOTTOM_PATH_START_Y,
-            GameConstants.RIGHT_BOTTOM_PATH_END_X, GameConstants.RIGHT_BOTTOM_PATH_END_Y, 5);
-    private static final Line verticalLineRight = new Line(GameConstants.RIGHT_VERTICAL_PATH_START_X, GameConstants.RIGHT_VERTICAL_PATH_START_Y,
-            GameConstants.RIGHT_VERTICAL_PATH_END_X, GameConstants.RIGHT_VERTICAL_PATH_END_Y, 10);
-    private static final Line topLineRight = new Line(GameConstants.RIGHT_TOP_PATH_START_X, GameConstants.RIGHT_TOP_PATH_START_Y,
-            GameConstants.RIGHT_TOP_PATH_END_X, GameConstants.RIGHT_TOP_PATH_END_Y, 5);
-    public static final Path CONVEYOR_BELT_PATH_RIGHT = new Path(Arrays.asList(bottomLineRight,verticalLineRight,topLineRight));
+    public static final int LEFT_VERTICAL_PATH_START_X = LEFT_BOTTOM_PATH_END_X;
+    public static final int LEFT_VERTICAL_PATH_START_Y = LEFT_BOTTOM_PATH_END_Y;
+    public static final int LEFT_VERTICAL_PATH_END_X = LEFT_BOTTOM_PATH_END_X;
+    public static final int LEFT_VERTICAL_PATH_END_Y = 40;
 
-    public ConveyorBelt(GameLogic game,GameScreen gameScreen,Path path) {
+    public static final int LEFT_TOP_PATH_START_X = LEFT_VERTICAL_PATH_END_X;
+    public static final int LEFT_TOP_PATH_START_Y = LEFT_VERTICAL_PATH_END_Y;
+    public static final int LEFT_TOP_PATH_END_X = 650;
+    public static final int LEFT_TOP_PATH_END_Y = LEFT_VERTICAL_PATH_END_Y;
+
+    public static final int RIGHT_BOTTOM_PATH_START_X = 1920 - LEFT_BOTTOM_PATH_START_X - 100;
+    public static final int RIGHT_BOTTOM_PATH_START_Y = 880;
+    public static final int RIGHT_BOTTOM_PATH_END_X = 1920 - LEFT_BOTTOM_PATH_END_X - 100;
+    public static final int RIGHT_BOTTOM_PATH_END_Y = RIGHT_BOTTOM_PATH_START_Y;
+
+    public static final int RIGHT_VERTICAL_PATH_START_X = RIGHT_BOTTOM_PATH_END_X;
+    public static final int RIGHT_VERTICAL_PATH_START_Y = RIGHT_BOTTOM_PATH_END_Y;
+    public static final int RIGHT_VERTICAL_PATH_END_X = RIGHT_BOTTOM_PATH_END_X;
+    public static final int RIGHT_VERTICAL_PATH_END_Y = 40;
+
+    public static final int RIGHT_TOP_PATH_START_X = RIGHT_VERTICAL_PATH_END_X;
+    public static final int RIGHT_TOP_PATH_START_Y = RIGHT_VERTICAL_PATH_END_Y;
+    public static final int RIGHT_TOP_PATH_END_X = 1920 - LEFT_TOP_PATH_END_X - 100;
+    public static final int RIGHT_TOP_PATH_END_Y = RIGHT_VERTICAL_PATH_END_Y;
+
+    public static final int SPRITE_BECOMES_TOUCHABLE = LEFT_BOTTOM_PATH_END_Y - 50;
+    public static final int SPRITE_BECOMES_UNTOUCHABLE = LEFT_TOP_PATH_START_Y + 20;
+
+    public ConveyorBelt(GameLogic game, GameScreen gameScreen, Path path) {
         super(GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND);
-    	recyclables = new ArrayList<Recyclable>();
-    	this.path = path;
+        recyclables = new ArrayList<Recyclable>();
+        this.path = path;
     }
-    
-    public int getNumRecyclablesOnConveyor(){
+
+    public int getNumRecyclablesOnConveyor() {
         return recyclables.size();
     }
-    
+
     /*
-     * Returns the next touchable recyclable
-     */
-    public Recyclable getNextRecyclableThatIsTouchable(){
+    * Returns the next touchable recyclable
+    */
+    public Recyclable getNextRecyclableThatIsTouchable() {
         Recyclable ret;
-        int index=0;
+        int index = 0;
         ret = recyclables.get(index);
-        while(!(ret.isTouchable()) && index < recyclables.size()){
+        while (!(ret.isTouchable()) && index < recyclables.size()) {
             index++;
-            if(index<recyclables.size()-1)
+            if (index < recyclables.size() - 1)
                 ret = recyclables.get(index);
         }
 
         return ret;
     }
-	
 
-	/**
-	 * Advances the conveyor belt.  All the items on it will get carried along for the ride!
-	 * In addition to doing the standard motion of items, it also updates their MotionState.
-	 * @param currentTimeSec in milliseconds
-	 */
-	@Override
-	public void moveItems(double currentTimeSec) {
-		super.moveItems(currentTimeSec);
+
+    /**
+     * Advances the conveyor belt.  All the items on it will get carried along for the ride!
+     * In addition to doing the standard motion of items, it also updates their MotionState.
+     *
+     * @param currentTimeSec in milliseconds
+     */
+    @Override
+    public void moveItems(double currentTimeSec) {
+        super.moveItems(currentTimeSec);
 
         // Update all the current items
-		for(Recyclable recyclable : recyclables){
+        for (Recyclable recyclable : recyclables) {
             Coordinate position = recyclable.getPosition();
-			if(position.getY()<GameConstants.SPRITE_BECOMES_UNTOUCHABLE){
+            if (position.getY() < SPRITE_BECOMES_UNTOUCHABLE) {
                 recyclable.setMotionState(MotionState.CHUTE);
 
-            }
-			else if(position.getY()<GameConstants.SPRITE_BECOMES_TOUCHABLE){
-                if(recyclable.getMotionState()==MotionState.CHUTE){
-                	recyclable.setMotionState(MotionState.CONVEYOR);
+            } else if (position.getY() < SPRITE_BECOMES_TOUCHABLE) {
+                if (recyclable.getMotionState() == MotionState.CHUTE) {
+                    recyclable.setMotionState(MotionState.CONVEYOR);
                 }
             }
-		}
-	}
+        }
+    }
 
+    public Path getNewPath() {
+        return new Path(path);
+    }
 
-	public Path getNewPath() {
-		return new Path(path);
-	}
+    public static Path getConveyorBeltPathLeft() {
+        //Left Path
+        final Line bottomLineLeft = new Line(LEFT_BOTTOM_PATH_START_X, LEFT_BOTTOM_PATH_START_Y,
+                LEFT_BOTTOM_PATH_END_X, LEFT_BOTTOM_PATH_END_Y, 5);
+        final Line verticalLineLeft = new Line(LEFT_VERTICAL_PATH_START_X, LEFT_VERTICAL_PATH_START_Y,
+                LEFT_VERTICAL_PATH_END_X, LEFT_VERTICAL_PATH_END_Y, 10);
+        final Line topLineLeft = new Line(LEFT_TOP_PATH_START_X, LEFT_TOP_PATH_START_Y,
+                LEFT_TOP_PATH_END_X, LEFT_TOP_PATH_END_Y, 5);
+        return new Path(Arrays.asList(bottomLineLeft, verticalLineLeft, topLineLeft));
+    }
+
+    public static Path getConveyorBeltPathRight() {
+        //Right Path
+        final Line bottomLineRight = new Line(RIGHT_BOTTOM_PATH_START_X, RIGHT_BOTTOM_PATH_START_Y,
+                RIGHT_BOTTOM_PATH_END_X, RIGHT_BOTTOM_PATH_END_Y, 5);
+        final Line verticalLineRight = new Line(RIGHT_VERTICAL_PATH_START_X, RIGHT_VERTICAL_PATH_START_Y,
+                RIGHT_VERTICAL_PATH_END_X, RIGHT_VERTICAL_PATH_END_Y, 10);
+        final Line topLineRight = new Line(RIGHT_TOP_PATH_START_X, RIGHT_TOP_PATH_START_Y,
+                RIGHT_TOP_PATH_END_X, RIGHT_TOP_PATH_END_Y, 5);
+        return new Path(Arrays.asList(bottomLineRight, verticalLineRight, topLineRight));
+    }
 }

@@ -1,9 +1,9 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Level;
@@ -44,9 +44,9 @@ public class ComputerHand {
         goalY=0;
         followingPath=false;
         onCorrectSide=false;
-        int x = GameConstants.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        int x = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
-        int y = GameConstants.RIGHT_VERTICAL_PATH_START_Y / 2;
+        int y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y / 2;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
         logger.info("Added Computer Hand at ("+x+","+y+")");
     }
@@ -89,8 +89,8 @@ public class ComputerHand {
 
     public boolean isHandOnLeftSide(){
         boolean ret=false;
-        logger.debug("sx=" + sprite.getX() + ",px=" + GameConstants.RIGHT_VERTICAL_PATH_START_X);
-        if(sprite.getX()<GameConstants.RIGHT_VERTICAL_PATH_START_X)ret=true;
+        logger.debug("sx=" + sprite.getX() + ",px=" + ConveyorBelt.RIGHT_VERTICAL_PATH_START_X);
+        if(sprite.getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret=true;
         return ret;
     }
     /*

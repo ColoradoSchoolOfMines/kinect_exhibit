@@ -36,95 +36,9 @@ public final class GameConstants {
      */
     public static final double START_ITEM_GENERATION_PROB = 0.5;
 
-    public static final int LEFT_BOTTOM_PATH_START_X = 0;
-    public static final int LEFT_BOTTOM_PATH_START_Y = 880;
-    public static final int LEFT_BOTTOM_PATH_END_X = 390;
-    public static final int LEFT_BOTTOM_PATH_END_Y = LEFT_BOTTOM_PATH_START_Y;
-    
-    public static final int LEFT_VERTICAL_PATH_START_X = LEFT_BOTTOM_PATH_END_X;
-    public static final int LEFT_VERTICAL_PATH_START_Y = LEFT_BOTTOM_PATH_END_Y;
-    public static final int LEFT_VERTICAL_PATH_END_X = LEFT_BOTTOM_PATH_END_X;
-    public static final int LEFT_VERTICAL_PATH_END_Y = 40;
-
-    public static final int LEFT_TOP_PATH_START_X = LEFT_VERTICAL_PATH_END_X;
-    public static final int LEFT_TOP_PATH_START_Y = LEFT_VERTICAL_PATH_END_Y;
-    public static final int LEFT_TOP_PATH_END_X = 650;
-    public static final int LEFT_TOP_PATH_END_Y = LEFT_VERTICAL_PATH_END_Y;
-
-    public static final int RIGHT_BOTTOM_PATH_START_X = 1920-LEFT_BOTTOM_PATH_START_X-100;
-    public static final int RIGHT_BOTTOM_PATH_START_Y = 880;
-    public static final int RIGHT_BOTTOM_PATH_END_X = 1920-LEFT_BOTTOM_PATH_END_X-100;
-    public static final int RIGHT_BOTTOM_PATH_END_Y = RIGHT_BOTTOM_PATH_START_Y;
-
-    public static final int RIGHT_VERTICAL_PATH_START_X = RIGHT_BOTTOM_PATH_END_X;
-    public static final int RIGHT_VERTICAL_PATH_START_Y = RIGHT_BOTTOM_PATH_END_Y;
-    public static final int RIGHT_VERTICAL_PATH_END_X = RIGHT_BOTTOM_PATH_END_X;
-    public static final int RIGHT_VERTICAL_PATH_END_Y = 40;
-
-    public static final int RIGHT_TOP_PATH_START_X = RIGHT_VERTICAL_PATH_END_X;
-    public static final int RIGHT_TOP_PATH_START_Y = RIGHT_VERTICAL_PATH_END_Y;
-    public static final int RIGHT_TOP_PATH_END_X = 1920-LEFT_TOP_PATH_END_X-100;
-    public static final int RIGHT_TOP_PATH_END_Y = RIGHT_VERTICAL_PATH_END_Y;
-
-    public static final int ITEM_PATH_END = 250;
-    public static final int SPRITE_BECOMES_TOUCHABLE = LEFT_BOTTOM_PATH_END_Y - 50;
-    public static final int SPRITE_BECOMES_UNTOUCHABLE = LEFT_TOP_PATH_START_Y + 20;
-
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
     public static final int SPRITE_Y_OFFSET = 50;
-
-    //Left recycle bins
-    public static final RecyclableType LEFT_BIN_1_TYPE = RecyclableType.PLASTIC;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double LEFT_BIN_1_MIN_Y = 40;
-    public static final double LEFT_BIN_1_MAX_Y = 440;
-
-    public static final RecyclableType LEFT_BIN_2_TYPE = RecyclableType.PAPER;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double LEFT_BIN_2_MIN_Y = 441;
-    public static final double LEFT_BIN_2_MAX_Y = 838;
-
-    public static final RecyclableType LEFT_BIN_3_TYPE = RecyclableType.HAZARD;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_3_MIN_Y = 140;
-    public static final double LEFT_BIN_3_MAX_Y = 540;
-
-    public static final RecyclableType LEFT_BIN_4_TYPE = RecyclableType.GLASS;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_4_MIN_Y = 541;
-    public static final double LEFT_BIN_4_MAX_Y = 938;
-
-    public static final RecyclableType LEFT_BIN_5_TYPE = RecyclableType.TRASH;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_5_MIN_Y = 0;
-    public static final double LEFT_BIN_5_MAX_Y = 140;
-
-    //Right recycle bins
-    public static final RecyclableType RIGHT_BIN_1_TYPE = RecyclableType.PLASTIC;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_1_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double RIGHT_BIN_1_MIN_Y = 40;
-    public static final double RIGHT_BIN_1_MAX_Y = 440;
-
-    public static final RecyclableType RIGHT_BIN_2_TYPE = RecyclableType.PAPER;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_2_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double RIGHT_BIN_2_MIN_Y = 441;
-    public static final double RIGHT_BIN_2_MAX_Y = 838;
-
-    public static final RecyclableType RIGHT_BIN_3_TYPE = RecyclableType.HAZARD;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_3_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_3_MIN_Y = 140;
-    public static final double RIGHT_BIN_3_MAX_Y = 540;
-
-    public static final RecyclableType RIGHT_BIN_4_TYPE = RecyclableType.GLASS;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_4_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_4_MIN_Y = 541;
-    public static final double RIGHT_BIN_4_MAX_Y = 938;
-
-    public static final RecyclableType RIGHT_BIN_5_TYPE = RecyclableType.TRASH;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_5_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_5_MIN_Y = 0;
-    public static final double RIGHT_BIN_5_MAX_Y = 140;
 
     /**
      * The amount of time, in seconds from the game start or last item, that it takes before a new item is added to the game
@@ -151,10 +65,6 @@ public final class GameConstants {
 	 */
 	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
-    /**
-     * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
-     * generated
-     */
-    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
+    public static final int ITEM_PATH_END = 250;
 }
 

@@ -66,7 +66,7 @@ public final class RecyclableFactory {
             // a very simple way to have powerups not generated frequently
             Random randomGenerator = new Random();
             int ranNum = randomGenerator.nextInt(100);
-            if (ranNum < GameConstants.POWERUP_FREQUENCY_PERCENTAGE) {
+            if (ranNum < POWERUP_FREQUENCY_PERCENTAGE) {
             	returned = generateRandomPowerUp(outputPath);
                 logger.debug("Powerup generated: " + returned);
             }
@@ -105,4 +105,10 @@ public final class RecyclableFactory {
 	public void setNumItemTypesInUse(int numItemTypesInUse) {
 		numberOfItemTypes = numItemTypesInUse;
 	}
+
+    /**
+     * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
+     * generated
+     */
+    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
 }

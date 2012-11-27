@@ -34,14 +34,14 @@ public class GameLauncher extends GameState {
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
         leftGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.LEFT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_LEFT,
+				ConveyorBelt.getConveyorBeltPathLeft(),
                 gameManager,
                 leftGameStatusDisplay,
                 false,
                 false);
 		rightGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.RIGHT),
-				ConveyorBelt.CONVEYOR_BELT_PATH_RIGHT,
+                ConveyorBelt.getConveyorBeltPathRight(),
                 gameManager,
                 rightGameStatusDisplay,
                 GameConstants.SECOND_PLAYER_IS_A_COMPUTER,

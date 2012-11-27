@@ -13,6 +13,7 @@ import java.util.LinkedList;
  */
 public class RecycleBins {
     private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+
     public enum Side {LEFT, RIGHT};
     RecycleBins(Side s){
         if(s.equals(Side.LEFT)){
@@ -68,20 +69,20 @@ public class RecycleBins {
      */
     private void setUpLeftBins() {
         RecycleBin bin1 = new RecycleBin(
-                GameConstants.LEFT_BIN_1_SIDE, GameConstants.LEFT_BIN_1_MIN_Y,
-                GameConstants.LEFT_BIN_1_MAX_Y, GameConstants.LEFT_BIN_1_TYPE);
+               LEFT_BIN_1_SIDE, LEFT_BIN_1_MIN_Y,
+               LEFT_BIN_1_MAX_Y, LEFT_BIN_1_TYPE);
         RecycleBin bin2 = new RecycleBin(
-                GameConstants.LEFT_BIN_2_SIDE, GameConstants.LEFT_BIN_2_MIN_Y,
-                GameConstants.LEFT_BIN_2_MAX_Y, GameConstants.LEFT_BIN_2_TYPE);
+                LEFT_BIN_2_SIDE, LEFT_BIN_2_MIN_Y,
+                LEFT_BIN_2_MAX_Y, LEFT_BIN_2_TYPE);
         RecycleBin bin3 = new RecycleBin(
-                GameConstants.LEFT_BIN_3_SIDE, GameConstants.LEFT_BIN_3_MIN_Y,
-                GameConstants.LEFT_BIN_3_MAX_Y, GameConstants.LEFT_BIN_3_TYPE);
+                LEFT_BIN_3_SIDE, LEFT_BIN_3_MIN_Y,
+                LEFT_BIN_3_MAX_Y, LEFT_BIN_3_TYPE);
         RecycleBin bin4 = new RecycleBin(
-                GameConstants.LEFT_BIN_4_SIDE, GameConstants.LEFT_BIN_4_MIN_Y,
-                GameConstants.LEFT_BIN_4_MAX_Y, GameConstants.LEFT_BIN_4_TYPE);
+                LEFT_BIN_4_SIDE, LEFT_BIN_4_MIN_Y,
+                LEFT_BIN_4_MAX_Y, LEFT_BIN_4_TYPE);
         RecycleBin bin5 = new RecycleBin(
-                GameConstants.LEFT_BIN_5_SIDE, GameConstants.LEFT_BIN_5_MIN_Y,
-                GameConstants.LEFT_BIN_5_MAX_Y, GameConstants.LEFT_BIN_5_TYPE);
+                LEFT_BIN_5_SIDE, LEFT_BIN_5_MIN_Y,
+                LEFT_BIN_5_MAX_Y, LEFT_BIN_5_TYPE);
         RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
 
         recycleBins.add(bin1);
@@ -97,20 +98,20 @@ public class RecycleBins {
      */
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
-                GameConstants.RIGHT_BIN_1_SIDE, GameConstants.RIGHT_BIN_1_MIN_Y,
-                GameConstants.RIGHT_BIN_1_MAX_Y, GameConstants.RIGHT_BIN_1_TYPE);
+                RIGHT_BIN_1_SIDE, RIGHT_BIN_1_MIN_Y,
+                RIGHT_BIN_1_MAX_Y, RIGHT_BIN_1_TYPE);
         RecycleBin bin2 = new RecycleBin(
-                GameConstants.RIGHT_BIN_2_SIDE, GameConstants.RIGHT_BIN_2_MIN_Y,
-                GameConstants.RIGHT_BIN_2_MAX_Y, GameConstants.RIGHT_BIN_2_TYPE);
+                RIGHT_BIN_2_SIDE, RIGHT_BIN_2_MIN_Y,
+                RIGHT_BIN_2_MAX_Y, RIGHT_BIN_2_TYPE);
         RecycleBin bin3 = new RecycleBin(
-                GameConstants.RIGHT_BIN_3_SIDE, GameConstants.RIGHT_BIN_3_MIN_Y,
-                GameConstants.RIGHT_BIN_3_MAX_Y, GameConstants.RIGHT_BIN_3_TYPE);
+                RIGHT_BIN_3_SIDE, RIGHT_BIN_3_MIN_Y,
+                RIGHT_BIN_3_MAX_Y, RIGHT_BIN_3_TYPE);
         RecycleBin bin4 = new RecycleBin(
-                GameConstants.RIGHT_BIN_4_SIDE, GameConstants.RIGHT_BIN_4_MIN_Y,
-                GameConstants.RIGHT_BIN_4_MAX_Y, GameConstants.RIGHT_BIN_4_TYPE);
+                RIGHT_BIN_4_SIDE, RIGHT_BIN_4_MIN_Y,
+                RIGHT_BIN_4_MAX_Y, RIGHT_BIN_4_TYPE);
         RecycleBin bin5 = new RecycleBin(
-                GameConstants.RIGHT_BIN_5_SIDE, GameConstants.RIGHT_BIN_5_MIN_Y,
-                GameConstants.RIGHT_BIN_5_MAX_Y, GameConstants.RIGHT_BIN_5_TYPE);
+                RIGHT_BIN_5_SIDE, RIGHT_BIN_5_MIN_Y,
+                RIGHT_BIN_5_MAX_Y, RIGHT_BIN_5_TYPE);
         RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
 
         recycleBins.add(bin1);
@@ -124,4 +125,56 @@ public class RecycleBins {
     public RecycleBin getLast(){
         return recycleBins.getLast();
     }
+
+    //Left recycle bins
+    public static final RecyclableType LEFT_BIN_1_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double LEFT_BIN_1_MIN_Y = 40;
+    public static final double LEFT_BIN_1_MAX_Y = 440;
+
+    public static final RecyclableType LEFT_BIN_2_TYPE = RecyclableType.PAPER;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double LEFT_BIN_2_MIN_Y = 441;
+    public static final double LEFT_BIN_2_MAX_Y = 838;
+
+    public static final RecyclableType LEFT_BIN_3_TYPE = RecyclableType.HAZARD;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_3_MIN_Y = 140;
+    public static final double LEFT_BIN_3_MAX_Y = 540;
+
+    public static final RecyclableType LEFT_BIN_4_TYPE = RecyclableType.GLASS;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_4_MIN_Y = 541;
+    public static final double LEFT_BIN_4_MAX_Y = 938;
+
+    public static final RecyclableType LEFT_BIN_5_TYPE = RecyclableType.TRASH;
+    public static final RecycleBin.ConveyorSide LEFT_BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double LEFT_BIN_5_MIN_Y = 0;
+    public static final double LEFT_BIN_5_MAX_Y = 140;
+
+    //Right recycle bins
+    public static final RecyclableType RIGHT_BIN_1_TYPE = RecyclableType.PLASTIC;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_1_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double RIGHT_BIN_1_MIN_Y = 40;
+    public static final double RIGHT_BIN_1_MAX_Y = 440;
+
+    public static final RecyclableType RIGHT_BIN_2_TYPE = RecyclableType.PAPER;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_2_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final double RIGHT_BIN_2_MIN_Y = 441;
+    public static final double RIGHT_BIN_2_MAX_Y = 838;
+
+    public static final RecyclableType RIGHT_BIN_3_TYPE = RecyclableType.HAZARD;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_3_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_3_MIN_Y = 140;
+    public static final double RIGHT_BIN_3_MAX_Y = 540;
+
+    public static final RecyclableType RIGHT_BIN_4_TYPE = RecyclableType.GLASS;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_4_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_4_MIN_Y = 541;
+    public static final double RIGHT_BIN_4_MAX_Y = 938;
+
+    public static final RecyclableType RIGHT_BIN_5_TYPE = RecyclableType.TRASH;
+    public static final RecycleBin.ConveyorSide RIGHT_BIN_5_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final double RIGHT_BIN_5_MIN_Y = 0;
+    public static final double RIGHT_BIN_5_MAX_Y = 140;
 }
