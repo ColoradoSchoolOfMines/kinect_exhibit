@@ -16,11 +16,17 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public final class RecyclableFactory {    
+
+    /**
+     * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
+     * generated
+     */
+    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
     private final Logger logger = Logger.getLogger(RecyclableFactory.class);
     //logger.setLevel(Level.INFO);
     private final Random rand = new Random();
 	private double nextTimeToGenerate = 0;
-    private double meanTimeBetweenItemGeneration = GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
+    private double meanTimeBetweenItemGeneration = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS;
     private int numberOfItemTypes = 1;
 
     /**
@@ -106,9 +112,17 @@ public final class RecyclableFactory {
 		numberOfItemTypes = numItemTypesInUse;
 	}
 
-    /**
-     * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
-     * generated
-     */
-    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
+	/**
+	 * Reduces the time between item generations according to the perecentage of the game completed.  At 0% we will use
+	 * <code>GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS</code> and at 100% we will use
+	 * <code>GameConstants.MIN_TIME_BETWEEN_GENERATIONS</code>
+	 * @param pctToMaxDifficulty
+	 */
+	public void increaseGenerationRate(double pctToMaxDifficulty) {
+		if(pctToMaxDifficulty < 0 || pctToMaxDifficulty > 1){
+			throw new IllegalArgumentException("Can only handle times between 0% and 100% of the game's time to max difficulty");
+		}
+		double timeRange = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
+		meanTimeBetweenItemGeneration = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - (timeRange * pctToMaxDifficulty);
+	}
 }

@@ -32,9 +32,10 @@ public final class GameConstants {
     public static final double MIN_TIME_BETWEEN_GENERATIONS = 6;
 
     /**
-     * The probability, at the start of the game, that an item will be generated
+     * The initial amount of time between object generations.  As the game progresses items will probably
+     * be generated more often than this, but never more often than <code>MIN_TIME_BETWEEN_GENERATIONS</code>
      */
-    public static final double START_ITEM_GENERATION_PROB = 0.5;
+    public static final double INITIAL_TIME_BETWEEN_GENERATIONS = 12;
 
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
