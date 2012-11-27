@@ -55,11 +55,11 @@ public final class GameConstants {
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
-	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 50;
+	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 20;
 	/**
 	 * The max time speedup. When the game starts it is 1.0
 	 */
-	public static final double FINAL_TIME_SPEED_FACTOR = 5.0;
+	public static final double FINAL_TIME_SPEED_FACTOR = 3.0;
 	/**
 	 * The speed that an item flies off the conveyor into a bin when hit with a hand, measured in pixels per second
 	 */
