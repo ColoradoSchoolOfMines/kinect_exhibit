@@ -212,7 +212,7 @@ public class GameLogic {
 
     private void gameOver() {
         if (gameOverNotified) return;
-        Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
+        Sprite sprite = new Sprite("src/main/resources/SpriteImages/game_over_text.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
         gameScreen.addSprite(sprite);
         gameOverNotified = true;
 

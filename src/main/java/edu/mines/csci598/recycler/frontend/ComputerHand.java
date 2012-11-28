@@ -48,7 +48,6 @@ public class ComputerHand {
         //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
         int y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
         sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
-        logger.info("Added Computer Hand at ("+x+","+y+")");
     }
     public Coordinate getPosition(){
         return sprite.getPosition();
