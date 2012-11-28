@@ -46,6 +46,8 @@ public class GameLauncher extends GameState {
                 rightGameStatusDisplay,
                 GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
                 GameConstants.DEBUG_COLLISIONS);
+        leftGame.addLinkToOtherScreen(rightGame);
+        rightGame.addLinkToOtherScreen(leftGame);
 	}
 
 	protected void drawThis(Graphics2D g2d) {

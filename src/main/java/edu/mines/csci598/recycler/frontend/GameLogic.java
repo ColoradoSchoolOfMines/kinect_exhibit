@@ -25,6 +25,7 @@ import java.util.List;
 public class GameLogic {
     private static final Logger logger = Logger.getLogger(GameLogic.class);
 
+    private GameLogic otherScreen;
     private List<Hand> hands;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
@@ -158,11 +159,13 @@ public class GameLogic {
             // handle powerups
             if (r.getType() == RecyclableType.ANVIL) {
                 strikes--;
-            } else if (r.getType() == RecyclableType.RABBIT) {
+            }
+            else if (r.getType() == RecyclableType.RABBIT) {
                 logger.info("Rabbit Powerup");
-                powerUpSpeedFactor = 1.5;
-                timeToRemovePowerUp = lastWallTimeSec + 15;
-            } else if (r.getType() == RecyclableType.TURTLE) {
+                otherScreen.powerUpSpeedFactor = 1.5;
+                otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
+            }
+            else if (r.getType() == RecyclableType.TURTLE) {
                 logger.info("Turtle Powerup");
                 powerUpSpeedFactor = 0.5;
                 timeToRemovePowerUp = lastWallTimeSec + 15;
@@ -205,6 +208,9 @@ public class GameLogic {
         strikes = computerPlayer.getAIStrikes();
     }
 
+    public void addLinkToOtherScreen(GameLogic otherScreen) {
+        this.otherScreen = otherScreen;
+    }
 
     public String getStrikesString() {
         return Integer.toString(strikes);
