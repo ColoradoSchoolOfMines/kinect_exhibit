@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.splashscreen.weather;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -10,9 +11,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.*;
 
 public class WeatherXMLParserTest {
     InputStream _weatherStream;
@@ -53,6 +52,7 @@ public class WeatherXMLParserTest {
     }
 
     @Test
+    @Ignore("Game box does not have internet connection at the moment")
     public void shouldNotFindData() throws IOException, SAXException, ParserConfigurationException {
         URL weatherUrl = new URL("http://free.worldweatheronline.com/feed/weather.ashx?key="+BAD_API_KEY+"&q="+LOCAL_ZIP+"&num_of_days=1&format=xml");
         URLConnection weatherConnection = weatherUrl.openConnection();
@@ -62,6 +62,7 @@ public class WeatherXMLParserTest {
 
 
     @Test
+    @Ignore("Game box does not have internet connection at the moment")
     public void shouldFindData() throws IOException, SAXException, ParserConfigurationException {
         URL weatherUrl = new URL("http://free.worldweatheronline.com/feed/weather.ashx?key="+API_KEY+"&q="+LOCAL_ZIP+"&num_of_days=1&format=xml");
         URLConnection weatherConnection = weatherUrl.openConnection();
