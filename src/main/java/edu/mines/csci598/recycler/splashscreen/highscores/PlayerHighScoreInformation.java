@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.Comparator;
 
-//Andrew Suter-Morris
 public class PlayerHighScoreInformation implements Serializable {
 
     private ImageIcon _playerImage;
