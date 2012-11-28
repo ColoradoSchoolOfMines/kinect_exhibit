@@ -4,6 +4,7 @@ import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
@@ -21,6 +22,10 @@ public class GameLauncher extends GameState {
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
 	private GameScreen gameScreen;
+    private boolean gameStarted;
+    private long timeInstructionsStarted;
+
+    private InstructionScreen instructionScreen;
 
 	public GameLauncher() {
         //Preloading the images will prevent some flickering.
@@ -46,10 +51,21 @@ public class GameLauncher extends GameState {
                 rightGameStatusDisplay,
                 GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
                 GameConstants.DEBUG_COLLISIONS);
+        leftGame.addLinkToOtherScreen(rightGame);
+        rightGame.addLinkToOtherScreen(leftGame);
+
+        instructionScreen = new InstructionScreen(gameManager);
+        gameStarted = false;
+        timeInstructionsStarted = System.currentTimeMillis() / 1000;
 	}
 
 	protected void drawThis(Graphics2D g2d) {
-		gameScreen.paint(g2d, gameManager.getCanvas());
+        if (gameStarted) {
+            gameScreen.paint(g2d, gameManager.getCanvas());
+        }
+        else {
+            instructionScreen.paint(g2d, gameManager.getCanvas());
+        }
 	}
 
 	public GameManager getGameManager() {
@@ -57,7 +73,7 @@ public class GameLauncher extends GameState {
 	}
 
 	public static void main(String[] args) {
-		GameLauncher gm = new GameLauncher();
+        GameLauncher gm = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
 		gm.getGameManager().installInputDriver(mouse);
 		gm.getGameManager().setState(gm);
@@ -67,8 +83,15 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher updateThis(float time) {
 
-		leftGame.updateThis();
-		rightGame.updateThis();
+        if (gameStarted) {
+		    leftGame.updateThis();
+		    rightGame.updateThis();
+        }
+        else {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
+                gameStarted = true;
+            }
+        }
 		return this;
 	}
 

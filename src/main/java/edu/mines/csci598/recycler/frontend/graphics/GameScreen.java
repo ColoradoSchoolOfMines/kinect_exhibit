@@ -32,7 +32,7 @@ public class GameScreen {
 
     private GameScreen() {
         backgroundBottom = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/background_doubled.jpg",0,0);
-        backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_Frame.png",0,0);
+        backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png",0,0);
         scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
         scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
