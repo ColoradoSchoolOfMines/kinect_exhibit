@@ -52,7 +52,7 @@ public final class GameConstants {
     /**
      * The number of items we can include, not including powerups
      */
-	public static final int MAX_ITEM_COUNT = 4;
+	public static final int MAX_ITEM_COUNT = 5;
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */

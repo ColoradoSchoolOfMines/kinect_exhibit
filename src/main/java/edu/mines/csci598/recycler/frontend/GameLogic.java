@@ -235,6 +235,7 @@ public class GameLogic {
             numItemTypesInUse++;
             logger.info("Increasing item types to " + numItemTypesInUse + "!");
             nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+            logger.info("Next item time : " + nextItemTypeGenerationTime);
             factory.setNumItemTypesInUse(numItemTypesInUse);
         }
     }
