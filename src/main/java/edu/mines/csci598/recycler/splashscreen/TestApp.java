@@ -6,8 +6,8 @@ import edu.mines.csci598.recycler.splashscreen.social.TwitterMessages;
 import edu.mines.csci598.recycler.splashscreen.weather.LocalAreaWeather;
 import edu.mines.csci598.recycler.splashscreen.weather.WeatherInformation;
 
-import javax.swing.JFrame;import javax.swing.JLabel;import javax.swing.JPanel;import javax.swing.SwingUtilities;import javax.swing.WindowConstants;
-import java.lang.Override;import java.lang.Runnable;import java.lang.String;import java.util.List;
+import javax.swing.*;
+import java.util.List;
 
 public class TestApp extends JFrame {
 

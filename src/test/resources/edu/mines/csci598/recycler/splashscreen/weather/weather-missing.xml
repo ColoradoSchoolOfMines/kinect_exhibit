@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <request>
+        <type>Postcode</type>
+        <query>SW1</query>
+    </request>
+    <current_condition>
+        <observation_time>08:29 PM</observation_time>
+        <temp_C>11</temp_C>
+        <weatherCode>113</weatherCode>
+        <weatherIconUrl><![CDATA[http://www.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0008_clear_sky_night.png]]></weatherIconUrl>
+        <weatherDesc><![CDATA[Clear ]]></weatherDesc>
+        <windspeedMiles>9</windspeedMiles>
+        <windspeedKmph>15</windspeedKmph>
+        <winddirDegree>360</winddirDegree>
+        <winddir16Point>N</winddir16Point>
+        <precipMM>0.0</precipMM>
+        <humidity>47</humidity>
+        <visibility>10</visibility>
+        <pressure>1019</pressure>
+        <cloudcover>0</cloudcover>
+    </current_condition>
+    <weather>
+        <date>2010-04-20</date>
+        <tempMinF>42</tempMinF>
+        <windspeedMiles>13</windspeedMiles>
+        <windspeedKmph>20</windspeedKmph>
+        <winddirection>WNW</winddirection>
+        <weatherCode>113</weatherCode>
+        <weatherIconUrl><![CDATA[http://www.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png]]></weatherIconUrl>
+        <weatherDesc><![CDATA[Sunny]]></weatherDesc>
+        <precipMM>0.0</precipMM>
+    </weather>
+
+</data>

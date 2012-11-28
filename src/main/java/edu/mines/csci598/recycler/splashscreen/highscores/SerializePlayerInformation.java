@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//Andrew Suter-Morris
 public class SerializePlayerInformation {
 
     private static final int NUM_PLAYER_SCORES_TO_STORE = 10;
