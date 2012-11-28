@@ -1,16 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.splashscreen.highscores.SavePlayer;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -219,6 +215,11 @@ public class GameLogic {
         Sprite sprite = new Sprite("src/main/resources/SpriteImages/GameOverText.png", (GraphicsConstants.GAME_SCREEN_WIDTH / 2) - 220, (GraphicsConstants.GAME_SCREEN_HEIGHT / 2) - 200);
         gameScreen.addSprite(sprite);
         gameOverNotified = true;
+
+        /*we want to pass this off to splash screen crew to save and store evrything*/
+        SavePlayer playerScore = new SavePlayer();
+        playerScore.submitPlayerScore(gameStatusDisplay.getScore());
+
         //If We want it to exit
         //gameManager.destroy();
     }

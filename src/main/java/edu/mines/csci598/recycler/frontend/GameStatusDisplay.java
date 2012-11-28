@@ -59,4 +59,8 @@ public class GameStatusDisplay implements TextSpritesHolder {
         this.score = score;
         scoreChanged();
     }
+
+    public int getScore() {
+        return score;
+    }
 }
