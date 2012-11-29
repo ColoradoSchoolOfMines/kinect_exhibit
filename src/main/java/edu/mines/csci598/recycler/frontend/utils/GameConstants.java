@@ -18,7 +18,7 @@ public final class GameConstants {
     /**
      * Set to true when debugging the computer player
      */
-    public static final boolean SECOND_PLAYER_IS_A_COMPUTER = false;
+    public static final boolean SECOND_PLAYER_IS_A_COMPUTER = true;
     /**
      * The number of item types which are generated at the start of the game
      */

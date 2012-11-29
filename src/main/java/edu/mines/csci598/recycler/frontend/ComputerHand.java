@@ -22,6 +22,8 @@ public class ComputerHand {
     private Path path;
     private int goalX;
     private int goalY;
+    private int initialX;
+    private int initialY;
     /*
      * followingPath
      * Boolean used to determine if the hand should be following a recyclable or a path
@@ -34,7 +36,7 @@ public class ComputerHand {
     private boolean onCorrectSide;
 
     public ComputerHand() {
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.DEBUG);
         //resetHandPosition();
         //position.setLocation(GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR*3/4,
         //                     GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR*1/4);
@@ -44,10 +46,10 @@ public class ComputerHand {
         goalY=0;
         followingPath=false;
         onCorrectSide=false;
-        int x = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+        initialX = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
-        int y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
-        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x,y);
+        initialY = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
+        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", initialX,initialY);
     }
     public Coordinate getPosition(){
         return sprite.getPosition();
@@ -57,6 +59,17 @@ public class ComputerHand {
     }
     public void setScaledPosition(Coordinate position){
         sprite.setScaledPosition(position);
+    }
+    public void resetHandToInitialPosition(){
+        int x = getSprite().getX();
+        int y = getSprite().getY();
+        logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
+        if(y!=initialY){
+            logger.debug("Resetting Hand to initial position");
+            getSprite().setY(initialY);
+            getSprite().setX(initialX);
+        }
+
     }
     public int getGoalX(){
         return goalX;

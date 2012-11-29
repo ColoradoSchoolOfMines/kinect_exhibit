@@ -36,6 +36,12 @@ public class Recyclable implements Displayable {
     public Sprite getSprite() {
         return sprite;
     }
+    public boolean isNotAPowerUp(){
+        boolean ret=true;
+        if(type==RecyclableType.ANVIL||type==RecyclableType.RABBIT||type==RecyclableType.TURTLE)
+            ret = false;
+        return ret;
+    }
 
     public RecyclableType getType() {
         return type;

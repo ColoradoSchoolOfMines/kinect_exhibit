@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Level;
@@ -55,18 +56,28 @@ public class ComputerPlayer {
 
     }
     public void updateAI(Recyclable r,double currentTimeSec){
-        //Set hand to correct side
-        if(!primary.isFollowingPath()){
-            if(!primary.isOnCorrectSide()){
-                setHandToCorrectSide(r,currentTimeSec);
-            }else {
-                //Follow target recyclable
-                followRecyclable(r);
-                //Strike target recyclable
-                attemptToStrike(r,currentTimeSec);
+        //logger.debug("rt="+r.isTouchable());
+        if(r.isTouchable()){
+            if(!primary.isFollowingPath()){
+                if(!primary.isOnCorrectSide()){
+                    //Set hand to correct side
+                    if(r.isNotAPowerUp()){
+                        setHandToCorrectSide(r,currentTimeSec);
+                    }else {
+                        primary.setOnCorrectSide(true);
+                    }
+                }else {
+                    //Follow target recyclable
+                    followRecyclable(r);
+                    //Strike target recyclable
+                    attemptToStrike(r,currentTimeSec);
+                }
+            } else {
+                followPath(currentTimeSec);
             }
-        } else {
-            followPath(currentTimeSec);
+        }else {
+            //logger.debug("untouchable");
+            primary.resetHandToInitialPosition();
         }
     }
     private void followRecyclable(Recyclable r){
@@ -148,32 +159,45 @@ public class ComputerPlayer {
     }
     private boolean recyclableWillFallInBin(Recyclable r){
         boolean ret = false;
-        double rsy=r.getSprite().getScaledY();
-        logger.debug("bTopY="+goalBinTopY +",bBottomY=="+goalBinBottomY +",ry="+r.getSprite().getY()+
-                ",rsy="+r.getSprite().getScaledY());
-        if(rsy>goalBinTopY && rsy <goalBinBottomY ){
+        double ry=r.getSprite().getY();
+        //logger.debug("bTopY="+goalBinTopY +",bBottomY=="+goalBinBottomY +",ry="+r.getSprite().getY()+
+        //        ",rsy="+r.getSprite().getScaledY());
+        if(ry>goalBinTopY && ry <goalBinBottomY ){
             ret=true;
             logger.debug("Recyclable will fall in bin");
+        }else if(ry<goalBinTopY){
+            r.setMotionState(MotionState.ABOVE_BIN);
         }
         return ret;
     }
     private void attemptToStrike(Recyclable r, double currentTimeSec){
         if(r.isTouchable()){
-            if(recyclableWillFallInBin(r)){
-                if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
-                    //Log.logInfo("hx="+primary.getSprite().getX()+",hy"+primary.getSprite().getY()+
-                    //            ",hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
-                    //            ",rx"+r.getSprite().getX()+",ry"+r.getSprite().getY()+
-                    //            ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY());
-                    if(ICanStrike()){
-                        //Log.logInfo("Strike");
-                        strikeRecyclable(r,currentTimeSec);
-                        lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
-                        lastStrikeTime = currentTimeSec;
-                    }else {
-                        lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
+            if(r.isNotAPowerUp()){
+                if(recyclableWillFallInBin(r)){
+                    if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
+                        //Log.logInfo("hx="+primary.getSprite().getX()+",hy"+primary.getSprite().getY()+
+                        //            ",hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
+                        //            ",rx"+r.getSprite().getX()+",ry"+r.getSprite().getY()+
+                        //            ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY());
+                        if(ICanStrike()){
+                            //Log.logInfo("Strike");
+                            strikeRecyclable(r,currentTimeSec);
+                            lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
+                            lastStrikeTime = currentTimeSec;
+                        }else {
+                            lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
+                        }
                     }
                 }
+            }else {
+                if(ICanStrike()){
+                    strikeRecyclable(r,currentTimeSec);
+                    lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
+                    lastStrikeTime = currentTimeSec;
+                }else {
+                    lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
+                }
+
             }
         }
     }
