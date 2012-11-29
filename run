@@ -1,0 +1,2 @@
+export CLASSPATH=/usr/share/java/org.OpenNI.jar:/usr/share/java/com.primesense.NITE.jar:target/frontend-exe.jar
+java edu.mines.csci598.recycler.frontend.GameLauncher

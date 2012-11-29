@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
@@ -76,6 +77,8 @@ public class GameLauncher extends GameState {
         GameLauncher gm = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
 		gm.getGameManager().installInputDriver(mouse);
+        OpenNIHandTrackerInputDriver onihtid = new OpenNIHandTrackerInputDriver();
+        gm.getGameManager().installInputDriver(onihtid);
 		gm.getGameManager().setState(gm);
 		gm.getGameManager().run();
 		gm.getGameManager().destroy();
