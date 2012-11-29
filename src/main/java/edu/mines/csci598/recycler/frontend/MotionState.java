@@ -6,6 +6,7 @@ public enum MotionState {
     FALL_LEFT(TouchState.UNTOUCHABLE), 
     FALL_RIGHT(TouchState.UNTOUCHABLE), 
     FALL_TRASH(TouchState.UNTOUCHABLE),
+    IS_TRASH(TouchState.UNTOUCHABLE),
     ABOVE_BIN(TouchState.UNTOUCHABLE),
     STRIKE(TouchState.UNTOUCHABLE);
     

@@ -38,7 +38,7 @@ public class ComputerPlayer {
     private double goalBinBottomY;
 
     public ComputerPlayer(RecycleBins recycleBins){
-        logger.setLevel(Level.DEBUG);
+        logger.setLevel(Level.INFO);
         logger.debug("Second player is a computer");
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
@@ -59,25 +59,30 @@ public class ComputerPlayer {
         //logger.debug("rt="+r.isTouchable());
         if(r.isTouchable()){
             if(!primary.isFollowingPath()){
-                if(!primary.isOnCorrectSide()){
-                    //Set hand to correct side
-                    if(r.isNotAPowerUp()){
-                        setHandToCorrectSide(r,currentTimeSec);
+                if(r.isNotTrash()){
+                    if(!primary.isOnCorrectSide()){
+                        //Set hand to correct side
+                        if(r.isNotAPowerUp()){
+                            setHandToCorrectSide(r,currentTimeSec);
+                        }else {
+                            primary.setOnCorrectSide(true);
+                        }
                     }else {
-                        primary.setOnCorrectSide(true);
+                        //Follow target recyclable
+                        followRecyclable(r);
+                        //Strike target recyclable
+                        attemptToStrike(r,currentTimeSec);
                     }
-                }else {
-                    //Follow target recyclable
-                    followRecyclable(r);
-                    //Strike target recyclable
-                    attemptToStrike(r,currentTimeSec);
+                }else{
+                    r.setMotionState(MotionState.IS_TRASH);
                 }
             } else {
                 followPath(currentTimeSec);
             }
         }else {
             //logger.debug("untouchable");
-            primary.resetHandToInitialPosition();
+            if(currentTimeSec>lastStrikeTime+lastMoveDelay)
+                primary.resetHandToInitialPosition();
         }
     }
     private void followRecyclable(Recyclable r){
@@ -133,15 +138,16 @@ public class ComputerPlayer {
                 //logger.debug("**SetPath left");
                 newX=-1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
                 //primary.getSprite().setX((int)newX);
-            }
+            } else
+                primary.setOnCorrectSide(true);
         } else {
             if(primary.isHandOnLeftSide()){
                 //logger.debug("**SetPath right");
                 newX=ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
                 //primary.getSprite().setX((int)newX);
-            }
+            } else
+                primary.setOnCorrectSide(true);
         }
-        primary.setOnCorrectSide(true);
         return newX;
     }
     public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
@@ -151,7 +157,8 @@ public class ComputerPlayer {
                 //logger.info("  onWrongSide");
                 //Check goal x and y
                 int newX=findBinSide(r);
-                crossConveyer(r,currentTimeSec,newX);
+                if(!primary.isOnCorrectSide())
+                    crossConveyer(r,currentTimeSec,newX);
             } else {
 
             }

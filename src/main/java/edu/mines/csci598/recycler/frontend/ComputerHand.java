@@ -36,7 +36,7 @@ public class ComputerHand {
     private boolean onCorrectSide;
 
     public ComputerHand() {
-        logger.setLevel(Level.DEBUG);
+        logger.setLevel(Level.INFO);
         //resetHandPosition();
         //position.setLocation(GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR*3/4,
         //                     GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR*1/4);
@@ -63,7 +63,7 @@ public class ComputerHand {
     public void resetHandToInitialPosition(){
         int x = getSprite().getX();
         int y = getSprite().getY();
-        logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
+        //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
         if(y!=initialY){
             logger.debug("Resetting Hand to initial position");
             getSprite().setY(initialY);

@@ -42,6 +42,11 @@ public class Recyclable implements Displayable {
             ret = false;
         return ret;
     }
+    public boolean isNotTrash(){
+        boolean ret = true;
+        if(type==RecyclableType.TRASH)ret = false;
+        return ret;
+    }
 
     public RecyclableType getType() {
         return type;
