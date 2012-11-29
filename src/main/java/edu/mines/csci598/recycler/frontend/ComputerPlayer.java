@@ -27,6 +27,7 @@ public class ComputerPlayer {
     private Random random;
     private double lastStrikeTime;
     private double lastStrikeDelay;
+    private boolean justStruckRecyclable;
     private double lastMoveTime;
     private double lastMoveDelay;
     public int targetRecyclable;
@@ -44,6 +45,7 @@ public class ComputerPlayer {
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
         lastStrikeDelay=ComputerConstants.LAST_STRIKE_DELAY;
+        justStruckRecyclable = true;
         lastMoveTime=0;
         lastMoveDelay=ComputerConstants.LAST_MOVE_DELAY;
         targetRecyclable = 0;
@@ -74,6 +76,7 @@ public class ComputerPlayer {
                     }
                 }else{
                     r.setMotionState(MotionState.IS_TRASH);
+                    score+=10;
                 }
             } else {
                 followPath(currentTimeSec);
@@ -233,6 +236,7 @@ public class ComputerPlayer {
     private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
         Path path = new Path(currentTimeSec);
         Line collideLine;
+        justStruckRecyclable = true;
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
             logger.debug("Pushed Right");
