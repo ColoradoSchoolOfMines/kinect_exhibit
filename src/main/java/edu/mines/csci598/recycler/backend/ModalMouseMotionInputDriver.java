@@ -15,6 +15,7 @@ public final class ModalMouseMotionInputDriver
     implements MouseMotionListener, MouseWheelListener {
     private boolean pointerMode = true;
     private GameManager manager = null;
+    private int pointer = 0;
 
     /**
      * Sets the mode to use. True is pointer mode, false is body mode.
@@ -40,8 +41,8 @@ public final class ModalMouseMotionInputDriver
 
         synchronized (manager) {
             if (pointerMode) {
-                is.pointers[0][0] = x;
-                is.pointers[0][1] = y;
+                is.pointers[pointer][0] = x;
+                is.pointers[pointer][1] = y;
                 enqueue(new InputEvent(InputEvent.TYPE_POINTER_MOVEMENT, 0, x, y));
             } else {
                 is.bodies[0] = x;
@@ -55,6 +56,11 @@ public final class ModalMouseMotionInputDriver
     }
 
     public void mouseWheelMoved(MouseWheelEvent evt) {
-        pointerMode = (evt.getWheelRotation() < 0);
+      //      pointerMode = (evt.getWheelRotation() < 0);
+      pointer += evt.getWheelRotation();
+      //Mod is broken for negative values
+      InputStatus is = manager.getSharedInputStatus();
+      while (pointer < 0) pointer += is.pointers.length;
+      pointer %= is.pointers.length;
     }
 }

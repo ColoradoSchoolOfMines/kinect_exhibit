@@ -33,6 +33,7 @@ public class ComputerConstants {
     /*
      * LAST_STRIKE_DELAY
      * Must wait this long before attempting to strike at a new recyclable
+     * Slows down the speed at which the computer can strike
      */
     public static final double LAST_STRIKE_DELAY = 0.65;
     /*
@@ -59,5 +60,5 @@ public class ComputerConstants {
      * PATH_TIME_SEC
      * Time needed to move a line
      */
-    public  static final double PATH_TIME_SEC = 0.5;
+    public  static final double PATH_TIME_SEC = 0.2;
 }
