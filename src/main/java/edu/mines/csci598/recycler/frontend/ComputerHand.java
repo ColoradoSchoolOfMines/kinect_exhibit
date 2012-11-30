@@ -68,12 +68,12 @@ public class ComputerHand extends Hand {
         this.goalX=goalX;
         this.goalY=goalY;
     }
-    public void setScaledPath(Path p){
+    public void setPath(Path p){
         logger.debug("PlayerHand following path");
         path = p;
         followingPath=true;
     }
-    public Path getScaledPath(){
+    public Path getPath(){
         return path;
     }
     public void resetFollowingPath(){

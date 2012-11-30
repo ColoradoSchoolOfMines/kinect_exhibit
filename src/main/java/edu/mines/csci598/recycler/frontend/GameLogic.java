@@ -197,11 +197,13 @@ public class GameLogic {
             if (bin.isCorrectRecyclableType(r)) {
                 gameStatusDisplay.incrementScore(10);
                 feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
-                bin.addItem();
+                SoundEffectEnum.CORRECT.playSound();
+
             } else {
                 //TODO Need to make sure power ups are not counted here
                 strikes++;
                 feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
+                SoundEffectEnum.WRONG.playSound();
             }
         } else {
             handleAIScore();

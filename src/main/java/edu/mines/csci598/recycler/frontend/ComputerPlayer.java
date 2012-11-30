@@ -107,25 +107,25 @@ public class ComputerPlayer {
     }
     private void setUpPath(Recyclable r,double currentTimeSec,int newX){
         logger.debug("SetUpPath");
-        primary.setGoal(r.getSprite().getScaledX()+newX,primary.getSprite().getScaledY()-ComputerConstants.HAND_Y_OFFSET);
+        primary.setGoal(r.getSprite().getX()+newX,primary.getSprite().getY()-ComputerConstants.HAND_Y_OFFSET);
         logger.debug("rx="+r.getSprite().getX()+",ry="+r.getSprite().getY()+
                 ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY()+
                 ",hx="+primary.getSprite().getX()+",hy="+primary.getSprite().getY()+
                 ",hsx="+primary.getSprite().getScaledX()+",hsy="+primary.getSprite().getScaledY()+
                 ",gx="+primary.getGoalX()+",gy="+primary.getGoalY());
         Path p = new Path(currentTimeSec);
-        Line moveAboveRecyclable = new Line(primary.getSprite().getScaledX(),primary.getSprite().getScaledY(),
-                primary.getSprite().getScaledX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
-        Line moveAcrossRecyclable = new Line(primary.getSprite().getScaledX(),primary.getGoalY(),
+        Line moveAboveRecyclable = new Line(primary.getSprite().getX(),primary.getSprite().getY(),
+                primary.getSprite().getX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
+        Line moveAcrossRecyclable = new Line(primary.getSprite().getX(),primary.getGoalY(),
                 primary.getGoalX(),primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
         p.addLine(moveAboveRecyclable);
         p.addLine(moveAcrossRecyclable);
-        primary.setScaledPath(p);
+        primary.setPath(p);
 
     }
     private void followPath(double currentTimeSec){
         double timePassedSec = currentTimeSec-lastMotionTimeSec;
-        Coordinate newPosition = primary.getScaledPath().getLocation(timePassedSec);
+        Coordinate newPosition = primary.getPath().getLocation(timePassedSec);
         if(newPosition.getX()!=primary.getGoalX()){
             //logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
             primary.setPosition(newPosition);
@@ -190,10 +190,6 @@ public class ComputerPlayer {
             if(r.isNotAPowerUp()){
                 if(recyclableWillFallInBin(r)){
                     if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
-                        //Log.logInfo("hx="+primary.getSprite().getX()+",hy"+primary.getSprite().getY()+
-                        //            ",hsx="+primary.getSprite().getScaledX()+",hsy"+primary.getSprite().getScaledY()+
-                        //            ",rx"+r.getSprite().getX()+",ry"+r.getSprite().getY()+
-                        //            ",rsx="+r.getSprite().getScaledX()+",rsy="+r.getSprite().getScaledY());
                         if(ICanStrike()){
                             //Log.logInfo("Strike");
                             strikeRecyclable(r,currentTimeSec);

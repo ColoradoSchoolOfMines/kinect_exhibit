@@ -1,19 +1,10 @@
 package edu.mines.csci598.recycler.bettyCrocker;
 
+import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * A Track is responsible for playing the audio from a single
@@ -207,10 +198,16 @@ public class Track {
 					
 					isPlaying = false;
 					
-				} catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+				} catch (IOException  e) {
 					e.printStackTrace();
 					System.exit(0);
-				}
+				} catch ( UnsupportedAudioFileException e){
+                    e.printStackTrace();
+                    System.exit(0);
+                } catch ( LineUnavailableException e ){
+                    e.printStackTrace();
+                    System.exit(0);
+                }
 				
 			} catch (InterruptedException e) {
 				System.out.println("Track play was interrupted.");
