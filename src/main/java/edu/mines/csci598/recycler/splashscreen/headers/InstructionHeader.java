@@ -1,5 +1,10 @@
 package edu.mines.csci598.recycler.splashscreen.headers;
 
 
-public class InstructionHeader {
+import javax.swing.*;
+
+public class InstructionHeader extends JPanel {
+   public InstructionHeader() {
+       super();
+   }
 }
