@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.RecycleBin;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
@@ -20,23 +21,25 @@ public class GameScreen {
     private static final Logger logger = Logger.getLogger(GameScreen.class);
     
     private static GameScreen INSTANCE;
-    private Sprite backgroundBottom;
-    private Sprite backgroundTop;
+    private Sprite background;
+    private Sprite backgroundChutes;
+    private Sprite backgroundScoreFrame;
+    private Sprite backgroundFrame;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
-    //private Sprite backgroundLeft;
-    //private Sprite backgroundRight;
-    private LinkedList<Sprite> sprites = new LinkedList<Sprite>();
+    private LinkedList<Sprite> sprites;
+    private ArrayList<Sprite> recycleBinSprites;
     private ArrayList<Sprite> handSprites;
-    private double scaledWidth;
-    private double scaledHeight;
 
     private GameScreen() {
-        backgroundBottom = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/background_doubled.jpg",0,0);
-        backgroundTop = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png",0,0);
-        scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
-        scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
+        background = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background.jpg", 0, 0);
+        backgroundChutes = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_chutes.png", 0, 0);
+        backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_score_frame.png", 0, 0);
+        backgroundFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
+
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
         handSprites = new ArrayList<Sprite>();
+        sprites = new LinkedList<Sprite>();
+        recycleBinSprites = new ArrayList<Sprite>();
     }
 
     public static final GameScreen getInstance() {
@@ -47,16 +50,22 @@ public class GameScreen {
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
-        g2d.drawImage(backgroundBottom.getImage(), backgroundBottom.getX(), backgroundBottom.getY(), canvas);
+        g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
+        g2d.drawImage(backgroundScoreFrame.getImage(), backgroundScoreFrame.getX(), backgroundScoreFrame.getY(), canvas);
+
+        for (Sprite bin : recycleBinSprites) {
+            g2d.drawImage(bin.getImage(), bin.getScaledX(), bin.getScaledY(), canvas);
+        }
 
         for (Sprite sprite : sprites) {
                g2d.rotate(sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
                g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
                g2d.rotate(-1.0*sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
-
         }
 
-        g2d.drawImage(backgroundTop.getImage(), backgroundTop.getX(), backgroundTop.getY(), canvas);
+        g2d.drawImage(backgroundChutes.getImage(), backgroundChutes.getX(), backgroundChutes.getY(), canvas);
+        g2d.drawImage(backgroundFrame.getImage(), backgroundFrame.getX(), backgroundFrame.getY(), canvas);
+
         drawHands(g2d, canvas);
         drawTextSprites(g2d);
     }
@@ -71,6 +80,14 @@ public class GameScreen {
 
     public boolean removeSprite(Sprite s) {
         return sprites.remove(s);
+    }
+
+    public void addRecycleBinSprite(Sprite s) {
+        recycleBinSprites.add(s);
+    }
+
+    public void removeRecycleBinSprite(Sprite s) {
+        recycleBinSprites.remove(s);
     }
 
     /**

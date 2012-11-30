@@ -20,6 +20,10 @@ public class ComputerConstants {
      * Generates numbers from 1 to 100 using a +1
      */
     public static final int MAX_GENERATION_NUMBER = 100;
+    /* HAND_THRESHOLD
+     * Probability that the hand will be set to the correct side
+     */
+    public static final int HAND_SET_THRESHOLD = 50;
     /*
      * LAST_STRIKE_UPDATE
      * Used to slow hand movement when repositioning to the correct side.

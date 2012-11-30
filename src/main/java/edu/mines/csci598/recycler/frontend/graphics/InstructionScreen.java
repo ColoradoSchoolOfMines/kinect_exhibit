@@ -1,7 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.PlayerHand;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -18,11 +18,8 @@ public class InstructionScreen {
     private static final Logger logger = Logger.getLogger(GameScreen.class);
 
     private Sprite background;
-    private GameManager gameManager;
-    private int waveTimes;
 
-    public InstructionScreen(GameManager gameManager) {
-        this.gameManager = gameManager;
+    public InstructionScreen() {
         background = new Sprite("src/main/resources/SpriteImages/instructions.jpg",0,0);
     }
 

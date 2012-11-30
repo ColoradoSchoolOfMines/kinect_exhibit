@@ -31,6 +31,7 @@ public class GameLauncher extends GameState {
         //Preloading the images will prevent some flickering.
         RecyclableType.preLoadImages();
 		gameManager = new GameManager("Recycler",false);
+
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
@@ -54,7 +55,7 @@ public class GameLauncher extends GameState {
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
 
-        instructionScreen = new InstructionScreen(gameManager);
+        instructionScreen = new InstructionScreen();
         gameStarted = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 	}

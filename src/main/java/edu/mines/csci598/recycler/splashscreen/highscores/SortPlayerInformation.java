@@ -9,9 +9,10 @@ public class SortPlayerInformation {
     public static ArrayList<PlayerHighScoreInformation> sortByScore(ArrayList<PlayerHighScoreInformation> playerHighScoreInformationList) {
         Collections.sort(playerHighScoreInformationList, new Comparator<PlayerHighScoreInformation>() {
             public int compare(PlayerHighScoreInformation object1, PlayerHighScoreInformation object2) {
-                return Double.compare(object1.getPlayerScore(), object2.getPlayerScore());
+            	return ((Long)object1.getPlayerScore()).compareTo(object2.getPlayerScore());
             }
         });
+        Collections.reverse(playerHighScoreInformationList);
         return playerHighScoreInformationList;
     }
 

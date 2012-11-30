@@ -81,13 +81,20 @@ public class GameLogic {
         if (!this.playerIsAComputer) {
             //   player1 = new Player(gameManager);
             // creates the max number of hands that can be displayed which is 4
+            //TODO: This is going to be a problem - each player might have 2 hands, but how do we know whose hands are whose?
             for (int i = 0; i < 2; i++) {
-                hands.add(new Hand(gameManager, i));
+                hands.add(new PlayerHand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
+        }
+        //Add recycle bins to game screen to be drawn
+        for (RecycleBin bin : recycleBins.getRecycleBins()) {
+            if (bin.hasSprite()) {
+                gameScreen.addRecycleBinSprite(bin.getSprite());
+            }
         }
         //Add single item to conveyer for debugging collisions.
         if (this.debuggingCollisions) {
@@ -116,6 +123,7 @@ public class GameLogic {
             }
         } else {
             //Computer collision detection
+            //Todo Refactor computer collision from computer player to here.
         }
     }
 
@@ -189,6 +197,7 @@ public class GameLogic {
             if (bin.isCorrectRecyclableType(r)) {
                 gameStatusDisplay.incrementScore(10);
                 feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
+                bin.addItem();
             } else {
                 //TODO Need to make sure power ups are not counted here
                 strikes++;
@@ -239,7 +248,6 @@ public class GameLogic {
     private void possiblyIncreaseTypesInUse() {
         if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
             numItemTypesInUse++;
-            logger.info("Increasing item types to " + numItemTypesInUse + "!");
             nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
             factory.setNumItemTypesInUse(numItemTypesInUse);
         }
@@ -280,6 +288,7 @@ public class GameLogic {
             if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {
                 computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
+            //TODO remove score from AI
             handleAIScore();
         }
 
