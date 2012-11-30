@@ -39,7 +39,7 @@ public class CollisionTest extends TestCase {
                 false,
                 false);
 
-        Hand hand = new Hand(game.getGameManager(), 0);
+        Hand hand = new PlayerHand(game.getGameManager(), 0);
         hand.setVelocityX(GameConstants.MIN_HAND_VELOCITY);
 
         Recyclable r = new Recyclable(RecyclableType.PAPER, ConveyorBelt.getConveyorBeltPathLeft(), RecyclableType.PAPER.getImagePaths()[0]);

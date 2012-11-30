@@ -128,7 +128,8 @@ public class ComputerPlayer {
         Coordinate newPosition = primary.getScaledPath().getLocation(timePassedSec);
         if(newPosition.getX()!=primary.getGoalX()){
             //logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
-            primary.setScaledPosition(newPosition);
+            primary.setPosition(newPosition);
+
         }else{
             //logger.debug("Finished following path");
             primary.resetFollowingPath();
