@@ -163,10 +163,10 @@ public class ComputerPlayer {
         double ry=r.getSprite().getY();
         if(ry>goalBinTopY && ry <goalBinBottomY ){
             ret=true;
-            logger.info("Recyclable will fall in bin");
+            logger.debug("Recyclable will fall in bin");
         }else if(ry<goalBinTopY){
             r.setMotionState(MotionState.ABOVE_BIN);
-            logger.info("Recyclable above bin");
+            logger.debug("Recyclable above bin");
         }
         return ret;
     }

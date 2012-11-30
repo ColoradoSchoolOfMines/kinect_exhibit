@@ -44,11 +44,16 @@ public class ComputerHand extends Hand {
         x=initialX;
         y=initialY;
     }
+    private void updateVelocity(){
+        velocityX = this.x - oldX;
+        velocityY = this.y - oldY;
+    }
     public void updateLocation(int x, int y){
-        oldX = x;
-        oldY = y;
+        oldX = this.x;
+        oldY = this.y;
         this.x = x;
         this.y = y;
+        updateVelocity();
         super.updateLocation();
     }
     public void setPosition(Coordinate position){
@@ -56,6 +61,7 @@ public class ComputerHand extends Hand {
         oldY = y;
         x = (int)position.getX();
         y = (int)position.getY();
+        updateVelocity();
         super.updateLocation();
     }
     public void resetHandToInitialPosition(){
