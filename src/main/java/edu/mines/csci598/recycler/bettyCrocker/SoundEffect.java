@@ -68,6 +68,16 @@ public class SoundEffect {
 				
 				clip = AudioSystem.getClip();
 				clip.open(audioStream);
+
+				clip.addLineListener( new LineListener() {
+					@Override
+					public void update(LineEvent evt) {
+						if (evt.getType() == LineEvent.Type.STOP) {
+					    evt.getLine().close();
+					  }
+					}
+				});
+
 				clip.start();
 			} catch (UnsupportedAudioFileException e) {
 				System.out.println("Unsupported audio file: " + soundFile.getName());
