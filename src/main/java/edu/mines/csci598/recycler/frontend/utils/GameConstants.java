@@ -35,7 +35,7 @@ public final class GameConstants {
      * The initial amount of time between object generations.  As the game progresses items will probably
      * be generated more often than this, but never more often than <code>MIN_TIME_BETWEEN_GENERATIONS</code>
      */
-    public static final double INITIAL_TIME_BETWEEN_GENERATIONS = 12;
+    public static final double INITIAL_TIME_BETWEEN_GENERATIONS = 7;
 
     public static final int MIN_HAND_VELOCITY = 10;
     public static final int SPRITE_X_OFFSET = 50;
@@ -52,7 +52,7 @@ public final class GameConstants {
     /**
      * The number of items we can include, not including powerups
      */
-	public static final int MAX_ITEM_COUNT = 4;
+	public static final int MAX_ITEM_COUNT = 5;
 	/**
 	 * The initial speed of the conveyor belt, measured in pixels per second
 	 */
@@ -66,6 +66,6 @@ public final class GameConstants {
 	 */
 	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
-    public static final int ITEM_PATH_END = 250;
+    public static final int ITEM_PATH_END = 225;
 }
 

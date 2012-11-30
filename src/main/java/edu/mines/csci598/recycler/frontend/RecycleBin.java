@@ -1,5 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.graphics.Displayable;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.
  * The drawing of bins will be in the background.
@@ -12,25 +15,41 @@ package edu.mines.csci598.recycler.frontend;
  * Time: 9:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RecycleBin {
+public class RecycleBin implements Displayable {
 
 	public static final RecycleBin TRASH_BIN = new RecycleBin(RecyclableType.TRASH);
 	
     public enum ConveyorSide {RIGHT, LEFT};
     private double minY;
     private double maxY;
+    private int numItems;
     private ConveyorSide side;
     private RecyclableType type;
+    private Sprite sprite = null;
 
     public RecycleBin(RecyclableType trash) {
         this.type = trash;
     }
 
-    public RecycleBin(ConveyorSide side, double minY, double maxY, RecyclableType type) {
+    public RecycleBin(ConveyorSide side, double minY, double maxY, RecyclableType type, String imagePath) {
         this.side = side;
         this.minY = minY;
         this.maxY = maxY;
         this.type = type;
+        numItems = 0;
+        sprite = new Sprite(imagePath, 0, 0);
+    }
+
+    @Override
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public boolean hasSprite() {
+        if (sprite == null) {
+            return false;
+        }
+        return true;
     }
 
     public double getMinY() {
@@ -56,6 +75,10 @@ public class RecycleBin {
     @Override
     public String toString() {
         return type.toString();
+    }
+
+    public void addItem() {
+        numItems++;
     }
 
 

@@ -26,17 +26,25 @@ public class Line extends Line2D{
      * @param endY
      * @param timeToComplete
      */
-
-
-
     public Line(double startX, double startY, double endX, double endY, double timeToComplete ) {
         startPoint = new Coordinate(startX, startY);
         endPoint = new Coordinate(endX, endY);
         this.timeToComplete =timeToComplete;
     }
+    public Line(double startX, double startY, double endX, double endY, double timeToComplete, double rotation ) {
+        startPoint = new Coordinate(startX, startY);
+        endPoint = new Coordinate(endX, endY,rotation);
+        this.timeToComplete =timeToComplete;
+    }
     public Line(Coordinate start, Coordinate end, double timeToComplete ) {
         startPoint = start;
         endPoint = end;
+        this.timeToComplete =timeToComplete;
+    }
+    public Line(Coordinate start, Coordinate end, double timeToComplete, double rotation ) {
+        startPoint = start;
+        endPoint = end;
+        endPoint.setRotation(rotation);
         this.timeToComplete =timeToComplete;
     }
     /**
@@ -110,19 +118,25 @@ public class Line extends Line2D{
      * @return Coordinate of where it is at this relative time
      */
     public Coordinate getCoordinateAtTime(double time){
+
         double x, y;
         if (time <= 0) {
             return startPoint;
         } else if (time >= timeToComplete) {
             return endPoint;
         } else { //we are somewhere in the middle of the line
+
             double fraction = time / timeToComplete;
             x = (endPoint.getX()-startPoint.getX()) * fraction + startPoint.getX();
             y = (endPoint.getY()-startPoint.getY()) * fraction + startPoint.getY();
-            return new Coordinate(x,y);
+            double rotation = (endPoint.getRotation()-startPoint.getRotation())*fraction;
+
+            return new Coordinate(x,y,rotation);
         }
 
     }
+
+
     /**
      * Pass in the elapsed time since this line has started to get the coordinates at that time
      * @param time

@@ -27,6 +27,7 @@ public class ComputerPlayer {
     private Random random;
     private double lastStrikeTime;
     private double lastStrikeDelay;
+    private boolean justStruckRecyclable;
     private double lastMoveTime;
     private double lastMoveDelay;
     public int targetRecyclable;
@@ -44,6 +45,7 @@ public class ComputerPlayer {
         random = new Random(System.currentTimeMillis());
         lastStrikeTime=0;
         lastStrikeDelay=ComputerConstants.LAST_STRIKE_DELAY;
+        justStruckRecyclable = true;
         lastMoveTime=0;
         lastMoveDelay=ComputerConstants.LAST_MOVE_DELAY;
         targetRecyclable = 0;
@@ -56,7 +58,6 @@ public class ComputerPlayer {
 
     }
     public void updateAI(Recyclable r,double currentTimeSec){
-        //logger.debug("rt="+r.isTouchable());
         if(r.isTouchable()){
             if(!primary.isFollowingPath()){
                 if(r.isNotTrash()){
@@ -75,6 +76,7 @@ public class ComputerPlayer {
                     }
                 }else{
                     r.setMotionState(MotionState.IS_TRASH);
+                    score+=10;
                 }
             } else {
                 followPath(currentTimeSec);
@@ -91,12 +93,17 @@ public class ComputerPlayer {
     }
     private void crossConveyer(Recyclable r,double currentTimeSec,int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-        if(!primary.isFollowingPath()){
-            if(r.isTouchable()){
-                setUpPath(r,currentTimeSec,newX);
-            }
-        } else
-            followPath(currentTimeSec);
+        int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER)+1;
+        if(rand>ComputerConstants.HAND_SET_THRESHOLD){
+            if(!primary.isFollowingPath()){
+                if(r.isTouchable()){
+                    setUpPath(r,currentTimeSec,newX);
+                }
+            } else
+                followPath(currentTimeSec);
+        } else{
+            primary.setOnCorrectSide(true);
+        }
     }
     private void setUpPath(Recyclable r,double currentTimeSec,int newX){
         logger.debug("SetUpPath");
@@ -121,7 +128,8 @@ public class ComputerPlayer {
         Coordinate newPosition = primary.getScaledPath().getLocation(timePassedSec);
         if(newPosition.getX()!=primary.getGoalX()){
             //logger.debug("px="+newPosition.getX()+",py="+newPosition.getY());
-            primary.setScaledPosition(newPosition);
+            primary.setPosition(newPosition);
+
         }else{
             //logger.debug("Finished following path");
             primary.resetFollowingPath();
@@ -229,6 +237,7 @@ public class ComputerPlayer {
     private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
         Path path = new Path(currentTimeSec);
         Line collideLine;
+        justStruckRecyclable = true;
         primary.getSprite().setX(newX + pathOffset);
         if(pathOffset>0){
             logger.debug("Pushed Right");
@@ -246,7 +255,7 @@ public class ComputerPlayer {
         
         RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
         if(bin.isCorrectRecyclableType(r)){
-            score++;
+            score+=10;
         }else {
             strikes++;
         }
