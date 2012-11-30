@@ -5,8 +5,10 @@ import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
+import edu.mines.csci598.recycler.frontend.graphics.PlayerOptionsScreen;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
 
 import java.awt.*;
 
@@ -22,15 +24,17 @@ public class GameLauncher extends GameState {
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
 	private GameScreen gameScreen;
+    private boolean gameCanStart;
     private boolean gameStarted;
     private long timeInstructionsStarted;
 
     private InstructionScreen instructionScreen;
+    private PlayerOptionsScreen playerOptions;
 
 	public GameLauncher() {
         //Preloading the images will prevent some flickering.
         RecyclableType.preLoadImages();
-		gameManager = new GameManager("Recycler",false);
+		gameManager = new GameManager("Recycler");
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -38,31 +42,46 @@ public class GameLauncher extends GameState {
 
         gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
+
+
+        instructionScreen = new InstructionScreen();
+        gameCanStart = false;
+        timeInstructionsStarted = System.currentTimeMillis() / 1000;
+
+        playerOptions = new PlayerOptionsScreen(gameManager);
+	}
+
+    protected void setUpGameSides(PlayerMode mode) {
+        boolean computerPlayer = false;
+        if (mode == PlayerMode.ONE_PLAYER) {
+            computerPlayer = true;
+        }
         leftGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.LEFT),
-				ConveyorBelt.getConveyorBeltPathLeft(),
+                ConveyorBelt.getConveyorBeltPathLeft(),
                 gameManager,
                 leftGameStatusDisplay,
                 false,
                 false);
-		rightGame = new GameLogic(
+        rightGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.RIGHT),
                 ConveyorBelt.getConveyorBeltPathRight(),
                 gameManager,
                 rightGameStatusDisplay,
-                GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
+                computerPlayer,
                 GameConstants.DEBUG_COLLISIONS);
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
-
-        instructionScreen = new InstructionScreen();
-        gameStarted = false;
-        timeInstructionsStarted = System.currentTimeMillis() / 1000;
-	}
+    }
 
 	protected void drawThis(Graphics2D g2d) {
-        if (gameStarted) {
-            gameScreen.paint(g2d, gameManager.getCanvas());
+        if (gameCanStart) {
+            if (!playerOptions.canGameStart()) {
+                playerOptions.paint(g2d, gameManager.getCanvas());
+            }
+            else {
+                gameScreen.paint(g2d, gameManager.getCanvas());
+            }
         }
         else {
             instructionScreen.paint(g2d, gameManager.getCanvas());
@@ -84,13 +103,22 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher updateThis(float time) {
 
-        if (gameStarted) {
-		    leftGame.updateThis();
-		    rightGame.updateThis();
+        if (gameCanStart) {
+            if (!playerOptions.canGameStart()) {
+                playerOptions.updateThis();
+            }
+            else {
+                if (!gameStarted) {
+                    gameStarted = true;
+                    setUpGameSides(playerOptions.getPlayerMode());
+                }
+		        leftGame.updateThis();
+		        rightGame.updateThis();
+            }
         }
         else {
             if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
-                gameStarted = true;
+                gameCanStart = true;
             }
         }
 		return this;

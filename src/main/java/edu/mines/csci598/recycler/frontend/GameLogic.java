@@ -82,7 +82,7 @@ public class GameLogic {
             //   player1 = new Player(gameManager);
             // creates the max number of hands that can be displayed which is 4
             //TODO: This is going to be a problem - each player might have 2 hands, but how do we know whose hands are whose?
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 4; i++) {
                 hands.add(new PlayerHand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }
