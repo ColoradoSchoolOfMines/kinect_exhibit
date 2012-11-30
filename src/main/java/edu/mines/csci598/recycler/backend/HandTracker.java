@@ -18,6 +18,9 @@ public class HandTracker {
 
     // OpenNI depth information
     private DepthGenerator depthGen;
+    
+    // OpenNI image information
+    private ImageGenerator imageGen;
 
     // OpenNI gesture information
     private GestureGenerator gestureGen;
@@ -121,6 +124,10 @@ public class HandTracker {
             // depth generator map
             depthGen = DepthGenerator.create(context);
             DepthMetaData depthMD = depthGen.getMetaData();
+            
+            // Visual spectrum map generator
+            imageGen = ImageGenerator.create(context);
+            ImageMetaData imageMD = imageGen.getMetaData();
 
             // start everything
 			context.startGeneratingAll();
@@ -178,5 +185,13 @@ public class HandTracker {
      */
     public int getHeight() {
         return this.height;
+    }
+    
+    public DepthMetaData getDepthData(){
+        return depthGen.getMetaData();
+    }
+    
+    public ImageMetaData getVisualData(){
+        return imageGen.getMetaData();
     }
 }
