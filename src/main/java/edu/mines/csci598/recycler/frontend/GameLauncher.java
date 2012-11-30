@@ -54,7 +54,7 @@ public class GameLauncher extends GameState {
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
 
-        instructionScreen = new InstructionScreen(gameManager);
+        instructionScreen = new InstructionScreen();
         gameStarted = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 	}

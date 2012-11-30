@@ -29,8 +29,6 @@ public class GameScreen {
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
     private ArrayList<Sprite> handSprites;
-    private double scaledWidth;
-    private double scaledHeight;
 
     private GameScreen() {
         background = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background.jpg", 0, 0);
@@ -38,8 +36,6 @@ public class GameScreen {
         backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_score_frame.png", 0, 0);
         backgroundFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
 
-        scaledWidth = GraphicsConstants.GAME_SCREEN_WIDTH * GraphicsConstants.SCALE_FACTOR;
-        scaledHeight = GraphicsConstants.GAME_SCREEN_HEIGHT * GraphicsConstants.SCALE_FACTOR;
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
         handSprites = new ArrayList<Sprite>();
         sprites = new LinkedList<Sprite>();

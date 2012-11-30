@@ -25,7 +25,7 @@ public class RecycleBin implements Displayable {
     private int numItems;
     private ConveyorSide side;
     private RecyclableType type;
-    private Sprite sprite;
+    private Sprite sprite = null;
 
     public RecycleBin(RecyclableType trash) {
         this.type = trash;
@@ -37,12 +37,7 @@ public class RecycleBin implements Displayable {
         this.maxY = maxY;
         this.type = type;
         numItems = 0;
-        if (imagePath.equals("")) {
-            sprite = null;
-        }
-        else {
-            sprite = new Sprite(imagePath, 0, 0);
-        }
+        sprite = new Sprite(imagePath, 0, 0);
     }
 
     @Override
