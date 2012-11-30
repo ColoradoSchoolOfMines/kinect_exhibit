@@ -5,7 +5,6 @@ import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -16,9 +15,8 @@ import org.apache.log4j.Logger;
  * Time: 6:19 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ComputerHand {
+public class ComputerHand extends Hand {
     private static final Logger logger = Logger.getLogger(ComputerHand.class);
-    private Sprite sprite;
     private Path path;
     private int goalX;
     private int goalY;
@@ -37,35 +35,24 @@ public class ComputerHand {
 
     public ComputerHand() {
         logger.setLevel(Level.INFO);
-        //resetHandPosition();
-        //position.setLocation(GraphicsConstants.GAME_SCREEN_WIDTH*GraphicsConstants.SCALE_FACTOR*3/4,
-        //                     GraphicsConstants.GAME_SCREEN_HEIGHT*GraphicsConstants.SCALE_FACTOR*1/4);
-        //sprite.setPosition(position);
-
         goalX=0;
         goalY=0;
         followingPath=false;
         onCorrectSide=false;
         initialX = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
-        //int x = GameConstants.RIGHT_VERTICAL_PATH_END_X / 2;
         initialY = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
-        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", initialX,initialY);
-    }
-    public Coordinate getPosition(){
-        return sprite.getPosition();
     }
     public void setPosition(Coordinate position){
-        sprite.setPosition(position);
-    }
-    public void setScaledPosition(Coordinate position){
-        sprite.setScaledPosition(position);
+        x = (int)position.getX();
+        y = (int)position.getY();
+        updateLocation();
     }
     public void resetHandToInitialPosition(){
         int x = getSprite().getX();
         int y = getSprite().getY();
         //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
         if(y!=initialY){
-            logger.debug("Resetting Hand to initial position");
+            logger.debug("Resetting PlayerHand to initial position");
             getSprite().setY(initialY);
             getSprite().setX(initialX);
         }
@@ -82,7 +69,7 @@ public class ComputerHand {
         this.goalY=goalY;
     }
     public void setScaledPath(Path p){
-        logger.debug("Hand following path");
+        logger.debug("PlayerHand following path");
         path = p;
         followingPath=true;
     }
@@ -104,14 +91,8 @@ public class ComputerHand {
 
     public boolean isHandOnLeftSide(){
         boolean ret=false;
-        logger.debug("sx=" + sprite.getX() + ",px=" + ConveyorBelt.RIGHT_VERTICAL_PATH_START_X);
-        if(sprite.getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret=true;
+        logger.debug("sx=" + getX() + ",px=" + ConveyorBelt.RIGHT_VERTICAL_PATH_START_X);
+        if(getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret=true;
         return ret;
-    }
-    /*
-     * Get hand image
-     */
-    public Sprite getSprite() {
-        return sprite;
     }
 }

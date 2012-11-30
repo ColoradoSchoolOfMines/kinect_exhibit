@@ -82,7 +82,7 @@ public class GameLogic {
             //   player1 = new Player(gameManager);
             // creates the max number of hands that can be displayed which is 4
             for (int i = 0; i < 2; i++) {
-                hands.add(new Hand(gameManager, i));
+                hands.add(new PlayerHand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }
         } else {
@@ -116,6 +116,7 @@ public class GameLogic {
             }
         } else {
             //Computer collision detection
+            //Todo Refactor computer collision from computer player to here.
         }
     }
 
@@ -281,6 +282,7 @@ public class GameLogic {
             if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {
                 computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
             }
+            //TODO remove score from AI
             handleAIScore();
         }
 

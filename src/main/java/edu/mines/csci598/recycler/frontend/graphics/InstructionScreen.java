@@ -1,7 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.PlayerHand;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
