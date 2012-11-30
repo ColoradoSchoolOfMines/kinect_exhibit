@@ -10,7 +10,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 public class GraphicsConstants {
     public static final double SCALE_FACTOR = .75;
-    public static final double REVERSE_SCALE_FACTOR = 1.3333;
+    public static final double REVERSE_SCALE_FACTOR = 1.333;
     public static final int GAME_SCREEN_WIDTH = (int) Math.round(960 * SCALE_FACTOR);
     public static final int GAME_SCREEN_HEIGHT = (int) Math.round(1080 * SCALE_FACTOR);
 

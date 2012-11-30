@@ -50,7 +50,10 @@ public class GameScreen {
         g2d.drawImage(backgroundBottom.getImage(), backgroundBottom.getX(), backgroundBottom.getY(), canvas);
 
         for (Sprite sprite : sprites) {
-                g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
+               g2d.rotate(sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
+               g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
+               g2d.rotate(-1.0*sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
+
         }
 
         g2d.drawImage(backgroundTop.getImage(), backgroundTop.getX(), backgroundTop.getY(), canvas);

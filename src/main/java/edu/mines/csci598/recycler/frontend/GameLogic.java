@@ -137,17 +137,17 @@ public class GameLogic {
                 //logger.debug("Pushed Right");
                 r.setMotionState(MotionState.FALL_RIGHT);
                 RecycleBin destBin = recycleBins.findBinForFallingRecyclable(r);
-                collideLine = new Line((int) position.getX(), (int) position.getY(),
-                        (int) position.getX() + GameConstants.ITEM_PATH_END, (int) destBin.getMidPoint(),
-                        travelTime);
+                collideLine = new Line( position.getX(), position.getY(),
+                         position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
+                        travelTime,Math.PI*2);
 
             } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
                 //logger.debug("Pushed Left");
                 r.setMotionState(MotionState.FALL_LEFT);
                 RecycleBin destBin = recycleBins.findBinForFallingRecyclable(r);
-                collideLine = new Line((int) position.getX(), (int) position.getY(),
-                        (int) position.getX() - GameConstants.ITEM_PATH_END, (int) destBin.getMidPoint(),
-                        travelTime);
+                collideLine = new Line( position.getX(), position.getY(),
+                         position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
+                        travelTime,Math.PI*2);
             } else {
                 throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
             }
