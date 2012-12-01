@@ -45,6 +45,7 @@ public class ComputerHand extends Hand {
         y=initialY;
     }
     private void updateVelocity(){
+        //logger.info("Update velocity"+(this.x - oldX));
         velocityX = this.x - oldX;
         velocityY = this.y - oldY;
     }

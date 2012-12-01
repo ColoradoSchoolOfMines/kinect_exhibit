@@ -91,7 +91,6 @@ public class ComputerPlayer {
         }
     }
     private void followRecyclable(Recyclable r){
-        //logger.debug("FollowRecyclable");
         Coordinate position = new Coordinate(primary.getX(),r.getPosition().getY());
         primary.setPosition(position);
     }
@@ -212,20 +211,18 @@ public class ComputerPlayer {
     }
     public void strikeRecyclable(Recyclable r,double currentTimeSec){
         primary.setOnCorrectSide(false);
-        int rX = r.getSprite().getX();
+        int newX = r.getSprite().getX();
 
-        if(rX<primary.getSprite().getX()){
-            handleCollision(r,currentTimeSec,rX,-1 * ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
-        } else {
-            handleCollision(r, currentTimeSec, rX, ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER);
-        }
+        justStruckRecyclable = true;
+        Coordinate position = new Coordinate(newX,primary.getY());
+        logger.info("Strike - SetPosition");
+        primary.setPosition(position);
+
+        //logger.info("vx="+primary.getVelocityX());
     }
-    private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
+    /*private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
         Path path = new Path(currentTimeSec);
         Line collideLine;
-        justStruckRecyclable = true;
-        Coordinate position = new Coordinate(newX + pathOffset,primary.getY());
-        primary.setPosition(position);
 
         if(pathOffset>0){
             logger.debug("Pushed Right");
@@ -247,7 +244,7 @@ public class ComputerPlayer {
         }else {
             strikes++;
         }
-    }
+    } */
     public int getAIScore(){
         return score;
     }

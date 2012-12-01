@@ -16,7 +16,10 @@ public final class Coordinate extends Point2D{
         this.y = y;
         this.rotation=rotation;
     }
-	
+	@Override
+    public String toString(){
+        return "("+x+","+y+")";
+    }
 	@Override
 	public double getX() {
 		return x;

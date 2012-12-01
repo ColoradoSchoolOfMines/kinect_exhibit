@@ -107,24 +107,22 @@ public class GameLogic {
     }
 
     private void lookForAndHandleCollisions() {
-        if (!playerIsAComputer) {
-            // checks to see if there is a collision with any one of the hands
-            for (Hand hand : hands) {
 
-                //If the hand isn't moving fast enough to swipe, skip it
-                if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
-                    continue;
-                }
-                // If we get here, it is causing collisions with anything at this location.
+        // checks to see if there is a collision with any one of the hands
+        for (Hand hand : hands) {
 
-                List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
-                // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
-
-                handleCollisions(hand, swipedOffConveyor);
+            //If the hand isn't moving fast enough to swipe, skip it
+            if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
+                continue;
             }
-        } else {
-            //Computer collision detection
-            //Todo Refactor computer collision from computer player to here.
+            // If we get here, it is causing collisions with anything at this location.
+
+            List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
+            logger.info("swipedSize="+swipedOffConveyor.size());
+            // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
+
+            handleCollisions(hand, swipedOffConveyor);
+
         }
     }
 
