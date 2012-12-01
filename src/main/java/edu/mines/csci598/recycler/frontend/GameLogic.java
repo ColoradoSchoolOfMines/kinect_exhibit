@@ -279,18 +279,15 @@ public class GameLogic {
         if (wallTimeSec >= timeToRemovePowerUp) {
             powerUpSpeedFactor = 1;
         }
-
-        if (!playerIsAComputer) {
-            // display the hands
-            for (Hand hand : hands) {
-                hand.updateLocation();
-            }
-        } else {
-            //call update to computer hand on next recyclable that is touchable
+        if(playerIsAComputer){
             computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
-            //TODO remove score from AI
-            handleAIScore();
         }
+
+            // display the hands
+        for (Hand hand : hands) {
+            hand.updateLocation();
+        }
+
 
         // Handle existing item collisions
         lookForAndHandleCollisions();
