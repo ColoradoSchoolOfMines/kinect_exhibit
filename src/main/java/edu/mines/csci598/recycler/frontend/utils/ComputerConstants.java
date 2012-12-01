@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marshall
@@ -69,4 +71,14 @@ public class ComputerConstants {
      * Must exceed this number to strike recyclable into correct bin
      */
     public static final int INCORRECT_STRIKE_THRESHOLD = 10;
+    /* INITIAL_HAND_X
+     * Position of initial x
+     */
+    public static final int INITIAL_HAND_X = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X +
+            ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
+    /* INITIAL_HAND_Y
+     * Position of initial y
+     */
+    public static final int INITIAL_HAND_Y = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y -
+            ComputerConstants.INITIAL_HAND_Y_OFFSET;
 }
