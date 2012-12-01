@@ -65,4 +65,8 @@ public class ComputerConstants {
      * Time needed to move a line
      */
     public  static final double PATH_TIME_SEC = 0.2;
+    /* INCORRECT_STRIKE_THRESHOLD
+     * Must exceed this number to strike recyclable into correct bin
+     */
+    public static final int INCORRECT_STRIKE_THRESHOLD = 10;
 }
