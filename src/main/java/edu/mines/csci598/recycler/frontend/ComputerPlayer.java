@@ -95,11 +95,10 @@ public class ComputerPlayer {
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER)+1;
         if(rand>ComputerConstants.HAND_SET_THRESHOLD){
             if(!primary.isFollowingPath()){
-                if(r.isTouchable()){
-                    setUpPath(r,currentTimeSec,newX);
-                }
-            } else
+                setUpPath(r,currentTimeSec,newX);
+            } else{
                 followPath(currentTimeSec);
+            }
         } else{
             primary.setOnCorrectSide(true);
         }
@@ -151,19 +150,17 @@ public class ComputerPlayer {
         return newX;
     }
     public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
-        if(r.isTouchable()){
-            if(!primary.isOnCorrectSide()){
-                int newX=findBinSide(r);
-                if(!primary.isOnCorrectSide())
-                    crossConveyer(r,currentTimeSec,newX);
-            }
+        if(!primary.isOnCorrectSide()){
+            int newX=findBinSide(r);
+            if(!primary.isOnCorrectSide())
+                crossConveyer(r,currentTimeSec,newX);
         }
     }
     private boolean recyclableWillFallInBin(Recyclable r){
         boolean ret = false;
         double ry=r.getSprite().getY();
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER)+1;
-        if(rand>ComputerConstants.INCORRECT_STRIKE_THRESHOLD){
+        //if(rand>ComputerConstants.INCORRECT_STRIKE_THRESHOLD){
             if(ry>goalBinTopY && ry <goalBinBottomY ){
                 ret=true;
                 logger.debug("Recyclable will fall in bin");
@@ -171,34 +168,32 @@ public class ComputerPlayer {
                 r.setMotionState(MotionState.ABOVE_BIN);
                 logger.debug("Recyclable above bin");
             }
-        } else {
-            logger.debug("Computer has chance to strike recyclable incorrectly");
-            ret = true;
-        }
+        //} else {
+        //    logger.debug("Computer has chance to strike recyclable incorrectly");
+        //    ret = true;
+        //}
         return ret;
     }
     private void attemptToStrike(Recyclable r, double currentTimeSec){
-        if(r.isTouchable()){
-            if(r.isNotAPowerUp()){
-                if(recyclableWillFallInBin(r)){
-                    if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
-                        if(ICanStrike()){
-                            strikeRecyclable(r,currentTimeSec);
-                            lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
-                            lastStrikeTime = currentTimeSec;
-                        }else {
-                            lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
-                        }
+        if(r.isNotAPowerUp()){
+            if(recyclableWillFallInBin(r)){
+                if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
+                    if(ICanStrike()){
+                        strikeRecyclable(r,currentTimeSec);
+                        lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
+                        lastStrikeTime = currentTimeSec;
+                    }else {
+                        lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
                     }
                 }
+            }
+        }else {
+            if(ICanStrike()){
+                strikeRecyclable(r,currentTimeSec);
+                lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
+                lastStrikeTime = currentTimeSec;
             }else {
-                if(ICanStrike()){
-                    strikeRecyclable(r,currentTimeSec);
-                    lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
-                    lastStrikeTime = currentTimeSec;
-                }else {
-                    lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
-                }
+                lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
             }
         }
     }
