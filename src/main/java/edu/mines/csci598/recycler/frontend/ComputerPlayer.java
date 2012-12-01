@@ -62,12 +62,25 @@ public class ComputerPlayer {
     }
     public void updateAI(Recyclable r,double currentTimeSec){
     	if(r == null) {
-            //logger.debug("untouchable");
             if(currentTimeSec>lastStrikeTime+lastMoveDelay)
                 primary.resetHandToInitialPosition();
             return;
         }
 	    if(!primary.isFollowingPath()){
+            if(justStruckRecyclable){
+                if(primary.getVelocityX()>0){
+                    Coordinate position = new Coordinate(
+                            ConveyorBelt.RIGHT_VERTICAL_PATH_START_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
+                            primary.getY());
+                    primary.setPosition(position);
+                } else if(primary.getVelocityX()<0) {
+                    Coordinate position = new Coordinate(
+                            ConveyorBelt.RIGHT_VERTICAL_PATH_START_X - ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
+                            primary.getY());
+                    primary.setPosition(position);
+                }
+                justStruckRecyclable=false;
+            }
             if(r.isNotTrash()){
                 if(!primary.isOnCorrectSide()){
                     //Set hand to correct side

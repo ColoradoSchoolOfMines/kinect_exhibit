@@ -68,19 +68,19 @@ public class RecycleBins {
      */
     private void setUpLeftBins() {
         RecycleBin bin1 = new RecycleBin(
-               PLASTIC_SIDE,  PLASTIC_MIN_Y,
+               PLASTIC_LEFT_SIDE,  PLASTIC_MIN_Y,
                 PLASTIC_MAX_Y, RecyclableType.PLASTIC,
                 PLASTIC_IMAGE);
         RecycleBin bin2 = new RecycleBin(
-                PAPER_SIDE, PAPER_MIN_Y,
+                PAPER_LEFT_SIDE, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
                 PAPER_IMAGE);
         RecycleBin bin3 = new RecycleBin(
-                HAZARD_SIDE, HAZARD_MIN_Y,
+                HAZARD_LEFT_SIDE, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
                 HAZARD_IMAGE);
         RecycleBin bin4 = new RecycleBin(
-                GLASS_SIDE, GLASS_MIN_Y,
+                GLASS_LEFT_SIDE, GLASS_MIN_Y,
                 GLASS_MAX_Y, RecyclableType.GLASS,
                 GLASS_IMAGE);
 
@@ -97,19 +97,19 @@ public class RecycleBins {
     //TODO: Get images for right side bins and apply those
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
-                PLASTIC_SIDE,  PLASTIC_MIN_Y,
+                PLASTIC_RIGHT_SIDE,  PLASTIC_MIN_Y,
                 PLASTIC_MAX_Y, RecyclableType.PLASTIC,
                 PLASTIC_IMAGE);
         RecycleBin bin2 = new RecycleBin(
-                PAPER_SIDE, PAPER_MIN_Y,
+                PAPER_RIGHT_SIDE, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
                 PAPER_IMAGE);
         RecycleBin bin3 = new RecycleBin(
-                HAZARD_SIDE, HAZARD_MIN_Y,
+                HAZARD_RIGHT_SIDE, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
                 HAZARD_IMAGE);
         RecycleBin bin4 = new RecycleBin(
-                GLASS_SIDE, GLASS_MIN_Y,
+                GLASS_RIGHT_SIDE, GLASS_MIN_Y,
                 GLASS_MAX_Y, RecyclableType.GLASS,
                 GLASS_IMAGE);
 
@@ -129,22 +129,26 @@ public class RecycleBins {
     }
 
     //Bin constants
-    public static final RecycleBin.ConveyorSide PLASTIC_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final RecycleBin.ConveyorSide PLASTIC_LEFT_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final RecycleBin.ConveyorSide PLASTIC_RIGHT_SIDE = RecycleBin.ConveyorSide.RIGHT;
     public static final double PLASTIC_MIN_Y = 40;
     public static final double PLASTIC_MAX_Y = 300;
     public static final String PLASTIC_IMAGE = "src/main/resources/SpriteImages/FinalSpriteImages/bin_plastic_empty.png";
 
-    public static final RecycleBin.ConveyorSide PAPER_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final RecycleBin.ConveyorSide PAPER_LEFT_SIDE = RecycleBin.ConveyorSide.LEFT;
+    public static final RecycleBin.ConveyorSide PAPER_RIGHT_SIDE = RecycleBin.ConveyorSide.RIGHT;
     public static final double PAPER_MIN_Y = 301;
     public static final double PAPER_MAX_Y = 838;
     public static final String PAPER_IMAGE = "src/main/resources/SpriteImages/FinalSpriteImages/bin_paper_empty.png";
 
-    public static final RecycleBin.ConveyorSide HAZARD_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final RecycleBin.ConveyorSide HAZARD_LEFT_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final RecycleBin.ConveyorSide HAZARD_RIGHT_SIDE = RecycleBin.ConveyorSide.LEFT;
     public static final double HAZARD_MIN_Y = 140;
     public static final double HAZARD_MAX_Y = 440;
     public static final String HAZARD_IMAGE = "src/main/resources/SpriteImages/FinalSpriteImages/bin_hazard_empty.png";
 
-    public static final RecycleBin.ConveyorSide GLASS_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final RecycleBin.ConveyorSide GLASS_LEFT_SIDE = RecycleBin.ConveyorSide.RIGHT;
+    public static final RecycleBin.ConveyorSide GLASS_RIGHT_SIDE = RecycleBin.ConveyorSide.LEFT;
     public static final double GLASS_MIN_Y = 441;
     public static final double GLASS_MAX_Y = 975;
     public static final String GLASS_IMAGE = "src/main/resources/SpriteImages/FinalSpriteImages/bin_glass_empty.png";
