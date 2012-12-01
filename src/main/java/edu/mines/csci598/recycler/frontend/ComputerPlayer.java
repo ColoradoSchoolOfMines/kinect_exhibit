@@ -220,31 +220,6 @@ public class ComputerPlayer {
 
         //logger.info("vx="+primary.getVelocityX());
     }
-    /*private void handleCollision(Recyclable r,double currentTimeSec,int newX, int pathOffset){
-        Path path = new Path(currentTimeSec);
-        Line collideLine;
-
-        if(pathOffset>0){
-            logger.debug("Pushed Right");
-            r.setMotionState(MotionState.FALL_RIGHT);
-            collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() + GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);
-        } else {
-            logger.debug("Pushed Left");
-            r.setMotionState(MotionState.FALL_LEFT);
-            collideLine = new Line(r.getSprite().getX(), r.getSprite().getY(),
-                    r.getSprite().getX() - GameConstants.ITEM_PATH_END, r.getSprite().getY(), 4);
-        }
-        path.addLine(collideLine);
-        r.setPath(path);
-        
-        RecycleBin bin = recycleBins.findBinForFallingRecyclable(r);
-        if(bin.isCorrectRecyclableType(r)){
-            score+=10;
-        }else {
-            strikes++;
-        }
-    } */
     public int getAIScore(){
         return score;
     }
