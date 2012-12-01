@@ -41,14 +41,31 @@ public class ComputerHand extends Hand {
         onCorrectSide=false;
         initialX = ConveyorBelt.RIGHT_VERTICAL_PATH_END_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         initialY = ConveyorBelt.RIGHT_VERTICAL_PATH_START_Y - ComputerConstants.INITIAL_HAND_Y_OFFSET;
+        x=initialX;
+        y=initialY;
+    }
+    private void updateVelocity(){
+        velocityX = this.x - oldX;
+        velocityY = this.y - oldY;
+    }
+    public void updateLocation(int x, int y){
+        oldX = this.x;
+        oldY = this.y;
+        this.x = x;
+        this.y = y;
+        updateVelocity();
+        super.updateLocation();
     }
     public void setPosition(Coordinate position){
+        oldX = x;
+        oldY = y;
         x = (int)position.getX();
         y = (int)position.getY();
-        updateLocation();
+        updateVelocity();
+        super.updateLocation();
     }
     public void resetHandToInitialPosition(){
-        int x = getSprite().getX();
+        oldX = x;
         int y = getSprite().getY();
         //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
         if(y!=initialY){
