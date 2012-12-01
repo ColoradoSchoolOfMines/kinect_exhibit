@@ -37,7 +37,7 @@ public class Song {
 	}
 
 	public void startPlaying() {
-		startPlaying(false);
+		startPlaying(isLooping);
 	}
 	
 	public void startPlaying(boolean loop) {
