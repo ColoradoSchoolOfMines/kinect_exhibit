@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 import org.apache.log4j.Level;
@@ -25,89 +26,130 @@ public class ComputerPlayer {
     public ComputerHand primary;
     public Path p;
     private Random random;
+    /* lastStrikeTime
+     * Time of last strike
+     * Used for slowing down strike attempts and resetting hand to initial position
+     */
     private double lastStrikeTime;
+    /* lastStrikeDelay
+     * Amount of time needed since lastStrikeTime to be able to strike
+     * Accumulates and then is reset with a successful strike
+     */
     private double lastStrikeDelay;
+    /* justStruckRecyclable
+     * Used for continuation of hand movement across conveyer
+     */
     private boolean justStruckRecyclable;
+    /* lastMoveDelay
+     * Used to slowdown AI hand movement
+     * Time after a successful strike before being reset to initial location
+     */
     private double lastMoveDelay;
-    public int targetRecyclable;
+    /* recycleBins
+     * List of recycleBins
+     * Needed to determine when and where to strike
+     */
     private RecycleBins recycleBins;
-    private int score;
-    private int strikes;
+    /* lastMotionTimeSec
+     * Used for following the path around a recyclable across the conveyer
+     */
     private double lastMotionTimeSec;
+    /* goalBinTopY
+     * Top of target recyclables goalBin
+     */
     private double goalBinTopY;
+    /* goalBinBottomY
+     * Bottom of target recyclables goalBin
+     */
     private double goalBinBottomY;
-    public Coordinate position;
 
     public ComputerPlayer(RecycleBins recycleBins) {
         logger.setLevel(Level.INFO);
         logger.debug("Second player is a computer");
         primary = new ComputerHand();
         random = new Random(System.currentTimeMillis());
+        justStruckRecyclable = false;
+        lastMoveDelay=ComputerConstants.LAST_MOVE_DELAY;
+        this.recycleBins = recycleBins;
         lastStrikeTime = 0;
         lastStrikeDelay=ComputerConstants.LAST_STRIKE_DELAY;
-        justStruckRecyclable = true;
-        lastMoveDelay=ComputerConstants.LAST_MOVE_DELAY;
-        targetRecyclable = 0;
-        score = 0;
-        strikes = 0;
-        this.recycleBins = recycleBins;
         lastMotionTimeSec = 0;
         goalBinBottomY = -1;
         goalBinTopY = -1;
-        //position.setX(primary.getX());
-
     }
-
+    /* getHand
+     * Used in gameLogic to add ComputerHand to hands array
+     */
     public Hand getHand() {
         return primary;
     }
 
+    /* updateAI
+     * Called from gameLogic.updateThis()
+     * Determines AI behavior
+     */
     public void updateAI(Movable movable, double currentTimeSec) {
-    	/*if(movable == null) {
+        if(movable == null) {
+            //No recyclable to track, reset to initial for next recyclable
             if(currentTimeSec>lastStrikeTime+lastMoveDelay)
                 primary.resetHandToInitialPosition();
             return;
-        }
-	    if(!primary.isFollowingPath()){
-            if(justStruckRecyclable){
-                if(primary.getVelocityX()>0){
-                    Coordinate position = new Coordinate(
-                            ConveyorBelt.RIGHT_VERTICAL_PATH_START_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
-                            primary.getY());
-                    primary.setPosition(position);
-                } else if(primary.getVelocityX()<0) {
-                    Coordinate position = new Coordinate(
-                            ConveyorBelt.RIGHT_VERTICAL_PATH_START_X - ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
-                            primary.getY());
-                    primary.setPosition(position);
+        }else {
+            if(!primary.isFollowingPath()){
+                if(justStruckRecyclable){
+                    handleJustStruckRecyclable();
                 }
-                justStruckRecyclable=false;
-            }
-            if(movable.isNotTrash()){
-                if(!primary.isOnCorrectSide()){
-                    //Set hand to correct side
-                    if(movable.isNotAPowerUp()){
-                        setHandToCorrectSide(movable,currentTimeSec);
-                    }else {
-                        primary.setOnCorrectSide(true);
-                    }
-                }else {
+                if (movable instanceof PowerUp) {
+                    primary.setOnCorrectSide(true);
+                }
+                if(movable instanceof Recyclable){
+                    handleTrashAndSettingHand(movable,currentTimeSec);
+                }
+                if(!primary.isFollowingPath()){
                     //Follow target recyclable
                     followRecyclable(movable);
-                    //Strike target recyclable
+                    //Attempt to Strike target recyclable
                     attemptToStrike(movable,currentTimeSec);
                 }
-            }else{
-                movable.setMotionState(MotionState.IS_TRASH);
-                score+=10;
+
+            } else {
+                followPath(currentTimeSec);
             }
-        } else {
-            followPath(currentTimeSec);
-        }  */
+        }
     }
 
-    private void followRecyclable(Recyclable r) {
-        Coordinate position = new Coordinate(primary.getX(), r.getPosition().getY());
+    /* HandleTrashAndSettingHand
+     * Marks trash as Untouchable
+     * Tries to set hand to correct side
+     */
+    private void handleTrashAndSettingHand(Movable movable, double currentTimeSec){
+        Recyclable r = (Recyclable) movable;
+        if(r.getType()==RecyclableType.TRASH){
+            movable.setMotionState(MotionState.IS_TRASH);
+        } else if(!primary.isOnCorrectSide()){
+            setHandToCorrectSide(r,currentTimeSec);
+        }
+    }
+    /* handleJustStruckRecyclable
+     * Moves hand off of the conveyer after striking recyclable
+     */
+    private void handleJustStruckRecyclable(){
+        if(primary.getVelocityX()>0){
+            Coordinate position = new Coordinate(
+                    ConveyorBelt.RIGHT_VERTICAL_PATH_START_X + ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
+                    primary.getY());
+            primary.setPosition(position);
+        } else if(primary.getVelocityX()<0) {
+            Coordinate position = new Coordinate(
+                    ConveyorBelt.RIGHT_VERTICAL_PATH_START_X - ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER,
+                    primary.getY());
+            primary.setPosition(position);
+        }
+        justStruckRecyclable=false;
+    }
+
+    private void followRecyclable(Movable m) {
+        Coordinate position = new Coordinate(primary.getX(), m.getPosition().getY());
         primary.setPosition(position);
     }
 
@@ -134,7 +176,6 @@ public class ComputerPlayer {
                 ",hx=" + primary.getSprite().getX() + ",hy=" + primary.getSprite().getY() +
                 ",hsx=" + primary.getSprite().getScaledX() + ",hsy=" + primary.getSprite().getScaledY() +
                 ",gx=" + primary.getGoalX() + ",gy=" + primary.getGoalY());
-
         Path p = new Path(currentTimeSec);
         Line moveAboveRecyclable = new Line(primary.getSprite().getX(), primary.getSprite().getY(),
                 primary.getSprite().getX(), primary.getGoalY(), ComputerConstants.PATH_TIME_SEC);
@@ -189,32 +230,32 @@ public class ComputerPlayer {
         }
     }
 
-    private boolean recyclableWillFallInBin(Recyclable r) {
+    private boolean recyclableWillFallInBin(Movable m) {
         boolean ret = false;
-        double ry = r.getSprite().getY();
+        double ry = m.getSprite().getY();
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
-        //if(rand>ComputerConstants.INCORRECT_STRIKE_THRESHOLD){
+        if(rand>ComputerConstants.INCORRECT_STRIKE_THRESHOLD){
             if(ry > goalBinTopY && ry < goalBinBottomY ) {
                 ret = true;
                 logger.debug("Recyclable will fall in bin");
             }
             else if(ry < goalBinTopY){
-                r.setMotionState(MotionState.ABOVE_BIN);
+                m.setMotionState(MotionState.ABOVE_BIN);
                 logger.debug("Recyclable above bin");
             }
-        //} else {
-        //    logger.debug("Computer has chance to strike recyclable incorrectly");
-        //    ret = true;
-        //}
+        } else {
+            logger.debug("Computer has chance to strike recyclable incorrectly");
+            ret = true;
+        }
         return ret;
     }
 
     private void attemptToStrike(Movable movable, double currentTimeSec){
-        /*if(!(m instancof PowerUp)){
+        if(!(movable instanceof PowerUp)){
             if(recyclableWillFallInBin(movable)){
                 if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
                     if(ICanStrike()){
-                        strikeRecyclable(movable,currentTimeSec);
+                        strikeItem(movable);
                         lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                         lastStrikeTime = currentTimeSec;
                     }else {
@@ -224,13 +265,13 @@ public class ComputerPlayer {
             }
         }else {
             if(ICanStrike()){
-                strikeRecyclable(movable,currentTimeSec);
+                strikeItem(movable);
                 lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                 lastStrikeTime = currentTimeSec;
             }else {
                 lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
             }
-        }  */
+        }
     }
 
     public boolean ICanStrike(){
@@ -242,24 +283,13 @@ public class ComputerPlayer {
         return ret;
     }
 
-    public void strikeRecyclable(Recyclable r, double currentTimeSec) {
+    public void strikeItem(Movable m) {
         primary.setOnCorrectSide(false);
-        int newX = r.getSprite().getX();
+        int newX = m.getSprite().getX();
 
         justStruckRecyclable = true;
         Coordinate position = new Coordinate(newX,primary.getY());
-        logger.info("Strike - SetPosition");
+        logger.debug("Strike - SetPosition");
         primary.setPosition(position);
-
-        //logger.info("vx="+primary.getVelocityX());
     }
-
-    public int getAIScore(){
-        return score;
-    }
-
-    public int getAIStrikes() {
-        return strikes;
-    }
-
 }

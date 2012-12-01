@@ -60,7 +60,7 @@ public class GameScreen {
         g2d.drawImage(background1.getImage(), background1.getX(), background1.getY(), canvas);
 
         for (Sprite bin : recycleBinSprites) {
-            g2d.drawImage(bin.getImage(), bin.getScaledX(), bin.getScaledY(), canvas);
+//            g2d.drawImage(bin.getImage(), bin.getScaledX(), bin.getScaledY(), canvas);
         }
 
         g2d.drawImage(backgroundScoreFrame.getImage(), backgroundScoreFrame.getX(), backgroundScoreFrame.getY(), canvas);
