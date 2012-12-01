@@ -87,7 +87,8 @@ public class ComputerPlayer {
     }
     private void followRecyclable(Recyclable r){
         //logger.debug("FollowRecyclable");
-        primary.updateLocation(primary.getX(),r.getSprite().getY());
+        Coordinate position = new Coordinate(primary.getX(),r.getPosition().getY());
+        primary.setPosition(position);
     }
     private void crossConveyer(Recyclable r,double currentTimeSec,int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;

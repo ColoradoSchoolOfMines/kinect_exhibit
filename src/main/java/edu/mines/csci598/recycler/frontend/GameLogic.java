@@ -287,9 +287,7 @@ public class GameLogic {
             }
         } else {
             //call update to computer hand on next recyclable that is touchable
-            if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {
-                computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
-            }
+            computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
             //TODO remove score from AI
             handleAIScore();
         }

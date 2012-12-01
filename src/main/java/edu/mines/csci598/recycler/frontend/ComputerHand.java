@@ -48,14 +48,7 @@ public class ComputerHand extends Hand {
         velocityX = this.x - oldX;
         velocityY = this.y - oldY;
     }
-    public void updateLocation(int x, int y){
-        oldX = this.x;
-        oldY = this.y;
-        this.x = x;
-        this.y = y;
-        updateVelocity();
-        super.updateLocation();
-    }
+
     public void setPosition(Coordinate position){
         oldX = x;
         oldY = y;
