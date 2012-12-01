@@ -56,33 +56,33 @@ public class ComputerPlayer {
 
     }
     public void updateAI(Recyclable r,double currentTimeSec){
-        if(r.isTouchable()){
-            if(!primary.isFollowingPath()){
-                if(r.isNotTrash()){
-                    if(!primary.isOnCorrectSide()){
-                        //Set hand to correct side
-                        if(r.isNotAPowerUp()){
-                            setHandToCorrectSide(r,currentTimeSec);
-                        }else {
-                            primary.setOnCorrectSide(true);
-                        }
-                    }else {
-                        //Follow target recyclable
-                        followRecyclable(r);
-                        //Strike target recyclable
-                        attemptToStrike(r,currentTimeSec);
-                    }
-                }else{
-                    r.setMotionState(MotionState.IS_TRASH);
-                    score+=10;
-                }
-            } else {
-                followPath(currentTimeSec);
-            }
-        }else {
+    	if(r == null) {
             //logger.debug("untouchable");
             if(currentTimeSec>lastStrikeTime+lastMoveDelay)
                 primary.resetHandToInitialPosition();
+            return;
+        }
+	    if(!primary.isFollowingPath()){
+            if(r.isNotTrash()){
+                if(!primary.isOnCorrectSide()){
+                    //Set hand to correct side
+                    if(r.isNotAPowerUp()){
+                        setHandToCorrectSide(r,currentTimeSec);
+                    }else {
+                        primary.setOnCorrectSide(true);
+                    }
+                }else {
+                    //Follow target recyclable
+                    followRecyclable(r);
+                    //Strike target recyclable
+                    attemptToStrike(r,currentTimeSec);
+                }
+            }else{
+                r.setMotionState(MotionState.IS_TRASH);
+                score+=10;
+            }
+        } else {
+            followPath(currentTimeSec);
         }
     }
     private void followRecyclable(Recyclable r){

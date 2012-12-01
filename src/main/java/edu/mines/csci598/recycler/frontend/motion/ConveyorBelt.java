@@ -65,17 +65,17 @@ public class ConveyorBelt extends ItemMover {
     * Returns the next touchable recyclable
     */
     public Recyclable getNextRecyclableThatIsTouchable() {
-        Recyclable ret;
         int index = 0;
-        ret = recyclables.get(index);
-        while (!(ret.isTouchable()) && index < recyclables.size()) {
-            index++;
-            if (index < recyclables.size() - 1)
-                ret = recyclables.get(index);
+        while(index < recyclables.size()){
+        	Recyclable r = recyclables.get(index);
+        	if(r.isTouchable()){
+        		return r;
+        	}
+        	index++;
         }
-
-        return ret;
+        return null;
     }
+
 
 
     /**
