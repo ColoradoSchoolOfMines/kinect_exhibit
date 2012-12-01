@@ -118,7 +118,7 @@ public class GameLogic {
             // If we get here, it is causing collisions with anything at this location.
 
             List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
-            logger.info("swipedSize="+swipedOffConveyor.size());
+            logger.debug("swipedSize="+swipedOffConveyor.size());
             // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
 
             handleCollisions(hand, swipedOffConveyor);
@@ -192,31 +192,24 @@ public class GameLogic {
      * @param bin
      */
     public void handleScore(Recyclable r, RecycleBin bin) {
-        if (!playerIsAComputer) {
-            if (bin.isCorrectRecyclableType(r)) {
-                gameStatusDisplay.incrementScore(10);
-                feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
-                SoundEffectEnum.CORRECT.playSound();
+        if (bin.isCorrectRecyclableType(r)) {
+            gameStatusDisplay.incrementScore(10);
+            feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
+            SoundEffectEnum.CORRECT.playSound();
 
-            } else {
-                //TODO Need to make sure power ups are not counted here
-                strikes++;
-                feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
-                SoundEffectEnum.WRONG.playSound();
-            }
         } else {
-            handleAIScore();
+            //TODO Need to make sure power ups are not counted here
+            strikes++;
+            feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
+            SoundEffectEnum.WRONG.playSound();
         }
+
 //
 //        if (strikes >= gameOverStrikes) {
 //            gameOver();
 //        }
     }
 
-    public void handleAIScore() {
-        gameStatusDisplay.setScore(computerPlayer.getAIScore());
-        strikes = computerPlayer.getAIStrikes();
-    }
 
     public void addLinkToOtherScreen(GameLogic otherScreen) {
         this.otherScreen = otherScreen;
