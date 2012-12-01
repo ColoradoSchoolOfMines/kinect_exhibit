@@ -161,12 +161,18 @@ public class ComputerPlayer {
     private boolean recyclableWillFallInBin(Recyclable r){
         boolean ret = false;
         double ry=r.getSprite().getY();
-        if(ry>goalBinTopY && ry <goalBinBottomY ){
-            ret=true;
-            logger.debug("Recyclable will fall in bin");
-        }else if(ry<goalBinTopY){
-            r.setMotionState(MotionState.ABOVE_BIN);
-            logger.debug("Recyclable above bin");
+        int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER)+1;
+        if(rand>ComputerConstants.INCORRECT_STRIKE_THRESHOLD){
+            if(ry>goalBinTopY && ry <goalBinBottomY ){
+                ret=true;
+                logger.debug("Recyclable will fall in bin");
+            }else if(ry<goalBinTopY){
+                r.setMotionState(MotionState.ABOVE_BIN);
+                logger.debug("Recyclable above bin");
+            }
+        } else {
+            logger.debug("Computer has chance to strike recyclable incorrectly");
+            ret = true;
         }
         return ret;
     }
