@@ -36,6 +36,7 @@ public class ComputerPlayer {
     private double lastMotionTimeSec;
     private double goalBinTopY;
     private double goalBinBottomY;
+    public Coordinate position;
 
     public ComputerPlayer(RecycleBins recycleBins){
         logger.setLevel(Level.INFO);
@@ -53,7 +54,11 @@ public class ComputerPlayer {
         lastMotionTimeSec=0;
         goalBinBottomY = -1;
         goalBinTopY = -1;
+        //position.setX(primary.getX());
 
+    }
+    public Hand getHand(){
+        return primary;
     }
     public void updateAI(Recyclable r,double currentTimeSec){
     	if(r == null) {
@@ -219,7 +224,9 @@ public class ComputerPlayer {
         Path path = new Path(currentTimeSec);
         Line collideLine;
         justStruckRecyclable = true;
-        primary.getSprite().setX(newX + pathOffset);
+        Coordinate position = new Coordinate(newX + pathOffset,primary.getY());
+        primary.setPosition(position);
+
         if(pathOffset>0){
             logger.debug("Pushed Right");
             r.setMotionState(MotionState.FALL_RIGHT);

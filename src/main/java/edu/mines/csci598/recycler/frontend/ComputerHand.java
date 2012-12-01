@@ -55,19 +55,19 @@ public class ComputerHand extends Hand {
         x = (int)position.getX();
         y = (int)position.getY();
         updateVelocity();
-        super.updateLocation();
+        //super.updateLocation();
     }
     public void resetHandToInitialPosition(){
         oldX = x;
-        int y = getSprite().getY();
         //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
         if(y!=initialY){
             logger.debug("Resetting PlayerHand to initial position");
-            getSprite().setY(initialY);
-            getSprite().setX(initialX);
+            x = initialX;
+            y = initialY;
         }
 
     }
+
     public int getGoalX(){
         return goalX;
     }
