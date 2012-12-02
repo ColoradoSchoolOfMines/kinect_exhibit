@@ -20,8 +20,8 @@ public class RecycleBin implements Displayable {
 	public static final RecycleBin TRASH_BIN = new RecycleBin(RecyclableType.TRASH);
 	
     public enum ConveyorSide {RIGHT, LEFT};
-    private double minY;
-    private double maxY;
+    private int minY;
+    private int maxY;
     private int numItems;
     private ConveyorSide side;
     private RecyclableType type;
@@ -31,7 +31,7 @@ public class RecycleBin implements Displayable {
         this.type = trash;
     }
 
-    public RecycleBin(ConveyorSide side, double minY, double maxY, RecyclableType type, String imagePath) {
+    public RecycleBin(ConveyorSide side, int minY, int maxY, RecyclableType type, String imagePath) {
         this.side = side;
         this.minY = minY;
         this.maxY = maxY;
@@ -52,11 +52,11 @@ public class RecycleBin implements Displayable {
         return true;
     }
 
-    public double getMinY() {
+    public int getMinY() {
         return minY;
     }
 
-    public double getMaxY() {
+    public int getMaxY() {
         return maxY;
     }
 
@@ -68,8 +68,8 @@ public class RecycleBin implements Displayable {
         return type;
     }
 
-    public double getMidPoint() {
-        return (minY + maxY) / 2.0;
+    public int getMidPoint() {
+        return (minY + maxY) / 2;
     }
 
     @Override

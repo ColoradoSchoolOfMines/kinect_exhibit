@@ -3,6 +3,10 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class keeps track of how many strikes the user has had and keeps a drawing on the screen.
@@ -15,20 +19,20 @@ import edu.mines.csci598.recycler.frontend.graphics.Path;
  */
 public class StrikeBar {
 
-    private final int gameOverValue = 4;
+    private static final int MAX_STRIKES = 5;
+
+    private static final int LEFT_STRIKE_BAR_X = 845;
+    private static final int RIGHT_STRIKE_BAR_X = 975;
+    private static final int STRIKE_BAR_Y_START = 360;
+    private static final int STRIKE_BOX_Y_OFFSET = 100;
+
+    private final double TRANSITION_SPEED = 1;
+
     private GameOver gameOver;
 
-    private Coordinate positionOne;
-    private Coordinate positionTwo;
-    private Coordinate positionThree;
-    private Coordinate positionFour;
-    private Coordinate positionFive;
-
-    private final double transitionSpeed = 1;
-
-    private int realLength;
-    private Side side;
-    private static Recyclable[] recyclables;
+    private int strikes;
+    private static Movable[] movables;
+    private List<Coordinate> strikeBoxes;
     private GameStatusDisplay gameStatusDisplay;
 
     /**
@@ -37,80 +41,53 @@ public class StrikeBar {
      * @paramrecyclable
      */
 
-
     public StrikeBar(GameStatusDisplay gameStatusDisplay){
         this.gameStatusDisplay = gameStatusDisplay;
-        side = gameStatusDisplay.getSide();
-        gameOver = new GameOver(side);
-        recyclables = new Recyclable[gameOverValue];
-        realLength = -1;
-        if(side == Side.LEFT){
-            positionOne = new Coordinate(845, 360);
-            positionTwo = new Coordinate(845,460);
-            positionThree = new Coordinate(845,560);
-            positionFour = new Coordinate(845,660);
-            positionFive = new Coordinate(845, 760);
-        }else{
-            positionOne = new Coordinate(975, 360);
-            positionTwo = new Coordinate(975, 460);
-            positionThree = new Coordinate(975,560);
-            positionFour = new Coordinate(975, 660);
-            positionFive = new Coordinate(975, 760);
+        gameOver = new GameOver(gameStatusDisplay.getSide());
+        movables = new Recyclable[MAX_STRIKES];
+        strikes = -1;
+        strikeBoxes = new ArrayList<Coordinate>();
+
+        int xStart;
+        if(gameStatusDisplay.getSide() == Side.LEFT){
+            xStart = LEFT_STRIKE_BAR_X;
+        }
+        else {
+            xStart = RIGHT_STRIKE_BAR_X;
+        }
+        for (int i = MAX_STRIKES; i > 0; --i) {
+            strikeBoxes.add(new Coordinate(xStart, STRIKE_BAR_Y_START + i * STRIKE_BOX_Y_OFFSET));
         }
     }
 
+    public void addStrike(Movable strike) {
 
-    public void addStrike(Recyclable recyclable) {
-
-        if ((realLength <= gameOverValue)){
-            realLength++;
+        if (strikes > MAX_STRIKES) { //Still playing when game over, so don't add more strikes
+            strike.setRemovable(true);
         }
-
-        if(realLength == 0){
-            recyclables[realLength] = recyclable;
-            Path p = recyclables[realLength].getPath();
-            p.addLine(new Line(recyclables[realLength].getPosition(), positionFive, transitionSpeed));
-            recyclables[realLength].setPath(p);
-        }else if(realLength == 1){
-            recyclables[realLength] = recyclable;
-            Path p = recyclables[realLength].getPath();
-            p.addLine(new Line(recyclables[realLength].getPosition(), positionFour, transitionSpeed));
-            recyclables[realLength].setPath(p);
-        }else if(realLength == 2){
-            recyclables[realLength] = recyclable;
-            Path p = recyclables[realLength].getPath();
-            p.addLine(new Line(recyclables[realLength].getPosition(), positionThree, transitionSpeed));
-            recyclables[realLength].setPath(p);
-        }else if(realLength == 3){
-            recyclables[realLength] = recyclable;
-            Path p = recyclables[realLength].getPath();
-            p.addLine(new Line(recyclables[realLength].getPosition(), positionTwo, transitionSpeed));
-            recyclables[realLength].setPath(p);
-        }else if(realLength == 4){
-            Path p = recyclable.getPath();
-            p.addLine(new Line(recyclable.getPosition(), positionOne, transitionSpeed));
-            recyclable.setPath(p);
+        else if (strikes < MAX_STRIKES){
+            strikes++;
+            movables[strikes] = strike;
+            Path p = movables[strikes].getPath();
+            p.addLine(new Line(movables[strikes].getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
+            movables[strikes].setPath(p);
+        }
+        else {
+            strikes++;
             gameOver.setGameOver(gameStatusDisplay);
-            realLength++;
-        }else if (realLength > gameOverValue){
-            recyclable.setRemove(true);
-        }else{
-            //Nothing else to do the bar is full.
         }
     }
 
-    public Recyclable getRecyclable(){
-        return recyclables[realLength];
-    }
-
-
+    /**
+     * Removes strike from strike bar, generally used for powerups
+     */
     public void removeStrike() {
-        System.out.println("Remove length: " + realLength);
-        if((realLength >= 0) && (realLength <= gameOverValue)){
+        System.out.println("Remove length: " + strikes);
+        if((strikes > 0) && (strikes < MAX_STRIKES)){
 
-        recyclables[realLength].setRemove(true);
-        recyclables[realLength] = null;
-        realLength--;
+            movables[strikes].setRemovable(true);
+            movables[strikes] = null;
+            strikes--;
 
         }
 

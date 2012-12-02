@@ -4,11 +4,10 @@ public enum MotionState {
     CHUTE(TouchState.UNTOUCHABLE), 
     CONVEYOR(TouchState.TOUCHABLE), 
     FALL_LEFT(TouchState.UNTOUCHABLE), 
-    FALL_RIGHT(TouchState.UNTOUCHABLE), 
-    FALL_TRASH(TouchState.UNTOUCHABLE),
+    FALL_RIGHT(TouchState.UNTOUCHABLE),
     IS_TRASH(TouchState.UNTOUCHABLE),
     ABOVE_BIN(TouchState.UNTOUCHABLE),
-    STRIKE(TouchState.UNTOUCHABLE);
+    NONE(TouchState.UNTOUCHABLE);
     
     public enum TouchState {TOUCHABLE, UNTOUCHABLE};
     private TouchState touchable;

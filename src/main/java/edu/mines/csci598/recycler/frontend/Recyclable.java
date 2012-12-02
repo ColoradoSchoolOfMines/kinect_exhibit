@@ -4,6 +4,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 import org.apache.log4j.Logger;
 
 /**
@@ -16,14 +17,14 @@ import org.apache.log4j.Logger;
  * Time: 9:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Recyclable implements Displayable {
+public class Recyclable implements Displayable, Movable {
     private static final Logger logger = Logger.getLogger(Recyclable.class);    
     
     private Sprite sprite;
     private RecyclableType type;
     private MotionState currentMotion;
     private Path path;
-    private boolean remove = true;
+    private boolean removable = true;
 
     public Recyclable(RecyclableType type, Path path, String imagePath) {
         this.type = type;
@@ -32,8 +33,8 @@ public class Recyclable implements Displayable {
         sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
     }
 
-    public Recyclable(RecyclableType type, Path path, String imagePath, Boolean remove) {
-        this.remove = remove;
+    public Recyclable(RecyclableType type, Path path, String imagePath, Boolean removable) {
+        this.removable = removable;
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
@@ -44,6 +45,11 @@ public class Recyclable implements Displayable {
     public Sprite getSprite() {
         return sprite;
     }
+
+    public void setSprite(Sprite s) {
+        sprite = s;
+    }
+
     public boolean isNotAPowerUp(){
         boolean ret=true;
         if(type==RecyclableType.DYNAMITE ||type==RecyclableType.BLASTER ||type==RecyclableType.TURTLE)
@@ -72,11 +78,17 @@ public class Recyclable implements Displayable {
         return currentMotion.isTouchable();
     }
 
-    public void setRemove(boolean state){
-        remove = state;
+    public void setRemovable(boolean state){
+        removable = state;
+    }
+
+    @Override
+    public boolean isRemovable(){
+        return removable;
     }
 
 
+    @Override
     public Path getPath(){
     	return path;
     }
@@ -85,9 +97,6 @@ public class Recyclable implements Displayable {
     	this.path = path;
     }
 
-    public boolean removable(){
-        return remove;
-    }
 
 
     /**

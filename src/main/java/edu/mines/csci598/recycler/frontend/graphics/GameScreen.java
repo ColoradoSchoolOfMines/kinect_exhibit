@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.RecycleBin;
+import edu.mines.csci598.recycler.frontend.RecycleBins;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
@@ -53,6 +54,7 @@ public class GameScreen {
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
+        //TODO: Figure out which background to draw
         g2d.drawImage(background1.getImage(), background1.getX(), background1.getY(), canvas);
 
         for (Sprite bin : recycleBinSprites) {
@@ -72,6 +74,12 @@ public class GameScreen {
 
         drawHands(g2d, canvas);
         drawTextSprites(g2d);
+
+        g2d.setColor(Color.WHITE);
+        g2d.drawLine(200, RecycleBins.GLASS_MIN_Y, 500, RecycleBins.GLASS_MIN_Y);
+        g2d.drawLine(0, RecycleBins.PAPER_MIN_Y, 200, RecycleBins.PAPER_MIN_Y);
+        g2d.drawLine(200, RecycleBins.GLASS_MAX_Y, 500, RecycleBins.GLASS_MAX_Y);
+        g2d.drawLine(0, RecycleBins.PAPER_MAX_Y, 200, RecycleBins.PAPER_MAX_Y);
     }
 
     /**

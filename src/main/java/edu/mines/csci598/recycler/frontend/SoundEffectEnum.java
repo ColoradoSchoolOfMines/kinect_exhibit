@@ -15,7 +15,7 @@ public enum SoundEffectEnum {
     CORRECT( "src/main/resources/Sounds/correct.wav"),
     EXPLODE("src/main/resources/Sounds/explode.wav"),
     GLASS_HITS_BIN("src/main/resources/Sounds/glass_bin.wav"),
-    HIT_GLASS("src/main/resources/Sounds/glass_hit"),
+    HIT_GLASS("src/main/resources/Sounds/glass_hit.wav"),
     ITEM_EXIT_CHUTE("src/main/resources/Sounds/item_exit_chute.wav"),
     MISS("src/main/resources/Sounds/miss.wav"),
     NUCLEAR_BIN("src/main/resources/Sounds/nuclear_bin.wav"),
@@ -25,7 +25,7 @@ public enum SoundEffectEnum {
     SLOW_DOWN("src/main/resources/Sounds/slow_down.wav"),
     SPEED_UP("src/main/resources/Sounds/speed_up.wav"),
     TRASH_BIN("src/main/resources/Sounds/trash_bin.wav"),
-    WRONG("src/main/resources/Sounds/wrong.wav");
+    INCORRECT("src/main/resources/Sounds/wrong.wav");
 
 
     private String soundPath;

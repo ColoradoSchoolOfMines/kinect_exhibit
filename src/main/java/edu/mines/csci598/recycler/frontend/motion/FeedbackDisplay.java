@@ -1,12 +1,9 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
+import edu.mines.csci598.recycler.BinFeedback;
 import edu.mines.csci598.recycler.frontend.Recyclable;
-import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.StrikeBar;
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 
 import java.util.List;
 
@@ -18,51 +15,44 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class FeedbackDisplay extends ItemMover {
+
     private GameScreen gameScreen;
+    private static Sprite incorrectSprite;
+    private static Sprite correctSprite;
+
+
     public FeedbackDisplay(double initialSpeed) {
         super(initialSpeed);
+        incorrectSprite = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/incorrect.png", 0, 0);
+        correctSprite = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/correct.png", 0, 0);
         gameScreen = GameScreen.getInstance();
     }
 
-
-    public void addWrong(StrikeBar strikeBar, Coordinate c,double currentTimeSec){
-         makeDisplay(strikeBar, c, currentTimeSec, RecyclableType.INCORRECT);
-
-    }
-
-    public void addRight(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.CORRECT);
-    }
-
-    private void makeDisplay(StrikeBar strikeBar, Coordinate c, double currentTimeSec, RecyclableType recyclableType){
+    public Movable makeDisplay(Coordinate c, double currentTimeSec, boolean isCorrect){
         Path p = new Path(currentTimeSec);
         p.addLine(new Line(c,c,0.5));
-        //TODO is there a better way to do this part? Or since it is the only one can we let it slide that this is using recyclables...
-        Recyclable r = new Recyclable(recyclableType,p,recyclableType.getImagePaths()[0],false);
-        strikeBar.addStrike(r);
-        recyclables.add(r);
 
-        gameScreen.addSprite(r.getSprite());
-    }
+        BinFeedback feedback;
+        if (isCorrect) {
+            feedback = new BinFeedback(correctSprite, p);
+        }
+        else {
+            feedback = new BinFeedback(incorrectSprite, p);
+        }
 
-    private void makeDisplay(Coordinate c, double currentTimeSec, RecyclableType recyclableType){
-        Path p = new Path(currentTimeSec);
-
-        p.addLine(new Line(c,c,0.5));
-        //TODO is there a better way to do this part? Or since it is the only one can we let it slide that this is using recyclables...
-        Recyclable r = new Recyclable(recyclableType,p,recyclableType.getImagePaths()[0],true);
-        recyclables.add(r);
-        gameScreen.addSprite(r.getSprite());
+        movables.add(feedback);
+        gameScreen.addSprite(feedback.getSprite());
+        return feedback;
     }
 
 
     @Override
     public void moveItems(double currentTimeSec){
         super.moveItems(currentTimeSec);
-        List<Recyclable> toRemove = releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
-        for(Recyclable r : toRemove){
-            if (r.removable()){
-                gameScreen.removeSprite(r.getSprite());
+        List<Movable> toRemove = releaseControlOfMovablesAtEndOfPath(currentTimeSec);
+        for(Movable m : toRemove){
+            if (m.isRemovable()){
+                gameScreen.removeSprite(m.getSprite());
             }
         }
     }
