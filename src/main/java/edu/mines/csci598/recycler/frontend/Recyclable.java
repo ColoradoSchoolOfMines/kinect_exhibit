@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -24,8 +23,17 @@ public class Recyclable implements Displayable {
     private RecyclableType type;
     private MotionState currentMotion;
     private Path path;
+    private boolean remove = true;
 
     public Recyclable(RecyclableType type, Path path, String imagePath) {
+        this.type = type;
+        this.path = path;
+        currentMotion = MotionState.CHUTE;
+        sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
+    }
+
+    public Recyclable(RecyclableType type, Path path, String imagePath, Boolean remove) {
+        this.remove = remove;
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
@@ -63,7 +71,12 @@ public class Recyclable implements Displayable {
     public boolean isTouchable(){
         return currentMotion.isTouchable();
     }
-    
+
+    public void setRemove(boolean state){
+        remove = state;
+    }
+
+
     public Path getPath(){
     	return path;
     }
@@ -71,6 +84,11 @@ public class Recyclable implements Displayable {
     public void setPath(Path path){
     	this.path = path;
     }
+
+    public boolean removable(){
+        return remove;
+    }
+
 
     /**
      * checks for a collision with the given point.

@@ -19,7 +19,7 @@ public enum SoundEffectEnum {
     ITEM_EXIT_CHUTE("src/main/resources/Sounds/item_exit_chute.wav"),
     MISS("src/main/resources/Sounds/miss.wav"),
     NUCLEAR_BIN("src/main/resources/Sounds/nuclear_bin.wav"),
-    OTHER_HIT("src/main/resources/Sounds/other_hit"),
+    OTHER_HIT("src/main/resources/Sounds/other_hit.wav"),
     PLASTIC_OR_PAPER_HITS_BIN("src/main/resources/Sounds/plastic_paper_bin.wav"),
     PLASTIC_OR_PAPER_HIT("src/main/resources/Sounds/plastic_paper_hit.wav"),
     SLOW_DOWN("src/main/resources/Sounds/slow_down.wav"),

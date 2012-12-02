@@ -43,6 +43,7 @@ public class GameLogic {
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
     private int strikes;
+    private StrikeBar strikeBar;
     private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
@@ -70,9 +71,9 @@ public class GameLogic {
         conveyorBelt = new ConveyorBelt(this, gameScreen, conveyorPath);
         theForce = new TheForce();
         startTime = System.currentTimeMillis();
-
         this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollisions = debuggingCollision;
+        strikeBar = new StrikeBar(gameStatusDisplay);
 
         hands = new ArrayList<Hand>();
 
@@ -165,7 +166,7 @@ public class GameLogic {
 
             // handle powerups
             if (r.getType() == RecyclableType.ANVIL) {
-                strikes--;
+                strikeBar.removeStrike();
             }
             else if (r.getType() == RecyclableType.RABBIT) {
                 logger.info("Rabbit Powerup");
@@ -192,22 +193,24 @@ public class GameLogic {
      * @param bin
      */
     public void handleScore(Recyclable r, RecycleBin bin) {
-        if (bin.isCorrectRecyclableType(r)) {
-            gameStatusDisplay.incrementScore(10);
-            feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
-            SoundEffectEnum.CORRECT.playSound();
+        if ((bin.isCorrectRecyclableType(r)) || (!r.isNotAPowerUp()))  {
+            if((bin.toString() == RecyclableType.TRASH.toString()) && (!r.isNotAPowerUp())){
+               //DO Nothing This Does not Affect the score.
+            }else if(!r.isNotAPowerUp()){
+                feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
+                SoundEffectEnum.CORRECT.playSound();
+            }else{
+                gameStatusDisplay.incrementScore(10);
+                feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
+                SoundEffectEnum.CORRECT.playSound();
+            }
+
 
         } else {
             //TODO Need to make sure power ups are not counted here
-            strikes++;
-            feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
+            feedbackDisplay.addWrong(strikeBar, r.getPosition(), currentTimeSec);
             SoundEffectEnum.WRONG.playSound();
         }
-
-//
-//        if (strikes >= gameOverStrikes) {
-//            gameOver();
-//        }
     }
 
 
@@ -215,9 +218,7 @@ public class GameLogic {
         this.otherScreen = otherScreen;
     }
 
-    public String getStrikesString() {
-        return Integer.toString(strikes);
-    }
+
 
     private void gameOver() {
         if (gameOverNotified) return;

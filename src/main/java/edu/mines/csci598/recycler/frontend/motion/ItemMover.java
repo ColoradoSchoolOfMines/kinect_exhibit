@@ -70,7 +70,7 @@ public abstract class ItemMover {
     public final List<Recyclable> releaseControlOfRecyclablesAtEndOfPath(double currentTimeSec){
     	List<Recyclable> atEnd = new ArrayList<Recyclable>();
     	for(Recyclable r : recyclables){
-    		if(r.getPath().PathFinished(currentTimeSec)){
+    		if((r.getPath().PathFinished(currentTimeSec)) && (r.removable())){
     			atEnd.add(r);
     		}
     	}
@@ -93,9 +93,9 @@ public abstract class ItemMover {
     			continue; // can't return this one, go to next
     		}
 
-            logger.info("point="+point+",r="+r.getPosition());
+            logger.debug("point="+point+",r="+r.getPosition());
     		if(r.collidesWithPoint(point)){
-                logger.info("Release");
+                logger.debug("Release");
     			releasing.add(r);
     		}
     		

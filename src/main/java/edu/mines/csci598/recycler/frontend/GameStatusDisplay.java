@@ -21,10 +21,12 @@ public class GameStatusDisplay implements TextSpritesHolder {
     private TextSprite scoreSprite;
     private final Side side;
     String scoreFormat = "%06d";
+    private boolean gameOver;
 
     public GameStatusDisplay( Side side){
         this.side = side;
         score = 0;
+        gameOver = false;
         Font f = new Font("Stencil",Font.BOLD,40);
         Color c = Color.green;
         //If its on the left the sprites will need to have different positions.
@@ -35,6 +37,7 @@ public class GameStatusDisplay implements TextSpritesHolder {
         }
         scoreChanged();
     }
+
 
     @Override
     public List<TextSprite> getTextSprites() {
@@ -48,19 +51,33 @@ public class GameStatusDisplay implements TextSpritesHolder {
         scoreSprite.setMessage(String.format(scoreFormat, score));
     }
 
+    public Side getSide(){
+        return side;
+    }
+
+
     public void incrementScore(int points){
-        score += points;
-        //Keep score at or above zero
-        score = Math.max(score,0);
-        scoreChanged();
+        if(!gameOver){
+            score += points;
+            //Keep score at or above zero
+            score = Math.max(score,0);
+            scoreChanged();
+        }
     }
 
     public void setScore(int score){
-        this.score = score;
-        scoreChanged();
+        if(!gameOver){
+            this.score = score;
+            scoreChanged();
+        }
     }
 
     public int getScore() {
         return score;
     }
+
+    public void setGameState(Boolean state){
+        gameOver = state;
+    }
+
 }
