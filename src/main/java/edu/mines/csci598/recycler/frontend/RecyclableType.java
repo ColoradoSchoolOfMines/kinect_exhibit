@@ -11,11 +11,11 @@ public enum RecyclableType {
     HAZARD(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/hazard_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/hazard_02.png","src/main/resources/SpriteImages/FinalSpriteImages/hazard_03.png"}),
     TRASH(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/trash_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_02.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_03.png"}),
 
-    ANVIL(new String[]{"src/main/resources/SpriteImages/anvil.jpg"}),
-    TURTLE(new String[]{"src/main/resources/SpriteImages/turtle.png"}),
-    RABBIT(new String[]{"src/main/resources/SpriteImages/rabbit.png"}),
-    WRONG(new String[]{"src/main/resources/SpriteImages/incorrect.png"}),
-    RIGHT(new String[]{"src/main/resources/SpriteImages/correct.png"});
+    DYNAMITE(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/dynamite.png"}),
+    TURTLE(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/turtle.png"}),
+    BLASTER(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/blaster.png"}),
+    INCORRECT(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/incorrect.png"}),
+    CORRECT(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/correct.png"});
 
     private String[] imagePaths;
     private static final Logger logger = Logger.getLogger(RecyclableType.class);

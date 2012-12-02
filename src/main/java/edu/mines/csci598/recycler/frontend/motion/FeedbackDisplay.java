@@ -24,11 +24,11 @@ public class FeedbackDisplay extends ItemMover {
     }
 
     public void addWrong(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.WRONG);
+         makeDisplay(c, currentTimeSec, RecyclableType.INCORRECT);
     }
 
     public void addRight(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.RIGHT);
+         makeDisplay(c, currentTimeSec, RecyclableType.CORRECT);
     }
 
     private void makeDisplay(Coordinate c, double currentTimeSec, RecyclableType recyclableType){

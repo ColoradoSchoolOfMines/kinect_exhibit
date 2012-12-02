@@ -21,17 +21,20 @@ public class GameScreen {
     private static final Logger logger = Logger.getLogger(GameScreen.class);
     
     private static GameScreen INSTANCE;
-    private Sprite background;
+    private Sprite background1;
+    private Sprite background2;
     private Sprite backgroundChutes;
     private Sprite backgroundScoreFrame;
     private Sprite backgroundFrame;
+    private double timeToSwitchBackgrounds;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
     private ArrayList<Sprite> handSprites;
 
     private GameScreen() {
-        background = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background.jpg", 0, 0);
+        background1 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_1.jpg", 0, 0);
+        background2 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_2.jpg", 0, 0);
         backgroundChutes = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_chutes.png", 0, 0);
         backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_score_frame.png", 0, 0);
         backgroundFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
@@ -50,12 +53,13 @@ public class GameScreen {
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
-        g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
-        g2d.drawImage(backgroundScoreFrame.getImage(), backgroundScoreFrame.getX(), backgroundScoreFrame.getY(), canvas);
+        g2d.drawImage(background1.getImage(), background1.getX(), background1.getY(), canvas);
 
         for (Sprite bin : recycleBinSprites) {
             g2d.drawImage(bin.getImage(), bin.getScaledX(), bin.getScaledY(), canvas);
         }
+
+        g2d.drawImage(backgroundScoreFrame.getImage(), backgroundScoreFrame.getX(), backgroundScoreFrame.getY(), canvas);
 
         for (Sprite sprite : sprites) {
                g2d.rotate(sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);

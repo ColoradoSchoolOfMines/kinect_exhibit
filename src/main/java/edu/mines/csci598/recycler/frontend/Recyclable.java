@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -38,7 +37,7 @@ public class Recyclable implements Displayable {
     }
     public boolean isNotAPowerUp(){
         boolean ret=true;
-        if(type==RecyclableType.ANVIL||type==RecyclableType.RABBIT||type==RecyclableType.TURTLE)
+        if(type==RecyclableType.DYNAMITE ||type==RecyclableType.BLASTER ||type==RecyclableType.TURTLE)
             ret = false;
         return ret;
     }

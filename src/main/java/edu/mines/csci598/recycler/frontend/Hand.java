@@ -27,7 +27,7 @@ public class Hand implements Displayable {
         oldY = 0;
         velocityX = 0;
         velocityY = 0;
-        sprite = new Sprite("src/main/resources/SpriteImages/hand.png", x, y);
+        sprite = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/hand_open.png", x, y);
     }
     public void updateLocation(){
         sprite.setX(x);
