@@ -7,12 +7,9 @@ import javax.swing.*;
 public class SavePlayer {
     GameManager man;
     
-    /*
-     * Deprecated
-     */
     public void submitPlayerScore(long score) {
 
-        ImageIcon image = new ImageIcon();
+        ImageIcon image = takePhoto( man );
         String initials = getInitials();
 
         //create object with score
