@@ -9,11 +9,7 @@ public enum RecyclableType {
     PAPER(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/paper_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/paper_02.png", "src/main/resources/SpriteImages/FinalSpriteImages/paper_03.png", "src/main/resources/SpriteImages/FinalSpriteImages/paper_04.png"}),
     GLASS(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/glass_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/glass_02.png", "src/main/resources/SpriteImages/FinalSpriteImages/glass_03.png", "src/main/resources/SpriteImages/FinalSpriteImages/glass_04.png"}),
     HAZARD(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/hazard_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/hazard_02.png","src/main/resources/SpriteImages/FinalSpriteImages/hazard_03.png"}),
-    TRASH(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/trash_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_02.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_03.png"}),
-
-    DYNAMITE(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/dynamite.png"}),
-    TURTLE(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/turtle.png"}),
-    BLASTER(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/blaster.png"});
+    TRASH(new String[]{"src/main/resources/SpriteImages/FinalSpriteImages/trash_01.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_02.png", "src/main/resources/SpriteImages/FinalSpriteImages/trash_03.png"});
 
     private String[] imagePaths;
     private static final Logger logger = Logger.getLogger(RecyclableType.class);

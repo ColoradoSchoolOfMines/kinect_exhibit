@@ -30,7 +30,7 @@ public class Recyclable implements Displayable, Movable {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
+        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
     }
 
     public Recyclable(RecyclableType type, Path path, String imagePath, Boolean removable) {
@@ -38,7 +38,7 @@ public class Recyclable implements Displayable, Movable {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
+        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
     }
 
     @Override
@@ -50,12 +50,6 @@ public class Recyclable implements Displayable, Movable {
         sprite = s;
     }
 
-    public boolean isNotAPowerUp(){
-        boolean ret=true;
-        if(type==RecyclableType.DYNAMITE ||type==RecyclableType.BLASTER ||type==RecyclableType.TURTLE)
-            ret = false;
-        return ret;
-    }
     public boolean isNotTrash(){
         boolean ret = true;
         if(type==RecyclableType.TRASH)ret = false;

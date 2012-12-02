@@ -3,9 +3,8 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -60,8 +59,8 @@ public class ComputerPlayer {
     public Hand getHand(){
         return primary;
     }
-    public void updateAI(Recyclable r,double currentTimeSec){
-    	if(r == null) {
+    public void updateAI(Movable movable,double currentTimeSec){
+    	/*if(movable == null) {
             if(currentTimeSec>lastStrikeTime+lastMoveDelay)
                 primary.resetHandToInitialPosition();
             return;
@@ -81,27 +80,27 @@ public class ComputerPlayer {
                 }
                 justStruckRecyclable=false;
             }
-            if(r.isNotTrash()){
+            if(movable.isNotTrash()){
                 if(!primary.isOnCorrectSide()){
                     //Set hand to correct side
-                    if(r.isNotAPowerUp()){
-                        setHandToCorrectSide(r,currentTimeSec);
+                    if(movable.isNotAPowerUp()){
+                        setHandToCorrectSide(movable,currentTimeSec);
                     }else {
                         primary.setOnCorrectSide(true);
                     }
                 }else {
                     //Follow target recyclable
-                    followRecyclable(r);
+                    followRecyclable(movable);
                     //Strike target recyclable
-                    attemptToStrike(r,currentTimeSec);
+                    attemptToStrike(movable,currentTimeSec);
                 }
             }else{
-                r.setMotionState(MotionState.IS_TRASH);
+                movable.setMotionState(MotionState.IS_TRASH);
                 score+=10;
             }
         } else {
             followPath(currentTimeSec);
-        }
+        }  */
     }
     private void followRecyclable(Recyclable r){
         Coordinate position = new Coordinate(primary.getX(),r.getPosition().getY());
@@ -191,12 +190,12 @@ public class ComputerPlayer {
         //}
         return ret;
     }
-    private void attemptToStrike(Recyclable r, double currentTimeSec){
-        if(r.isNotAPowerUp()){
-            if(recyclableWillFallInBin(r)){
+    private void attemptToStrike(Movable movable, double currentTimeSec){
+        /*if(!(m instancof PowerUp)){
+            if(recyclableWillFallInBin(movable)){
                 if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
                     if(ICanStrike()){
-                        strikeRecyclable(r,currentTimeSec);
+                        strikeRecyclable(movable,currentTimeSec);
                         lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                         lastStrikeTime = currentTimeSec;
                     }else {
@@ -206,13 +205,13 @@ public class ComputerPlayer {
             }
         }else {
             if(ICanStrike()){
-                strikeRecyclable(r,currentTimeSec);
+                strikeRecyclable(movable,currentTimeSec);
                 lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                 lastStrikeTime = currentTimeSec;
             }else {
                 lastStrikeDelay+=ComputerConstants.LAST_STRIKE_UPDATE;
             }
-        }
+        }  */
     }
     public boolean ICanStrike(){
         boolean ret = false;

@@ -31,7 +31,7 @@ public class GameLogic {
     private List<Hand> hands;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
-    private RecyclableFactory factory;
+    private ItemFactory factory;
     private RecycleBins recycleBins;
     private ConveyorBelt conveyorBelt;
     private TheForce theForce;
@@ -59,7 +59,7 @@ public class GameLogic {
                      boolean playerIsAComputer, boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
-        factory = new RecyclableFactory();
+        factory = new ItemFactory();
         this.recycleBins = recycleBins;
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
@@ -103,7 +103,7 @@ public class GameLogic {
         //Add single item to conveyer for debugging collisions.
         if (this.debuggingCollisions) {
             logger.debug("Adding recyclable for collision detection");
-            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getNewPath());
+            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
             conveyorBelt.takeControlOfMovable(r);
             gameScreen.addSprite(r.getSprite());
         }
@@ -142,26 +142,31 @@ public class GameLogic {
             travelTime *= timeSpeedFactor;
 
             Coordinate position = m.getPosition();
-            Line collideLine;
+            Line collideLine = null;
 
-            //TODO: Make powerups not move
-            if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) {
-                //logger.debug("Pushed Right");
-                m.setMotionState(MotionState.FALL_RIGHT);
-                RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
-                collideLine = new Line( position.getX(), position.getY(),
-                         position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
-                        travelTime,Math.PI*2);
+            if (m instanceof Recyclable) {
+                if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) {
+                    //logger.debug("Pushed Right");
+                    m.setMotionState(MotionState.FALL_RIGHT);
+                    RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
+                    collideLine = new Line( position.getX(), position.getY(),
+                             position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
+                            travelTime,Math.PI*2);
 
-            } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
-                //logger.debug("Pushed Left");
-                m.setMotionState(MotionState.FALL_LEFT);
-                RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
-                collideLine = new Line( position.getX(), position.getY(),
-                         position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
-                        travelTime,Math.PI*2);
-            } else {
-                throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
+                } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
+                    //logger.debug("Pushed Left");
+                    m.setMotionState(MotionState.FALL_LEFT);
+                    RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
+                    collideLine = new Line( position.getX(), position.getY(),
+                             position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
+                            travelTime,Math.PI*2);
+                } else {
+                    throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
+                }
+            }
+            else if (m instanceof PowerUp) {
+                m.setMotionState(MotionState.NONE);
+                collideLine = new Line( m.getPosition(), m.getPosition(), 0.5);
             }
 
             Path path = new Path(currentTimeSec);
@@ -169,17 +174,20 @@ public class GameLogic {
             m.setPath(path);
 
             // handle powerups
-            if (m.getType() == RecyclableType.DYNAMITE) {
-                strikeBar.removeStrike();
-            }else if (m.getType() == RecyclableType.BLASTER) {
-                logger.info("Rabbit Powerup");
-                otherScreen.powerUpSpeedFactor = 1.5;
-                otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
-            }
-            else if (m.getType() == RecyclableType.TURTLE) {
-                logger.info("Turtle Powerup");
-                powerUpSpeedFactor = 0.5;
-                timeToRemovePowerUp = lastWallTimeSec + 15;
+            if (m instanceof PowerUp) {
+                PowerUp p = (PowerUp) m;
+                if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
+                    strikeBar.removeStrike();
+                }else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
+                    logger.info("Rabbit Powerup");
+                    otherScreen.powerUpSpeedFactor = 1.5;
+                    otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
+                }
+                else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
+                    logger.info("Turtle Powerup");
+                    powerUpSpeedFactor = 0.5;
+                    timeToRemovePowerUp = lastWallTimeSec + 15;
+                }
             }
         }
 
@@ -196,14 +204,18 @@ public class GameLogic {
      * @param bin
      */
     public void handleScore(Movable m, RecycleBin bin) {
-        if (bin.isCorrectRecyclableType(m) && m.isNotAPowerUp())  {   //Correct recyclable
-            feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
-            SoundEffectEnum.CORRECT.playSound();
-            gameStatusDisplay.incrementScore(10);
-        }
-        else if(m.isNotAPowerUp()){ //Incorrect recyclable
-            feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, false);
-            SoundEffectEnum.INCORRECT.playSound();
+        if (m instanceof Recyclable) {
+            if (bin.isCorrectRecyclableType(m))  {
+                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+                SoundEffectEnum.CORRECT.playSound();
+                gameStatusDisplay.incrementScore(10);
+            }
+            else {
+                Movable feedback = feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, false);
+                strikeBar.addStrike(feedback);
+                SoundEffectEnum.INCORRECT.playSound();
+            }
+
         }
         //TODO: Do we need to handle powerups here?
     }
@@ -252,7 +264,7 @@ public class GameLogic {
             powerUpSpeedFactor = 1;
         }
         if(playerIsAComputer){
-            computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
+            computerPlayer.updateAI(conveyorBelt.getNextMovableThatIsTouchable(), currentTimeSec);
         }
 
             // display the hands
@@ -276,17 +288,19 @@ public class GameLogic {
         }
         itemsToRemove = theForce.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
         for (Movable m : itemsToRemove) {
-            handleScore(m, recycleBins.findBinForFallingRecyclable(m));
+            if (m instanceof Recyclable) {
+                handleScore(m, recycleBins.findBinForFallingRecyclable(m));
+            }
             gameScreen.removeSprite(m.getSprite());
         }
 
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Recyclable r = factory.possiblyGenerateItem(conveyorBelt.getNewPath(), currentTimeSec);
-            if (r != null) {
+            Movable m = factory.possiblyGenerateItem(conveyorBelt.getConveyorPath(), currentTimeSec);
+            if (m != null) {
                 try {
-                    conveyorBelt.takeControlOfMovable(r);
-                    gameScreen.addSprite(r.getSprite());
+                    conveyorBelt.takeControlOfMovable(m);
+                    gameScreen.addSprite(m.getSprite());
                 } catch (ExceptionInInitializerError e) {
                     logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
                 }

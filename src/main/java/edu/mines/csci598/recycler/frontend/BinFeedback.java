@@ -1,6 +1,5 @@
-package edu.mines.csci598.recycler;
+package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.MotionState;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -18,7 +17,6 @@ public class BinFeedback implements Displayable, Movable {
 
     private Sprite sprite;
     private Path path;
-    private Coordinate position;
 
     private boolean removable;
     private boolean touchable;
@@ -26,8 +24,8 @@ public class BinFeedback implements Displayable, Movable {
 
     private MotionState motionState;
 
-    public BinFeedback(Sprite sprite, Path path) {
-        this.sprite = sprite;
+    public BinFeedback(String image, Path path) {
+        this.sprite = new Sprite(image, (int) path.getInitialPosition().getX(), (int) path.getInitialPosition().getY());
         this.path = path;
         removable = true;
         touchable = false;
@@ -49,12 +47,14 @@ public class BinFeedback implements Displayable, Movable {
         this.path = path;
     }
 
+    @Override
     public Coordinate getPosition() {
-        return position;
+        return sprite.getPosition();
     }
 
+    @Override
     public void setPosition(Coordinate position) {
-        this.position = position;
+        sprite.setPosition(position);
     }
 
     @Override

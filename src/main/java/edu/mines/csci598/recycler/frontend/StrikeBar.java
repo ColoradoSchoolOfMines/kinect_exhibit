@@ -4,6 +4,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,13 @@ import java.util.List;
  */
 public class StrikeBar {
 
+    private static final Logger logger = Logger.getLogger(StrikeBar.class);
+
     private static final int MAX_STRIKES = 5;
 
     private static final int LEFT_STRIKE_BAR_X = 845;
     private static final int RIGHT_STRIKE_BAR_X = 975;
-    private static final int STRIKE_BAR_Y_START = 360;
+    private static final int STRIKE_BAR_Y_START = 260;
     private static final int STRIKE_BOX_Y_OFFSET = 100;
 
     private final double TRANSITION_SPEED = 1;
@@ -31,7 +34,7 @@ public class StrikeBar {
     private GameOver gameOver;
 
     private int strikes;
-    private static Movable[] movables;
+    private List<Movable> movables;
     private List<Coordinate> strikeBoxes;
     private GameStatusDisplay gameStatusDisplay;
 
@@ -44,8 +47,8 @@ public class StrikeBar {
     public StrikeBar(GameStatusDisplay gameStatusDisplay){
         this.gameStatusDisplay = gameStatusDisplay;
         gameOver = new GameOver(gameStatusDisplay.getSide());
-        movables = new Recyclable[MAX_STRIKES];
-        strikes = -1;
+        movables = new ArrayList<Movable>();
+        strikes = 0;
         strikeBoxes = new ArrayList<Coordinate>();
 
         int xStart;
@@ -60,17 +63,18 @@ public class StrikeBar {
         }
     }
 
-    public void addStrike(Movable strike) {
+    public void addStrike(Movable image) {
 
         if (strikes > MAX_STRIKES) { //Still playing when game over, so don't add more strikes
-            strike.setRemovable(true);
+            image.setRemovable(true);
         }
         else if (strikes < MAX_STRIKES){
+            movables.add(strikes, image);
+            Path p = movables.get(strikes).getPath();
+            logger.info("TO: " + strikeBoxes.get(strikes));
+            p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
+            movables.get(strikes).setPath(p);
             strikes++;
-            movables[strikes] = strike;
-            Path p = movables[strikes].getPath();
-            p.addLine(new Line(movables[strikes].getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
-            movables[strikes].setPath(p);
         }
         else {
             strikes++;
@@ -84,10 +88,9 @@ public class StrikeBar {
     public void removeStrike() {
         System.out.println("Remove length: " + strikes);
         if((strikes > 0) && (strikes < MAX_STRIKES)){
-
-            movables[strikes].setRemovable(true);
-            movables[strikes] = null;
             strikes--;
+            movables.get(strikes).setRemovable(true);
+            movables.remove(strikes);
 
         }
 

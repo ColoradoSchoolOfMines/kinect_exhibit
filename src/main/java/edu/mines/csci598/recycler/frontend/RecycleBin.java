@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.
@@ -83,9 +84,12 @@ public class RecycleBin implements Displayable {
 
 
     // returns true if the incoming recyclable type is the same as the bin type
-    public boolean isCorrectRecyclableType(Recyclable r) {
-        if (r.getType() == type) {
-            return true;
+    public boolean isCorrectRecyclableType(Movable m) {
+        if (m instanceof Recyclable) {
+            Recyclable r = (Recyclable) m;
+            if (r.getType() == type) {
+                return true;
+            }
         }
         return false;
     }

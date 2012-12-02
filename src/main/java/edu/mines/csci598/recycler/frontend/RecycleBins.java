@@ -37,7 +37,7 @@ public class RecycleBins {
     public RecycleBin findBinForFallingRecyclable(Movable m) {
 
         if (!(m instanceof Recyclable)) {
-
+            throw new IllegalStateException("Something is falling into a bin that shouldn't be (not a recyclable)!");
         }
 
         int yCord = m.getSprite().getScaledY();

@@ -39,10 +39,10 @@ public class Sprite {
 
 
 
-    public void setY(double y){
+    public void setY(int y){
         location.setY(y);
     }
-    public void setX(double x){
+    public void setX(int x){
         location.setX(x);
     }
 

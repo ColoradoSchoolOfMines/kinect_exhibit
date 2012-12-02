@@ -91,7 +91,7 @@ public class Path {
         return elapsedTime >= totalTime;
     }
     
-    public Coordinate initialPosition(){
+    public Coordinate getInitialPosition(){
          Line l = path.get(0);
          if(l!=null){
              return (Coordinate) l.getP1();
