@@ -24,12 +24,14 @@ public class FeedbackDisplay extends ItemMover {
         gameScreen = GameScreen.getInstance();
     }
 
+
     public void addWrong(StrikeBar strikeBar, Coordinate c,double currentTimeSec){
-         makeDisplay(strikeBar, c, currentTimeSec, RecyclableType.WRONG);
+         makeDisplay(strikeBar, c, currentTimeSec, RecyclableType.INCORRECT);
+
     }
 
     public void addRight(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.RIGHT);
+         makeDisplay(c, currentTimeSec, RecyclableType.CORRECT);
     }
 
     private void makeDisplay(StrikeBar strikeBar, Coordinate c, double currentTimeSec, RecyclableType recyclableType){

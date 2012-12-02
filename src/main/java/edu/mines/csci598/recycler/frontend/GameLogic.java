@@ -165,10 +165,9 @@ public class GameLogic {
             r.setPath(path);
 
             // handle powerups
-            if (r.getType() == RecyclableType.ANVIL) {
+            if (r.getType() == RecyclableType.DYNAMITE) {
                 strikeBar.removeStrike();
-            }
-            else if (r.getType() == RecyclableType.RABBIT) {
+            }else if (r.getType() == RecyclableType.BLASTER) {
                 logger.info("Rabbit Powerup");
                 otherScreen.powerUpSpeedFactor = 1.5;
                 otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;

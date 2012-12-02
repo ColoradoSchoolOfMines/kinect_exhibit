@@ -46,7 +46,7 @@ public class Recyclable implements Displayable {
     }
     public boolean isNotAPowerUp(){
         boolean ret=true;
-        if(type==RecyclableType.ANVIL||type==RecyclableType.RABBIT||type==RecyclableType.TURTLE)
+        if(type==RecyclableType.DYNAMITE ||type==RecyclableType.BLASTER ||type==RecyclableType.TURTLE)
             ret = false;
         return ret;
     }

@@ -1,6 +1,8 @@
 package edu.mines.csci598.recycler.backend;
 
-import java.nio.ShortBuffer;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -187,11 +189,28 @@ public class HandTracker {
         return this.height;
     }
     
-    public DepthMetaData getDepthData(){
-        return depthGen.getMetaData();
+    public BufferedImage getDepthData(){
+        DepthMetaData depthMD = depthGen.getMetaData();
+        return getBufferedImage(depthMD);
     }
     
-    public ImageMetaData getVisualData(){
-        return imageGen.getMetaData();
+    public BufferedImage getVisualData(){
+        ImageMetaData imageMD = imageGen.getMetaData();
+        return getBufferedImage( imageMD );
+    }
+    
+    private BufferedImage getBufferedImage( MapMetaData metaData ){
+        width = metaData.getFullXRes();
+        height = metaData.getFullYRes();
+
+        byte[] imgbytes = new byte[width*height];
+        DataBufferByte dataBuffer = new DataBufferByte(imgbytes, width*height);
+        
+        Raster raster = Raster.createPackedRaster(dataBuffer, width, height, 8, null);
+        
+        // This line may result in error, need to check it more thoroughly
+        BufferedImage bimg = new BufferedImage( width, height, 8 );
+        bimg.setData(raster);
+        return bimg;
     }
 }

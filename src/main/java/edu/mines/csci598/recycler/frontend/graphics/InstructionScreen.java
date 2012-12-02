@@ -20,7 +20,7 @@ public class InstructionScreen {
     private Sprite background;
 
     public InstructionScreen() {
-        background = new Sprite("src/main/resources/SpriteImages/instructions.jpg",0,0);
+        background = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/instructions_full.jpg",0,0);
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
