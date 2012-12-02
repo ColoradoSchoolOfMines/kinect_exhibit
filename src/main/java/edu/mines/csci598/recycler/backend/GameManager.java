@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.backend;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import java.io.Closeable;
@@ -30,6 +31,8 @@ implements Destroyable, Runnable {
   private final InputStatus inputStatus = new InputStatus();
   private boolean alive = true;
   private final AudioPlayer audioPlayer = new AudioPlayer(this);
+  private BufferedImage image;
+  private BufferedImage depth;
 
   private final LinkedList<InputDriver> inputDrivers =
     new LinkedList<InputDriver>();
@@ -211,6 +214,28 @@ implements Destroyable, Runnable {
    * Returns the shared InputStatus object.
    */
   public InputStatus getSharedInputStatus() { return inputStatus; }
+  
+  /**
+   * Returns the visual image data from the kinect
+   */
+  public BufferedImage getImage(){
+      return image;
+  }
+  
+  /**
+   * Returns the visual image data from the kinect
+   */
+  public BufferedImage getDepth(){
+      return depth;
+  }
+  
+  public void setDepth( BufferedImage depth ){
+      this.depth = depth;
+  }
+  
+  public void setImage( BufferedImage image ){
+      this.image = image;
+  }
 
   /**
    * Returns a copy of the current InputStatus.
