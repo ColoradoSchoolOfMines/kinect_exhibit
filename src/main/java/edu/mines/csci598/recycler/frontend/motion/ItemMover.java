@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend.motion;
 
 import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  *
  */
 public abstract class ItemMover {
+    private static final Logger logger = Logger.getLogger(ItemMover.class);
 	
 	protected List<Recyclable> recyclables;
 	protected double speedPixPerSecond;
@@ -52,7 +54,7 @@ public abstract class ItemMover {
     /**
      * Registers each of the given recyclables with this ItemMover.
      * They will now be moved with each call to moveItems
-     * @param r
+     * @param newItems - List of items that you should take control of
      */
     public final void takeControlOfRecyclables(List<Recyclable> newItems){
     	for(Recyclable r : newItems){
@@ -90,8 +92,10 @@ public abstract class ItemMover {
     		if(!(r.isTouchable())){
     			continue; // can't return this one, go to next
     		}
-    		
+
+            logger.info("point="+point+",r="+r.getPosition());
     		if(r.collidesWithPoint(point)){
+                logger.info("Release");
     			releasing.add(r);
     		}
     		

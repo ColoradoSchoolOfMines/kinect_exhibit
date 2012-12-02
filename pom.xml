@@ -49,6 +49,27 @@
             <systemPath>${project.basedir}/org.OpenNI.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>tritonus</groupId>
+            <artifactId>tritonus</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/tritonus_share.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>jl</groupId>
+            <artifactId>jl</artifactId>
+            <version>1.0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jl1.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mp3spi</groupId>
+            <artifactId>mp3spi</artifactId>
+            <version>1.0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/mp3spi1.9.5.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
             <version>[2.2,)</version>

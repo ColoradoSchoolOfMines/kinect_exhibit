@@ -89,6 +89,7 @@ public class GameLogic {
         } else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
+            hands.add(computerPlayer.getHand());
         }
         //Add recycle bins to game screen to be drawn
         for (RecycleBin bin : recycleBins.getRecycleBins()) {
@@ -106,24 +107,22 @@ public class GameLogic {
     }
 
     private void lookForAndHandleCollisions() {
-        if (!playerIsAComputer) {
-            // checks to see if there is a collision with any one of the hands
-            for (Hand hand : hands) {
 
-                //If the hand isn't moving fast enough to swipe, skip it
-                if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
-                    continue;
-                }
-                // If we get here, it is causing collisions with anything at this location.
+        // checks to see if there is a collision with any one of the hands
+        for (Hand hand : hands) {
 
-                List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
-                // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
-
-                handleCollisions(hand, swipedOffConveyor);
+            //If the hand isn't moving fast enough to swipe, skip it
+            if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
+                continue;
             }
-        } else {
-            //Computer collision detection
-            //Todo Refactor computer collision from computer player to here.
+            // If we get here, it is causing collisions with anything at this location.
+
+            List<Recyclable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
+            logger.debug("swipedSize="+swipedOffConveyor.size());
+            // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
+
+            handleCollisions(hand, swipedOffConveyor);
+
         }
     }
 
@@ -193,29 +192,24 @@ public class GameLogic {
      * @param bin
      */
     public void handleScore(Recyclable r, RecycleBin bin) {
-        if (!playerIsAComputer) {
-            if (bin.isCorrectRecyclableType(r)) {
-                gameStatusDisplay.incrementScore(10);
-                feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
-                bin.addItem();
-            } else {
-                //TODO Need to make sure power ups are not counted here
-                strikes++;
-                feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
-            }
+        if (bin.isCorrectRecyclableType(r)) {
+            gameStatusDisplay.incrementScore(10);
+            feedbackDisplay.addRight(r.getPosition(), currentTimeSec);
+            SoundEffectEnum.CORRECT.playSound();
+
         } else {
-            handleAIScore();
+            //TODO Need to make sure power ups are not counted here
+            strikes++;
+            feedbackDisplay.addWrong(r.getPosition(), currentTimeSec);
+            SoundEffectEnum.WRONG.playSound();
         }
+
 //
 //        if (strikes >= gameOverStrikes) {
 //            gameOver();
 //        }
     }
 
-    public void handleAIScore() {
-        gameStatusDisplay.setScore(computerPlayer.getAIScore());
-        strikes = computerPlayer.getAIStrikes();
-    }
 
     public void addLinkToOtherScreen(GameLogic otherScreen) {
         this.otherScreen = otherScreen;
@@ -277,20 +271,15 @@ public class GameLogic {
         if (wallTimeSec >= timeToRemovePowerUp) {
             powerUpSpeedFactor = 1;
         }
-
-        if (!playerIsAComputer) {
-            // display the hands
-            for (Hand hand : hands) {
-                hand.updateLocation();
-            }
-        } else {
-            //call update to computer hand on next recyclable that is touchable
-            if (conveyorBelt.getNumRecyclablesOnConveyor() > 0) {
-                computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
-            }
-            //TODO remove score from AI
-            handleAIScore();
+        if(playerIsAComputer){
+            computerPlayer.updateAI(conveyorBelt.getNextRecyclableThatIsTouchable(), currentTimeSec);
         }
+
+            // display the hands
+        for (Hand hand : hands) {
+            hand.updateLocation();
+        }
+
 
         // Handle existing item collisions
         lookForAndHandleCollisions();

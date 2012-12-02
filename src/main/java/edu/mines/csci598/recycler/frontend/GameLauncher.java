@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.bettyCrocker.Song;
+import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.graphics.PlayerOptionsScreen;
@@ -93,6 +95,10 @@ public class GameLauncher extends GameState {
 	}
 
 	public static void main(String[] args) {
+        Song x = new Song();
+        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
+        x.setLooping(true);
+        x.startPlaying();
         GameLauncher gm = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
 		gm.getGameManager().installInputDriver(mouse);
