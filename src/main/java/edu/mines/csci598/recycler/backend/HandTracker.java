@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.backend;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
@@ -27,6 +28,8 @@ public class HandTracker {
     
     // OpenNI image information
     private ImageGenerator imageGen;
+    private Dimension rgbDim;
+    private int[] rgbImageArray;
 
     // OpenNI gesture information
     private GestureGenerator gestureGen;
@@ -199,8 +202,6 @@ public class HandTracker {
         width = depthMD.getFullXRes();
         height = depthMD.getFullYRes();
 
-        byte[] imgbytes = new byte[width*height];
-
         ShortBuffer depth = depthMD.getData().createShortBuffer();
         depth.rewind();
 
@@ -219,26 +220,24 @@ public class HandTracker {
     public BufferedImage getVisualData(){
         ImageMetaData imageMD = imageGen.getMetaData();
 
-        width = imageMD.getFullXRes();
-        height = imageMD.getFullYRes();
-        System.out.println( width );
-        System.out.println( height );
+        rgbDim = new Dimension(imageMD.getFullXRes(), imageMD.getFullYRes());
+        rgbImageArray = new int[rgbDim.width * rgbDim.height];
+        BufferedImage bimg = new BufferedImage(rgbDim.width, rgbDim.height, BufferedImage.TYPE_INT_RGB);
 
-        byte[] imgbytes = new byte[width*height];
+        int i = 0;
+        int r = 0;
+        int g = 0;
+        int b = 0;
 
-        ByteBuffer image = imageMD.getData().createByteBuffer();
-        image.rewind();
-
-        BufferedImage bimg = new BufferedImage( 3*width, 3*height, BufferedImage.TYPE_4BYTE_ABGR );
-
-        while( image.remaining() > 0 )
-        {
-            int pos = image.position();
-            short pixel = image.get();
-
-            System.out.println( pos%width );
-            System.out.println( pos/width );
-            bimg.setRGB( pos%width, pos/width, pixel );
+        ByteBuffer rgbBuffer = imageMD.getData().createByteBuffer();
+        for (int x = 0; x < rgbDim.width; x++) {
+            for (int y = 0; y < rgbDim.height; y++) {
+                i = y * rgbDim.width + x;
+                r = rgbBuffer.get(i * 3) & 0xff;
+                g = rgbBuffer.get(i * 3 + 1) & 0xff;
+                b = rgbBuffer.get(i * 3 + 2) & 0xff;
+                rgbImageArray[i] = (r << 16) | (g << 8) | b;
+            }
         }
 
         return bimg;
