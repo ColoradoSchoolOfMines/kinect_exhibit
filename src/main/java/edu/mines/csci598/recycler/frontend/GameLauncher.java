@@ -31,7 +31,7 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher() {
         //Preloading the images will prevent some flickering.
-        //TODO: Preload background and correct/incorrect images too
+        //TODO: Preload correct/incorrect images too
         RecyclableType.preLoadImages();
         GameScreen.getInstance().preLoadImages();
 

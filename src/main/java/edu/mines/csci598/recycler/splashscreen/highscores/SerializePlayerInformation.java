@@ -14,6 +14,7 @@ public class SerializePlayerInformation {
         return retrievePlayerHighScoreInformation(SCORES_FILE);
     }
 
+    @SuppressWarnings("unchecked")
     public static ArrayList<PlayerHighScoreInformation> retrievePlayerHighScoreInformation(String fileName) {
         Object deserializedHighScores = new ArrayList<PlayerHighScoreInformation>();
         File file = new File(fileName);

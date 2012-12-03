@@ -19,6 +19,7 @@ import java.util.LinkedList;
  * Time: 9:13 PM
  */
 public class GameScreen {
+
     private static final Logger logger = Logger.getLogger(GameScreen.class);
     
     private static GameScreen INSTANCE;

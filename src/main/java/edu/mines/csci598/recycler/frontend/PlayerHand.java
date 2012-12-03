@@ -17,8 +17,7 @@ import edu.mines.csci598.recycler.frontend.Hand;
  * Time: 9:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerHand extends Hand{
-    
+public class PlayerHand extends Hand {
 
     private int velocityCount;
     GameManager gameManager;
@@ -40,6 +39,5 @@ public class PlayerHand extends Hand{
         velocityY = y - oldY;
         super.updateLocation();
     }
-
 
 }

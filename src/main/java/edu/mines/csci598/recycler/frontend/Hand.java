@@ -12,6 +12,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
  * To change this template use File | Settings | File Templates.
  */
 public class Hand implements Displayable {
+
     private Sprite sprite;
     protected int velocityX;
     protected int velocityY;
@@ -20,7 +21,7 @@ public class Hand implements Displayable {
     protected int oldX;
     protected int oldY;
 
-    public Hand(){
+    public Hand() {
         x = 0;
         y = 0;
         oldX = 0;
@@ -29,12 +30,13 @@ public class Hand implements Displayable {
         velocityY = 0;
         sprite = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/hand_open.png", x, y);
     }
-    public void updateLocation(){
+
+    public void updateLocation() {
         sprite.setX(x);
         sprite.setY(y);
     }
 
-    public final Sprite getSprite(){
+    public final Sprite getSprite() {
         return sprite;
     }
     /*
@@ -70,6 +72,5 @@ public class Hand implements Displayable {
     public final Coordinate getPosition(){
         return new Coordinate(x, y);
     }
-
 
 }
