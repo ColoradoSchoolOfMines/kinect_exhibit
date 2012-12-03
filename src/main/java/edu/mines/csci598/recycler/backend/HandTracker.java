@@ -3,12 +3,16 @@ package edu.mines.csci598.recycler.backend;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.OpenNI.*;
+
+import javax.swing.*;
 
 public class HandTracker {
     // the size of the history for locations, for drawing paths
@@ -191,26 +195,52 @@ public class HandTracker {
     
     public BufferedImage getDepthData(){
         DepthMetaData depthMD = depthGen.getMetaData();
-        return getBufferedImage(depthMD);
+
+        width = depthMD.getFullXRes();
+        height = depthMD.getFullYRes();
+
+        byte[] imgbytes = new byte[width*height];
+
+        ShortBuffer depth = depthMD.getData().createShortBuffer();
+        depth.rewind();
+
+        BufferedImage bimg = new BufferedImage( width, height, BufferedImage.TYPE_BYTE_GRAY );
+
+        while(depth.remaining() > 0)
+        {
+            int pos = depth.position();
+            short pixel = depth.get();
+            bimg.setRGB( pos%width, pos/width, pixel*16 );
+        }
+
+        return bimg;
     }
     
     public BufferedImage getVisualData(){
         ImageMetaData imageMD = imageGen.getMetaData();
-        return getBufferedImage( imageMD );
-    }
-    
-    private BufferedImage getBufferedImage( MapMetaData metaData ){
-        /*width = metaData.getFullXRes();
-        height = metaData.getFullYRes();
+
+        width = imageMD.getFullXRes();
+        height = imageMD.getFullYRes();
+        System.out.println( width );
+        System.out.println( height );
 
         byte[] imgbytes = new byte[width*height];
-        DataBufferByte dataBuffer = new DataBufferByte(imgbytes, width*height);
-        
-        Raster raster = Raster.createPackedRaster(dataBuffer, width, height, 8, null);
-        
-        // This line may result in error, need to check it more thoroughly*/
-        BufferedImage bimg = new BufferedImage( width, height, 8 );
-        //bimg.setData(raster);
+
+        ByteBuffer image = imageMD.getData().createByteBuffer();
+        image.rewind();
+
+        BufferedImage bimg = new BufferedImage( 3*width, 3*height, BufferedImage.TYPE_4BYTE_ABGR );
+
+        while( image.remaining() > 0 )
+        {
+            int pos = image.position();
+            short pixel = image.get();
+
+            System.out.println( pos%width );
+            System.out.println( pos/width );
+            bimg.setRGB( pos%width, pos/width, pixel );
+        }
+
         return bimg;
     }
 }
