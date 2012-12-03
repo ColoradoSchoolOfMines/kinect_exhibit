@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,8 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
 
 public class LocalAreaWeather {
+
+    private static final Logger log = Logger.getLogger(LocalAreaWeather.class.getName());
     private static final String API_KEY = "b665b08214224103123010";
     private static final String LOCAL_ZIP = "80401";
 
@@ -25,13 +29,13 @@ public class LocalAreaWeather {
             return parseWeatherXML(weatherStream);
         }
         catch (IOException ioe) {
-            ioe.printStackTrace();
+            log.severe("IOException occured: " + ioe);
         }
         catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
+            log.severe("ParserConfigurationException occured: " + pce);
         }
         catch (SAXException spe) {
-            spe.printStackTrace();
+            log.severe("SAX Parser Exception occured: " + spe);
         }
         return null;
     }
@@ -83,9 +87,7 @@ public class LocalAreaWeather {
 
     private static String getTagValue(String sTag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
-
         Node nValue = nlList.item(0);
-
         return nValue.getNodeValue();
     }
 }

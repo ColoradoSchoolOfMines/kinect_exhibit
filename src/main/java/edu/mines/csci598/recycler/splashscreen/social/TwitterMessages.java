@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class TwitterMessages implements SocialMessages {
 
-    private final Logger log = Logger.getLogger(TwitterMessages.class.getName());
+    private static final Logger log = Logger.getLogger(TwitterMessages.class.getName());
     private Twitter twitter;
 
     public TwitterMessages() {
