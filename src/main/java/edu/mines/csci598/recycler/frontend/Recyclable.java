@@ -1,15 +1,15 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
+
+import java.util.Random;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.
- * They need to keep track of what kind of recyclable they are, and where state they are in.
+ * They need to keep track of what kind of recyclable they are, and what state they are in.
  * <p/>
  * Created with IntelliJ IDEA.
  * User: jzeimen
@@ -19,27 +19,92 @@ import org.apache.log4j.Logger;
  */
 public class Recyclable implements Displayable, Movable {
 
-    private static final Logger logger = Logger.getLogger(Recyclable.class);    
-    
+    private static final Logger logger = Logger.getLogger(Recyclable.class);
+
     private Sprite sprite;
     private RecyclableType type;
     private MotionState currentMotion;
     private Path path;
-    private boolean removable = true;
+    private boolean removable;
+    private static RecycleBins recycleBins;
 
     public Recyclable(RecyclableType type, Path path, String imagePath) {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
+        removable = true;
+        sprite = new Sprite(imagePath, (int) path.getInitialPosition().getX(), (int) path.getInitialPosition().getY());
     }
 
-    public Recyclable(RecyclableType type, Path path, String imagePath, Boolean removable) {
-        this.removable = removable;
-        this.type = type;
-        this.path = path;
-        currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
+    @Override
+    public void reactToCollision(Hand hand, double currentTimeSec) {
+        if (!(this instanceof Recyclable)) {
+            throw new IllegalStateException("Trying to react to Recyclable collision with a non-Recyclable!");
+        }
+
+        Coordinate position = this.getPosition();
+        Line collideLine = null;
+        //Make item fall based on how fast we swiped it
+        double travelTime = Math.abs(GameConstants.ITEM_PATH_END / hand.getVelocityX());
+        travelTime = Math.max(travelTime, GameConstants.MIN_ITEM_TRAVEL_TIME);  //Don't let it go too fast
+        travelTime = Math.min(travelTime, GameConstants.MAX_ITEM_TRAVEL_TIME);  //or too slow
+        int randomRotation = new Random().nextInt(4)+1;
+
+        if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) { //Pushed right
+            this.setMotionState(MotionState.FALL_RIGHT);
+            RecycleBin destBin = recycleBins.findBinForFallingRecyclable(this);
+            collideLine = new Line( position.getX(), position.getY(),
+                    position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
+                    travelTime, Math.PI * randomRotation);
+
+        } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) { //Pushed left
+            this.setMotionState(MotionState.FALL_LEFT);
+            RecycleBin destBin = recycleBins.findBinForFallingRecyclable(this);
+            collideLine = new Line( position.getX(), position.getY(),
+                    position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
+                    travelTime, Math.PI * randomRotation);
+        } else {
+            throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
+        }
+
+        Path path = new Path(currentTimeSec);
+        path.addLine(collideLine);
+        this.setPath(path);
+    }
+
+    /**
+     * checks for a collision with the given point.
+     * Does *not* check if the item is touchable.
+     *
+     * @param point
+     * @return - true if there is a collision, false otherwise
+     */
+    public boolean collidesWithPoint(Coordinate point) {
+        return sprite.isPointInside((int) point.getX(), (int) point.getY());
+    }
+
+    /**
+     * Determines if the recyclable should be touched by a hand
+     *
+     * @return true if recyclable can be touched, false otherwise
+     */
+    public boolean isTouchable() {
+        return currentMotion.isTouchable();
+    }
+
+    /**
+     * Determines if Recyclable can be removed from screen when its path is done
+     *
+     * @return true if it's okay to remove, false otherwise
+     */
+    @Override
+    public boolean isRemovable() {
+        return removable;
+    }
+
+    @Override
+    public void setRemovable(boolean state) {
+        removable = state;
     }
 
     @Override
@@ -47,39 +112,18 @@ public class Recyclable implements Displayable, Movable {
         return sprite;
     }
 
-    public void setSprite(Sprite s) {
-        sprite = s;
-    }
-
-    public boolean isNotTrash(){
-        boolean ret = true;
-        if(type == RecyclableType.TRASH)ret = false;
-        return ret;
-    }
-
     public RecyclableType getType() {
         return type;
     }
 
-    public void setMotionState(MotionState motion) {
-        this.currentMotion = motion;
-    }
-
+    @Override
     public MotionState getMotionState() {
         return currentMotion;
     }
-    
-    public boolean isTouchable() {
-        return currentMotion.isTouchable();
-    }
-
-    public void setRemovable(boolean state) {
-        removable = state;
-    }
 
     @Override
-    public boolean isRemovable() {
-        return removable;
+    public void setMotionState(MotionState motion) {
+        this.currentMotion = motion;
     }
 
     @Override
@@ -91,28 +135,20 @@ public class Recyclable implements Displayable, Movable {
     	this.path = path;
     }
 
-    /**
-     * checks for a collision with the given point.
-     * Does *not* check if the item is touchable.
-     *
-     * @param point
-     * @return
-     */
-    public boolean collidesWithPoint(Coordinate point) {
-    	return sprite.isPointInside((int)point.getX(), (int)point.getY());
+    public Coordinate getPosition() {
+        return sprite.getPosition();
     }
 
-	public Coordinate getPosition() {
-		return sprite.getPosition();
-	}
+    public void setPosition(Coordinate location) {
+        sprite.setPosition(location);
+    }
 
-	public void setPosition(Coordinate location) {
-		sprite.setPosition(location);
-	}
-	
-	@Override
-	public String toString(){
-		return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
-	}
+    @Override
+    public String toString() {
+        return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
+    }
 
+    public static void tellRecyclablesAboutBins(RecycleBins bins) {
+        recycleBins = bins;
+    }
 }

@@ -18,25 +18,25 @@ public class GameOver {
     private boolean displayed;
 
     public GameOver(Side side) {
-       displayed = false;
-       gameScreen = GameScreen.getInstance();
-       signalGameOver = false;
-       if (side == Side.LEFT){
-           s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 100, 300);
-       }
-       else {
-           s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 1200, 300);
-       }
+        displayed = false;
+        gameScreen = GameScreen.getInstance();
+        signalGameOver = false;
+        if (side == Side.LEFT) {
+            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 100, 300);
+        } else {
+            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 1200, 300);
+        }
     }
 
     public void setGameOver(GameStatusDisplay gameStatusDisplay) {
-        if(!displayed) {
-            gameStatusDisplay.setGameState(true);
+        if (!displayed) {
+            gameStatusDisplay.setGameOverState(true);
             gameScreen.addSprite(s);
             displayed = true;
         }
     }
 
-    private void signalSplashScreen(){}
+    private void signalSplashScreen() {
+    }
 
 }

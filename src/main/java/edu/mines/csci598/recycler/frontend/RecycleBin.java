@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
 
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.
@@ -17,6 +18,8 @@ import edu.mines.csci598.recycler.frontend.motion.Movable;
  * To change this template use File | Settings | File Templates.
  */
 public class RecycleBin implements Displayable {
+
+    private static final Logger logger = Logger.getLogger(RecycleBin.class);
 
 	public static final RecycleBin TRASH_BIN = new RecycleBin(RecyclableType.TRASH);
 	
@@ -75,7 +78,7 @@ public class RecycleBin implements Displayable {
 
     @Override
     public String toString() {
-        return type.toString();
+        return type.toString() + " " + minY + " to " + maxY;
     }
 
     public void addItem() {

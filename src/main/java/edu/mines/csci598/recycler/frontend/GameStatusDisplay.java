@@ -77,8 +77,7 @@ public class GameStatusDisplay implements TextSpritesHolder {
         return score;
     }
 
-    public void setGameState(Boolean state) {
+    public void setGameOverState(Boolean state) {
         gameOver = state;
     }
-
 }

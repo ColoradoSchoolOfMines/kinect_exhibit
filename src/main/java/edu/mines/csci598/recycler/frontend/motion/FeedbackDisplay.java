@@ -37,8 +37,6 @@ public class FeedbackDisplay extends ItemMover {
             feedback = new BinFeedback(INCORRECT_SPRITE, p);
             feedback.setRemovable(false);
         }
-
-
         movables.add(feedback);
         gameScreen.addSprite(feedback.getSprite());
         return feedback;
