@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -147,14 +148,14 @@ public class GameLogic {
 
             Coordinate position = m.getPosition();
             Line collideLine = null;
-
+            int randomNumber = new Random().nextInt(4)+1;
             if (m instanceof Recyclable) {
                 if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) {
                     m.setMotionState(MotionState.FALL_RIGHT);
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
-                            travelTime,Math.PI * 2);
+                            travelTime,Math.PI *randomNumber);
 
                 }
                 else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
@@ -162,7 +163,7 @@ public class GameLogic {
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
-                            travelTime,Math.PI * 2);
+                            travelTime,Math.PI *randomNumber);
                 }
                 else {
                     throw new IllegalStateException("The hand wasn't moving fast enough to make the conveyor release control!");
