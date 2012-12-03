@@ -56,7 +56,7 @@ public class GameLogic {
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
-                     boolean playerIsAComputer, boolean debuggingCollision) {
+                     boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
@@ -82,10 +82,13 @@ public class GameLogic {
         // sets up the first player and adds its primary hand to the gameScreen
         // so that it can be displayed
         if (!this.playerIsAComputer) {
-            //   player1 = new Player(gameManager);
-            // creates the max number of hands that can be displayed which is 4
-            //TODO: This is going to be a problem - each player might have 2 hands, but how do we know whose hands are whose?
-            for (int i = 0; i < 2; i++) {
+            // creates the max number of hands that can be displayed which is 4 (2 per side)
+            // startingHand makes sure that 2 different pairs of hands are displayed per side
+            int startingHand = 0;
+            if (rightSide)
+                startingHand = 2;
+
+            for (int i = startingHand; i < startingHand + 2; i++) {
                 hands.add(new PlayerHand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }

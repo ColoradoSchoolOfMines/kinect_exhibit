@@ -33,7 +33,7 @@ public class GameLauncher extends GameState {
         //Preloading the images will prevent some flickering.
         //TODO: Preload background and correct/incorrect images too
         RecyclableType.preLoadImages();
-		gameManager = new GameManager("Recycler",false);
+		gameManager = new GameManager("Recycler",true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -47,6 +47,7 @@ public class GameLauncher extends GameState {
                 gameManager,
                 leftGameStatusDisplay,
                 false,
+                false,
                 false);
 		rightGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.RIGHT),
@@ -54,6 +55,7 @@ public class GameLauncher extends GameState {
                 gameManager,
                 rightGameStatusDisplay,
                 GameConstants.SECOND_PLAYER_IS_A_COMPUTER,
+                true,
                 GameConstants.DEBUG_COLLISIONS);
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
