@@ -33,6 +33,9 @@ public class GameLauncher extends GameState {
         //Preloading the images will prevent some flickering.
         //TODO: Preload background and correct/incorrect images too
         RecyclableType.preLoadImages();
+        GameScreen.getInstance().preLoadImages();
+
+        // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler",true);
 
 		gameScreen = GameScreen.getInstance();
@@ -66,6 +69,7 @@ public class GameLauncher extends GameState {
 	}
 
 	protected void drawThis(Graphics2D g2d) {
+        // draw the instructions screen if the game has not started yet
         if (gameStarted) {
             gameScreen.paint(g2d, gameManager.getCanvas());
         }
@@ -92,7 +96,6 @@ public class GameLauncher extends GameState {
 	}
 
 	public GameLauncher updateThis(float time) {
-
         if (gameStarted) {
 		    leftGame.updateThis();
 		    rightGame.updateThis();
