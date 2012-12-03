@@ -208,8 +208,8 @@ public class HandTracker {
         
         Raster raster = Raster.createPackedRaster(dataBuffer, width, height, 8, null);
         
-        // This line may result in error, need to check it more thoroughly
-        BufferedImage bimg = new BufferedImage( width, height, 8 );*/
+        // This line may result in error, need to check it more thoroughly*/
+        BufferedImage bimg = new BufferedImage( width, height, 8 );
         //bimg.setData(raster);
         return bimg;
     }
