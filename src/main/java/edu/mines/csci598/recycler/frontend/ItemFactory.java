@@ -21,7 +21,7 @@ public final class ItemFactory {
      * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
      * generated
      */
-    public static final int POWERUP_FREQUENCY_PERCENTAGE = 70;
+    public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
     private final Logger logger = Logger.getLogger(ItemFactory.class);
     //logger.setLevel(Level.INFO);
     private final Random rand = new Random();

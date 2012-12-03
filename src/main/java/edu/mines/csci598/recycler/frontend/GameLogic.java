@@ -178,13 +178,16 @@ public class GameLogic {
                 PowerUp p = (PowerUp) m;
                 if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
                     strikeBar.removeStrike();
+                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
                 }else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
                     logger.info("Rabbit Powerup");
+                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
                     otherScreen.powerUpSpeedFactor = 1.5;
                     otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
                 }
                 else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
                     logger.info("Turtle Powerup");
+                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
                     powerUpSpeedFactor = 0.5;
                     timeToRemovePowerUp = lastWallTimeSec + 15;
                 }
