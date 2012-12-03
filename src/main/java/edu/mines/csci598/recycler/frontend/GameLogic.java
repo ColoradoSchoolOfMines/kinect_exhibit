@@ -25,6 +25,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLogic {
+
     private static final Logger logger = Logger.getLogger(GameLogic.class);
 
     private GameLogic otherScreen;
@@ -56,7 +57,7 @@ public class GameLogic {
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
-                     boolean playerIsAComputer, boolean debuggingCollision) {
+                     boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
@@ -79,17 +80,21 @@ public class GameLogic {
 
         hands = new ArrayList<Hand>();
 
-        // sets up the first player and adds its primary hand to the gameScreen
-        // so that it can be displayed
+        // sets up the first player and adds its hands to the gameScreen
+        // so that they can be displayed
         if (!this.playerIsAComputer) {
-            //   player1 = new Player(gameManager);
-            // creates the max number of hands that can be displayed which is 4
-            //TODO: This is going to be a problem - each player might have 2 hands, but how do we know whose hands are whose?
-            for (int i = 0; i < 2; i++) {
+            // creates the max number of hands that can be displayed which is 4 (2 per side)
+            // startingHand makes sure that 2 different pairs of hands are displayed per side
+            int startingHand = 0;
+            if (rightSide)
+                startingHand = 2;
+
+            for (int i = startingHand; i < startingHand + 2; i++) {
                 hands.add(new PlayerHand(gameManager, i));
                 gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
             }
-        } else {
+        }
+        else {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
             hands.add(computerPlayer.getHand());
@@ -100,7 +105,7 @@ public class GameLogic {
                 gameScreen.addRecycleBinSprite(bin.getSprite());
             }
         }
-        //Add single item to conveyer for debugging collisions.
+        //Add single item to conveyor for debugging collisions.
         if (this.debuggingCollisions) {
             logger.debug("Adding recyclable for collision detection");
             Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
@@ -146,22 +151,22 @@ public class GameLogic {
 
             if (m instanceof Recyclable) {
                 if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) {
-                    //logger.debug("Pushed Right");
                     m.setMotionState(MotionState.FALL_RIGHT);
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
                             travelTime,Math.PI*2);
 
-                } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
-                    //logger.debug("Pushed Left");
+                }
+                else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
                     m.setMotionState(MotionState.FALL_LEFT);
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
                             travelTime,Math.PI*2);
-                } else {
-                    throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
+                }
+                else {
+                    throw new IllegalStateException("The hand wasn't moving fast enough to make the conveyor release control!");
                 }
             }
             else if (m instanceof PowerUp) {
@@ -174,30 +179,41 @@ public class GameLogic {
             m.setPath(path);
 
             // handle powerups
-            if (m instanceof PowerUp) {
-                PowerUp p = (PowerUp) m;
-                if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
-                    strikeBar.removeStrike();
-                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
-                }else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
-                    logger.info("Rabbit Powerup");
-                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
-                    otherScreen.powerUpSpeedFactor = 1.5;
-                    otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
-                }
-                else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
-                    logger.info("Turtle Powerup");
-                    feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
-                    powerUpSpeedFactor = 0.5;
-                    timeToRemovePowerUp = lastWallTimeSec + 15;
-                }
-            }
+            handlePowerUps(m);
+
         }
 
         // We now have a list of items that the conveyor belt has released, and they know where they are going.
         // Handing control to TheForce!
         theForce.takeControlOfMovables(swipedOffConveyor);
         conveyorBelt.releaseMovables(swipedOffConveyor);
+    }
+
+    /**
+     * Given a movable this function determines if it is a powerup and handles it accordingly
+     *
+     * @param m
+     */
+    public void handlePowerUps(Movable m) {
+        if (m instanceof PowerUp) {
+            PowerUp p = (PowerUp) m;
+            if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
+                strikeBar.removeStrike();
+                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+            }
+            else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
+                logger.info("Rabbit Powerup");
+                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+                otherScreen.powerUpSpeedFactor = 1.5;
+                otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
+            }
+            else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
+                logger.info("Turtle Powerup");
+                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+                powerUpSpeedFactor = 0.5;
+                timeToRemovePowerUp = lastWallTimeSec + 15;
+            }
+        }
     }
 
     /**
@@ -220,10 +236,14 @@ public class GameLogic {
             }
 
         }
-        //TODO: Do we need to handle powerups here?
     }
 
-
+    /**
+     * Allows the two sides of the screen to be aware of each other so that the powerup that speeds up
+     * the other sides conveyor can function
+     *
+     * @param otherScreen
+     */
     public void addLinkToOtherScreen(GameLogic otherScreen) {
         this.otherScreen = otherScreen;
     }
@@ -270,7 +290,7 @@ public class GameLogic {
             computerPlayer.updateAI(conveyorBelt.getNextMovableThatIsTouchable(), currentTimeSec);
         }
 
-            // display the hands
+        // display the hands
         for (Hand hand : hands) {
             hand.updateLocation();
         }
@@ -283,12 +303,14 @@ public class GameLogic {
         conveyorBelt.moveItems(currentTimeSec);
         theForce.moveItems(currentTimeSec);
         feedbackDisplay.moveItems(currentTimeSec);
+
         // Release items at the end of the path
         List<Movable> itemsToRemove = conveyorBelt.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
         for (Movable m : itemsToRemove) {
             handleScore(m, RecycleBin.TRASH_BIN);
             gameScreen.removeSprite(m.getSprite());
         }
+
         itemsToRemove = theForce.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
         for (Movable m : itemsToRemove) {
             if (m instanceof Recyclable) {
@@ -310,13 +332,12 @@ public class GameLogic {
             }
         }
         increaseDifficulty();
-
     }
 
     private void updateTime() {
         wallTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
         currentTimeSec += (wallTimeSec - lastWallTimeSec) * timeSpeedFactor * powerUpSpeedFactor;
         lastWallTimeSec = wallTimeSec;
-
     }
+
 }

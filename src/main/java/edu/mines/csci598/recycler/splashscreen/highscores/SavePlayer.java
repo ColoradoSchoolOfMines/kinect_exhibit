@@ -6,7 +6,14 @@ import javax.swing.*;
 
 public class SavePlayer {
     GameManager man;
-    
+
+    /**
+     * This is the hand-off between end-of-game and the splash screen
+     * It will record the score, take a photo, grab initials and store it
+     * to a top ten flat file.
+     *
+     * @param score      the score that the player(s) achieved
+     */
     public void submitPlayerScore(long score) {
 
         ImageIcon image = takePhoto( man );
@@ -19,7 +26,15 @@ public class SavePlayer {
 
         startSplashProcess();
     }
-    
+
+    /**
+     * This is the hand-off between end-of-game and the splash screen
+     * It will record the score, take a photo, grab initials and store it
+     * to a top ten flat file.
+     *
+     * @param score      the score that the player(s) achieved
+     * @param man        the game manager allows us to take the photo
+     */
     public void submitPlayerScore( long score, GameManager man ) {
         this.man = man;
         

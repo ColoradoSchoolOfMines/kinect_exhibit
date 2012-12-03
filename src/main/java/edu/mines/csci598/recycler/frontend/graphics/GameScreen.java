@@ -151,4 +151,20 @@ public class GameScreen {
         }
     }
 
+    /**
+     * Preloads all of the gameScreen images so that they are ready to be used
+     */
+    public void preLoadImages(){
+        ResourceManager resourceManager = ResourceManager.getInstance();
+        background1.getImage();
+        background2.getImage();
+        backgroundChutes.getImage();
+        backgroundScoreFrame.getImage();
+        backgroundFrame.getImage();
+
+        for (Sprite bin : recycleBinSprites) {
+            bin.getImage();
+        }
+    }
+
 }
