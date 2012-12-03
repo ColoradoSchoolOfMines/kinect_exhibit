@@ -24,7 +24,7 @@ public class HighScoreScreen implements SplashScreenSection {
 	private static final Font SCORE_LIST_SCORE_FONT = new Font("SansSerif", Font.PLAIN, 16);
 	private static final Font INDIVIDUAL_NAME_FONT = new Font("SansSerif", Font.BOLD, 32);
 	
-	private static final int TIMER_DELAY = 5000;
+	private static final int TIMER_DELAY = 200;
 	
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;
@@ -32,7 +32,9 @@ public class HighScoreScreen implements SplashScreenSection {
 	private Timer scoreSwitch;
     private Point topLeft;
     private Point bottomRight;
-    private UpdateScreenCallback callback;
+    private UpdateScreenCallback updateScreenCallback;
+    private CycleScreenCallback cycleScreenCallback;
+    private int timerUpdateCount = 0;
 
 	public HighScoreScreen() {
 		top10Scores = getTop10Scores();
@@ -46,19 +48,19 @@ public class HighScoreScreen implements SplashScreenSection {
 	private void drawDivision(Graphics2D g) {
 		int height = bottomRight.y - topLeft.y;
 		int width = bottomRight.x - topLeft.x;
-		
-		int topLeftX = 0;
-		int topLeftY = 0;
-		int bottomRightX = width - DIVISION_PIXELS_FROM_RIGHT;
-		int bottomRightY = height;
+
+		int topLeftX = topLeft.x;
+		int topLeftY = topLeft.y;
+		int bottomRightX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
+		int bottomRightY = topLeft.y + height;
 		Polygon individualScoreRectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		g.setColor(new Color(250, 250, 250));
 		g.fillPolygon(individualScoreRectangle);
-		
-		topLeftX = width - DIVISION_PIXELS_FROM_RIGHT;
-		topLeftY = 0;
-		bottomRightX = width;
-		bottomRightY = height;
+
+		topLeftX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
+		topLeftY = topLeft.y;
+		bottomRightX = topLeft.x + width;
+		bottomRightY = topLeft.y + height;
 		Polygon scoreListingRectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		g.setColor(new Color(80, 80, 80));
 		g.fillPolygon(scoreListingRectangle);
@@ -83,10 +85,11 @@ public class HighScoreScreen implements SplashScreenSection {
 		int extraHeight = height - neededHeight;
 		int extraPadding = Math.max(MIN_PADDING_BETWEEN, MIN_PADDING_BETWEEN + extraHeight / (totalScores - 1));
 		
-		int topLeftX = width - DIVISION_PIXELS_FROM_RIGHT;
-		int topLeftY = MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
+		int topLeftX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
+		int topLeftY = topLeft.y + MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
+        int bottomRightX = topLeft.x + width;
         int bottomRightY = topLeftY + SCORE_BOX_HEIGHT;
-		Polygon rectangle = getRectangle(topLeftX, topLeftY, width, bottomRightY);
+		Polygon rectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		if (selected) {
 			g.setColor(SELECTED_BACKGROUND_COLOR);
@@ -113,7 +116,7 @@ public class HighScoreScreen implements SplashScreenSection {
 		fontMetrics = g.getFontMetrics();
 		fontBounds = fontMetrics.getStringBounds(Double.toString(highScore.getPlayerScore()), g);
 		topPadding = (int) ((SCORE_BOX_HEIGHT - fontBounds.getHeight()) / 2) + fontMetrics.getAscent();
-		fontStartX = (int) (width - SCORE_BOX_INNER_LEFT_RIGHT_PADDING - fontBounds.getWidth());
+		fontStartX = topLeft.x + (int) (width - SCORE_BOX_INNER_LEFT_RIGHT_PADDING - fontBounds.getWidth());
 		fontStartY = topLeftY + topPadding;
 		g.drawString(Double.toString(highScore.getPlayerScore()), fontStartX, fontStartY);
 	}
@@ -129,8 +132,18 @@ public class HighScoreScreen implements SplashScreenSection {
 		
 		int topPadding = (height - PICTURE_HEIGHT) / 2;
 		int leftPadding = ((width - DIVISION_PIXELS_FROM_RIGHT) - PICTURE_WIDTH) / 2;
-		Polygon innerFrame = getRectangle(leftPadding, topPadding, leftPadding + PICTURE_WIDTH, topPadding + PICTURE_HEIGHT);
-		Polygon outerFrame = getRectangle(leftPadding - FRAME_PADDING, topPadding - FRAME_PADDING, leftPadding + PICTURE_WIDTH + FRAME_PADDING, topPadding + PICTURE_HEIGHT + FRAME_PADDING);
+
+        int topLeftX = topLeft.x + leftPadding;
+        int topLeftY = topLeft.y + topPadding;
+        int bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH;
+        int bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT;
+		Polygon innerFrame = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+
+        topLeftX = topLeft.x + leftPadding - FRAME_PADDING;
+        topLeftY = topLeft.y + topPadding - FRAME_PADDING;
+        bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + FRAME_PADDING;
+        bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + FRAME_PADDING;
+		Polygon outerFrame = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		g.setColor(new Color(253, 253, 253));
 		g.fillPolygon(outerFrame);
@@ -143,8 +156,8 @@ public class HighScoreScreen implements SplashScreenSection {
 		g.setFont(INDIVIDUAL_NAME_FONT);
 		FontMetrics fontMetrics = g.getFontMetrics();
 		Rectangle2D fontBounds = fontMetrics.getStringBounds(score.getPlayerInitials(), g);
-		int topFontPadding = (int) (topPadding + innerFrame.getBounds2D().getHeight() + FRAME_PADDING + SCORE_PADDING);
-		int leftFontPadding = (int) (((width - DIVISION_PIXELS_FROM_RIGHT) - fontBounds.getWidth()) / 2);
+		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + FRAME_PADDING + SCORE_PADDING);
+		int leftFontPadding = topLeft.x + (int) (((width - DIVISION_PIXELS_FROM_RIGHT) - fontBounds.getWidth()) / 2);
 		g.setColor(SELECTED_TEXT_COLOR);
 		g.drawString(score.getPlayerInitials(), leftFontPadding, topFontPadding);
 	}
@@ -156,10 +169,11 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 
     @Override
-    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback callback) {
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
-        this.callback = callback;
+        this.updateScreenCallback = updateScreenCallback;
+        this.cycleScreenCallback = cycleScreenCallback;
 
         scoreSwitch = new Timer();
         scoreSwitch.scheduleAtFixedRate(new TimerTask() {
@@ -167,7 +181,13 @@ public class HighScoreScreen implements SplashScreenSection {
             public void run() {
                 if (top10Scores.size() > 0)
                     selectedScore = (selectedScore + 1) % top10Scores.size();
-                HighScoreScreen.this.callback.updateScreen();
+                HighScoreScreen.this.updateScreenCallback.updateScreen();
+
+                timerUpdateCount++;
+
+                if (timerUpdateCount == 10) {
+                    HighScoreScreen.this.cycleScreenCallback.cycleScreen(HighScoreScreen.this);
+                }
             }
         }, TIMER_DELAY, TIMER_DELAY);
     }
