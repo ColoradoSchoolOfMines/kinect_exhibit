@@ -58,7 +58,7 @@ public class TestApp extends JFrame {
 
     private static String convertToHtml(String text)
     {
-        return "<html>" + text.replaceAll("\n", "<brt c>");
+        return "<html>" + text.replaceAll("\n", "<br />") +"</html>";
     }
 
     private List<PlayerHighScoreInformation> getPlayerHighScores() {
