@@ -93,4 +93,9 @@ public class BinFeedback implements Displayable, Movable {
         motionState = state;
     }
 
+    @Override
+    public void reactToCollision(Hand hand, double travelTime) {
+        throw new IllegalStateException("BinFeedback should not be reacting to any collisions!");
+    }
+
 }

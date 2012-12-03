@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.frontend;
 
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 import java.util.LinkedList;
@@ -38,12 +39,11 @@ public class RecycleBins {
      * @return
      */
     public RecycleBin findBinForFallingRecyclable(Movable m) {
-
         if (!(m instanceof Recyclable)) {
             throw new IllegalStateException("Something is falling into a bin that shouldn't be (not a recyclable)!");
         }
 
-        int yCord = m.getSprite().getY();
+        int yCoord = m.getSprite().getY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
         // left of the conveyor we only need to check which way it's going and the y coordinates
@@ -51,7 +51,7 @@ public class RecycleBins {
             if ((m.getMotionState() == MotionState.FALL_LEFT && bin.getSide() == RecycleBin.ConveyorSide.LEFT) ||
                     (m.getMotionState() == MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
 
-                if (yCord >= bin.getMinY() && yCord <= bin.getMaxY()) {
+                if (yCoord >= bin.getMinY() && yCoord <= bin.getMaxY()) {
                     return bin;
                 }
             }
@@ -104,7 +104,6 @@ public class RecycleBins {
     /**
      *  sets up the location of each of the bins with trash last since it is the last accessed bin
      */
-    //TODO: Get images for right side bins and apply those
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT,  PLASTIC_MIN_Y,
@@ -145,10 +144,9 @@ public class RecycleBins {
     public static final String PLASTIC_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_plastic_empty.png";
 
     public static final int PAPER_MIN_Y = 401;
-    public static final int PAPER_MAX_Y = 827;
-    //TODO: Replace with empty image when Kyle finishes them
-    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_little.png";
-    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_little.png";
+    public static final int PAPER_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
+    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_empty.png";
 
     public static final int HAZARD_MIN_Y = 173;
     public static final int HAZARD_MAX_Y = 547;
@@ -156,7 +154,7 @@ public class RecycleBins {
     public static final String HAZARD_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_hazard_empty.png";
 
     public static final int GLASS_MIN_Y = 548;
-    public static final int GLASS_MAX_Y = 1033;
+    public static final int GLASS_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
     public static final String GLASS_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_glass_empty.png";
     public static final String GLASS_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_glass_empty.png";
 

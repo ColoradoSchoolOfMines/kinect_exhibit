@@ -1,5 +1,8 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import edu.mines.csci598.recycler.frontend.RecycleBin;
+import edu.mines.csci598.recycler.frontend.RecycleBins;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
@@ -74,12 +77,6 @@ public class GameScreen {
 
         drawHands(g2d, canvas);
         drawTextSprites(g2d);
-//For debugging recycle bin locations
-//        g2d.setColor(Color.WHITE);
-//        g2d.drawLine(200,(int)( RecycleBins.GLASS_MIN_Y*GraphicsConstants.SCALE_FACTOR), 700, (int)(RecycleBins.GLASS_MIN_Y*GraphicsConstants.SCALE_FACTOR));
-//        g2d.drawLine(0,(int)(RecycleBins.PAPER_MIN_Y*GraphicsConstants.SCALE_FACTOR), 200,(int)(RecycleBins.PAPER_MIN_Y*GraphicsConstants.SCALE_FACTOR));
-//        g2d.drawLine(200,(int)( RecycleBins.GLASS_MAX_Y*GraphicsConstants.SCALE_FACTOR), 700,(int)(RecycleBins.GLASS_MAX_Y*GraphicsConstants.SCALE_FACTOR));
-//        g2d.drawLine(0,(int)(RecycleBins.PAPER_MAX_Y*GraphicsConstants.SCALE_FACTOR), 200,(int)(RecycleBins.PAPER_MAX_Y*GraphicsConstants.SCALE_FACTOR));
     }
 
     /**
