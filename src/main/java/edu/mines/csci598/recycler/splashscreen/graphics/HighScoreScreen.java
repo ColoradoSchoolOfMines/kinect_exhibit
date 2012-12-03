@@ -85,9 +85,8 @@ public class HighScoreScreen implements SplashScreenSection {
 		
 		int topLeftX = width - DIVISION_PIXELS_FROM_RIGHT;
 		int topLeftY = MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
-		int bottomRightX = width;
-		int bottomRightY = topLeftY + SCORE_BOX_HEIGHT;
-		Polygon rectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+        int bottomRightY = topLeftY + SCORE_BOX_HEIGHT;
+		Polygon rectangle = getRectangle(topLeftX, topLeftY, width, bottomRightY);
 		
 		if (selected) {
 			g.setColor(SELECTED_BACKGROUND_COLOR);
@@ -166,7 +165,8 @@ public class HighScoreScreen implements SplashScreenSection {
         scoreSwitch.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                selectedScore = (selectedScore + 1) % top10Scores.size();
+                if (top10Scores.size() > 0)
+                    selectedScore = (selectedScore + 1) % top10Scores.size();
                 HighScoreScreen.this.callback.updateScreen();
             }
         }, TIMER_DELAY, TIMER_DELAY);
@@ -176,7 +176,8 @@ public class HighScoreScreen implements SplashScreenSection {
     public void draw(Graphics2D g) {
         drawDivision(g);
         drawScoresList(top10Scores, selectedScore, g);
-        drawScore(top10Scores.get(selectedScore), g);
+        if (!top10Scores.isEmpty())
+            drawScore(top10Scores.get(selectedScore), g);
     }
 
     @Override
