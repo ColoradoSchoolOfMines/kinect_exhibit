@@ -44,7 +44,7 @@ public class StrikeBar {
      * @paramrecyclable
      */
 
-    public StrikeBar(GameStatusDisplay gameStatusDisplay){
+    public StrikeBar(GameStatusDisplay gameStatusDisplay) {
         this.gameStatusDisplay = gameStatusDisplay;
         gameOver = new GameOver(gameStatusDisplay.getSide());
         movables = new ArrayList<Movable>();
@@ -52,7 +52,7 @@ public class StrikeBar {
         strikeBoxes = new ArrayList<Coordinate>();
 
         int xStart;
-        if(gameStatusDisplay.getSide() == Side.LEFT){
+        if(gameStatusDisplay.getSide() == Side.LEFT) {
             xStart = LEFT_STRIKE_BAR_X;
         }
         else {
@@ -68,7 +68,7 @@ public class StrikeBar {
         if (strikes > MAX_STRIKES) { //Still playing when game over, so don't add more strikes
             image.setRemovable(true);
         }
-        else if (strikes < MAX_STRIKES){
+        else if (strikes < MAX_STRIKES) {
             movables.add(strikes, image);
             Path p = movables.get(strikes).getPath();
             p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
@@ -89,9 +89,7 @@ public class StrikeBar {
             strikes--;
             movables.get(strikes).setRemovable(true);
             movables.remove(strikes);
-
         }
-
     }
 
 }

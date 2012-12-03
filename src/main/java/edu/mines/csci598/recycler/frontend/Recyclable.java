@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class Recyclable implements Displayable, Movable {
+
     private static final Logger logger = Logger.getLogger(Recyclable.class);    
     
     private Sprite sprite;
@@ -52,7 +53,7 @@ public class Recyclable implements Displayable, Movable {
 
     public boolean isNotTrash(){
         boolean ret = true;
-        if(type==RecyclableType.TRASH)ret = false;
+        if(type == RecyclableType.TRASH)ret = false;
         return ret;
     }
 
@@ -68,30 +69,27 @@ public class Recyclable implements Displayable, Movable {
         return currentMotion;
     }
     
-    public boolean isTouchable(){
+    public boolean isTouchable() {
         return currentMotion.isTouchable();
     }
 
-    public void setRemovable(boolean state){
+    public void setRemovable(boolean state) {
         removable = state;
     }
 
     @Override
-    public boolean isRemovable(){
+    public boolean isRemovable() {
         return removable;
     }
 
-
     @Override
-    public Path getPath(){
+    public Path getPath() {
     	return path;
     }
     
-    public void setPath(Path path){
+    public void setPath(Path path) {
     	this.path = path;
     }
-
-
 
     /**
      * checks for a collision with the given point.
@@ -116,6 +114,5 @@ public class Recyclable implements Displayable, Movable {
 	public String toString(){
 		return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
 	}
-
 
 }

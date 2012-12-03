@@ -32,7 +32,7 @@ public enum SoundEffectEnum {
     private SoundEffect soundEffect;
     private static final Logger logger = Logger.getLogger(SoundEffectEnum.class);
 
-    private SoundEffectEnum(String soundPath){
+    private SoundEffectEnum(String soundPath) {
         this.soundPath = this.soundPath;
         this.soundEffect = new SoundEffect(soundPath);
     }
@@ -41,13 +41,12 @@ public enum SoundEffectEnum {
         return soundPath;
     }
 
-    public SoundEffect getSoundEffect(){
+    public SoundEffect getSoundEffect() {
         return soundEffect;
     }
 
-    public void playSound(){
+    public void playSound() {
         soundEffect.play();
     }
-
 
 }

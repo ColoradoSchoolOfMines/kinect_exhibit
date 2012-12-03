@@ -14,7 +14,7 @@ public enum RecyclableType {
     private String[] imagePaths;
     private static final Logger logger = Logger.getLogger(RecyclableType.class);
 
-    private RecyclableType(String[] imagePaths){
+    private RecyclableType(String[] imagePaths) {
     	this.imagePaths = imagePaths;
     }
 
@@ -22,7 +22,7 @@ public enum RecyclableType {
 		return imagePaths;
 	}
 
-    public static void preLoadImages(){
+    public static void preLoadImages() {
         ResourceManager resourceManager = ResourceManager.getInstance();
         for(RecyclableType r : RecyclableType.values()){
             for(String s : r.getImagePaths()){
@@ -30,7 +30,7 @@ public enum RecyclableType {
                 resourceManager.getImage(s);
 
             }
-
         }
     }
+
 }

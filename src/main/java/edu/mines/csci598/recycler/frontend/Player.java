@@ -13,6 +13,7 @@ import edu.mines.csci598.recycler.backend.GameManager;
  * To change this template use File | Settings | File Templates.
  */
 public class Player {
+
     PlayerHand primary;
     PlayerHand auxiliary;
 

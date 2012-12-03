@@ -10,35 +10,36 @@ import org.apache.log4j.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class Score {
+
     private int scoreTotal;
     private static final Logger logger = Logger.getLogger(Score.class);
 
-    public Score(){
+    public Score() {
         logger.trace("Constructing new Score Object.");
         init();
     }
 
-    public void init(){
+    public void init() {
         scoreTotal = 0;
         logger.trace("Score Initialized: " + scoreTotal);
     }
 
-    public synchronized void increaseScore(){
+    public synchronized void increaseScore() {
         scoreTotal++;
         logger.debug("Score increased: " + scoreTotal);
     }
 
-    public synchronized void decreaseScore(){
+    public synchronized void decreaseScore() {
         scoreTotal--;
         logger.debug("Score decreased: " + scoreTotal);
     }
 
-    public int getScore(){
+    public int getScore() {
         logger.trace("Returning score: " + scoreTotal);
         return scoreTotal;
     }
 
-    public String getStringScore(){
+    public String getStringScore() {
         logger.trace("Returning string score: " + scoreTotal);
         return Integer.toString(scoreTotal);
     }

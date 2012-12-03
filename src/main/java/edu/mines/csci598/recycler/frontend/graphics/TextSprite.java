@@ -10,10 +10,12 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class TextSprite {
+
     private Font font;
     private int x, y;
     private String string;
     private Color color;
+
     public TextSprite(String s,Font f, Color c, int x, int y){
         string = s;
         font = f;
@@ -21,9 +23,7 @@ public class TextSprite {
 
         this.x = x;
         this.y = y;
-
     }
-
 
     public Color getColor() {
         return color;
@@ -63,4 +63,5 @@ public class TextSprite {
     public void setMessage(String string){
         this.string = string;
     }
+
 }

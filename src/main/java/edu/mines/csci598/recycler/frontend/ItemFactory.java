@@ -57,8 +57,6 @@ public final class ItemFactory {
         PowerUp.PowerUpType type = PowerUp.PowerUpType.values()[randomChoiceIndex];
         return new PowerUp(type, path, type.getImage());
     }
-    
-
 
 	/**
 	 * Generates new item if necessary
@@ -83,8 +81,9 @@ public final class ItemFactory {
 		}
 		return movable;
     }
-    public Recyclable generateItemForDebugging(Path outputPath){
-        Recyclable returned = generateRandom(outputPath,1);
+
+    public Recyclable generateItemForDebugging(Path outputPath) {
+        Recyclable returned = generateRandom(outputPath, 1);
         return returned;
     }
 	
@@ -118,10 +117,11 @@ public final class ItemFactory {
 	 * @param pctToMaxDifficulty
 	 */
 	public void increaseGenerationRate(double pctToMaxDifficulty) {
-		if(pctToMaxDifficulty < 0 || pctToMaxDifficulty > 1){
+		if(pctToMaxDifficulty < 0 || pctToMaxDifficulty > 1) {
 			throw new IllegalArgumentException("Can only handle times between 0% and 100% of the game's time to max difficulty");
 		}
 		double timeRange = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
 		meanTimeBetweenItemGeneration = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - (timeRange * pctToMaxDifficulty);
 	}
+
 }
