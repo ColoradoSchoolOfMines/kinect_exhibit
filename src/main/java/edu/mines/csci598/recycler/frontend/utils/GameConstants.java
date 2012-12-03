@@ -66,6 +66,15 @@ public final class GameConstants {
 	 */
 	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
-    public static final int ITEM_PATH_END = 200;
+    /**
+     * The distance of the path items travel (x direction) into a bin after being swiped
+     */
+    public static final int ITEM_PATH_END = 225;
+
+    /**
+     * The time range it takes for the item to travel to a bin after being swiped
+     */
+    public static final double MIN_ITEM_TRAVEL_TIME = 0.3;
+    public static final double MAX_ITEM_TRAVEL_TIME = 2;
 }
 

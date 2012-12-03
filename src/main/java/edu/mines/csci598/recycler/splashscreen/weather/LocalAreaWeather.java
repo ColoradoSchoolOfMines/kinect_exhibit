@@ -30,13 +30,13 @@ public class LocalAreaWeather {
             return parseWeatherXML(weatherStream);
         }
         catch (IOException ioe) {
-            log.severe("IOException occured: " + ioe);
+            log.severe("IOException occurred: " + ioe);
         }
         catch (ParserConfigurationException pce) {
-            log.severe("ParserConfigurationException occured: " + pce);
+            log.severe("ParserConfigurationException occurred: " + pce);
         }
         catch (SAXException spe) {
-            log.severe("SAX Parser Exception occured: " + spe);
+            log.severe("SAX Parser Exception occurred: " + spe);
         }
         return null;
     }

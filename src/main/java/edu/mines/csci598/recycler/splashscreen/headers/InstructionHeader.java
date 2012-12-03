@@ -1,31 +1,32 @@
 package edu.mines.csci598.recycler.splashscreen.headers;
 
 
+import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
+import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
+import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class InstructionHeader extends JPanel {
+public class InstructionHeader implements SplashScreenSection {
 
     private Image image;
 
     public InstructionHeader() {
-        image = new ImageIcon(this.getClass().getResource("instructions_half.png")).getImage();
+        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.png").getImage();
 
     }
 
-    public void paint(Graphics g) {
-        Graphics2D graphics2D = (Graphics2D)g;
-        graphics2D.drawImage(image, 0, 0, null);
+    @Override
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
     }
 
-    public static void main(String[] arg) {
-        JFrame mainFrame = new JFrame();
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setSize(1280, 720);
+    @Override
+    public void draw(Graphics2D g) {
+    }
 
-        InstructionHeader instructionHeader = new InstructionHeader();
-        mainFrame.add(instructionHeader);
-
-        mainFrame.setVisible(true);
+    @Override
+    public void stop() {
     }
 }
+
