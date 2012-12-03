@@ -16,6 +16,7 @@ public class PlayerOptionsScreen {
     private java.util.List<Hand> hands;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private long previousTime;
+    private GameManager gameManager;
 
     private Sprite background;
     int countdown;
@@ -24,11 +25,13 @@ public class PlayerOptionsScreen {
             background = new Sprite("src/main/resources/SpriteImages/playerSelection.jpg",0,0);
             handSprites = new ArrayList<Sprite>();
             hands = new ArrayList<Hand>();
+            this.gameManager = gameManager;
 
-            for (int i = 0; i < 4; i++) {
-                hands.add(new PlayerHand(gameManager, 1));
-                addHandSprite(hands.get(hands.size() - 1).getSprite());
-            }
+            //for (int i = 0; i < 4; i++) {
+                Hand tempHand = new PlayerHand(gameManager, 0);
+                hands.add(tempHand);
+                addHandSprite(tempHand.getSprite());
+           // }
 
             textSpriteHolders = new ArrayList<TextSpritesHolder>();
 
@@ -49,7 +52,7 @@ public class PlayerOptionsScreen {
 
         public void paint(Graphics2D g2d, Component canvas) {
             g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
-       //    drawTextSprites(g2d);
+            drawTextSprites(g2d);
             drawHands(g2d, canvas);
         }
     /**
@@ -93,6 +96,7 @@ public class PlayerOptionsScreen {
     public void updateThis() {
         for (Hand hand : hands) {
             hand.updateLocation();
+            System.out.println(hand.getX());
         }
 
         if ((System.currentTimeMillis() / 1000) > previousTime + 1) {
