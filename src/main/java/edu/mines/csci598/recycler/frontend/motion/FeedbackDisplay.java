@@ -1,11 +1,7 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.Recyclable;
-import edu.mines.csci598.recycler.frontend.RecyclableType;
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.BinFeedback;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 
 import java.util.List;
 
@@ -17,36 +13,46 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class FeedbackDisplay extends ItemMover {
+
     private GameScreen gameScreen;
+    private static final String INCORRECT_SPRITE = "src/main/resources/SpriteImages/FinalSpriteImages/incorrect.png";
+    private static final String CORRECT_SPRITE = "src/main/resources/SpriteImages/FinalSpriteImages/correct.png";
+
+
     public FeedbackDisplay(double initialSpeed) {
         super(initialSpeed);
         gameScreen = GameScreen.getInstance();
     }
 
-    public void addWrong(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.WRONG);
-    }
-
-    public void addRight(Coordinate c, double currentTimeSec){
-         makeDisplay(c, currentTimeSec, RecyclableType.RIGHT);
-    }
-
-    private void makeDisplay(Coordinate c, double currentTimeSec, RecyclableType recyclableType){
+    public Movable makeDisplay(Coordinate c, double currentTimeSec, boolean isCorrect){
         Path p = new Path(currentTimeSec);
-
         p.addLine(new Line(c,c,0.5));
-        //TODO is there a better way to do this part? Or since it is the only one can we let it slide that this is using recyclables...
-        Recyclable r = new Recyclable(recyclableType,p,recyclableType.getImagePaths()[0]);
-        recyclables.add(r);
-        gameScreen.addSprite(r.getSprite());
+
+        BinFeedback feedback;
+        if (isCorrect) {
+            feedback = new BinFeedback(CORRECT_SPRITE, p);
+            feedback.setRemovable(true);
+        }
+        else {
+            feedback = new BinFeedback(INCORRECT_SPRITE, p);
+            feedback.setRemovable(false);
+        }
+
+
+        movables.add(feedback);
+        gameScreen.addSprite(feedback.getSprite());
+        return feedback;
     }
+
 
     @Override
     public void moveItems(double currentTimeSec){
         super.moveItems(currentTimeSec);
-        List<Recyclable> toRemove = releaseControlOfRecyclablesAtEndOfPath(currentTimeSec);
-        for(Recyclable r : toRemove){
-            gameScreen.removeSprite(r.getSprite());
+        List<Movable> toRemove = releaseControlOfMovablesAtEndOfPath(currentTimeSec);
+        for(Movable m : toRemove){
+            if (m.isRemovable()){
+                gameScreen.removeSprite(m.getSprite());
+            }
         }
     }
 

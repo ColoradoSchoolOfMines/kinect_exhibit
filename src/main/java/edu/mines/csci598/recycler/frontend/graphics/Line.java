@@ -16,6 +16,7 @@ public class Line extends Line2D{
 
 	private final Coordinate startPoint, endPoint;
 	private double timeToComplete;
+
     /**
      * Begining coordinates, ending coordinates and how long the line takes to be traversed. This way based on a time
      * later we can calculate where along the path it is.
@@ -26,27 +27,31 @@ public class Line extends Line2D{
      * @param endY
      * @param timeToComplete
      */
-    public Line(double startX, double startY, double endX, double endY, double timeToComplete ) {
+    public Line(double startX, double startY, double endX, double endY, double timeToComplete) {
         startPoint = new Coordinate(startX, startY);
         endPoint = new Coordinate(endX, endY);
-        this.timeToComplete =timeToComplete;
+        this.timeToComplete = timeToComplete;
     }
-    public Line(double startX, double startY, double endX, double endY, double timeToComplete, double rotation ) {
+
+    public Line(double startX, double startY, double endX, double endY, double timeToComplete, double rotation) {
         startPoint = new Coordinate(startX, startY);
-        endPoint = new Coordinate(endX, endY,rotation);
-        this.timeToComplete =timeToComplete;
+        endPoint = new Coordinate(endX, endY, rotation);
+        this.timeToComplete = timeToComplete;
     }
+
     public Line(Coordinate start, Coordinate end, double timeToComplete ) {
         startPoint = start;
         endPoint = end;
-        this.timeToComplete =timeToComplete;
+        this.timeToComplete = timeToComplete;
     }
-    public Line(Coordinate start, Coordinate end, double timeToComplete, double rotation ) {
+
+    public Line(Coordinate start, Coordinate end, double timeToComplete, double rotation) {
         startPoint = start;
         endPoint = end;
         endPoint.setRotation(rotation);
-        this.timeToComplete =timeToComplete;
+        this.timeToComplete = timeToComplete;
     }
+
     /**
      * Checks whether the given point, with integer coordinates, is on this line.
      * @param point - the point we're wondering about
@@ -66,10 +71,9 @@ public class Line extends Line2D{
     	return ptLineDist(point) <= Math.sqrt(1.0 / Math.sqrt(2.0));
     }
 
-
 	@Override
 	public Rectangle2D getBounds2D() {
-		return new Rectangle2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX()-startPoint.getX(), endPoint.getY()-startPoint.getY());
+		return new Rectangle2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
 	}
 
 	@Override
@@ -107,33 +111,31 @@ public class Line extends Line2D{
 		throw new IllegalArgumentException("Use the coordinate line constructor instead.");
 	}
 
-    public double getTimeToComplete(){
+    public double getTimeToComplete() {
         return timeToComplete;
     }
 
-
     /**
      * Pass in the elapsed time since this line has started to get the coordinates at that time
      * @param time
      * @return Coordinate of where it is at this relative time
      */
-    public Coordinate getCoordinateAtTime(double time){
-
+    public Coordinate getCoordinateAtTime(double time) {
         double x, y;
         if (time <= 0) {
             return startPoint;
-        } else if (time >= timeToComplete) {
-            return endPoint;
-        } else { //we are somewhere in the middle of the line
-
-            double fraction = time / timeToComplete;
-            x = (endPoint.getX()-startPoint.getX()) * fraction + startPoint.getX();
-            y = (endPoint.getY()-startPoint.getY()) * fraction + startPoint.getY();
-            double rotation = (endPoint.getRotation()-startPoint.getRotation())*fraction;
-
-            return new Coordinate(x,y,rotation);
         }
+        else if (time >= timeToComplete) {
+            return endPoint;
+        }
+        else { //we are somewhere in the middle of the line
+            double fraction = time / timeToComplete;
+            x = (endPoint.getX() - startPoint.getX()) * fraction + startPoint.getX();
+            y = (endPoint.getY() - startPoint.getY()) * fraction + startPoint.getY();
+            double rotation = (endPoint.getRotation() - startPoint.getRotation()) * fraction;
 
+            return new Coordinate(x, y, rotation);
+        }
     }
 
 
@@ -142,19 +144,21 @@ public class Line extends Line2D{
      * @param time
      * @return Coordinate of where it is at this relative time
      */
-    public Coordinate getScaledCoordinateAtTime(double time){
+    public Coordinate getScaledCoordinateAtTime(double time) {
         double x, y;
         double scale = GraphicsConstants.SCALE_FACTOR;
         if (time <= 0) {
             return startPoint;
-        } else if (time >= timeToComplete) {
-            return endPoint;
-        } else { //we are somewhere in the middle of the line
-            double fraction = time / timeToComplete;
-            x = ((endPoint.getX()*scale)-(startPoint.getX()*scale)) * fraction + (startPoint.getX()*scale);
-            y = ((endPoint.getY()*scale)-(startPoint.getY()*scale)) * fraction + (startPoint.getY()*scale);
-            return new Coordinate(x,y);
         }
-
+        else if (time >= timeToComplete) {
+            return endPoint;
+        }
+        else { //we are somewhere in the middle of the line
+            double fraction = time / timeToComplete;
+            x = ((endPoint.getX()*scale) - (startPoint.getX()*scale)) * fraction + (startPoint.getX() * scale);
+            y = ((endPoint.getY()*scale) - (startPoint.getY()*scale)) * fraction + (startPoint.getY() * scale);
+            return new Coordinate(x, y);
+        }
     }
+
 }

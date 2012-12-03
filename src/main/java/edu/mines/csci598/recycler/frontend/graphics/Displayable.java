@@ -11,5 +11,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
  * To change this template use File | Settings | File Templates.
  */
 public interface Displayable {
+
     public Sprite getSprite();
+
 }

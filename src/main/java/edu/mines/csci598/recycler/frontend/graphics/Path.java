@@ -15,6 +15,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Path {
+
     List<Line> path = new ArrayList<Line>();
     double startTime;
 
@@ -72,7 +73,6 @@ public class Path {
             }
             elapsedTime = elapsedTime - currentLineTotalTime;
         }
-
         return coordinate;
     }
 
@@ -82,20 +82,21 @@ public class Path {
      * @param currentTimeSec
      * @return
      */
-    public boolean PathFinished(double currentTimeSec){
+    public boolean PathFinished(double currentTimeSec) {
         double totalTime = 0;
-        double elapsedTime = currentTimeSec-startTime;
+        double elapsedTime = currentTimeSec - startTime;
         for(Line l: path){
-            totalTime+=l.getTimeToComplete();
+            totalTime += l.getTimeToComplete();
         }
         return elapsedTime >= totalTime;
     }
     
-    public Coordinate initialPosition(){
+    public Coordinate getInitialPosition(){
          Line l = path.get(0);
-         if(l!=null){
+         if(l != null) {
              return (Coordinate) l.getP1();
-         } else{
+         }
+         else {
              return null;
          }
     }
@@ -107,4 +108,5 @@ public class Path {
     public List<Line> getPath() {
         return path;
     }
+
 }

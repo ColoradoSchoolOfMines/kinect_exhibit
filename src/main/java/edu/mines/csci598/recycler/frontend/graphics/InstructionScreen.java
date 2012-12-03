@@ -15,16 +15,17 @@ import java.util.ArrayList;
  * This class takes care of displaying the splash screen
  */
 public class InstructionScreen {
-    private static final Logger logger = Logger.getLogger(GameScreen.class);
 
+    private static final Logger logger = Logger.getLogger(GameScreen.class);
     private Sprite background;
 
     public InstructionScreen() {
-        background = new Sprite("src/main/resources/SpriteImages/instructions.jpg",0,0);
+        background = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/instructions_full.jpg", 0, 0);
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
     }
+
 }
 

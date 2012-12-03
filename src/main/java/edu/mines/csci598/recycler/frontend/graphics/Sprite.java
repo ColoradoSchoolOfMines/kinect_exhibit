@@ -17,14 +17,12 @@ import java.awt.Image;
 public class Sprite {
 
     Coordinate location;
-
     private String fileName;
 
     public Sprite(String fileName, int x, int y) {
         this.location = new Coordinate(x,y);
         this.fileName = fileName;
         setImage(fileName);
-
     }
 
     /*
@@ -39,10 +37,11 @@ public class Sprite {
 
 
 
-    public void setY(double y){
+    public void setY(int y) {
         location.setY(y);
     }
-    public void setX(double x){
+
+    public void setX(int x) {
         location.setX(x);
     }
 
@@ -108,8 +107,8 @@ public class Sprite {
 	}
 
     public synchronized void setScaledPosition(Coordinate location) {
-        this.location=new Coordinate(location.getX()*GraphicsConstants.REVERSE_SCALE_FACTOR,
-                location.getY()*GraphicsConstants.REVERSE_SCALE_FACTOR,
+        this.location=new Coordinate(location.getX() * GraphicsConstants.REVERSE_SCALE_FACTOR,
+                location.getY() * GraphicsConstants.REVERSE_SCALE_FACTOR,
                 location.getRotation());
     }
 

@@ -1,10 +1,10 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.RecyclableType;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 import org.apache.log4j.Logger;
 
 /**
@@ -17,34 +17,43 @@ import org.apache.log4j.Logger;
  * Time: 9:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Recyclable implements Displayable {
+public class Recyclable implements Displayable, Movable {
+
     private static final Logger logger = Logger.getLogger(Recyclable.class);    
     
     private Sprite sprite;
     private RecyclableType type;
     private MotionState currentMotion;
     private Path path;
+    private boolean removable = true;
 
     public Recyclable(RecyclableType type, Path path, String imagePath) {
         this.type = type;
         this.path = path;
         currentMotion = MotionState.CHUTE;
-        sprite = new Sprite(imagePath, (int)path.initialPosition().getX(), (int)path.initialPosition().getY());
+        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
+    }
+
+    public Recyclable(RecyclableType type, Path path, String imagePath, Boolean removable) {
+        this.removable = removable;
+        this.type = type;
+        this.path = path;
+        currentMotion = MotionState.CHUTE;
+        sprite = new Sprite(imagePath, (int)path.getInitialPosition().getX(), (int)path.getInitialPosition().getY());
     }
 
     @Override
     public Sprite getSprite() {
         return sprite;
     }
-    public boolean isNotAPowerUp(){
-        boolean ret=true;
-        if(type==RecyclableType.ANVIL||type==RecyclableType.RABBIT||type==RecyclableType.TURTLE)
-            ret = false;
-        return ret;
+
+    public void setSprite(Sprite s) {
+        sprite = s;
     }
+
     public boolean isNotTrash(){
         boolean ret = true;
-        if(type==RecyclableType.TRASH)ret = false;
+        if(type == RecyclableType.TRASH)ret = false;
         return ret;
     }
 
@@ -60,15 +69,25 @@ public class Recyclable implements Displayable {
         return currentMotion;
     }
     
-    public boolean isTouchable(){
+    public boolean isTouchable() {
         return currentMotion.isTouchable();
     }
-    
-    public Path getPath(){
+
+    public void setRemovable(boolean state) {
+        removable = state;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return removable;
+    }
+
+    @Override
+    public Path getPath() {
     	return path;
     }
     
-    public void setPath(Path path){
+    public void setPath(Path path) {
     	this.path = path;
     }
 
@@ -95,6 +114,5 @@ public class Recyclable implements Displayable {
 	public String toString(){
 		return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
 	}
-
 
 }

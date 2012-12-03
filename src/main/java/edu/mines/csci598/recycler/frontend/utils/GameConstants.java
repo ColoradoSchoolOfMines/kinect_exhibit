@@ -66,6 +66,6 @@ public final class GameConstants {
 	 */
 	public static final double HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND = 50;
 
-    public static final int ITEM_PATH_END = 225;
+    public static final int ITEM_PATH_END = 200;
 }
 

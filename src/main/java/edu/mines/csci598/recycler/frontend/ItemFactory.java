@@ -1,8 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.util.Random;
@@ -15,14 +15,14 @@ import java.util.Random;
  * Time: 12:22 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class RecyclableFactory {    
+public final class ItemFactory {
 
     /**
      * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
      * generated
      */
     public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
-    private final Logger logger = Logger.getLogger(RecyclableFactory.class);
+    private final Logger logger = Logger.getLogger(ItemFactory.class);
     //logger.setLevel(Level.INFO);
     private final Random rand = new Random();
 	private double nextTimeToGenerate = 0;
@@ -52,40 +52,38 @@ public final class RecyclableFactory {
         return new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
     }
 
-    private Recyclable generateRandomPowerUp(Path path) {
-        int randomChoiceIndex = rand.nextInt(3) + 5;
-        RecyclableType type = RecyclableType.values()[randomChoiceIndex];
-        String[] possibleImages = type.getImagePaths();
-        return new Recyclable(type, path, possibleImages[0]);
+    private PowerUp generateRandomPowerUp(Path path) {
+        int randomChoiceIndex = rand.nextInt(PowerUp.PowerUpType.values().length);
+        PowerUp.PowerUpType type = PowerUp.PowerUpType.values()[randomChoiceIndex];
+        return new PowerUp(type, path, type.getImage());
     }
-    
-
 
 	/**
 	 * Generates new item if necessary
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
-	public Recyclable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
+	public Movable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
         outputPath.setStartTime(currentTimeSec);
-		Recyclable returned = null;
+		Movable movable = null;
 		if (needsItemGeneration(currentTimeSec)) {
             // a very simple way to have powerups not generated frequently
             Random randomGenerator = new Random();
             int ranNum = randomGenerator.nextInt(100);
             if (ranNum < POWERUP_FREQUENCY_PERCENTAGE) {
-            	returned = generateRandomPowerUp(outputPath);
-                logger.debug("Powerup generated: " + returned);
+            	movable = generateRandomPowerUp(outputPath);
+                logger.debug("Powerup generated: " + movable);
             }
             else {
                 // Recyclables initially take the path of the conveyor belt
-            	returned = generateRandom(outputPath, numberOfItemTypes);
-                logger.debug("Item generated: " + returned);
+            	movable = generateRandom(outputPath, numberOfItemTypes);
+                logger.debug("Item generated: " + movable);
             }
 		}
-		return returned;
+		return movable;
     }
-    public Recyclable generateItemForDebugging(Path outputPath){
-        Recyclable returned = generateRandom(outputPath,1);
+
+    public Recyclable generateItemForDebugging(Path outputPath) {
+        Recyclable returned = generateRandom(outputPath, 1);
         return returned;
     }
 	
@@ -119,10 +117,11 @@ public final class RecyclableFactory {
 	 * @param pctToMaxDifficulty
 	 */
 	public void increaseGenerationRate(double pctToMaxDifficulty) {
-		if(pctToMaxDifficulty < 0 || pctToMaxDifficulty > 1){
+		if(pctToMaxDifficulty < 0 || pctToMaxDifficulty > 1) {
 			throw new IllegalArgumentException("Can only handle times between 0% and 100% of the game's time to max difficulty");
 		}
 		double timeRange = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - GameConstants.MIN_TIME_BETWEEN_GENERATIONS;
 		meanTimeBetweenItemGeneration = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS - (timeRange * pctToMaxDifficulty);
 	}
+
 }
