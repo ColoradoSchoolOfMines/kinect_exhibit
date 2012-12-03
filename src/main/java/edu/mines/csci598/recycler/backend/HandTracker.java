@@ -200,7 +200,7 @@ public class HandTracker {
     }
     
     private BufferedImage getBufferedImage( MapMetaData metaData ){
-        width = metaData.getFullXRes();
+        /*width = metaData.getFullXRes();
         height = metaData.getFullYRes();
 
         byte[] imgbytes = new byte[width*height];
@@ -209,8 +209,8 @@ public class HandTracker {
         Raster raster = Raster.createPackedRaster(dataBuffer, width, height, 8, null);
         
         // This line may result in error, need to check it more thoroughly
-        BufferedImage bimg = new BufferedImage( width, height, 8 );
-        bimg.setData(raster);
+        BufferedImage bimg = new BufferedImage( width, height, 8 );*/
+        //bimg.setData(raster);
         return bimg;
     }
 }

@@ -18,6 +18,11 @@
     </properties>
     <repositories>
         <repository>
+          <id>javacpp</id>
+          <name>JavaCPP</name>
+          <url>http://maven2.javacpp.googlecode.com/git/</url>
+        </repository>
+        <repository>
             <id>twitter4j.org</id>
             <name>twitter4j.org Repository</name>
             <url>http://twitter4j.org/maven2</url>
@@ -31,6 +36,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+          <groupId>com.googlecode.javacpp</groupId>
+          <artifactId>javacpp</artifactId>
+          <version>0.3</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
