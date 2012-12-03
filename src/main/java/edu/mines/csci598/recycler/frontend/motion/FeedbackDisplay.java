@@ -31,12 +31,14 @@ public class FeedbackDisplay extends ItemMover {
         BinFeedback feedback;
         if (isCorrect) {
             feedback = new BinFeedback(CORRECT_SPRITE, p);
+            feedback.setRemovable(true);
         }
         else {
             feedback = new BinFeedback(INCORRECT_SPRITE, p);
+            feedback.setRemovable(false);
         }
 
-        feedback.setRemovable(false);
+
         movables.add(feedback);
         gameScreen.addSprite(feedback.getSprite());
         return feedback;
