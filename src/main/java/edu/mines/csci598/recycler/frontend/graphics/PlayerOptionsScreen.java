@@ -11,13 +11,12 @@ import java.util.*;
 import java.util.List;
 
 public class PlayerOptionsScreen {
+
     private static final Logger logger = Logger.getLogger(GameScreen.class);
     private ArrayList<Sprite> handSprites;
     private java.util.List<Hand> hands;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private long previousTime;
-    private GameManager gameManager;
-
     private Sprite background;
     int countdown;
 
@@ -25,13 +24,10 @@ public class PlayerOptionsScreen {
             background = new Sprite("src/main/resources/SpriteImages/playerSelection.jpg",0,0);
             handSprites = new ArrayList<Sprite>();
             hands = new ArrayList<Hand>();
-            this.gameManager = gameManager;
 
-            //for (int i = 0; i < 4; i++) {
-                Hand tempHand = new PlayerHand(gameManager, 0);
-                hands.add(tempHand);
-                addHandSprite(tempHand.getSprite());
-           // }
+            Hand tempHand = new PlayerHand(gameManager, 0);
+            hands.add(tempHand);
+            addHandSprite(tempHand.getSprite());
 
             textSpriteHolders = new ArrayList<TextSpritesHolder>();
 
@@ -55,6 +51,7 @@ public class PlayerOptionsScreen {
             drawTextSprites(g2d);
             drawHands(g2d, canvas);
         }
+
     /**
      * Adds a hand sprite to the hands array
      * @param s
@@ -64,7 +61,6 @@ public class PlayerOptionsScreen {
     }
 
     private void drawHands(Graphics2D g2d, Component canvas){
-
         // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
         // a hand is not available.
         for (Sprite hand: handSprites) {
@@ -74,21 +70,20 @@ public class PlayerOptionsScreen {
                 g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
             }
         }
-
     }
 
     /**
      * Draws the text sprites that are held in a TextSpriteHolder
      * @param g
      */
-    private void  drawTextSprites(Graphics2D g){
-        for(TextSpritesHolder holder : textSpriteHolders){
+    private void  drawTextSprites(Graphics2D g) {
+        for(TextSpritesHolder holder : textSpriteHolders) {
             for(TextSprite textSprite : holder.getTextSprites()){
                 g.setColor(textSprite.getColor());
                 g.setFont(textSprite.getFont());
                 int x = (int)Math.floor(textSprite.getX()*GraphicsConstants.SCALE_FACTOR);
                 int y = (int)Math.floor(textSprite.getY()*GraphicsConstants.SCALE_FACTOR);
-                g.drawString(textSprite.getMessage(), x,y);
+                g.drawString(textSprite.getMessage(), x, y);
             }
         }
     }
@@ -96,12 +91,14 @@ public class PlayerOptionsScreen {
     public void updateThis() {
         for (Hand hand : hands) {
             hand.updateLocation();
-            System.out.println(hand.getX());
         }
 
         if ((System.currentTimeMillis() / 1000) > previousTime + 1) {
-            if (countdown >= 0)
+            System.out.println("countdown: " + countdown);
+            if (countdown >= 0)   {
                 countdown -= 1;
+                System.out.println("countdown: " + countdown);
+            }
             previousTime = System.currentTimeMillis() / 1000;
         }
     }
@@ -118,4 +115,5 @@ public class PlayerOptionsScreen {
             return PlayerMode.TWO_PLAYER;
         }
     }
+
 }

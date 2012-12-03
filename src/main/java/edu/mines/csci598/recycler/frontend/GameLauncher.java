@@ -46,6 +46,25 @@ public class GameLauncher extends GameState {
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
 
+        boolean computerPlayer = false;
+
+        leftGame = new GameLogic(
+                new RecycleBins(RecycleBins.Side.LEFT),
+                ConveyorBelt.getConveyorBeltPathLeft(),
+                gameManager,
+                leftGameStatusDisplay,
+                false,
+                false);
+        rightGame = new GameLogic(
+                new RecycleBins(RecycleBins.Side.RIGHT),
+                ConveyorBelt.getConveyorBeltPathRight(),
+                gameManager,
+                rightGameStatusDisplay,
+                true,
+                GameConstants.DEBUG_COLLISIONS);
+        leftGame.addLinkToOtherScreen(rightGame);
+        rightGame.addLinkToOtherScreen(leftGame);
+
         gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
 
@@ -57,38 +76,25 @@ public class GameLauncher extends GameState {
         playerOptions = new PlayerOptionsScreen(gameManager);
 	}
 
-    protected void setUpGameSides(PlayerMode mode) {
-        boolean computerPlayer = false;
-        if (mode == PlayerMode.ONE_PLAYER) {
-            computerPlayer = true;
-        }
-        leftGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.LEFT),
-                ConveyorBelt.getConveyorBeltPathLeft(),
-                gameManager,
-                leftGameStatusDisplay,
-                false,
-                false,
-                false);
-        rightGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.RIGHT),
-                ConveyorBelt.getConveyorBeltPathRight(),
-                gameManager,
-                rightGameStatusDisplay,
-                computerPlayer,
-                true,
-                GameConstants.DEBUG_COLLISIONS);
-        leftGame.addLinkToOtherScreen(rightGame);
-        rightGame.addLinkToOtherScreen(leftGame);
+    protected void setUpPlayerMode(PlayerMode mode) {
+        // if there is a computer player set up the hands for a computer
+        if (mode == PlayerMode.ONE_PLAYER)
+            rightGame.setUpHands(true);
+        else
+            rightGame.setUpHands(false);
+        leftGame.setUpHands(false);
+
     }
 
 	protected void drawThis(Graphics2D g2d) {
         if (gameCanStart) {
             if (!playerOptions.canGameStart()) {
                 playerOptions.paint(g2d, gameManager.getCanvas());
+                System.out.println("drawing options");
             }
             else {
                 gameScreen.paint(g2d, gameManager.getCanvas());
+                System.out.println("drawing game");
             }
         }
         else {
@@ -100,39 +106,41 @@ public class GameLauncher extends GameState {
 		return gameManager;
 	}
 
-	public static void main(String[] args) {
-        Song x = new Song();
-        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
-        x.setLooping(true);
-        x.startPlaying();
-        GameLauncher gm = new GameLauncher();
-		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-		gm.getGameManager().installInputDriver(mouse);
-		gm.getGameManager().setState(gm);
-		gm.getGameManager().run();
-		gm.getGameManager().destroy();
-	}
-
 	public GameLauncher updateThis(float time) {
         if (gameCanStart) {
+          //  System.out.println("can start; " + playerOptions.canGameStart());
             if (!playerOptions.canGameStart()) {
                 playerOptions.updateThis();
             }
             else {
+                System.out.println("can start; " + playerOptions.canGameStart());
                 if (!gameStarted) {
                     gameStarted = true;
-                    setUpGameSides(playerOptions.getPlayerMode());
+                    setUpPlayerMode(playerOptions.getPlayerMode());
                 }
 		        leftGame.updateThis();
 		        rightGame.updateThis();
             }
         }
         else {
-           // if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
                 gameCanStart = true;
-           // }
+            }
         }
 		return this;
 	}
+
+    public static void main(String[] args) {
+        Song x = new Song();
+        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
+        x.setLooping(true);
+        x.startPlaying();
+        GameLauncher gm = new GameLauncher();
+        ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+        gm.getGameManager().installInputDriver(mouse);
+        gm.getGameManager().setState(gm);
+        gm.getGameManager().run();
+        gm.getGameManager().destroy();
+    }
 
 }

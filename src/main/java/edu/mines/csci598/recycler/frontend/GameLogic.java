@@ -50,6 +50,7 @@ public class GameLogic {
     private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
+    private boolean rightSide;
     private GameStatusDisplay gameStatusDisplay;
     //TODO game manager should be removed from this class when the idea of players having hands is dissolved
     private GameManager gameManager;
@@ -57,7 +58,7 @@ public class GameLogic {
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
-                     boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
+                     boolean rightSide, boolean debuggingCollision) {
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
@@ -76,13 +77,35 @@ public class GameLogic {
         startTime = System.currentTimeMillis();
         this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollisions = debuggingCollision;
+        this.rightSide = rightSide;
         strikeBar = new StrikeBar(gameStatusDisplay);
 
         hands = new ArrayList<Hand>();
 
+        // not sure if this needs to be called here since it is called in game launcher
+        setUpHands(false);
+
+        //Add recycle bins to game screen to be drawn
+        for (RecycleBin bin : recycleBins.getRecycleBins()) {
+            if (bin.hasSprite()) {
+                gameScreen.addRecycleBinSprite(bin.getSprite());
+            }
+        }
+        //Add single item to conveyor for debugging collisions.
+        if (this.debuggingCollisions) {
+            logger.debug("Adding recyclable for collision detection");
+            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
+            conveyorBelt.takeControlOfMovable(r);
+            gameScreen.addSprite(r.getSprite());
+        }
+    }
+
+    public void setUpHands(boolean secondPlayerIsComputer) {
+        hands.clear();
+        gameScreen.removeHandSprites();
         // sets up the first player and adds its hands to the gameScreen
         // so that they can be displayed
-        if (!this.playerIsAComputer) {
+        if (!secondPlayerIsComputer) {
             // creates the max number of hands that can be displayed which is 4 (2 per side)
             // startingHand makes sure that 2 different pairs of hands are displayed per side
             int startingHand = 0;
@@ -98,19 +121,6 @@ public class GameLogic {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
             hands.add(computerPlayer.getHand());
-        }
-        //Add recycle bins to game screen to be drawn
-        for (RecycleBin bin : recycleBins.getRecycleBins()) {
-            if (bin.hasSprite()) {
-                gameScreen.addRecycleBinSprite(bin.getSprite());
-            }
-        }
-        //Add single item to conveyor for debugging collisions.
-        if (this.debuggingCollisions) {
-            logger.debug("Adding recyclable for collision detection");
-            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
-            conveyorBelt.takeControlOfMovable(r);
-            gameScreen.addSprite(r.getSprite());
         }
     }
 

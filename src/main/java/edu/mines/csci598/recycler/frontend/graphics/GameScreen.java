@@ -88,7 +88,11 @@ public class GameScreen {
      * @param s - The sprite to add
      */
     public void addSprite(Sprite s) {
-            sprites.add(s);
+        sprites.add(s);
+    }
+
+    public void removeHandSprites() {
+        handSprites.clear();
     }
 
     public boolean removeSprite(Sprite s) {
