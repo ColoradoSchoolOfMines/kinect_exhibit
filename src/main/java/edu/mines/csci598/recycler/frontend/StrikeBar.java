@@ -71,14 +71,12 @@ public class StrikeBar {
         else if (strikes < MAX_STRIKES){
             movables.add(strikes, image);
             Path p = movables.get(strikes).getPath();
-            logger.info("TO: " + strikeBoxes.get(strikes));
             p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
             movables.get(strikes).setPath(p);
             strikes++;
-        }
-        else {
-            strikes++;
-            gameOver.setGameOver(gameStatusDisplay);
+            if (strikes == MAX_STRIKES) {
+                gameOver.setGameOver(gameStatusDisplay);
+            }
         }
     }
 
