@@ -14,21 +14,21 @@ import java.net.URLConnection;
 import static junit.framework.Assert.*;
 
 public class WeatherXMLParserTest {
-    InputStream _weatherStream;
-    InputStream _badWeatherStream;
+    InputStream weatherStream;
+    InputStream badWeatherStream;
     private static final String API_KEY = "b665b08214224103123010";
     private static final String BAD_API_KEY = "b665b08203123010";
     private static final String LOCAL_ZIP = "80401";
 
     @Before
     public void setup() throws IOException {
-        _weatherStream = getClass().getResourceAsStream("weather.xml");
-        _badWeatherStream = getClass().getResourceAsStream("weather-missing.xml");
+        weatherStream = getClass().getResourceAsStream("weather.xml");
+        badWeatherStream = getClass().getResourceAsStream("weather-missing.xml");
     }
 
     @Test
     public void testParseXMLFile() throws IOException, SAXException, ParserConfigurationException {
-        WeatherInformation information = LocalAreaWeather.parseWeatherXML(_weatherStream);
+        WeatherInformation information = LocalAreaWeather.parseWeatherXML(weatherStream);
         assertEquals(11, information.getTemperature());
         assertEquals(0.0, information.getPrecipitation());
         assertEquals(47, information.getHumidity());
@@ -41,7 +41,7 @@ public class WeatherXMLParserTest {
 
     @Test
     public void testParseIncompleteXMLFile() throws IOException, SAXException, ParserConfigurationException {
-        WeatherInformation information = LocalAreaWeather.parseWeatherXML(_badWeatherStream);
+        WeatherInformation information = LocalAreaWeather.parseWeatherXML(badWeatherStream);
         assertEquals(0.0, information.getPrecipitation());
         assertEquals(47, information.getHumidity());
         assertEquals(360, information.getWindDegree());
