@@ -43,7 +43,7 @@ public class RecycleBins {
             throw new IllegalStateException("Something is falling into a bin that shouldn't be (not a recyclable)!");
         }
 
-        int yCord = m.getSprite().getScaledY();
+        int yCord = m.getSprite().getY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
         // left of the conveyor we only need to check which way it's going and the y coordinates
@@ -139,24 +139,24 @@ public class RecycleBins {
     }
 
     //Bin constants
-    public static final int PLASTIC_MIN_Y = 60;
-    public static final int PLASTIC_MAX_Y = 300;
+    public static final int PLASTIC_MIN_Y = 80;
+    public static final int PLASTIC_MAX_Y = 400;
     public static final String PLASTIC_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_plastic_empty.png";
     public static final String PLASTIC_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_plastic_empty.png";
 
-    public static final int PAPER_MIN_Y = 301;
-    public static final int PAPER_MAX_Y = 620;
+    public static final int PAPER_MIN_Y = 401;
+    public static final int PAPER_MAX_Y = 827;
     //TODO: Replace with empty image when Kyle finishes them
     public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_little.png";
     public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_little.png";
 
-    public static final int HAZARD_MIN_Y = 130;
-    public static final int HAZARD_MAX_Y = 410;
+    public static final int HAZARD_MIN_Y = 173;
+    public static final int HAZARD_MAX_Y = 547;
     public static final String HAZARD_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_hazard_empty.png";
     public static final String HAZARD_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_hazard_empty.png";
 
-    public static final int GLASS_MIN_Y = 411;
-    public static final int GLASS_MAX_Y = 775;
+    public static final int GLASS_MIN_Y = 548;
+    public static final int GLASS_MAX_Y = 1033;
     public static final String GLASS_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_glass_empty.png";
     public static final String GLASS_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_glass_empty.png";
 

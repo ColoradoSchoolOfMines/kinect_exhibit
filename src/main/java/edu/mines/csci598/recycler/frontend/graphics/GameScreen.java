@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.RecycleBin;
-import edu.mines.csci598.recycler.frontend.RecycleBins;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
@@ -65,9 +63,10 @@ public class GameScreen {
         g2d.drawImage(backgroundScoreFrame.getImage(), backgroundScoreFrame.getX(), backgroundScoreFrame.getY(), canvas);
 
         for (Sprite sprite : sprites) {
-               g2d.rotate(sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
+               int offset = (int)(GraphicsConstants.SCALE_FACTOR*50);
+               g2d.rotate(sprite.getPosition().getRotation(),sprite.getScaledX()+offset,sprite.getScaledY()+offset);
                g2d.drawImage(sprite.getImage(), sprite.getScaledX(), sprite.getScaledY(), canvas);
-               g2d.rotate(-1.0*sprite.getPosition().getRotation(),sprite.getScaledX()+50,sprite.getScaledY()+50);
+               g2d.rotate(-1.0*sprite.getPosition().getRotation(),sprite.getScaledX()+offset,sprite.getScaledY()+offset);
         }
 
         g2d.drawImage(backgroundChutes.getImage(), backgroundChutes.getX(), backgroundChutes.getY(), canvas);
@@ -75,12 +74,12 @@ public class GameScreen {
 
         drawHands(g2d, canvas);
         drawTextSprites(g2d);
-
-        g2d.setColor(Color.WHITE);
-        g2d.drawLine(200, RecycleBins.GLASS_MIN_Y, 500, RecycleBins.GLASS_MIN_Y);
-        g2d.drawLine(0, RecycleBins.PAPER_MIN_Y, 200, RecycleBins.PAPER_MIN_Y);
-        g2d.drawLine(200, RecycleBins.GLASS_MAX_Y, 500, RecycleBins.GLASS_MAX_Y);
-        g2d.drawLine(0, RecycleBins.PAPER_MAX_Y, 200, RecycleBins.PAPER_MAX_Y);
+//For debugging recycle bin locations
+//        g2d.setColor(Color.WHITE);
+//        g2d.drawLine(200,(int)( RecycleBins.GLASS_MIN_Y*GraphicsConstants.SCALE_FACTOR), 700, (int)(RecycleBins.GLASS_MIN_Y*GraphicsConstants.SCALE_FACTOR));
+//        g2d.drawLine(0,(int)(RecycleBins.PAPER_MIN_Y*GraphicsConstants.SCALE_FACTOR), 200,(int)(RecycleBins.PAPER_MIN_Y*GraphicsConstants.SCALE_FACTOR));
+//        g2d.drawLine(200,(int)( RecycleBins.GLASS_MAX_Y*GraphicsConstants.SCALE_FACTOR), 700,(int)(RecycleBins.GLASS_MAX_Y*GraphicsConstants.SCALE_FACTOR));
+//        g2d.drawLine(0,(int)(RecycleBins.PAPER_MAX_Y*GraphicsConstants.SCALE_FACTOR), 200,(int)(RecycleBins.PAPER_MAX_Y*GraphicsConstants.SCALE_FACTOR));
     }
 
     /**

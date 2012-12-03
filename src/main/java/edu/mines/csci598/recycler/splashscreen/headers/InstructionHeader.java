@@ -9,13 +9,10 @@ public class InstructionHeader extends JPanel {
     private Image image;
 
     public InstructionHeader() {
-        image = new ImageIcon(this.getClass().getResource("instructions_half.png")).getImage();
-
-    }
-
-    public void paint(Graphics g) {
-        Graphics2D graphics2D = (Graphics2D)g;
-        graphics2D.drawImage(image, 0, 0, null);
+        image = new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.png").getImage();
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
+        add(imageLabel);
+        setVisible(true);
     }
 
     public static void main(String[] arg) {
