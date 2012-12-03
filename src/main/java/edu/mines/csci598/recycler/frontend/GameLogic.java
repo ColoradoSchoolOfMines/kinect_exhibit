@@ -130,7 +130,6 @@ public class GameLogic {
             // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
 
             handleCollisions(hand, swipedOffConveyor);
-
         }
     }
 
@@ -155,7 +154,7 @@ public class GameLogic {
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
-                            travelTime,Math.PI*2);
+                            travelTime,Math.PI * 2);
 
                 }
                 else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
@@ -163,7 +162,7 @@ public class GameLogic {
                     RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
                     collideLine = new Line( position.getX(), position.getY(),
                              position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
-                            travelTime,Math.PI*2);
+                            travelTime,Math.PI * 2);
                 }
                 else {
                     throw new IllegalStateException("The hand wasn't moving fast enough to make the conveyor release control!");
@@ -180,7 +179,6 @@ public class GameLogic {
 
             // handle powerups
             handlePowerUps(m);
-
         }
 
         // We now have a list of items that the conveyor belt has released, and they know where they are going.
@@ -234,7 +232,6 @@ public class GameLogic {
                 strikeBar.addStrike(feedback);
                 SoundEffectEnum.INCORRECT.playSound();
             }
-
         }
     }
 
@@ -294,7 +291,6 @@ public class GameLogic {
         for (Hand hand : hands) {
             hand.updateLocation();
         }
-
 
         // Handle existing item collisions
         lookForAndHandleCollisions();

@@ -17,13 +17,14 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GameStatusDisplay implements TextSpritesHolder {
+
     private int score;
     private TextSprite scoreSprite;
     private final Side side;
     String scoreFormat = "%06d";
     private boolean gameOver;
 
-    public GameStatusDisplay( Side side){
+    public GameStatusDisplay(Side side) {
         this.side = side;
         score = 0;
         gameOver = false;
@@ -31,13 +32,13 @@ public class GameStatusDisplay implements TextSpritesHolder {
         Color c = Color.green;
         //If its on the left the sprites will need to have different positions.
         if(side == Side.LEFT){
-            scoreSprite = new TextSprite("",f,c,615,70);
-        } else {
-            scoreSprite = new TextSprite("",f,c,1100,70);
+            scoreSprite = new TextSprite("", f, c, 615, 70);
+        }
+        else {
+            scoreSprite = new TextSprite("", f, c, 1100, 70);
         }
         scoreChanged();
     }
-
 
     @Override
     public List<TextSprite> getTextSprites() {
@@ -51,22 +52,22 @@ public class GameStatusDisplay implements TextSpritesHolder {
         scoreSprite.setMessage(String.format(scoreFormat, score));
     }
 
-    public Side getSide(){
+    public Side getSide() {
         return side;
     }
 
 
-    public void incrementScore(int points){
+    public void incrementScore(int points) {
         if(!gameOver){
             score += points;
             //Keep score at or above zero
-            score = Math.max(score,0);
+            score = Math.max(score, 0);
             scoreChanged();
         }
     }
 
-    public void setScore(int score){
-        if(!gameOver){
+    public void setScore(int score) {
+        if(!gameOver) {
             this.score = score;
             scoreChanged();
         }
@@ -76,7 +77,7 @@ public class GameStatusDisplay implements TextSpritesHolder {
         return score;
     }
 
-    public void setGameState(Boolean state){
+    public void setGameState(Boolean state) {
         gameOver = state;
     }
 

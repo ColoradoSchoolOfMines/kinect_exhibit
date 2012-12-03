@@ -9,7 +9,8 @@ import java.util.List;
  * Time: 10:25 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface TextSpritesHolder
-{
+public interface TextSpritesHolder {
+
     public abstract List<TextSprite> getTextSprites();
+
 }

@@ -18,13 +18,16 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class ResourceManager {
+
     private static ResourceManager instance;
     private HashMap<String,Image> imageMap;
-    private ResourceManager(){
+
+    private ResourceManager() {
         imageMap = new HashMap<String, Image>();
     }
-    public static ResourceManager getInstance(){
-        if(instance==null){
+
+    public static ResourceManager getInstance() {
+        if(instance == null){
             instance = new ResourceManager();
         }
         return instance;
@@ -36,9 +39,9 @@ public class ResourceManager {
      * @param key
      * @return
      */
-    public Image getImage(String key){
+    public Image getImage(String key) {
         //If we don't have the image go create it and put it here.
-        if(!imageMap.containsKey(key)){
+        if(!imageMap.containsKey(key)) {
             BufferedImage img;
             try {
                 img = ImageIO.read(new File(key));
@@ -50,8 +53,9 @@ public class ResourceManager {
             int newWidth = (int) Math.round(img.getWidth() * GraphicsConstants.SCALE_FACTOR);
             //scale the image
             Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-            imageMap.put(key,image);
+            imageMap.put(key, image);
         }
         return imageMap.get(key);
     }
+
 }

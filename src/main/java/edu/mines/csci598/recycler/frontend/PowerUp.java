@@ -22,7 +22,7 @@ public class PowerUp implements Displayable, Movable {
 
         private String image;
 
-        private PowerUpType(String image){
+        private PowerUpType(String image) {
             this.image = image;
         }
 
@@ -30,6 +30,7 @@ public class PowerUp implements Displayable, Movable {
             return image;
         }
     }
+
     private Sprite sprite;
     private Path path;
     private PowerUpType type;
@@ -80,7 +81,7 @@ public class PowerUp implements Displayable, Movable {
     }
 
     @Override
-    public boolean isTouchable(){
+    public boolean isTouchable() {
         return motionState.isTouchable();
     }
 
@@ -113,4 +114,5 @@ public class PowerUp implements Displayable, Movable {
     public void setType(PowerUpType type) {
         this.type = type;
     }
+
 }

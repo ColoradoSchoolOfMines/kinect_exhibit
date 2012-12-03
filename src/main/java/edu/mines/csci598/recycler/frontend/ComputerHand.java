@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class ComputerHand extends Hand {
+
     private static final Logger logger = Logger.getLogger(ComputerHand.class);
     private Path path;
     private int goalX;
@@ -33,13 +34,14 @@ public class ComputerHand extends Hand {
 
     public ComputerHand() {
         logger.setLevel(Level.INFO);
-        goalX=0;
-        goalY=0;
-        followingPath=false;
-        onCorrectSide=false;
+        goalX = 0;
+        goalY = 0;
+        followingPath = false;
+        onCorrectSide = false;
         x = ComputerConstants.INITIAL_HAND_X;
         y = ComputerConstants.INITIAL_HAND_Y;
     }
+
     private void updateVelocity(){
         //logger.info("Update velocity"+(this.x - oldX));
         velocityX = this.x - oldX;
@@ -53,50 +55,61 @@ public class ComputerHand extends Hand {
         y = (int)position.getY();
         updateVelocity();
     }
+
     public void resetHandToInitialPosition(){
         oldX = x;
         //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
-        if(y!=ComputerConstants.INITIAL_HAND_Y){
+        if(y!=ComputerConstants.INITIAL_HAND_Y) {
             logger.debug("Resetting PlayerHand to initial position");
             x = ComputerConstants.INITIAL_HAND_X;
             y = ComputerConstants.INITIAL_HAND_Y;
         }
     }
 
-    public int getGoalX(){
+    public int getGoalX() {
         return goalX;
     }
-    public int getGoalY(){
+
+    public int getGoalY() {
         return goalY;
     }
-    public void setGoal(int goalX,int goalY){
-        this.goalX=goalX;
-        this.goalY=goalY;
+
+    public void setGoal(int goalX,int goalY) {
+        this.goalX = goalX;
+        this.goalY = goalY;
     }
-    public void setPath(Path p){
+
+    public void setPath(Path p) {
         logger.debug("PlayerHand following path");
         path = p;
-        followingPath=true;
+        followingPath = true;
     }
-    public Path getPath(){
+
+    public Path getPath() {
         return path;
     }
-    public void resetFollowingPath(){
-        followingPath=false;
+
+    public void resetFollowingPath() {
+        followingPath = false;
     }
-    public boolean isFollowingPath(){
+
+    public boolean isFollowingPath() {
         return followingPath;
     }
-    public boolean isOnCorrectSide(){
+
+    public boolean isOnCorrectSide() {
         return onCorrectSide;
     }
-    public void setOnCorrectSide(boolean onCorrectSide){
-        this.onCorrectSide=onCorrectSide;
+
+    public void setOnCorrectSide(boolean onCorrectSide) {
+        this.onCorrectSide = onCorrectSide;
     }
-    public boolean isHandOnLeftSide(){
-        boolean ret=false;
+
+    public boolean isHandOnLeftSide() {
+        boolean ret = false;
         logger.debug("sx=" + getX() + ",px=" + ConveyorBelt.RIGHT_VERTICAL_PATH_START_X);
-        if(getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret=true;
+        if(getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret = true;
         return ret;
     }
+
 }

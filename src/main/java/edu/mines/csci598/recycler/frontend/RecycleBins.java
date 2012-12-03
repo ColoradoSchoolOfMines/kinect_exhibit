@@ -13,13 +13,16 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class RecycleBins {
+
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
 
     public enum Side {LEFT, RIGHT};
-    public RecycleBins(Side s){
-        if(s.equals(Side.LEFT)){
+
+    public RecycleBins(Side s) {
+        if(s.equals(Side.LEFT)) {
             setUpLeftBins();
-        } else {
+        }
+        else {
             setUpRightBins();
         }
     }
@@ -42,8 +45,6 @@ public class RecycleBins {
 
         int yCord = m.getSprite().getScaledY();
 
-
-
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
         // left of the conveyor we only need to check which way it's going and the y coordinates
         for (RecycleBin bin : recycleBins) {
@@ -61,10 +62,10 @@ public class RecycleBins {
     /*
      * Find bin type
      */
-    public RecycleBin findCorrectBin(Recyclable r){
+    public RecycleBin findCorrectBin(Recyclable r) {
     	RecyclableType recycleType = r.getType();
-        for(RecycleBin recycleBin: recycleBins){
-            if(recycleBin.getType()==recycleType){
+        for(RecycleBin recycleBin: recycleBins) {
+            if(recycleBin.getType() == recycleType) {
                 return recycleBin;
             }
         }
@@ -129,7 +130,7 @@ public class RecycleBins {
         recycleBins.add(RecycleBin.TRASH_BIN);
     }
     
-    public RecycleBin getLast(){
+    public RecycleBin getLast() {
         return recycleBins.get(recycleBins.size() - 1);
     }
 

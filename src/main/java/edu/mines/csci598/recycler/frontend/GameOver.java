@@ -11,24 +11,26 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
  * To change this template use File | Settings | File Templates.
  */
 public class GameOver {
+
     private boolean signalGameOver;
     private GameScreen gameScreen;
     Sprite s;
     private boolean displayed;
 
-    public GameOver(Side side){
+    public GameOver(Side side) {
        displayed = false;
        gameScreen = GameScreen.getInstance();
        signalGameOver = false;
        if (side == Side.LEFT){
            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 100, 300);
-       }else{
+       }
+       else {
            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 1200, 300);
        }
     }
 
-    public void setGameOver(GameStatusDisplay gameStatusDisplay){
-        if(!displayed){
+    public void setGameOver(GameStatusDisplay gameStatusDisplay) {
+        if(!displayed) {
             gameStatusDisplay.setGameState(true);
             gameScreen.addSprite(s);
             displayed = true;
@@ -36,6 +38,5 @@ public class GameOver {
     }
 
     private void signalSplashScreen(){}
-
 
 }
