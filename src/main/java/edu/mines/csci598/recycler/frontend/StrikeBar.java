@@ -1,14 +1,13 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class keeps track of how many strikes the user has had and keeps a drawing on the screen.
@@ -64,7 +63,7 @@ public class StrikeBar {
         }
     }
 
-    public void addStrike(Movable image) {
+    public boolean addStrike(Movable image) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
             image.setRemovable(true);
@@ -77,8 +76,11 @@ public class StrikeBar {
             strikes++;
             if (strikes == MAX_STRIKES) {
                 gameOver.setGameOver(gameStatusDisplay);
+                return true;
             }
         }
+
+        return false;
     }
 
     /**

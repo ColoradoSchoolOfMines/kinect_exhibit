@@ -1,9 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.awt.Graphics2D;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
@@ -13,6 +9,9 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
@@ -39,7 +38,7 @@ public class GameLauncher extends GameState {
         GameScreen.getInstance().preLoadImages();
 
         // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler",true);
+		gameManager = new GameManager("Recycler",false);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -102,6 +101,9 @@ public class GameLauncher extends GameState {
         if (gameStarted) {
 		    leftGame.updateThis();
 		    rightGame.updateThis();
+            if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+                this.gameManager.destroy();
+            }
         }
         else {
             if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
@@ -110,5 +112,6 @@ public class GameLauncher extends GameState {
         }
 		return this;
 	}
+
 
 }
