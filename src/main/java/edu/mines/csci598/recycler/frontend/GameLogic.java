@@ -61,7 +61,6 @@ public class GameLogic {
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
-        Recyclable.tellRecyclablesAboutBins(recycleBins);
 
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
@@ -109,7 +108,7 @@ public class GameLogic {
         //Add single item to conveyor for debugging collisions.
         if (this.debuggingCollisions) {
             logger.debug("Adding recyclable for collision detection");
-            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
+            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath(), recycleBins);
             conveyorBelt.takeControlOfMovable(r);
             gameScreen.addSprite(r.getSprite());
         }
@@ -253,7 +252,7 @@ public class GameLogic {
 
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Movable m = factory.possiblyGenerateItem(conveyorBelt.getConveyorPath(), currentTimeSec);
+            Movable m = factory.possiblyGenerateItem(conveyorBelt.getConveyorPath(), currentTimeSec, recycleBins);
             if (m != null) {
                 try {
                     conveyorBelt.takeControlOfMovable(m);
