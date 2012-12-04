@@ -107,7 +107,7 @@ public class ComputerPlayer {
                 }
                 if(!primary.isFollowingPath()){
                     //Follow target recyclable
-                    followRecyclable(movable);
+                    followMovable(movable);
                     //Attempt to Strike target recyclable
                     attemptToStrike(movable,currentTimeSec);
                 }
@@ -148,27 +148,34 @@ public class ComputerPlayer {
         justStruckRecyclable=false;
     }
 
-    private void followRecyclable(Movable m) {
+    /* followMovable
+     * Follows next touchable movable up the conveyer
+     */
+    private void followMovable(Movable m) {
         Coordinate position = new Coordinate(primary.getX(), m.getPosition().getY());
         primary.setPosition(position);
     }
 
-    private void crossConveyer(Recyclable r, double currentTimeSec, int newX){
+    /* crossConveyor
+     * Creates a new path to go up and over the recyclable
+     */
+    private void crossConveyor(Recyclable r, double currentTimeSec, int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
         if(rand > ComputerConstants.HAND_SET_THRESHOLD) {
             if(!primary.isFollowingPath()) {
                 setUpPath(r, currentTimeSec, newX);
-            }
-            else {
+            } else {
                 followPath(currentTimeSec);
             }
-        }
-        else {
+        } else {
             primary.setOnCorrectSide(true);
         }
     }
 
+    /* setUpPath
+     * Creates a new path to go up and over the recyclable
+     */
     private void setUpPath(Recyclable r, double currentTimeSec, int newX) {
         primary.setGoal(r.getSprite().getX() + newX, primary.getSprite().getY() - ComputerConstants.HAND_Y_OFFSET);
         logger.debug("rx=" + r.getSprite().getX() + ",ry=" + r.getSprite().getY() +
@@ -186,6 +193,9 @@ public class ComputerPlayer {
         primary.setPath(p);
     }
 
+    /* followPath
+     * Follows the path up and around the conveyer
+     */
     private void followPath(double currentTimeSec) {
         double timePassedSec = currentTimeSec-lastMotionTimeSec;
         Coordinate newPosition = primary.getPath().getLocation(timePassedSec);
@@ -197,6 +207,10 @@ public class ComputerPlayer {
         }
     }
 
+    /* findBinSide
+     * Determines the correct side for pushing the movable off the conveyor
+     * Determines where a bin starts and stops
+     */
     public int findBinSide(Recyclable r) {
         int newX = 0;
         RecycleBin bin = recycleBins.findCorrectBin(r);
@@ -222,14 +236,22 @@ public class ComputerPlayer {
         return newX;
     }
 
+    /* SetHandToCorrectSide
+     * Finds which side of the conveyor the bin lies on
+     * Crosses the conveyor if needed
+     */
     public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
         if(!primary.isOnCorrectSide()) {
             int newX = findBinSide(r);
             if(!primary.isOnCorrectSide())
-                crossConveyer(r,currentTimeSec,newX);
+                crossConveyor(r,currentTimeSec,newX);
         }
     }
 
+    /* recyclableWillFallInBin
+     * Determines if the recyclable is within range of its bin
+     * Returns true of false
+     */
     private boolean recyclableWillFallInBin(Movable m) {
         boolean ret = false;
         double ry = m.getSprite().getY();
@@ -250,6 +272,11 @@ public class ComputerPlayer {
         return ret;
     }
 
+    /* attemptToStrike
+     * if the movable is a power up, strikes as soon as possible
+     * if the movable is a recyclable and it will fall in a bin and it can strike,
+     * it strikes the recyclable
+     */
     private void attemptToStrike(Movable movable, double currentTimeSec){
         if(!(movable instanceof PowerUp)){
             if(recyclableWillFallInBin(movable)){
@@ -274,6 +301,10 @@ public class ComputerPlayer {
         }
     }
 
+    /* ICanStrike
+     * Determines if the random number is greater than the threshold for striking
+     * Returns true or false
+     */
     public boolean ICanStrike(){
         boolean ret = false;
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
@@ -283,6 +314,9 @@ public class ComputerPlayer {
         return ret;
     }
 
+    /* strikeItem
+     * Places the computer hand on top of the recyclable to strike
+     */
     public void strikeItem(Movable m) {
         primary.setOnCorrectSide(false);
         int newX = m.getSprite().getX();
