@@ -46,18 +46,14 @@ public class GameLogic {
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
     private StrikeBar strikeBar;
-    private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
     private GameStatusDisplay gameStatusDisplay;
-    //TODO game manager should be removed from this class when the idea of players having hands is dissolved
-    private GameManager gameManager;
     private double timeToRemovePowerUp;
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                      boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
-        this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;

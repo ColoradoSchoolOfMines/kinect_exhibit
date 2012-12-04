@@ -28,7 +28,6 @@ public class GameScreen {
     private Sprite backgroundChutes;
     private Sprite backgroundScoreFrame;
     private Sprite backgroundFrame;
-    private double timeToSwitchBackgrounds;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
@@ -151,7 +150,6 @@ public class GameScreen {
      * Preloads all of the gameScreen images so that they are ready to be used
      */
     public void preLoadImages(){
-        ResourceManager resourceManager = ResourceManager.getInstance();
         background1.getImage();
         background2.getImage();
         backgroundChutes.getImage();

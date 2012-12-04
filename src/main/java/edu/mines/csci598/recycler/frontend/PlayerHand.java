@@ -18,7 +18,6 @@ import edu.mines.csci598.recycler.backend.GameManager;
 public class PlayerHand extends Hand {
 
     private static final Logger logger = Logger.getLogger(PlayerHand.class);
-    private int velocityCount;
     GameManager gameManager;
     int handNum;
 

@@ -14,7 +14,6 @@ import java.util.Arrays;
 
 public class ConveyorBelt extends ItemMover {
     private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
-    private double conveyorTime;
     private final Path PATH;
 
     public static final int LEFT_BOTTOM_PATH_START_X = 0;

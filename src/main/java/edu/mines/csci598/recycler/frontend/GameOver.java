@@ -15,7 +15,6 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 public class GameOver {
     private static final Logger logger = Logger.getLogger(GameOver.class);
 
-    private boolean signalGameOver;
     private GameScreen gameScreen;
     Sprite s;
     private boolean displayed;
@@ -23,7 +22,6 @@ public class GameOver {
     public GameOver(Side side) {
         displayed = false;
         gameScreen = GameScreen.getInstance();
-        signalGameOver = false;
         if (side == Side.LEFT) {
             s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 100, 300);
         } else {
@@ -38,8 +36,4 @@ public class GameOver {
             displayed = true;
         }
     }
-
-    private void signalSplashScreen() {
-    }
-
 }

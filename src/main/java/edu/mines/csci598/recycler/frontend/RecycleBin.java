@@ -27,7 +27,6 @@ public class RecycleBin implements Displayable {
     public enum ConveyorSide {RIGHT, LEFT};
     private int minY;
     private int maxY;
-    private int numItems;
     private ConveyorSide side;
     private RecyclableType type;
     private Sprite sprite = null;
@@ -41,7 +40,6 @@ public class RecycleBin implements Displayable {
         this.minY = minY;
         this.maxY = maxY;
         this.type = type;
-        numItems = 0;
         sprite = new Sprite(imagePath, 0, 0);
     }
 
@@ -81,11 +79,6 @@ public class RecycleBin implements Displayable {
     public String toString() {
         return type.toString() + " " + minY + " to " + maxY;
     }
-
-    public void addItem() {
-        numItems++;
-    }
-
 
     // returns true if the incoming recyclable type is the same as the bin type
     public boolean isCorrectRecyclableType(Movable m) {
