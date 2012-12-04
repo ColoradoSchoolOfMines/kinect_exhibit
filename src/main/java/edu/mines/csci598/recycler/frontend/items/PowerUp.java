@@ -1,7 +1,8 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.items;
 
 import org.apache.log4j.Logger;
 
+import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Line;

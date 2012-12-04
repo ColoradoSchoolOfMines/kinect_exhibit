@@ -16,7 +16,7 @@ public class GameOver {
     private static final Logger logger = Logger.getLogger(GameOver.class);
 
     private GameScreen gameScreen;
-    Sprite s;
+    private Sprite s;
     private boolean displayed;
 
     public GameOver(Side side) {

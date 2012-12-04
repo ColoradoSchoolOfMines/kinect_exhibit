@@ -1,10 +1,10 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
 import edu.mines.csci598.recycler.frontend.Hand;
-import edu.mines.csci598.recycler.frontend.MotionState;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.items.MotionState;
 
 /**
  * Created with IntelliJ IDEA.

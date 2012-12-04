@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.mines.csci598.recycler.frontend.items.MotionState;
+import edu.mines.csci598.recycler.frontend.items.Recyclable;
+import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 
