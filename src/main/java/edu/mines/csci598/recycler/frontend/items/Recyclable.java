@@ -1,19 +1,14 @@
 package edu.mines.csci598.recycler.frontend.items;
 
-import java.util.Random;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.GameConstants;
 import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
 import edu.mines.csci598.recycler.frontend.RecycleBins;
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
+
+import java.util.Random;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.
@@ -49,6 +44,9 @@ public class Recyclable implements Displayable, Movable {
         if (!(this instanceof Recyclable)) {
             throw new IllegalStateException("Trying to react to Recyclable collision with a non-Recyclable!");
         }
+
+        //Play sound when gets hit
+        type.getHitSound().playSound();
 
         Coordinate position = this.getPosition();
         Line collideLine = null;
