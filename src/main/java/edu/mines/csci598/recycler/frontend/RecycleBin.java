@@ -35,6 +35,7 @@ public class RecycleBin implements Displayable {
     private SoundEffectEnum soundEffect;
     public RecycleBin(RecyclableType trash) {
         this.type = trash;
+        this.soundEffect = SoundEffectEnum.NONE;
     }
 
     public RecycleBin(ConveyorSide side, int minY, int maxY, RecyclableType type, String imagePath,SoundEffectEnum itemHitsBinSound) {

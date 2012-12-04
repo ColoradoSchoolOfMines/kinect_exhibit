@@ -37,6 +37,8 @@ public enum SoundEffectEnum {
         this.soundPath = soundPath;
         if(soundPath != null){
             this.soundEffect = new SoundEffect(soundPath);
+        } else {
+            soundEffect = null;
         }
     }
 

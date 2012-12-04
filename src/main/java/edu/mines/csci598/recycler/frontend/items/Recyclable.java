@@ -29,7 +29,7 @@ public class Recyclable implements Displayable, Movable {
     private MotionState currentMotion;
     private Path path;
     private boolean removable;
-    private static RecycleBins recycleBins;
+    private RecycleBins recycleBins;
 
     public Recyclable(RecyclableType type, Path path, String imagePath) {
         this.type = type;
@@ -44,7 +44,6 @@ public class Recyclable implements Displayable, Movable {
         if (!(this instanceof Recyclable)) {
             throw new IllegalStateException("Trying to react to Recyclable collision with a non-Recyclable!");
         }
-
         //Play sound when gets hit
         type.getHitSound().playSound();
 

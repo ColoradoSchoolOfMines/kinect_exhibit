@@ -245,6 +245,7 @@ public class GameLogic {
             if (m instanceof Recyclable) {
                 RecycleBin bin = recycleBins.findBinForFallingRecyclable(m);
                 bin.getSoundEffect().playSound();
+
                 handleScore(m,bin);
             }
             gameScreen.removeSprite(m.getSprite());
