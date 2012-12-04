@@ -1,6 +1,9 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,6 +21,7 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class ResourceManager {
+    private static final Logger logger = Logger.getLogger(ResourceManager.class);
 
     private static ResourceManager instance;
     private HashMap<String,Image> imageMap;

@@ -1,8 +1,9 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.GameConstants;
+import org.apache.log4j.Logger;
 
-import java.awt.Image;
+import java.awt.*;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -15,6 +16,7 @@ import java.awt.Image;
  * To change this template use File | Settings | File Templates.
  */
 public class Sprite {
+    private static final Logger logger = Logger.getLogger(Sprite.class);
 
     Coordinate location;
     private String fileName;
@@ -47,10 +49,10 @@ public class Sprite {
 
     /*
       * Gets the x position.
-      *
+      * Protected because only graphics should care about where it is scaled
       * return {int}
       */
-    public int getScaledX() {
+    protected int getScaledX() {
         return (int) Math.round(location.getX() * GraphicsConstants.SCALE_FACTOR);
     }
 
@@ -63,7 +65,7 @@ public class Sprite {
       *
       * return {int}
       */
-    public int getScaledY() {
+    protected int getScaledY() {
         return (int) Math.round(location.getY() * GraphicsConstants.SCALE_FACTOR);
     }
 
@@ -87,11 +89,14 @@ public class Sprite {
      * @param y
      * @return
      */
+
+
     public boolean isPointInside(int x, int y) {
-        if (x >= getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
-                x <= getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
-            if (y >= getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
-                    y <= getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
+
+        if (x >= getX() - (GameConstants.SPRITE_X_OFFSET) &&
+                x <= getX() + GameConstants.SPRITE_X_OFFSET) {
+            if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET) &&
+                    y <= getY() + (GameConstants.SPRITE_Y_OFFSET)) {
                 return true;
             }
         }
@@ -106,10 +111,6 @@ public class Sprite {
 		this.location=location;
 	}
 
-    public synchronized void setScaledPosition(Coordinate location) {
-        this.location=new Coordinate(location.getX() * GraphicsConstants.REVERSE_SCALE_FACTOR,
-                location.getY() * GraphicsConstants.REVERSE_SCALE_FACTOR,
-                location.getRotation());
-    }
+
 
 }

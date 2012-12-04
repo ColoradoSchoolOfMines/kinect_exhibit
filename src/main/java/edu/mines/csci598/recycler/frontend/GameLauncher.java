@@ -1,5 +1,9 @@
 package edu.mines.csci598.recycler.frontend;
 
+import java.awt.Graphics2D;
+
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
@@ -9,10 +13,12 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.graphics.PlayerOptionsScreen;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
 
 import java.awt.*;
+
+import edu.mines.csci598.recycler.frontend.items.RecyclableType;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
@@ -22,6 +28,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLauncher extends GameState {
+    private static final Logger logger = Logger.getLogger(GameLauncher.class);
 	private GameManager gameManager;
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
@@ -34,21 +41,17 @@ public class GameLauncher extends GameState {
     private PlayerOptionsScreen playerOptions;
 
 	public GameLauncher() {
-        // the boolean in gameManager determines if the screen is full screen or not
-        gameManager = new GameManager("Recycler",true);
-
-        instructionScreen = new InstructionScreen();
-        //Preloading the images will prevent some flickering.
+         //Preloading the images will prevent some flickering.
         //TODO: Preload correct/incorrect images too
         RecyclableType.preLoadImages();
         GameScreen.getInstance().preLoadImages();
 
+        // the boolean in gameManager determines if the screen is full screen or not
+		gameManager = new GameManager("Recycler", true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
-
-        boolean computerPlayer = false;
 
         leftGame = new GameLogic(
                 new RecycleBins(RecycleBins.Side.LEFT),
@@ -70,6 +73,7 @@ public class GameLauncher extends GameState {
         gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
 
+        instructionScreen = new InstructionScreen();
         gameCanStart = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 
@@ -104,6 +108,20 @@ public class GameLauncher extends GameState {
 		return gameManager;
 	}
 
+	public static void main(String[] args) {
+        Song x = new Song();
+        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
+        x.setLooping(true);
+        x.startPlaying();
+        GameLauncher gm = new GameLauncher();
+		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+		gm.getGameManager().installInputDriver(mouse);
+		gm.getGameManager().setState(gm);
+		gm.getGameManager().run();
+		gm.getGameManager().destroy();
+
+	}
+
 	public GameLauncher updateThis(float time) {
         if (gameCanStart) {
             if (!playerOptions.canGameStart()) {
@@ -119,24 +137,11 @@ public class GameLauncher extends GameState {
             }
         }
         else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15) {
-                gameCanStart = true;
-            }
+    //        if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {
+                gameStarted = true;
+     //       }
         }
 		return this;
 	}
-
-    public static void main(String[] args) {
-        Song x = new Song();
-        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
-        x.setLooping(true);
-        x.startPlaying();
-        GameLauncher gm = new GameLauncher();
-        ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-        gm.getGameManager().installInputDriver(mouse);
-        gm.getGameManager().setState(gm);
-        gm.getGameManager().run();
-        gm.getGameManager().destroy();
-    }
 
 }

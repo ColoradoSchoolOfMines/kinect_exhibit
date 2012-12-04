@@ -84,7 +84,7 @@ public class StrikeBar {
      * Removes strike from strike bar, generally used for powerups
      */
     public void removeStrike() {
-        System.out.println("Remove length: " + strikes);
+        logger.debug("Remove length: " + strikes);
         if((strikes > 0) && (strikes < MAX_STRIKES)){
             strikes--;
             movables.get(strikes).setRemovable(true);

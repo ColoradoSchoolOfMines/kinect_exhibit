@@ -1,19 +1,21 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.graphics.*;
-import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
-import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
-import edu.mines.csci598.recycler.frontend.motion.TheForce;
-import edu.mines.csci598.recycler.frontend.motion.Movable;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.frontend.ai.ComputerPlayer;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.items.ItemFactory;
+import edu.mines.csci598.recycler.frontend.items.PowerUp;
+import edu.mines.csci598.recycler.frontend.items.Recyclable;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
+import edu.mines.csci598.recycler.frontend.motion.TheForce;
 
 
 /**
@@ -47,14 +49,12 @@ public class GameLogic {
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
     private StrikeBar strikeBar;
-    private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
     private boolean rightSide;
     private GameStatusDisplay gameStatusDisplay;
-    //TODO game manager should be removed from this class when the idea of players having hands is dissolved
-    private GameManager gameManager;
     private double timeToRemovePowerUp;
+    private GameManager gameManager;
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
