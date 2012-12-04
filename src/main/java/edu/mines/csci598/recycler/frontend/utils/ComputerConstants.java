@@ -70,7 +70,7 @@ public class ComputerConstants {
     /* INCORRECT_STRIKE_THRESHOLD
      * Must exceed this number to strike recyclable into correct bin
      */
-    public static final int INCORRECT_STRIKE_THRESHOLD = 10;
+    public static final int INCORRECT_STRIKE_THRESHOLD = 3;
     /* INITIAL_HAND_X
      * Position of initial x
      */

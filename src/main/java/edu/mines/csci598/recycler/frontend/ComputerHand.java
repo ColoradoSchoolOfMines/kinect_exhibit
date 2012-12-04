@@ -60,7 +60,7 @@ public class ComputerHand extends Hand {
         oldX = x;
         //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
         if(y!=ComputerConstants.INITIAL_HAND_Y) {
-            logger.debug("Resetting PlayerHand to initial position");
+            logger.debug("Resetting ComputereHand to initial position");
             x = ComputerConstants.INITIAL_HAND_X;
             y = ComputerConstants.INITIAL_HAND_Y;
         }
