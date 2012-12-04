@@ -36,6 +36,11 @@ public class PlayerHighScoreSerializationTest {
     }
 
     @Test
+    public void savePlayerToHighScores() {
+        SerializePlayerInformation.savePlayerHighScoreInformation(new PlayerHighScoreInformation(playerInitials, playerScore, playerImage));
+    }
+
+    @Test
     public void serializeOnePlayerInHighScoreList() {
         scores = new ArrayList<PlayerHighScoreInformation>();
         scores.add(new PlayerHighScoreInformation(playerInitials, playerScore, playerImage));
