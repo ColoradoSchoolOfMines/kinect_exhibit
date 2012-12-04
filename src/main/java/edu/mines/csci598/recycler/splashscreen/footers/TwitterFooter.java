@@ -24,13 +24,21 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
     private Point bottomRight;
     private UpdateScreenCallback callback;
 
-    private static String TITLE = "Twitter";
+    private static final Font TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
+    private static final Font TWEET_FONT = new Font("SansSerif", Font.PLAIN, 16);
+    private static final Color TEXT_COLOR = new Color(20, 20, 20);
+    private static final Color BACKGROUND_COLOR = new Color(220, 220, 220);
+
+    private static final int UPDATE_INTERVAL = 20000;
+
+    private static final String TITLE = "Twitter";
+    private static final String NO_TWEETS_MESSAGE = "No tweets found";
 
     public TwitterFooter() {
         messageNumber = 0;
         twitterMessages = new TwitterMessages();
         messages = twitterMessages.retrieveAllMessages();
-        timer = new Timer(10000, this);
+        timer = new Timer(UPDATE_INTERVAL, this);
         timer.start();
     }
 
@@ -73,20 +81,23 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
 
     private void drawBackground(Graphics2D g) {
         Polygon frame = GraphicsHelper.getRectangle(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
-        g.setColor(new Color(250, 250, 250));
+        g.setColor(BACKGROUND_COLOR);
         g.fillPolygon(frame);
     }
 
     private void drawTitle(Graphics2D g) {
-        g.setFont(new Font("SansSerif", Font.BOLD, 20));
-        g.setColor(new Color(40, 40, 40));
-        g.drawString(TITLE, topLeft.x + 20, topLeft.y + 20);
+        g.setFont(TITLE_FONT);
+        g.setColor(TEXT_COLOR);
+        g.drawString(TITLE, topLeft.x + 20, topLeft.y + 40);
     }
 
     private void drawMessage(Graphics2D g) {
-        String message = messages.get(messageNumber);
+        String message = NO_TWEETS_MESSAGE;
+        if(messages.size() > 0) {
+            message = messages.get(messageNumber);
+        }
 
-        g.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        g.setFont(TWEET_FONT);
         FontMetrics fontMetrics = g.getFontMetrics();
         Rectangle2D fontBounds = fontMetrics.getStringBounds(message, g);
 
@@ -99,7 +110,7 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
         int totalYPadding = height - (int)fontBounds.getHeight();
         int fontStartY = topLeft.y + totalYPadding / 2 + (int)fontMetrics.getAscent();
 
-        g.setColor(new Color(40, 40, 40));
+        g.setColor(TEXT_COLOR);
         g.drawString(message, fontStartX, fontStartY);
     }
 

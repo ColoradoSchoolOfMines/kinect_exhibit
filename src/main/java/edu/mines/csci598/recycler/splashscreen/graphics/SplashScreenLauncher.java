@@ -18,8 +18,8 @@ public class SplashScreenLauncher extends GameState {
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
 
-    private static final int HEADER_HEIGHT = 180;
-    private static final int FOOTER_HEIGHT = 200;
+    private static final int HEADER_HEIGHT = 150;
+    private static final int FOOTER_HEIGHT = 100;
 
     public static void main(String[] args) {
         SplashScreenLauncher launcher = new SplashScreenLauncher();
@@ -45,8 +45,8 @@ public class SplashScreenLauncher extends GameState {
         staticSections.add(twitterSection);
 
         SplashScreenSection weatherSection = new WeatherFooter();
-        twitterSection.initialize(new Point(screenWidth / 2, screenHeight - FOOTER_HEIGHT), new Point(screenWidth, screenHeight), updateScreenCallback, cycleScreenCallback);
-        staticSections.add(twitterSection);
+        weatherSection.initialize(new Point(screenWidth / 2, screenHeight - FOOTER_HEIGHT), new Point(screenWidth, screenHeight), updateScreenCallback, cycleScreenCallback);
+        staticSections.add(weatherSection);
 
         cyclingSections = new ArrayList<SplashScreenSection>();
         SplashScreenSection highScoreSection = new HighScoreScreen();

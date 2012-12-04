@@ -24,7 +24,7 @@ public class HighScoreScreen implements SplashScreenSection {
 	private static final Font SCORE_LIST_SCORE_FONT = new Font("SansSerif", Font.PLAIN, 16);
 	private static final Font INDIVIDUAL_NAME_FONT = new Font("SansSerif", Font.BOLD, 32);
 	
-	private static final int TIMER_DELAY = 200;
+	private static final int TIMER_DELAY = 3000;
 	
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;

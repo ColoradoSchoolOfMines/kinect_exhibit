@@ -10,8 +10,9 @@ public class WeatherInformation {
     private int temperature;
     private int pressure;
     private int humidity;
+    private String description;
 
-    public WeatherInformation(int windSpeed, int visibility, int windDegree, int cloudCover, double precipitation, int temperature, int pressure, int humidity) {
+    public WeatherInformation(int windSpeed, int visibility, int windDegree, int cloudCover, double precipitation, int temperature, int pressure, int humidity, String description) {
         this.windDegree = windDegree;
         this.windSpeed = windSpeed;
         this.cloudCover = cloudCover;
@@ -20,6 +21,7 @@ public class WeatherInformation {
         this.pressure = pressure;
         this.humidity = humidity;
         this.visibility = visibility;
+        this.description = description;
     }
 
     public int getWindSpeed() {
@@ -84,6 +86,14 @@ public class WeatherInformation {
 
     public void setHumidity(int humidity) {
         this.humidity = humidity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
