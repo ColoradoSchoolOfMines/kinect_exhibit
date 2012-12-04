@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class GameofLife  extends JPanel implements ActionListener {
+public class GameofLife extends JPanel implements ActionListener {
 
     private GameOfLifeLabel[][] cells;
     private Timer timer;

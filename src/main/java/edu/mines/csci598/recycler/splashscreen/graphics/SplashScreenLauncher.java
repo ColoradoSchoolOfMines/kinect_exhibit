@@ -68,14 +68,18 @@ public class SplashScreenLauncher extends GameState {
         @Override
         public void cycleScreen(SplashScreenSection currentSection) {
             if (cyclingSections.contains(currentSection)) {
-//                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
-//                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
-//
-//                currentSection.stop();
-//                nextSection.initialize(new Point(200, 200), new Point(1400, 900), updateScreenCallback, cycleScreenCallback);
-//
-//                currentCyclingSectionIndex = nextSectionIndex;
-//                refreshScreen = true;
+                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
+                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
+
+                currentSection.stop();
+
+                Component canvas = gameManager.getCanvas();
+                int screenWidth = canvas.getWidth();
+                int screenHeight = canvas.getHeight();
+                nextSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+
+                currentCyclingSectionIndex = nextSectionIndex;
+                refreshScreen = true;
             }
         }
     };
@@ -90,6 +94,7 @@ public class SplashScreenLauncher extends GameState {
         if (refreshScreen) {
             refreshScreen = false;
 
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setBackground(new Color(0, 0, 0, 0));
             g.clearRect(0, 0, gameManager.getCanvas().getWidth(), gameManager.getCanvas().getHeight());
 

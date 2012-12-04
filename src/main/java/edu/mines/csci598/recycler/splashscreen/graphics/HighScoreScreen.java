@@ -23,9 +23,17 @@ public class HighScoreScreen implements SplashScreenSection {
 	private static final Font SCORE_LIST_NAME_FONT = new Font("SansSerif", Font.PLAIN, 22);
 	private static final Font SCORE_LIST_SCORE_FONT = new Font("SansSerif", Font.PLAIN, 16);
 	private static final Font INDIVIDUAL_NAME_FONT = new Font("SansSerif", Font.BOLD, 32);
-	
+
+    final int SCORE_MARGIN_TOP_BOTTOM = 20;
+    final int SCORE_MIN_PADDING_BETWEEN = 10;
+    final int SCORE_BOX_HEIGHT = 60;
+    final int SCORE_BOX_INNER_LEFT_RIGHT_PADDING = 10;
+    final int PICTURE_HEIGHT = 400;
+    final int PICTURE_WIDTH = 300;
+    final int PICTURE_FRAME_PADDING = 20;
+    final int SCORE_PADDING = 40;
+
 	private static final int TIMER_DELAY = 3000;
-	
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;
 	private int selectedScore;
@@ -73,20 +81,15 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private void drawScoreOnScoresList(PlayerHighScoreInformation highScore, int index, int totalScores, boolean selected, Graphics2D g) {
-		final int MARGIN_TOP_BOTTOM = 20;
-		final int MIN_PADDING_BETWEEN = 10;
-		final int SCORE_BOX_HEIGHT = 60;
-		final int SCORE_BOX_INNER_LEFT_RIGHT_PADDING = 10;
-
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 		
-		int neededHeight = MARGIN_TOP_BOTTOM * 2 + totalScores * SCORE_BOX_HEIGHT + (totalScores - 1) * MIN_PADDING_BETWEEN;
+		int neededHeight = SCORE_MARGIN_TOP_BOTTOM * 2 + totalScores * SCORE_BOX_HEIGHT + (totalScores - 1) * SCORE_MIN_PADDING_BETWEEN;
 		int extraHeight = height - neededHeight;
-		int extraPadding = Math.max(MIN_PADDING_BETWEEN, MIN_PADDING_BETWEEN + extraHeight / (totalScores - 1));
+		int extraPadding = Math.max(SCORE_MIN_PADDING_BETWEEN, SCORE_MIN_PADDING_BETWEEN + extraHeight / (totalScores - 1));
 		
 		int topLeftX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
-		int topLeftY = topLeft.y + MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
+		int topLeftY = topLeft.y + SCORE_MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
         int bottomRightX = topLeft.x + width;
         int bottomRightY = topLeftY + SCORE_BOX_HEIGHT;
 		Polygon rectangle = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
@@ -122,11 +125,6 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private void drawScore(PlayerHighScoreInformation score, Graphics2D g) {
-		final int PICTURE_HEIGHT = 400;
-		final int PICTURE_WIDTH = 300;
-		final int FRAME_PADDING = 20;
-		final int SCORE_PADDING = 40;
-
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 		
@@ -139,10 +137,10 @@ public class HighScoreScreen implements SplashScreenSection {
         int bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT;
 		Polygon innerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 
-        topLeftX = topLeft.x + leftPadding - FRAME_PADDING;
-        topLeftY = topLeft.y + topPadding - FRAME_PADDING;
-        bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + FRAME_PADDING;
-        bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + FRAME_PADDING;
+        topLeftX = topLeft.x + leftPadding - PICTURE_FRAME_PADDING;
+        topLeftY = topLeft.y + topPadding - PICTURE_FRAME_PADDING;
+        bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + PICTURE_FRAME_PADDING;
+        bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + PICTURE_FRAME_PADDING;
 		Polygon outerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		g.setColor(new Color(253, 253, 253));
@@ -156,7 +154,7 @@ public class HighScoreScreen implements SplashScreenSection {
 		g.setFont(INDIVIDUAL_NAME_FONT);
 		FontMetrics fontMetrics = g.getFontMetrics();
 		Rectangle2D fontBounds = fontMetrics.getStringBounds(score.getPlayerInitials(), g);
-		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + FRAME_PADDING + SCORE_PADDING);
+		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + PICTURE_FRAME_PADDING + SCORE_PADDING);
 		int leftFontPadding = topLeft.x + (int) (((width - DIVISION_PIXELS_FROM_RIGHT) - fontBounds.getWidth()) / 2);
 		g.setColor(SELECTED_TEXT_COLOR);
 		g.drawString(score.getPlayerInitials(), leftFontPadding, topFontPadding);
