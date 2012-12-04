@@ -20,7 +20,6 @@ public class HandTracker {
 	private static final int HISTORY_SIZE = 2;
 
     // OpenNI context information
-	private OutArg<ScriptNode> scriptNode;
     private Context context;
 
     // OpenNI depth information
@@ -43,9 +42,6 @@ public class HandTracker {
 
     // width and height of the depth image
     private int width, height;
-
-    // the XML file to read for configuration information
-    private static final String CONFIG_XML_FILE = "openni_config.xml";
 
     /**
      * A gesture observer to begin tracking a hand when a gesture is observed.
@@ -116,8 +112,7 @@ public class HandTracker {
         try {
           System.out.println("constructor");
             // context setup
-            scriptNode = new OutArg<ScriptNode>();
-            context = Context.createFromXmlFile(CONFIG_XML_FILE, scriptNode);
+            context = OpenNIContextSingleton.getContext();
 
             // wave to start tracking a hand
             gestureGen = GestureGenerator.create(context);
