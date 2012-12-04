@@ -88,14 +88,19 @@ public class ComputerPlayer {
     }
     /* getHand
      * Used in gameLogic to add ComputerHand to hands array
+     * @return Hand
      */
+
     public Hand getHand() {
         return primary;
     }
 
-    /* updateAI
+
+    /**updateAI
      * Called from gameLogic.updateThis()
      * Determines AI behavior
+     * @param movable
+     * @param currentTimeSec
      */
     public void updateAI(Movable movable, double currentTimeSec) {
         if(movable == null) {
@@ -127,9 +132,11 @@ public class ComputerPlayer {
         }
     }
 
-    /* HandleTrashAndSettingHand
+    /**HandleTrashAndSettingHand
      * Marks trash as Untouchable
      * Tries to set hand to correct side
+     * @param movable
+     * @param currentTimeSec
      */
     private void handleTrashAndSettingHand(Movable movable, double currentTimeSec){
         Recyclable r = (Recyclable) movable;
@@ -139,6 +146,7 @@ public class ComputerPlayer {
             setHandToCorrectSide(r,currentTimeSec);
         }
     }
+
     /* handleJustStruckRecyclable
      * Moves hand off of the conveyer after striking recyclable
      */
@@ -157,16 +165,20 @@ public class ComputerPlayer {
         justStruckRecyclable=false;
     }
 
-    /* followMovable
+    /**followMovable
      * Follows next touchable movable up the conveyer
+     * @param m
      */
     private void followMovable(Movable m) {
         Coordinate position = new Coordinate(primary.getX(), m.getPosition().getY());
         primary.setPosition(position);
     }
 
-    /* crossConveyor
+    /**crossConveyor
      * Creates a new path to go up and over the recyclable
+     * @param r
+     * @param currentTimeSec
+     * @param newX
      */
     private void crossConveyor(Recyclable r, double currentTimeSec, int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
@@ -182,8 +194,11 @@ public class ComputerPlayer {
         }
     }
 
-    /* setUpPath
+    /**setUpPath
      * Creates a new path to go up and over the recyclable
+     * @param r
+     * @param currentTimeSec
+     * @param newX
      */
     private void setUpPath(Recyclable r, double currentTimeSec, int newX) {
         primary.setGoal(r.getSprite().getX() + newX, primary.getSprite().getY() - ComputerConstants.HAND_Y_OFFSET);
@@ -202,8 +217,9 @@ public class ComputerPlayer {
         primary.setPath(p);
     }
 
-    /* followPath
+    /**followPath
      * Follows the path up and around the conveyer
+     * @param currentTimeSec
      */
     private void followPath(double currentTimeSec) {
         double timePassedSec = currentTimeSec-lastMotionTimeSec;
@@ -216,9 +232,11 @@ public class ComputerPlayer {
         }
     }
 
-    /* findBinSide
+    /**findBinSide
      * Determines the correct side for pushing the movable off the conveyor
      * Determines where a bin starts and stops
+     * @param r
+     * @return
      */
     public int findBinSide(Recyclable r) {
         int newX = 0;
@@ -245,9 +263,11 @@ public class ComputerPlayer {
         return newX;
     }
 
-    /* SetHandToCorrectSide
+    /**SetHandToCorrectSide
      * Finds which side of the conveyor the bin lies on
      * Crosses the conveyor if needed
+     * @param r
+     * @param currentTimeSec
      */
     public void setHandToCorrectSide(Recyclable r, double currentTimeSec){
         if(!primary.isOnCorrectSide()) {
@@ -257,9 +277,11 @@ public class ComputerPlayer {
         }
     }
 
-    /* recyclableWillFallInBin
+    /**recyclableWillFallInBin
      * Determines if the recyclable is within range of its bin
      * Returns true of false
+     * @param m
+     * @return
      */
     private boolean recyclableWillFallInBin(Movable m) {
         boolean ret = false;
@@ -281,10 +303,12 @@ public class ComputerPlayer {
         return ret;
     }
 
-    /* attemptToStrike
+    /**attemptToStrike
      * if the movable is a power up, strikes as soon as possible
      * if the movable is a recyclable and it will fall in a bin and it can strike,
      * it strikes the recyclable
+     * @param movable
+     * @param currentTimeSec
      */
     private void attemptToStrike(Movable movable, double currentTimeSec){
         if(!(movable instanceof PowerUp)){
@@ -323,8 +347,9 @@ public class ComputerPlayer {
         return ret;
     }
 
-    /* strikeItem
+    /**strikeItem
      * Places the computer hand on top of the recyclable to strike
+     * @param m
      */
     public void strikeItem(Movable m) {
         primary.setOnCorrectSide(false);
