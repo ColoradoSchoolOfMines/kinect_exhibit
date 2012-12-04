@@ -5,14 +5,13 @@ import com.googlecode.javacv.cpp.opencv_core;
 import edu.mines.csci598.recycler.backend.GameManager;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 
 public class DetectLocation {
-    static final int _threshhold = 3000;
+    static final int _threshhold = 30;
     private boolean _inWatchedArea;
     private ObjectFinder _finder;
     private long _waitTime;
@@ -31,13 +30,15 @@ public class DetectLocation {
         BufferedImage bimg;
         // Setup the object finder
         try{
-             bimg = ImageIO.read(new File("recycle.png"));
+             bimg = ImageIO.read(new File("recycle.jpg"));
 
             opencv_core.IplImage image = opencv_core.IplImage.createFrom(bimg);
             ObjectFinder.Settings settings = new ObjectFinder.Settings();
             settings.setObjectImage(image);
-            //settings.setRansacReprojThreshold(50);
-            //settings.setUseFLANN(true);
+            settings.setRansacReprojThreshold(5);
+            settings.setDistanceThreshold(0.6);
+            //settings.setMatchesMin(10);
+            settings.setUseFLANN(true);
             _finder = new ObjectFinder(settings);
         }
         catch( Exception e ){
@@ -57,6 +58,7 @@ public class DetectLocation {
     */
     void updateAreaLocation(){
         opencv_core.IplImage scene = opencv_core.IplImage.createFrom( _manager.getImage() );
+
         try{
             double[] points = _finder.find(scene);
 
@@ -65,10 +67,10 @@ public class DetectLocation {
 
             // There are always four points output from the finder
             for( int i = 0; i < 4; i++ ){
-                System.out.println( i );
-                temp[i][0] = ( int )points[2*i];
-                temp[i][1] = ( int )points[2*i+1];
+                temp[i][0] = (int)Math.round( points[2*i] );
+                temp[i][1] = ( int )Math.round( points[2*i+1] );
             }
+
             _watchedArea = temp;
         }
         catch( Exception e ){
@@ -98,7 +100,6 @@ public class DetectLocation {
 
                     int avg = pt1depth/2 + pt2depth/2;
                     if( Math.abs( avg - yMidpointDepth ) > _threshhold ){
-                        System.out.println( Math.abs( avg - yMidpointDepth ) );
                         linear = false;
                     }
                 }
@@ -107,8 +108,6 @@ public class DetectLocation {
         catch( Exception e ){
 
         }
-
-        updateAreaLocation();
 
         return linear;
     }

@@ -22,7 +22,9 @@ public class TestPlayerDetector {
         JOptionPane.showMessageDialog(null, icon);
 
         while(true ){
-            dl.inWatchedArea();
+            System.out.println( dl.inWatchedArea() );
+            dl.updateAreaLocation();
+
             Graphics g = man.getImage().createGraphics();
 
             g.setColor(Color.RED);
