@@ -2,6 +2,8 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
+import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
@@ -73,13 +75,18 @@ public class SplashScreenLauncher extends GameState {
 
                 currentSection.stop();
 
-                Component canvas = gameManager.getCanvas();
-                int screenWidth = canvas.getWidth();
-                int screenHeight = canvas.getHeight();
-                nextSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+                GameLauncher gm = new GameLauncher();
+                ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+                gm.getGameManager().installInputDriver(mouse);
+                gm.getGameManager().setState(gm);
+                gm.getGameManager().run();
+                gm.getGameManager().destroy();
 
-                currentCyclingSectionIndex = nextSectionIndex;
-                refreshScreen = true;
+                // CODE USED TO CYCLE TO NEXT SCREEN
+                // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);
+
+                // currentCyclingSectionIndex = nextSectionIndex;
+                // refreshScreen = true;
             }
         }
     };
