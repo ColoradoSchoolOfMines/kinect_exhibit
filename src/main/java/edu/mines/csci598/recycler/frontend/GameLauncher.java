@@ -1,9 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.awt.Graphics2D;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
@@ -13,6 +9,9 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
@@ -49,7 +48,7 @@ public class GameLauncher extends GameState {
         gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
         leftGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.LEFT),
+                new RecycleBins(Side.LEFT),
 				ConveyorBelt.getConveyorBeltPathLeft(),
                 gameManager,
                 leftGameStatusDisplay,
@@ -57,7 +56,7 @@ public class GameLauncher extends GameState {
                 false,
                 false);
 		rightGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.RIGHT),
+                new RecycleBins(Side.RIGHT),
                 ConveyorBelt.getConveyorBeltPathRight(),
                 gameManager,
                 rightGameStatusDisplay,

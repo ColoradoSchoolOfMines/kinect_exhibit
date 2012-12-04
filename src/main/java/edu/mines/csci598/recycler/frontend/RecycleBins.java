@@ -22,13 +22,11 @@ public class RecycleBins {
     private static final Logger logger = Logger.getLogger(RecycleBins.class);
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
 
-    public enum Side {LEFT, RIGHT};
 
     public RecycleBins(Side s) {
         if(s.equals(Side.LEFT)) {
             setUpLeftBins();
-        }
-        else {
+        } else {
             setUpRightBins();
         }
     }
