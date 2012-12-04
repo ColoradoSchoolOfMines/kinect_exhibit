@@ -52,10 +52,12 @@ public class GameLogic {
     private boolean debuggingCollisions;
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
+    private boolean gameState;
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                      boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
+        gameState = true;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
@@ -166,7 +168,7 @@ public class GameLogic {
                 powerUpSpeedFactor = 0.5;
                 timeToRemovePowerUp = lastWallTimeSec + 15;
             }
-            feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true); //Display correct image for powerup
+            feedbackDisplay.makeDisplay(m, currentTimeSec, true); //Display correct image for powerup
         }
     }
 
@@ -179,12 +181,20 @@ public class GameLogic {
     public void handleScore(Movable m, RecycleBin bin) {
         if (m instanceof Recyclable) {
             if (bin.isCorrectRecyclableType(m)) {
-                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+                feedbackDisplay.makeDisplay(m, currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
                 gameStatusDisplay.incrementScore(10);
             } else {
-                Movable feedback = feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, false);
-                strikeBar.addStrike(feedback);
+                Movable feedback = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
+                Boolean barFull = strikeBar.addStrike(feedback);
+                if(barFull){
+                    if (!playerIsAComputer){
+                      //SavePlayer currentPlayer = new SavePlayer();
+                      //currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                    }
+                    gameState = false;
+
+                }
                 SoundEffectEnum.INCORRECT.playSound();
             }
         }
@@ -286,4 +296,9 @@ public class GameLogic {
         double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         factory.increaseGenerationRate(pctToMaxDifficulty);
     }
+
+    public boolean getState(){
+        return gameState;
+    }
+
 }

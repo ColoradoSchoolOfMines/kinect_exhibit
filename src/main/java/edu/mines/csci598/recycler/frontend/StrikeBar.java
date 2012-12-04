@@ -63,7 +63,7 @@ public class StrikeBar {
         }
     }
 
-    public void addStrike(Movable image) {
+    public boolean addStrike(Movable image) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
             image.setRemovable(true);
@@ -76,8 +76,11 @@ public class StrikeBar {
             strikes++;
             if (strikes == MAX_STRIKES) {
                 gameOver.setGameOver(gameStatusDisplay);
+                return true;
             }
         }
+
+        return false;
     }
 
     /**

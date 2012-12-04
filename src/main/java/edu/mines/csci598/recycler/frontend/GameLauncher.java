@@ -41,6 +41,7 @@ public class GameLauncher extends GameState {
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
 
+
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
@@ -103,6 +104,9 @@ public class GameLauncher extends GameState {
         if (gameStarted) {
 		    leftGame.updateThis();
 		    rightGame.updateThis();
+            if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+                this.gameManager.destroy();
+            }
         }
         else {
             if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {
@@ -111,5 +115,6 @@ public class GameLauncher extends GameState {
         }
 		return this;
 	}
+
 
 }
