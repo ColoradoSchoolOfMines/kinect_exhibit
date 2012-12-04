@@ -1,10 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
-import edu.mines.csci598.recycler.frontend.motion.Movable;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class RecycleBins {
 
+    private static final Logger logger = Logger.getLogger(RecycleBins.class);
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
 
     public enum Side {LEFT, RIGHT};

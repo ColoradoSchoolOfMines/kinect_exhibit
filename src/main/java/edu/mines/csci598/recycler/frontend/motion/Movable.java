@@ -1,7 +1,10 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.MotionState;
+import edu.mines.csci598.recycler.frontend.RecycleBins;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;

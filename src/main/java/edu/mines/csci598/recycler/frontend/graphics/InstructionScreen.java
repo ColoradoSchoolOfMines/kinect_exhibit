@@ -1,11 +1,10 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.PlayerHand;
+import java.awt.Component;
+import java.awt.Graphics2D;
+
 import org.apache.log4j.Logger;
 
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  */
 public class InstructionScreen {
 
-    private static final Logger logger = Logger.getLogger(GameScreen.class);
+    private static final Logger logger = Logger.getLogger(InstructionScreen.class);
     private Sprite background;
 
     public InstructionScreen() {

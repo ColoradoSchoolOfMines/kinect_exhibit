@@ -1,5 +1,9 @@
 package edu.mines.csci598.recycler.frontend;
 
+import java.awt.Graphics2D;
+
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
@@ -10,8 +14,6 @@ import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
-import java.awt.*;
-
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
  * User: jzeimen
@@ -20,6 +22,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameLauncher extends GameState {
+    private static final Logger logger = Logger.getLogger(GameLauncher.class);
 	private GameManager gameManager;
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;

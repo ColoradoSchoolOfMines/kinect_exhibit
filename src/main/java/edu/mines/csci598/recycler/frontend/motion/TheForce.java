@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 /**
@@ -9,6 +11,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
  *
  */
 public class TheForce extends ItemMover {
+    private static final Logger logger = Logger.getLogger(TheForce.class);
 	
 	public TheForce(){
 		super(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);

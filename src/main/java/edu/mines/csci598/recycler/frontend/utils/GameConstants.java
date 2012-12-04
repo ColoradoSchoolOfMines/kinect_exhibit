@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
-import edu.mines.csci598.recycler.frontend.RecyclableType;
-import edu.mines.csci598.recycler.frontend.RecycleBin;
 
 /**
  * Created with IntelliJ IDEA.

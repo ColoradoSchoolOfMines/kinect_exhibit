@@ -1,19 +1,18 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.graphics.*;
-import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
-import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
-import edu.mines.csci598.recycler.frontend.motion.TheForce;
-import edu.mines.csci598.recycler.frontend.motion.Movable;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
+import edu.mines.csci598.recycler.frontend.motion.TheForce;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 
 /**

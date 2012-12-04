@@ -1,9 +1,10 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
-import org.apache.log4j.Logger;
 
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.

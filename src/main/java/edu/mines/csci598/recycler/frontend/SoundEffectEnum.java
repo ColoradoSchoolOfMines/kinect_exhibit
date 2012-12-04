@@ -1,7 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.bettyCrocker.SoundEffect;
 import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.bettyCrocker.SoundEffect;
 
 /**
  * Created with IntelliJ IDEA.

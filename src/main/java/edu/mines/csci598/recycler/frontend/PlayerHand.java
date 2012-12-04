@@ -1,10 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
-import edu.mines.csci598.recycler.frontend.Hand;
 
 /**
  * The "hand" represents a user's hand. It can be displayed on the screen and its motion will
@@ -19,6 +17,7 @@ import edu.mines.csci598.recycler.frontend.Hand;
  */
 public class PlayerHand extends Hand {
 
+    private static final Logger logger = Logger.getLogger(PlayerHand.class);
     private int velocityCount;
     GameManager gameManager;
     int handNum;

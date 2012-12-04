@@ -1,11 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
+import java.util.Random;
+
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import org.apache.log4j.Logger;
-
-import java.util.Random;
 
 /**
  * A factory to create Recyclables

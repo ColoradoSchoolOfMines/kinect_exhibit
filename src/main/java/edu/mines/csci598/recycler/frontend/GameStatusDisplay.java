@@ -1,11 +1,14 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.graphics.TextSprite;
-import edu.mines.csci598.recycler.frontend.graphics.TextSpritesHolder;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.graphics.TextSprite;
+import edu.mines.csci598.recycler.frontend.graphics.TextSpritesHolder;
 
 /**
  * The Game Status Display handles things like the score, or eventually  "game over" or other messages.
@@ -17,6 +20,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GameStatusDisplay implements TextSpritesHolder {
+    private static final Logger logger = Logger.getLogger(GameStatusDisplay.class);
 
     private int score;
     private TextSprite scoreSprite;

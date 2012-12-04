@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 
@@ -11,6 +13,7 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
  * To change this template use File | Settings | File Templates.
  */
 public class GameOver {
+    private static final Logger logger = Logger.getLogger(GameOver.class);
 
     private boolean signalGameOver;
     private GameScreen gameScreen;
