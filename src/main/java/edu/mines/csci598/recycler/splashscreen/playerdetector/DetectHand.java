@@ -2,19 +2,27 @@ package edu.mines.csci598.recycler.splashscreen.playerdetector;
 
 import edu.mines.csci598.recycler.backend.GameManager;
 
-public abstract class PlayerDetector {
+public class DetectHand {
     long _waitTime;
-    long _startedDetecting;
-    boolean _detected;
     GameManager _manager;
+    boolean _detected;
+    long _startedDetecting;
 
-    public PlayerDetector( long waitTime, GameManager manager ){
-        this._startedDetecting = 0;
+    public DetectHand( long waitTime, GameManager manager){
         this._waitTime = waitTime;
         this._manager = manager;
+        this._detected = false;
+        this._startedDetecting = 0;
     }
 
-    abstract protected boolean playerFound();
+    public boolean playerFound(){
+        // if there exists a hand
+        if( _manager.getSharedInputStatus().pointers[0][0] > 0 ){
+            return true;
+        }
+
+        return false;
+    }
 
     boolean startGame(){
 
@@ -41,7 +49,7 @@ public abstract class PlayerDetector {
         return false;
     }
 
-    boolean startConditionsMet(){
+    private boolean startConditionsMet(){
         // If a player hasn't been detected yet
         if( !_detected ){
             return false;

@@ -78,11 +78,14 @@ public class OpenNIHandTrackerInputDriver implements InputDriver {
     for (int i = 0; i < pointerMap.length; ++i)
       if (pointerMap[i] == -1)
         inputStatus.pointers[i][0] = inputStatus.pointers[i][1] = -1;
-    
-    
-    // set the depth and image data
-    // This should go elsewhere, or have the ability to disable it but...
-    man.setImage( handTracker.getVisualData() );
-    man.setDepth( handTracker.getDepthData() );
+
   }
+
+    public void pumpImage() {
+        man.setImage( handTracker.getVisualData() );
+    }
+
+    public void pumpDepth() {
+        man.setDepth( handTracker.getDepthData() );
+    }
 }

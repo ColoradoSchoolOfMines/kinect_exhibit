@@ -221,6 +221,10 @@ implements Destroyable, Runnable {
   public BufferedImage getImage(){
       return image;
   }
+
+    public GameState getGameState(){
+        return state;
+    }
   
   /**
    * Returns the visual image data from the kinect
