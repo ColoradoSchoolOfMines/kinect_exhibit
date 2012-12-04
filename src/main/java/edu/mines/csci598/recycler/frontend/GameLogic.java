@@ -187,7 +187,7 @@ public class GameLogic {
                 SoundEffectEnum.CORRECT.playSound();
                 gameStatusDisplay.incrementScore(10);
             } else {
-                Movable feedback = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
+                Movable feedback[] = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
                 Boolean barFull = strikeBar.addStrike(feedback);
                 if(barFull){
                     if (!playerIsAComputer){

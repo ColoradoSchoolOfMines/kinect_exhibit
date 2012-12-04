@@ -1,14 +1,13 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class keeps track of how many strikes the user has had and keeps a drawing on the screen.
@@ -64,21 +63,26 @@ public class StrikeBar {
         }
     }
 
-    public boolean addStrike(Movable image) {
+    public boolean addStrike(Movable[] images) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
-            image.setRemovable(true);
+            for(int i=0; i<images.length; i++){
+               images[i].setRemovable(true);
+            }
         }
         else if (strikes < MAX_STRIKES) {
-            movables.add(strikes, image);
-            Path p = movables.get(strikes).getPath();
-            p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
-            movables.get(strikes).setPath(p);
-            strikes++;
-            if (strikes == MAX_STRIKES) {
-                gameOver.setGameOver(gameStatusDisplay);
-                return true;
+            for(int i=0; i<images.length; i++){
+                movables.add(strikes, images[i]);
+                Path p = movables.get(strikes).getPath();
+                p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
+                movables.get(strikes).setPath(p);
+                if (strikes == MAX_STRIKES) {
+                    gameOver.setGameOver(gameStatusDisplay);
+                    return true;
+                }
             }
+            strikes++;
+
         }
 
         return false;
