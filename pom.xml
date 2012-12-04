@@ -26,11 +26,6 @@
           <url>http://maven2.javacpp.googlecode.com/git/</url>
         </repository>
         <repository>
-            <id>javacpp</id>
-            <name>JavaCPP</name>
-            <url>http://maven2.javacpp.googlecode.com/git/</url>
-        </repository>
-        <repository>
             <id>javacv</id>
             <name>JavaCV</name>
             <url>http://maven2.javacv.googlecode.com/git/</url>
