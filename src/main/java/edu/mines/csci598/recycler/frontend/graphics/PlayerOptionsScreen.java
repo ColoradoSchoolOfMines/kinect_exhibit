@@ -42,7 +42,7 @@ public class PlayerOptionsScreen {
                 }
             };
             textSpriteHolders.add(holder);
-            countdown = 6;
+            countdown = 11;
             previousTime = 0;
         }
 
@@ -94,10 +94,8 @@ public class PlayerOptionsScreen {
         }
 
         if ((System.currentTimeMillis() / 1000) > previousTime + 1) {
-            System.out.println("countdown: " + countdown);
             if (countdown >= 0)   {
                 countdown -= 1;
-                System.out.println("countdown: " + countdown);
             }
             previousTime = System.currentTimeMillis() / 1000;
         }

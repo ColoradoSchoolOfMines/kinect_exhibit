@@ -34,13 +34,15 @@ public class GameLauncher extends GameState {
     private PlayerOptionsScreen playerOptions;
 
 	public GameLauncher() {
+        // the boolean in gameManager determines if the screen is full screen or not
+        gameManager = new GameManager("Recycler",true);
+
+        instructionScreen = new InstructionScreen();
         //Preloading the images will prevent some flickering.
         //TODO: Preload correct/incorrect images too
         RecyclableType.preLoadImages();
         GameScreen.getInstance().preLoadImages();
 
-        // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler",true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -68,8 +70,6 @@ public class GameLauncher extends GameState {
         gameScreen.addTextSpriteHolder(leftGameStatusDisplay);
         gameScreen.addTextSpriteHolder(rightGameStatusDisplay);
 
-
-        instructionScreen = new InstructionScreen();
         gameCanStart = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 
@@ -106,12 +106,10 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher updateThis(float time) {
         if (gameCanStart) {
-          //  System.out.println("can start; " + playerOptions.canGameStart());
             if (!playerOptions.canGameStart()) {
                 playerOptions.updateThis();
             }
             else {
-                System.out.println("can start; " + playerOptions.canGameStart());
                 if (!gameStarted) {
                     gameStarted = true;
                     setUpPlayerMode(playerOptions.getPlayerMode());
@@ -121,7 +119,7 @@ public class GameLauncher extends GameState {
             }
         }
         else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15) {
                 gameCanStart = true;
             }
         }

@@ -166,6 +166,8 @@ public class GameScreen {
         for (Sprite bin : recycleBinSprites) {
             bin.getImage();
         }
+
+
     }
 
 }
