@@ -1,8 +1,10 @@
 package edu.mines.csci598.recycler.frontend;
 
+
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.frontend.hands.Hand;
 
 /**
  * A player class contains the players hands and in the future will keep track of
@@ -18,8 +20,8 @@ public class Player {
 
     private static final Logger logger = Logger.getLogger(Player.class);
     
-    PlayerHand primary;
-    PlayerHand auxiliary;
+    Hand primary;
+    Hand auxiliary;
 
     public Player(GameManager manager) {
 
