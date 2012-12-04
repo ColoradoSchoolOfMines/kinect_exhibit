@@ -1,9 +1,9 @@
-package edu.mines.csci598.recycler.frontend.ai;
+package edu.mines.csci598.recycler.frontend.hands;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.ai.ComputerConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
@@ -15,7 +15,7 @@ import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
  * Time: 6:19 PM
  * To change this template use File | Settings | File Templates.
  */
-public class    ComputerHand extends Hand {
+public class ComputerHand extends Hand {
 
     private static final Logger logger = Logger.getLogger(ComputerHand.class);
     private Path path;
@@ -31,6 +31,16 @@ public class    ComputerHand extends Hand {
      * Keeps track of whether or not the hand is on the opposite side of the bin for striking
      */
     private boolean onCorrectSide;
+    /**
+     * DEFAULT_POSITION
+     * The position the computer player will take by default
+     */
+    private static final Coordinate DEFAULT_POSITION = new Coordinate(ComputerConstants.INITIAL_HAND_X, ComputerConstants.INITIAL_HAND_Y);
+    /**
+     * intendedPosition
+     * The position the AI currently wants to be at
+     */
+    private Coordinate intendedPosition;
 
     public ComputerHand() {
         logger.setLevel(Level.INFO);
@@ -38,32 +48,20 @@ public class    ComputerHand extends Hand {
         goalY = 0;
         followingPath = false;
         onCorrectSide = false;
-        x = ComputerConstants.INITIAL_HAND_X;
-        y = ComputerConstants.INITIAL_HAND_Y;
-    }
-
-    private void updateVelocity(){
-        //logger.info("Update velocity"+(this.x - oldX));
-        velocityX = this.x - oldX;
-        velocityY = this.y - oldY;
+        intendedPosition = DEFAULT_POSITION; // starting location        
     }
 
     public void setPosition(Coordinate position){
-        oldX = x;
-        oldY = y;
-        x = (int)position.getX();
-        y = (int)position.getY();
-        updateVelocity();
+    	this.intendedPosition = position;
     }
 
+	@Override
+	protected Coordinate getNextPosition() {
+		return intendedPosition;
+	}
+
     public void resetHandToInitialPosition(){
-        oldX = x;
-        //logger.debug("hx="+x+",hy="+y+",ix="+initialX+",iy="+initialY);
-        if(y!=ComputerConstants.INITIAL_HAND_Y) {
-            logger.debug("Resetting ComputereHand to initial position");
-            x = ComputerConstants.INITIAL_HAND_X;
-            y = ComputerConstants.INITIAL_HAND_Y;
-        }
+        setPosition(DEFAULT_POSITION);
     }
 
     public int getGoalX() {
@@ -80,7 +78,7 @@ public class    ComputerHand extends Hand {
     }
 
     public void setPath(Path p) {
-        logger.debug("PlayerHand following path");
+        logger.debug("ComputerHand following path");
         path = p;
         followingPath = true;
     }
@@ -111,7 +109,4 @@ public class    ComputerHand extends Hand {
         if(getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret = true;
         return ret;
     }
-
-
-
 }

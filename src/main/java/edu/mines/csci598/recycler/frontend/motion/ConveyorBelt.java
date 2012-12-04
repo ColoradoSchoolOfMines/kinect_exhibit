@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.GameConstants;
 import edu.mines.csci598.recycler.frontend.GameLogic;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;

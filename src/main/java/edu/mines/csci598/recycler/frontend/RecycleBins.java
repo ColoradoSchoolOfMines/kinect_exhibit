@@ -1,14 +1,15 @@
 package edu.mines.csci598.recycler.frontend;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.items.MotionState;
 import edu.mines.csci598.recycler.frontend.items.Recyclable;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
-import org.apache.log4j.Logger;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

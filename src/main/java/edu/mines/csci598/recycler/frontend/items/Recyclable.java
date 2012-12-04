@@ -1,12 +1,13 @@
 package edu.mines.csci598.recycler.frontend.items;
 
 import edu.mines.csci598.recycler.frontend.GameConstants;
-import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
 import edu.mines.csci598.recycler.frontend.RecycleBins;
 import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.hands.Hand;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import org.apache.log4j.Logger;
+
 
 import java.util.Random;
 
