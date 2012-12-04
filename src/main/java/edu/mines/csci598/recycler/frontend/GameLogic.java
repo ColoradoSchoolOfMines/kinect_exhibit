@@ -55,12 +55,12 @@ public class GameLogic {
     private boolean debuggingCollisions;
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
-    private boolean gameState;
+    private boolean isPlaying;
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                      boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
-        gameState = true;
+        isPlaying = true;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
@@ -194,7 +194,7 @@ public class GameLogic {
                       //SavePlayer currentPlayer = new SavePlayer();
                       //currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
                     }
-                    gameState = false;
+                    isPlaying = false;
 
                 }
                 SoundEffectEnum.INCORRECT.playSound();
@@ -301,7 +301,7 @@ public class GameLogic {
     }
 
     public boolean getState(){
-        return gameState;
+        return isPlaying;
     }
 
 }
