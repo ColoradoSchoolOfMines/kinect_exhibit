@@ -2,6 +2,9 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
+import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
+import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
+import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,6 +18,9 @@ public class SplashScreenLauncher extends GameState {
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
 
+    private static final int HEADER_HEIGHT = 180;
+    private static final int FOOTER_HEIGHT = 200;
+
     public static void main(String[] args) {
         SplashScreenLauncher launcher = new SplashScreenLauncher();
         launcher.getGameManager().setState(launcher);
@@ -25,12 +31,27 @@ public class SplashScreenLauncher extends GameState {
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
 
-        cyclingSections = new ArrayList<SplashScreenSection>();
-        SplashScreenSection highScoreSection = new HighScoreScreen();
-        highScoreSection.initialize(new Point(0, 0), new Point(1280, 720), updateScreenCallback, cycleScreenCallback);
-        cyclingSections.add(highScoreSection);
+        Component canvas = gameManager.getCanvas();
+        int screenWidth = canvas.getWidth();
+        int screenHeight = canvas.getHeight();
 
         staticSections = new ArrayList<SplashScreenSection>();
+        SplashScreenSection instructionsSection = new InstructionHeader(gameManager.getCanvas());
+        instructionsSection.initialize(new Point(0, 0), new Point(screenWidth, HEADER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        staticSections.add(instructionsSection);
+
+        SplashScreenSection twitterSection = new TwitterFooter();
+        twitterSection.initialize(new Point(0, screenHeight - FOOTER_HEIGHT), new Point(screenWidth / 2, screenHeight), updateScreenCallback, cycleScreenCallback);
+        staticSections.add(twitterSection);
+
+        SplashScreenSection weatherSection = new WeatherFooter();
+        twitterSection.initialize(new Point(screenWidth / 2, screenHeight - FOOTER_HEIGHT), new Point(screenWidth, screenHeight), updateScreenCallback, cycleScreenCallback);
+        staticSections.add(twitterSection);
+
+        cyclingSections = new ArrayList<SplashScreenSection>();
+        SplashScreenSection highScoreSection = new HighScoreScreen();
+        highScoreSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        cyclingSections.add(highScoreSection);
 
         currentCyclingSectionIndex = 0;
         refreshScreen = true;
@@ -47,14 +68,14 @@ public class SplashScreenLauncher extends GameState {
         @Override
         public void cycleScreen(SplashScreenSection currentSection) {
             if (cyclingSections.contains(currentSection)) {
-                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
-                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
-
-                currentSection.stop();
-                nextSection.initialize(new Point(200, 200), new Point(1400, 900), updateScreenCallback, cycleScreenCallback);
-
-                currentCyclingSectionIndex = nextSectionIndex;
-                refreshScreen = true;
+//                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
+//                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
+//
+//                currentSection.stop();
+//                nextSection.initialize(new Point(200, 200), new Point(1400, 900), updateScreenCallback, cycleScreenCallback);
+//
+//                currentCyclingSectionIndex = nextSectionIndex;
+//                refreshScreen = true;
             }
         }
     };

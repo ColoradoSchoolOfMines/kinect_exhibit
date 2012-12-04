@@ -18,7 +18,7 @@ public class InstructionHeader implements SplashScreenSection {
     private Point bottomRight;
 
     public InstructionHeader(Component imageObserver) {
-        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.png").getImage();
+        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.jpg").getImage();
         this.imageObserver = imageObserver;
     }
 
@@ -30,7 +30,9 @@ public class InstructionHeader implements SplashScreenSection {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(image, topLeft.x, topLeft.y, imageObserver);
+        int width = bottomRight.x - topLeft.x;
+        int height = bottomRight.y - topLeft.y;
+        g.drawImage(image, topLeft.x, topLeft.y, width, height, imageObserver);
     }
 
     @Override
