@@ -122,9 +122,9 @@ public class PowerUp implements Displayable, Movable {
     }
 
     public enum PowerUpType {
-        DYNAMITE("src/main/resources/SpriteImages/FinalSpriteImages/dynamite.png"),
-        TURTLE("src/main/resources/SpriteImages/FinalSpriteImages/turtle.png"),
-        BLASTER("src/main/resources/SpriteImages/FinalSpriteImages/blaster.png");
+        DYNAMITE("src/main/resources/SpriteImages/Items/dynamite.png"),
+        TURTLE("src/main/resources/SpriteImages/Items/turtle.png"),
+        BLASTER("src/main/resources/SpriteImages/Items/blaster.png");
 
         private String image;
 

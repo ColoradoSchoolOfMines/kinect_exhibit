@@ -21,8 +21,8 @@ public class FeedbackDisplay extends ItemMover {
     private static final Logger logger = Logger.getLogger(FeedbackDisplay.class);
 
     private GameScreen gameScreen;
-    private static final String INCORRECT_SPRITE = "src/main/resources/SpriteImages/FinalSpriteImages/incorrect.png";
-    private static final String CORRECT_SPRITE = "src/main/resources/SpriteImages/FinalSpriteImages/correct.png";
+    private static final String INCORRECT_SPRITE = "src/main/resources/SpriteImages/incorrect.png";
+    private static final String CORRECT_SPRITE = "src/main/resources/SpriteImages/correct.png";
 
 
     public FeedbackDisplay(double initialSpeed) {
