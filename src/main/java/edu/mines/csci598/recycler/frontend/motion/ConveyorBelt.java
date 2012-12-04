@@ -7,7 +7,6 @@ import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.items.MotionState;
-
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ConveyorBelt extends ItemMover {
     public static final int SPRITE_BECOMES_UNTOUCHABLE = LEFT_TOP_PATH_START_Y + 20;
 
     public ConveyorBelt(GameLogic game, GameScreen gameScreen, Path path) {
-        super(GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND);
+        super();
         movables = new ArrayList<Movable>();
         PATH = path;
     }

@@ -15,17 +15,17 @@ public final class ComputerConstants {
      * Random number must be greater than this number to strike at recyclable.
      * This is only a starting threshold and should change as game progresses.
      */
-    public static final int MIN_GENERATION_THRESHOLD = 90;
+    public static final int MIN_GENERATION_THRESHOLD = 85;
     /*
      * MAX_GENERATION_NUMBER
      * For random number generator.
      * Generates numbers from 1 to 100 using a +1
      */
     public static final int MAX_GENERATION_NUMBER = 100;
-    /* HAND_THRESHOLD
+    /* SET_HAND_T0_CORRECT_SIDE_THRESHOLD
      * Probability that the hand will be set to the correct side
      */
-    public static final int HAND_SET_THRESHOLD = 50;
+    public static final int SET_HAND_T0_CORRECT_SIDE_THRESHOLD = 25;
     /*
      * LAST_STRIKE_UPDATE
      * Used to slow hand movement when repositioning to the correct side.

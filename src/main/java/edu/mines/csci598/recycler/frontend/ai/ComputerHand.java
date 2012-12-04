@@ -15,7 +15,7 @@ import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
  * Time: 6:19 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ComputerHand extends Hand {
+public class    ComputerHand extends Hand {
 
     private static final Logger logger = Logger.getLogger(ComputerHand.class);
     private Path path;
@@ -111,5 +111,7 @@ public class ComputerHand extends Hand {
         if(getX() < ConveyorBelt.RIGHT_VERTICAL_PATH_START_X)ret = true;
         return ret;
     }
+
+
 
 }

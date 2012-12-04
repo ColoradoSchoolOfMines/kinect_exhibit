@@ -170,7 +170,7 @@ public class ComputerPlayer {
     private void crossConveyor(Recyclable r, double currentTimeSec, int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
-        if(rand > ComputerConstants.HAND_SET_THRESHOLD) {
+        if(rand > ComputerConstants.SET_HAND_T0_CORRECT_SIDE_THRESHOLD) {
             if(!primary.isFollowingPath()) {
                 setUpPath(r, currentTimeSec, newX);
             } else {
@@ -187,9 +187,9 @@ public class ComputerPlayer {
     private void setUpPath(Recyclable r, double currentTimeSec, int newX) {
         primary.setGoal(r.getSprite().getX() + newX, primary.getSprite().getY() - ComputerConstants.HAND_Y_OFFSET);
         logger.debug("rx=" + r.getSprite().getX() + ",ry=" + r.getSprite().getY() +
-                ",rsx=" + r.getSprite().getScaledX() + ",rsy=" + r.getSprite().getScaledY() +
+                ",rsx=" + r.getSprite().getX() + ",rsy=" + r.getSprite().getY() +
                 ",hx=" + primary.getSprite().getX() + ",hy=" + primary.getSprite().getY() +
-                ",hsx=" + primary.getSprite().getScaledX() + ",hsy=" + primary.getSprite().getScaledY() +
+                ",hsx=" + primary.getSprite().getX() + ",hsy=" + primary.getSprite().getY() +
                 ",gx=" + primary.getGoalX() + ",gy=" + primary.getGoalY());
         Path p = new Path(currentTimeSec);
         Line moveAboveRecyclable = new Line(primary.getSprite().getX(), primary.getSprite().getY(),

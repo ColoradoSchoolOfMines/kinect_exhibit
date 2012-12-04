@@ -157,11 +157,14 @@ public class GameLogic {
         if (m instanceof PowerUp) {
             PowerUp p = (PowerUp) m;
             if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
+                SoundEffectEnum.EXPLODE.playSound();
                 strikeBar.removeStrike();
             } else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
+                SoundEffectEnum.SPEED_UP.playSound();
                 otherScreen.powerUpSpeedFactor = 1.5;
                 otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
             } else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
+                SoundEffectEnum.SLOW_DOWN.playSound();
                 powerUpSpeedFactor = 0.5;
                 timeToRemovePowerUp = lastWallTimeSec + 15;
             }
@@ -232,6 +235,7 @@ public class GameLogic {
 
         // Release items at the end of the path
         List<Movable> itemsToRemove = conveyorBelt.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
+        if(itemsToRemove.size()>0) SoundEffectEnum.TRASH_BIN.playSound();
         for (Movable m : itemsToRemove) {
             handleScore(m, RecycleBin.TRASH_BIN);
             gameScreen.removeSprite(m.getSprite());
@@ -240,7 +244,9 @@ public class GameLogic {
         itemsToRemove = theForce.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
         for (Movable m : itemsToRemove) {
             if (m instanceof Recyclable) {
-                handleScore(m, recycleBins.findBinForFallingRecyclable(m));
+                RecycleBin bin = recycleBins.findBinForFallingRecyclable(m);
+                bin.getSoundEffect().playSound();
+                handleScore(m,bin);
             }
             gameScreen.removeSprite(m.getSprite());
         }
@@ -252,6 +258,7 @@ public class GameLogic {
                 try {
                     conveyorBelt.takeControlOfMovable(m);
                     gameScreen.addSprite(m.getSprite());
+                    SoundEffectEnum.ITEM_EXIT_CHUTE.playSound();
                 } catch (ExceptionInInitializerError e) {
                     logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
                 }

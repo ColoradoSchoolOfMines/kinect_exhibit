@@ -15,11 +15,11 @@ public abstract class ItemMover {
     private static final Logger logger = Logger.getLogger(ItemMover.class);
 	
 	protected List<Movable> movables;
-	protected double speedPixPerSecond;
+
 	
-	public ItemMover(double initialSpeed){
+	public ItemMover(){
         movables = new ArrayList<Movable>();
-		speedPixPerSecond = initialSpeed;
+
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 
 /**
  * The "hand" represents a user's hand. It can be displayed on the screen and its motion will
@@ -32,6 +33,13 @@ public class PlayerHand extends Hand {
 
         x = gameManager.vcxtopx(gameManager.getSharedInputStatus().pointers[handNum][0]);
         y = gameManager.vcytopx(gameManager.getSharedInputStatus().pointers[handNum][1]);
+
+        //The input is different for the display so we must account for the scale factor
+        //For example if we have a monitor that is half as tall and half as wide as a 1080p monitor
+        //we would use a scale factor of 0.5. The mouse would send inputs only in that range so we
+        //scale them up to where they would normally be at.
+        x = (int) Math.round(x* 1/GraphicsConstants.SCALE_FACTOR);
+        y = (int) Math.round(y* 1/GraphicsConstants.SCALE_FACTOR);
 
         velocityX = x - oldX;
         velocityY = y - oldY;
