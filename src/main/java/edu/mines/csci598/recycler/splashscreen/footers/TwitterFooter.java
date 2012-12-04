@@ -1,37 +1,30 @@
 package edu.mines.csci598.recycler.splashscreen.footers;
 
 
+import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
+import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
+import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
 import edu.mines.csci598.recycler.splashscreen.social.TwitterMessages;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class TwitterFooter extends JPanel implements ActionListener {
+public class TwitterFooter implements ActionListener, SplashScreenSection {
 
     private ArrayList<String> messages;
     private TwitterMessages twitterMessages;
     private Timer timer;
     private int messageNumber;
-    private boolean checkForNewMessages;
-    private JLabel twitterLabel;
 
     public TwitterFooter() {
-        checkForNewMessages = false;
         messageNumber = 0;
         twitterMessages = new TwitterMessages();
         messages = twitterMessages.retrieveAllMessages();
-        setVisible(true);
         timer = new Timer(10000, this);
         timer.start();
-        /*scoreSwitch.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                selectedScore = (selectedScore + 1) % top10Scores.size();
-                HighScoreScreen.this.callback.updateScreen();
-            }
-        }, TIMER_DELAY, TIMER_DELAY);*/
     }
 
 
@@ -43,9 +36,14 @@ public class TwitterFooter extends JPanel implements ActionListener {
     }
 
     private void updateMessage() {
-        if (messages.isEmpty()) {
-            //do nada
+        if (messageNumber == messages.size()) {
+            messageNumber = 0;
+            messages = twitterMessages.retrieveAllMessages();
         }
+        String message = messages.get(messageNumber);
+        message = convertToHtml(message);
+        messageNumber++;
+
     }
 
     private static String convertToHtml(String text)
@@ -53,14 +51,18 @@ public class TwitterFooter extends JPanel implements ActionListener {
         return "<html>" + text.replaceAll("\n", "<br />") +"</html>";
     }
 
-    public static void main(String[] arg) {
-        JFrame mainFrame = new JFrame();
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setSize(1280, 720);
+    @Override
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
 
-        TwitterFooter footer = new TwitterFooter();
-        mainFrame.add(footer);
+    }
 
-        mainFrame.setVisible(true);
+    @Override
+    public void draw(Graphics2D g) {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 }

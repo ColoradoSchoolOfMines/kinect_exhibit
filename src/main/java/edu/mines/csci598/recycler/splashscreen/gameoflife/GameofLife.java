@@ -12,7 +12,6 @@ public class GameofLife  extends JPanel implements ActionListener {
     private Timer timer;
     private static final int NUM_ROWS = 50;
     private static final int NUM_COLS = 50;
-    private boolean isDone;
     private int genNumber;
 
     GameofLife(int nbRow, int nbCol) {
@@ -75,24 +74,14 @@ public class GameofLife  extends JPanel implements ActionListener {
                 label.updateState();
             }
         }
-
-        if (genNumber > 300)
-            setIsDone(true);
     }
 
     public synchronized void actionPerformed(ActionEvent e) {
-        Object o = e.getSource();
+        e.getSource();
         timer.start();
         updateBoard();
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    private void setIsDone(boolean val) {
-        isDone = val;
-    }
 
     public static void main(String[] arg) {
         JFrame mainFrame = new JFrame();

@@ -46,7 +46,6 @@ public class GameLogic {
     private long startTime;
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
-    private int strikes;
     private StrikeBar strikeBar;
     private boolean gameOverNotified = false;
     private boolean playerIsAComputer;
@@ -64,6 +63,8 @@ public class GameLogic {
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
+        Recyclable.tellRecyclablesAboutBins(recycleBins);
+
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
         lastWallTimeSec = 0;
@@ -125,11 +126,12 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Checks to see if there is a collision with each hand
+     * If there's a collision, handle it in handleCollisions
+     */
     private void lookForAndHandleCollisions() {
-
-        // checks to see if there is a collision with any one of the hands
         for (Hand hand : hands) {
-
             //If the hand isn't moving fast enough to swipe, skip it
             if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
                 continue;
@@ -137,7 +139,7 @@ public class GameLogic {
             // If we get here, it is causing collisions with anything at this location.
 
             List<Movable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
-            logger.debug("swipedSize="+swipedOffConveyor.size());
+            logger.debug("swipedSize=" + swipedOffConveyor.size());
             // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
 
             handleCollisions(hand, swipedOffConveyor);
@@ -146,50 +148,8 @@ public class GameLogic {
 
     public void handleCollisions(Hand hand, List<Movable> swipedOffConveyor) {
         for (Movable m : swipedOffConveyor) {
-
-            //Rough way to make items fall at different speeds
-            double travelTime = Math.abs(GameConstants.ITEM_PATH_END / hand.getVelocityX());
-            //Don't let it go too fast.
-            travelTime = Math.max(travelTime, 0.3);
-            //or too slow
-            travelTime = Math.min(travelTime, 2);
-            //Account for the speedup
-            travelTime *= timeSpeedFactor;
-
-            Coordinate position = m.getPosition();
-            Line collideLine = null;
-            int randomNumber = new Random().nextInt(4)+1;
-            if (m instanceof Recyclable) {
-                if (hand.getVelocityX() >= GameConstants.MIN_HAND_VELOCITY) {
-                    m.setMotionState(MotionState.FALL_RIGHT);
-                    RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
-                    collideLine = new Line( position.getX(), position.getY(),
-                             position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
-                            travelTime,Math.PI *randomNumber);
-
-                }
-                else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) {
-                    m.setMotionState(MotionState.FALL_LEFT);
-                    RecycleBin destBin = recycleBins.findBinForFallingRecyclable(m);
-                    collideLine = new Line( position.getX(), position.getY(),
-                             position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
-                            travelTime,Math.PI *randomNumber);
-                }
-                else {
-                    throw new IllegalStateException("The hand wasn't moving fast enough to make the conveyor release control!");
-                }
-            }
-            else if (m instanceof PowerUp) {
-                m.setMotionState(MotionState.NONE);
-                collideLine = new Line( m.getPosition(), m.getPosition(), 0.5);
-            }
-
-            Path path = new Path(currentTimeSec);
-            path.addLine(collideLine);
-            m.setPath(path);
-
-            // handle powerups
-            handlePowerUps(m);
+            m.reactToCollision(hand, currentTimeSec);
+            makePowerUpChangesAndUpdateDisplayIfPowerup(m);
         }
 
         // We now have a list of items that the conveyor belt has released, and they know where they are going.
@@ -199,29 +159,24 @@ public class GameLogic {
     }
 
     /**
-     * Given a movable this function determines if it is a powerup and handles it accordingly
+     * Given a movable, determines if it is a powerup and handle it accordingly
+     * Also displays correct image for powerup
      *
      * @param m
      */
-    public void handlePowerUps(Movable m) {
+    private void makePowerUpChangesAndUpdateDisplayIfPowerup(Movable m) {
         if (m instanceof PowerUp) {
             PowerUp p = (PowerUp) m;
             if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
                 strikeBar.removeStrike();
-                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
-            }
-            else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
-                logger.info("Rabbit Powerup");
-                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+            } else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
                 otherScreen.powerUpSpeedFactor = 1.5;
                 otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
-            }
-            else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
-                logger.info("Turtle Powerup");
-                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+            } else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
                 powerUpSpeedFactor = 0.5;
                 timeToRemovePowerUp = lastWallTimeSec + 15;
             }
+            feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true); //Display correct image for powerup
         }
     }
 
@@ -233,12 +188,11 @@ public class GameLogic {
      */
     public void handleScore(Movable m, RecycleBin bin) {
         if (m instanceof Recyclable) {
-            if (bin.isCorrectRecyclableType(m))  {
+            if (bin.isCorrectRecyclableType(m)) {
                 feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
                 gameStatusDisplay.incrementScore(10);
-            }
-            else {
+            } else {
                 Movable feedback = feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, false);
                 strikeBar.addStrike(feedback);
                 SoundEffectEnum.INCORRECT.playSound();
@@ -256,45 +210,13 @@ public class GameLogic {
         this.otherScreen = otherScreen;
     }
 
-    private void increaseDifficulty() {
-        possiblyIncreaseTypesInUse();
-        increaseSpeed();
-        increaseItemGenerationProbability();
-    }
-
-    private void possiblyIncreaseTypesInUse() {
-        if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
-            numItemTypesInUse++;
-            nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
-            factory.setNumItemTypesInUse(numItemTypesInUse);
-        }
-    }
-
-    private void increaseSpeed() {
-        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
-        timeSpeedFactor = pctToMaxDifficulty * (GameConstants.FINAL_TIME_SPEED_FACTOR - 1) + 1;
-    }
-
-    private void increaseItemGenerationProbability() {
-        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
-        factory.increaseGenerationRate(pctToMaxDifficulty);
-    }
-
-    public GameManager getGameManager() {
-        return gameManager;
-    }
-
-    public GameScreen getGameScreen() {
-        return gameScreen;
-    }
-
     protected void updateThis() {
         updateTime();
 
         if (wallTimeSec >= timeToRemovePowerUp) {
             powerUpSpeedFactor = 1;
         }
-        if(playerIsAComputer){
+        if (playerIsAComputer) {
             computerPlayer.updateAI(conveyorBelt.getNextMovableThatIsTouchable(), currentTimeSec);
         }
 
@@ -347,4 +269,27 @@ public class GameLogic {
         lastWallTimeSec = wallTimeSec;
     }
 
+    private void increaseDifficulty() {
+        possiblyIncreaseTypesInUse();
+        increaseSpeed();
+        increaseItemGenerationProbability();
+    }
+
+    private void possiblyIncreaseTypesInUse() {
+        if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
+            numItemTypesInUse++;
+            nextItemTypeGenerationTime += GameConstants.TIME_TO_ADD_NEW_ITEM_TYPE;
+            factory.setNumItemTypesInUse(numItemTypesInUse);
+        }
+    }
+
+    private void increaseSpeed() {
+        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+        timeSpeedFactor = pctToMaxDifficulty * (GameConstants.FINAL_TIME_SPEED_FACTOR - 1) + 1;
+    }
+
+    private void increaseItemGenerationProbability() {
+        double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
+        factory.increaseGenerationRate(pctToMaxDifficulty);
+    }
 }
