@@ -154,7 +154,7 @@ public class Recyclable implements Displayable, Movable {
         return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
     }
 
-    public static void tellRecyclablesAboutBins(RecycleBins bins) {
+    public void tellRecyclablesAboutBins(RecycleBins bins) {
         recycleBins = bins;
     }
 }
