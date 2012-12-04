@@ -56,7 +56,8 @@ public class ResourceManager {
             int newHeight = (int) Math.round(img.getHeight() * GraphicsConstants.SCALE_FACTOR);
             int newWidth = (int) Math.round(img.getWidth() * GraphicsConstants.SCALE_FACTOR);
             //scale the image
-            Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_FAST); //BufferedImage.SCALE_SMOOTH);
+            // SCALE_FAST reduces the load time slightly
+            Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
             imageMap.put(key, image);
         }
         return imageMap.get(key);

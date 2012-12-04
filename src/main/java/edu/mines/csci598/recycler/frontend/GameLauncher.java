@@ -137,9 +137,9 @@ public class GameLauncher extends GameState {
             }
         }
         else {
-    //        if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {
-                gameStarted = true;
-     //       }
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15) {
+                gameCanStart = true;
+            }
         }
 		return this;
 	}

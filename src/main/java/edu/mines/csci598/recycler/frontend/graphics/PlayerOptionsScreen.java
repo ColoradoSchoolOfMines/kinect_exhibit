@@ -19,6 +19,7 @@ public class PlayerOptionsScreen {
     private long previousTime;
     private Sprite background;
     int countdown;
+    private int screenWidth;
 
         public PlayerOptionsScreen(GameManager gameManager) {
             background = new Sprite("src/main/resources/SpriteImages/playerSelection.jpg",0,0);
@@ -44,6 +45,7 @@ public class PlayerOptionsScreen {
             textSpriteHolders.add(holder);
             countdown = 11;
             previousTime = 0;
+            screenWidth = 1920;
         }
 
         public void paint(Graphics2D g2d, Component canvas) {
@@ -106,7 +108,7 @@ public class PlayerOptionsScreen {
     }
 
     public PlayerMode getPlayerMode() {
-        if (hands.get(0).getX() < GraphicsConstants.GAME_SCREEN_WIDTH) {
+        if (hands.get(0).getX() < screenWidth) {
             return PlayerMode.ONE_PLAYER;
         }
         else {

@@ -12,6 +12,4 @@ public final class GraphicsConstants {
 
     public static final double SCALE_FACTOR =0.75;
 
-    public static final int GAME_SCREEN_WIDTH = (int) Math.round(960 * SCALE_FACTOR);
-
 }
