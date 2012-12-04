@@ -113,19 +113,19 @@ public class RecycleBins {
      */
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
-                RecycleBin.ConveyorSide.LEFT,  PLASTIC_MIN_Y,
+                RecycleBin.ConveyorSide.RIGHT,  PLASTIC_MIN_Y,
                 PLASTIC_MAX_Y, RecyclableType.PLASTIC,
                 PLASTIC_IMAGE_RIGHT);
         RecycleBin bin2 = new RecycleBin(
-                RecycleBin.ConveyorSide.LEFT, PAPER_MIN_Y,
+                RecycleBin.ConveyorSide.RIGHT, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
                 PAPER_IMAGE_RIGHT);
         RecycleBin bin3 = new RecycleBin(
-                RecycleBin.ConveyorSide.RIGHT, HAZARD_MIN_Y,
+                RecycleBin.ConveyorSide.LEFT, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
                 HAZARD_IMAGE_RIGHT);
         RecycleBin bin4 = new RecycleBin(
-                RecycleBin.ConveyorSide.RIGHT, GLASS_MIN_Y,
+                RecycleBin.ConveyorSide.LEFT, GLASS_MIN_Y,
                 GLASS_MAX_Y, RecyclableType.GLASS,
                 GLASS_IMAGE_RIGHT);
 
