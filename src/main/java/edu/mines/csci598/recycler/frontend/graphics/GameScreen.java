@@ -35,10 +35,10 @@ public class GameScreen {
     private ArrayList<Sprite> handSprites;
 
     private GameScreen() {
-        background1 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_1.jpg", 0, 0);
-        background2 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_2.jpg", 0, 0);
-        backgroundChutesAndFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
-        backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_score_frame.png", 0, 0);
+        background1 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_1.jpg", 0, 0);
+        background2 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_2.jpg", 0, 0);
+        backgroundChutesAndFrame = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_frame.png", 0, 0);
+        backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_score_frame.png", 0, 0);
 
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
         handSprites = new ArrayList<Sprite>();

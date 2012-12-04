@@ -147,22 +147,22 @@ public class RecycleBins {
     //Bin constants
     public static final int PLASTIC_MIN_Y = 80;
     public static final int PLASTIC_MAX_Y = 400;
-    public static final String PLASTIC_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_plastic_empty.png";
-    public static final String PLASTIC_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_plastic_empty.png";
+    public static final String PLASTIC_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_plastic_empty.png";
+    public static final String PLASTIC_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_plastic_empty.png";
 
     public static final int PAPER_MIN_Y = 401;
     public static final int PAPER_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
-    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_empty.png";
-    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_paper_empty.png";
 
     public static final int HAZARD_MIN_Y = 173;
     public static final int HAZARD_MAX_Y = 547;
-    public static final String HAZARD_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_hazard_empty.png";
-    public static final String HAZARD_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_hazard_empty.png";
+    public static final String HAZARD_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_hazard_empty.png";
+    public static final String HAZARD_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_hazard_empty.png";
 
     public static final int GLASS_MIN_Y = 548;
     public static final int GLASS_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
-    public static final String GLASS_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_glass_empty.png";
-    public static final String GLASS_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_glass_empty.png";
+    public static final String GLASS_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_glass_empty.png";
+    public static final String GLASS_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_glass_empty.png";
 
 }

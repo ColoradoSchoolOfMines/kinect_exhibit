@@ -13,7 +13,7 @@ public class InstructionHeader implements SplashScreenSection {
     private Image image;
 
     public InstructionHeader() {
-        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.png").getImage();
+        image =  new ImageIcon("src/main/resources/SpriteImages/instructions_half.png").getImage();
 
     }
 
