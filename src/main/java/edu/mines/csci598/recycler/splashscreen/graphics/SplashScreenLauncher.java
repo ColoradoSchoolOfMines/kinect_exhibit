@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.bettyCrocker.Song;
+import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
@@ -19,6 +21,7 @@ public class SplashScreenLauncher extends GameState {
     private List<SplashScreenSection> cyclingSections;
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
+    private Song song;
 
     private static final int HEADER_HEIGHT = 150;
     private static final int FOOTER_HEIGHT = 100;
@@ -32,6 +35,10 @@ public class SplashScreenLauncher extends GameState {
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
+
+        song = new Song();
+        song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));
+        song.startPlaying(true);
 
         Component canvas = gameManager.getCanvas();
         int screenWidth = canvas.getWidth();
@@ -75,6 +82,8 @@ public class SplashScreenLauncher extends GameState {
 
                 currentSection.stop();
 
+                // Temporary switch-to-game logic
+                song.stopPlaying();
                 GameLauncher gm = new GameLauncher();
                 ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
                 gm.getGameManager().installInputDriver(mouse);
