@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.items.MotionState;
@@ -90,8 +91,7 @@ public class RecycleBins {
         RecycleBin bin2 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
-//TODO: Change to PAPER
-                PLASTIC_IMAGE_LEFT);
+                PAPER_IMAGE_LEFT);
         RecycleBin bin3 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
@@ -119,8 +119,7 @@ public class RecycleBins {
         RecycleBin bin2 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
-//TODO: Change to Paper
-                PLASTIC_IMAGE_RIGHT);
+                PAPER_IMAGE_RIGHT);
         RecycleBin bin3 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
@@ -153,8 +152,8 @@ public class RecycleBins {
 
     public static final int PAPER_MIN_Y = 401;
     public static final int PAPER_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
-    //public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_empty.png";
-    //public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/FinalSpriteImages/left_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/FinalSpriteImages/right_bin_paper_empty.png";
 
     public static final int HAZARD_MIN_Y = 173;
     public static final int HAZARD_MAX_Y = 547;

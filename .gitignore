@@ -7,7 +7,5 @@ META-INF
 classes
 *.wav
 *.mp3
-*.png
-*.jpg
 *netbeans*
 scores.dat
