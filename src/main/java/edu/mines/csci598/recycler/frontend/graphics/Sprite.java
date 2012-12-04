@@ -1,10 +1,9 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import edu.mines.csci598.recycler.frontend.GameConstants;
-
-import java.awt.Image;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -93,13 +92,11 @@ public class Sprite {
 
 
     public boolean isPointInside(int x, int y) {
-        //We multiply the sprite offsets by the graphics constants
-        //If we don't and we played the game either really small or really big it
-        //would not work as expected
-        if (x >= getX() - (GameConstants.SPRITE_X_OFFSET*GraphicsConstants.SCALE_FACTOR) &&
-                x <= getX() + (GameConstants.SPRITE_X_OFFSET*GraphicsConstants.SCALE_FACTOR)) {
-            if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET*GraphicsConstants.SCALE_FACTOR) &&
-                    y <= getY() + (GameConstants.SPRITE_Y_OFFSET*GraphicsConstants.SCALE_FACTOR)) {
+
+        if (x >= getX() - (GameConstants.SPRITE_X_OFFSET) &&
+                x <= getX() + GameConstants.SPRITE_X_OFFSET) {
+            if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET) &&
+                    y <= getY() + (GameConstants.SPRITE_Y_OFFSET)) {
                 return true;
             }
         }

@@ -10,6 +10,6 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 public final class GraphicsConstants {
 
-    public static final double SCALE_FACTOR =0.5;
+    public static final double SCALE_FACTOR =0.75;
 
 }
