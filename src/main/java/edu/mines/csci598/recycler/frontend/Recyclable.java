@@ -10,7 +10,6 @@ import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.

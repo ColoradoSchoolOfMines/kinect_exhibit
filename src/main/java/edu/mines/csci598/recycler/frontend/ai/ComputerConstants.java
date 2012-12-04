@@ -1,4 +1,4 @@
-package edu.mines.csci598.recycler.frontend.utils;
+package edu.mines.csci598.recycler.frontend.ai;
 
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 

@@ -1,16 +1,23 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.ai;
 
 import java.util.Random;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.MotionState;
+import edu.mines.csci598.recycler.frontend.PowerUp;
+import edu.mines.csci598.recycler.frontend.Recyclable;
+import edu.mines.csci598.recycler.frontend.RecyclableType;
+import edu.mines.csci598.recycler.frontend.RecycleBin;
+import edu.mines.csci598.recycler.frontend.RecycleBins;
+import edu.mines.csci598.recycler.frontend.RecycleBin.ConveyorSide;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
-import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
 
 
 /**

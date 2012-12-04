@@ -1,12 +1,12 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
+import edu.mines.csci598.recycler.frontend.GameConstants;
 import edu.mines.csci598.recycler.frontend.GameLogic;
 import edu.mines.csci598.recycler.frontend.MotionState;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

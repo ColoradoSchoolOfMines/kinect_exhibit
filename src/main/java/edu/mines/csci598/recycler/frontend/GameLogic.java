@@ -6,13 +6,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.frontend.ai.ComputerPlayer;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 
 
 /**

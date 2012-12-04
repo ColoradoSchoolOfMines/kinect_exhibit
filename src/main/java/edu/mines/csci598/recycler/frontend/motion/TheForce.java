@@ -2,7 +2,7 @@ package edu.mines.csci598.recycler.frontend.motion;
 
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.GameConstants;
 
 /**
  * Magically moves items around!  In practice used to control the items which are falling off the conveyor belt into the bins.

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.GameConstants;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
