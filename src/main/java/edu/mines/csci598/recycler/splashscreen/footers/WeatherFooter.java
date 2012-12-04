@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.splashscreen.footers;
 
+import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
 import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
 import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
 import edu.mines.csci598.recycler.splashscreen.weather.LocalAreaWeather;
@@ -22,7 +23,7 @@ public class WeatherFooter implements ActionListener, SplashScreenSection {
     }
 
     @Override
-    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback callback) {
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
     }
 
     @Override

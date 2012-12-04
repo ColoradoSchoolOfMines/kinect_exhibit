@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.splashscreen.headers;
 
 
+import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
 import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
 import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
 
@@ -17,7 +18,7 @@ public class InstructionHeader implements SplashScreenSection {
     }
 
     @Override
-    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback callback) {
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
     }
 
     @Override
