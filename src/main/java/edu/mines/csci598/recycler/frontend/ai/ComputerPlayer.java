@@ -170,7 +170,7 @@ public class ComputerPlayer {
     private void crossConveyor(Recyclable r, double currentTimeSec, int newX){
         //int newX = -1*ComputerConstants.HAND_X_OFFSET_FROM_CONVEYER;
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
-        if(rand > ComputerConstants.HAND_SET_THRESHOLD) {
+        if(rand > ComputerConstants.SET_HAND_T0_CORRECT_SIDE_THRESHOLD) {
             if(!primary.isFollowingPath()) {
                 setUpPath(r, currentTimeSec, newX);
             } else {

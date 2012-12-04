@@ -33,13 +33,14 @@ public class GameLauncher extends GameState {
     private InstructionScreen instructionScreen;
 
 	public GameLauncher() {
+        instructionScreen = new InstructionScreen();
         //Preloading the images will prevent some flickering.
         //TODO: Preload correct/incorrect images too
         RecyclableType.preLoadImages();
         GameScreen.getInstance().preLoadImages();
 
         // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler",false);
+		gameManager = new GameManager("Recycler", true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -66,7 +67,7 @@ public class GameLauncher extends GameState {
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
 
-        instructionScreen = new InstructionScreen();
+
         gameStarted = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 	}
@@ -105,7 +106,7 @@ public class GameLauncher extends GameState {
 		    rightGame.updateThis();
         }
         else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5) {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {
                 gameStarted = true;
             }
         }
