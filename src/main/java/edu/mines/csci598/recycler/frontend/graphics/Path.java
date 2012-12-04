@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  * A Path is a representation of the path an item is to follow on the screen. It consists
  * of a list of Lines.  Lines on the path should *not* intersect or figuring out which
@@ -15,6 +17,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class Path {
+    private static final Logger logger = Logger.getLogger(Path.class);
 
     List<Line> path = new ArrayList<Line>();
     double startTime;

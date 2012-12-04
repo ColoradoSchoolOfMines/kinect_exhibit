@@ -237,6 +237,7 @@ public class HandTracker {
                 g = rgbBuffer.get(i * 3 + 1) & 0xff;
                 b = rgbBuffer.get(i * 3 + 2) & 0xff;
                 rgbImageArray[i] = (r << 16) | (g << 8) | b;
+                bimg.setRGB( i%width, i/width, (r << 16) | (g << 8) | b );
             }
         }
 

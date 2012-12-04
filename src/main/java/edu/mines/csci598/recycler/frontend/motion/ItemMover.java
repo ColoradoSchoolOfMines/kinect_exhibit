@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import org.apache.log4j.Logger;
 
@@ -16,11 +15,11 @@ public abstract class ItemMover {
     private static final Logger logger = Logger.getLogger(ItemMover.class);
 	
 	protected List<Movable> movables;
-	protected double speedPixPerSecond;
+
 	
-	public ItemMover(double initialSpeed){
+	public ItemMover(){
         movables = new ArrayList<Movable>();
-		speedPixPerSecond = initialSpeed;
+
 	}
 	
 	/**

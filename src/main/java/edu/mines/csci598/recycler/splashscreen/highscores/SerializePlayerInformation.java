@@ -60,8 +60,8 @@ public class SerializePlayerInformation {
         ArrayList<PlayerHighScoreInformation> players = retrievePlayerHighScoreInformation();
         players.add(highScore);
         players = SortPlayerInformation.sortByScore(players);
-        if (players.size() > 10)
-            players = (ArrayList<PlayerHighScoreInformation>) players.subList(0, 10);
+        if (players.size() > NUM_PLAYER_SCORES_TO_STORE)
+            players = (ArrayList<PlayerHighScoreInformation>) players.subList(0, NUM_PLAYER_SCORES_TO_STORE);
         storePlayerHighScoreInformation(players);
     }
 }

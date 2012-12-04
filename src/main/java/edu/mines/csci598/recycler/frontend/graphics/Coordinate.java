@@ -2,7 +2,10 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import java.awt.geom.Point2D;
 
+import org.apache.log4j.Logger;
+
 public final class Coordinate extends Point2D {
+    private static final Logger logger = Logger.getLogger(Coordinate.class);
 
 	private double x;
 	private double y;
