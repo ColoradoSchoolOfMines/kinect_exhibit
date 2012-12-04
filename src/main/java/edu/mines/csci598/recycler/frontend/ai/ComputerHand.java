@@ -1,11 +1,12 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.ai;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
-import edu.mines.csci598.recycler.frontend.utils.ComputerConstants;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * Created with IntelliJ IDEA.

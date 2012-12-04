@@ -1,4 +1,4 @@
-package edu.mines.csci598.recycler.frontend.utils;
+package edu.mines.csci598.recycler.frontend.ai;
 
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 
@@ -9,7 +9,7 @@ import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
  * Time: 12:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ComputerConstants {
+public final class ComputerConstants {
     /*
      * MIN_GENERATION_THRESHOLD
      * Random number must be greater than this number to strike at recyclable.

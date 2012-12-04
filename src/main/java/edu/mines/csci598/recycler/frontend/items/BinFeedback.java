@@ -1,5 +1,8 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.items;
 
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
@@ -14,6 +17,7 @@ import edu.mines.csci598.recycler.frontend.motion.Movable;
  * To change this template use File | Settings | File Templates.
  */
 public class BinFeedback implements Displayable, Movable {
+    private static final Logger logger = Logger.getLogger(BinFeedback.class);
 
     private Sprite sprite;
     private Path path;

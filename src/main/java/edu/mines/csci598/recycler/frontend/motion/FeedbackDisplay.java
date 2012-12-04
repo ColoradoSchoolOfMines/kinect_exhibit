@@ -1,9 +1,14 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.BinFeedback;
-import edu.mines.csci598.recycler.frontend.graphics.*;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
+import edu.mines.csci598.recycler.frontend.graphics.Line;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.items.BinFeedback;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class is an easy way to show a checkmark or x just pass in the
@@ -13,6 +18,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class FeedbackDisplay extends ItemMover {
+    private static final Logger logger = Logger.getLogger(FeedbackDisplay.class);
 
     private GameScreen gameScreen;
     private static final String INCORRECT_SPRITE = "src/main/resources/SpriteImages/FinalSpriteImages/incorrect.png";

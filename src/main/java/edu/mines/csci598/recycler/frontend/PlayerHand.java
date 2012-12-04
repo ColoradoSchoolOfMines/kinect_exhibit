@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
 
@@ -16,7 +18,7 @@ import edu.mines.csci598.recycler.frontend.graphics.GraphicsConstants;
  */
 public class PlayerHand extends Hand {
 
-    private int velocityCount;
+    private static final Logger logger = Logger.getLogger(PlayerHand.class);
     GameManager gameManager;
     int handNum;
 

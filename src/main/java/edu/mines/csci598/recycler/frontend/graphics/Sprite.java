@@ -1,8 +1,10 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.GameConstants;
 
 import java.awt.Image;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -15,6 +17,7 @@ import java.awt.Image;
  * To change this template use File | Settings | File Templates.
  */
 public class Sprite {
+    private static final Logger logger = Logger.getLogger(Sprite.class);
 
     Coordinate location;
     private String fileName;

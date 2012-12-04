@@ -3,6 +3,8 @@ package edu.mines.csci598.recycler.frontend.graphics;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import org.apache.log4j.Logger;
+
 /**
  * A line is a part of a path. It has the starting location, the ending location, and the total time it takes
  * the line to be traversed.
@@ -13,6 +15,7 @@ import java.awt.geom.Rectangle2D;
  * To change this template use File | Settings | File Templates.
  */
 public class Line extends Line2D{
+    private static final Logger logger = Logger.getLogger(Line.class);
 
 	private final Coordinate startPoint, endPoint;
 	private double timeToComplete;

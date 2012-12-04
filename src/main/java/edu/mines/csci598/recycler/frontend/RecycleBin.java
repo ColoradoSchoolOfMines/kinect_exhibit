@@ -1,9 +1,12 @@
 package edu.mines.csci598.recycler.frontend;
 
+import org.apache.log4j.Logger;
+
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.items.Recyclable;
+import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
-import org.apache.log4j.Logger;
 
 /**
  * This is a representation of invisible "bins" where you knock the recyclables into.
@@ -26,7 +29,6 @@ public class RecycleBin implements Displayable {
     public enum ConveyorSide {RIGHT, LEFT};
     private int minY;
     private int maxY;
-    private int numItems;
     private ConveyorSide side;
     private RecyclableType type;
     private Sprite sprite = null;
@@ -40,7 +42,6 @@ public class RecycleBin implements Displayable {
         this.minY = minY;
         this.maxY = maxY;
         this.type = type;
-        numItems = 0;
         sprite = new Sprite(imagePath, 0, 0);
     }
 
@@ -80,11 +81,6 @@ public class RecycleBin implements Displayable {
     public String toString() {
         return type.toString() + " " + minY + " to " + maxY;
     }
-
-    public void addItem() {
-        numItems++;
-    }
-
 
     // returns true if the incoming recyclable type is the same as the bin type
     public boolean isCorrectRecyclableType(Movable m) {

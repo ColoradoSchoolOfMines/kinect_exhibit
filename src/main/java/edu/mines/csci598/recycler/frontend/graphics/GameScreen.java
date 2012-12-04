@@ -1,10 +1,15 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
 import org.apache.log4j.Logger;
-
 import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.GameConstants;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.
@@ -22,10 +27,8 @@ public class GameScreen {
     private static GameScreen INSTANCE;
     private Sprite background1;
     private Sprite background2;
-    private Sprite backgroundChutes;
+    private Sprite backgroundChutesAndFrame;
     private Sprite backgroundScoreFrame;
-    private Sprite backgroundFrame;
-    private double timeToSwitchBackgrounds;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
@@ -34,9 +37,8 @@ public class GameScreen {
     private GameScreen() {
         background1 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_1.jpg", 0, 0);
         background2 = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_background_2.jpg", 0, 0);
-        backgroundChutes = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_chutes.png", 0, 0);
+        backgroundChutesAndFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
         backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_score_frame.png", 0, 0);
-        backgroundFrame = new Sprite("src/main/resources/SpriteImages/FinalSpriteImages/ui_frame.png", 0, 0);
 
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
         handSprites = new ArrayList<Sprite>();
@@ -68,8 +70,7 @@ public class GameScreen {
             g2d.rotate(-1.0 * sprite.getPosition().getRotation(), sprite.getScaledX() + offset, sprite.getScaledY() + offset);
         }
 
-        g2d.drawImage(backgroundChutes.getImage(), backgroundChutes.getX(), backgroundChutes.getY(), canvas);
-        g2d.drawImage(backgroundFrame.getImage(), backgroundFrame.getX(), backgroundFrame.getY(), canvas);
+        g2d.drawImage(backgroundChutesAndFrame.getImage(), backgroundChutesAndFrame.getX(), backgroundChutesAndFrame.getY(), canvas);
 
         drawHands(g2d, canvas);
         drawTextSprites(g2d);
@@ -147,12 +148,10 @@ public class GameScreen {
      * Preloads all of the gameScreen images so that they are ready to be used
      */
     public void preLoadImages() {
-        ResourceManager resourceManager = ResourceManager.getInstance();
         background1.getImage();
         background2.getImage();
-        backgroundChutes.getImage();
+        backgroundChutesAndFrame.getImage();
         backgroundScoreFrame.getImage();
-        backgroundFrame.getImage();
 
         for (Sprite bin : recycleBinSprites) {
             bin.getImage();

@@ -1,8 +1,14 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.items;
 
-import edu.mines.csci598.recycler.frontend.graphics.*;
-import edu.mines.csci598.recycler.frontend.motion.Movable;
 import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import edu.mines.csci598.recycler.frontend.graphics.Displayable;
+import edu.mines.csci598.recycler.frontend.graphics.Line;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**
  * Created with IntelliJ IDEA.

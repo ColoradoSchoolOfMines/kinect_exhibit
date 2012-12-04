@@ -1,11 +1,19 @@
-package edu.mines.csci598.recycler.frontend;
-
-import edu.mines.csci598.recycler.frontend.graphics.*;
-import edu.mines.csci598.recycler.frontend.motion.Movable;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-import org.apache.log4j.Logger;
+package edu.mines.csci598.recycler.frontend.items;
 
 import java.util.Random;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.GameConstants;
+import edu.mines.csci598.recycler.frontend.Hand;
+import edu.mines.csci598.recycler.frontend.RecycleBin;
+import edu.mines.csci598.recycler.frontend.RecycleBins;
+import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import edu.mines.csci598.recycler.frontend.graphics.Displayable;
+import edu.mines.csci598.recycler.frontend.graphics.Line;
+import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**
  * Recyclables are things like bottles, plastic etc. that you would be swiping at.

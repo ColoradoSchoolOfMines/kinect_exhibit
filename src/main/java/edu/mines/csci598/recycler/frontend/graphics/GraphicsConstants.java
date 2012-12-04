@@ -8,7 +8,7 @@ package edu.mines.csci598.recycler.frontend.graphics;
  * To change this template use File | Settings | File Templates.
  */
 
-public class GraphicsConstants {
+public final class GraphicsConstants {
 
     public static final double SCALE_FACTOR =0.5;
 

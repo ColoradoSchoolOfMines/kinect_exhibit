@@ -1,4 +1,6 @@
-package edu.mines.csci598.recycler.frontend;
+package edu.mines.csci598.recycler.frontend.items;
+
+import org.apache.log4j.Logger;
 
 public enum MotionState {
 
@@ -10,6 +12,7 @@ public enum MotionState {
     ABOVE_BIN(TouchState.UNTOUCHABLE),
     NONE(TouchState.UNTOUCHABLE);
     
+    private static final Logger logger = Logger.getLogger(MotionState.class);
     public enum TouchState {TOUCHABLE, UNTOUCHABLE};
     private TouchState touchable;
     

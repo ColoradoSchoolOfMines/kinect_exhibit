@@ -1,7 +1,8 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.bettyCrocker.SoundEffect;
 import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.bettyCrocker.SoundEffect;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +34,7 @@ public enum SoundEffectEnum {
     private static final Logger logger = Logger.getLogger(SoundEffectEnum.class);
 
     private SoundEffectEnum(String soundPath) {
-        this.soundPath = this.soundPath;
+        this.soundPath = soundPath;
         this.soundEffect = new SoundEffect(soundPath);
     }
 

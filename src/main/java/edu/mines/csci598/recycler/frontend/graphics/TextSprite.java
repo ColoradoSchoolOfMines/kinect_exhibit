@@ -2,6 +2,8 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 import java.awt.*;
 
+import org.apache.log4j.Logger;
+
 /**
  * Super simple text sprite class basically holds everything you would want to know to draw a string
  *  * User: jzeimen
@@ -10,6 +12,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class TextSprite {
+    private static final Logger logger = Logger.getLogger(TextSprite.class);
 
     private Font font;
     private int x, y;
