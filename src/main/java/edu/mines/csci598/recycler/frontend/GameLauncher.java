@@ -90,11 +90,9 @@ public class GameLauncher extends GameState {
         if (gameCanStart) {
             if (!playerOptions.canGameStart()) {
                 playerOptions.paint(g2d, gameManager.getCanvas());
-                System.out.println("drawing options");
             }
             else {
                 gameScreen.paint(g2d, gameManager.getCanvas());
-                System.out.println("drawing game");
             }
         }
         else {
