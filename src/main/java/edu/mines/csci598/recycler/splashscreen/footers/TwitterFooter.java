@@ -93,7 +93,7 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
 
     private void drawMessage(Graphics2D g) {
         String message = NO_TWEETS_MESSAGE;
-        if(messages.size() > 0) {
+        if(messages.size() > 0 && messageNumber != messages.size()) {
             message = messages.get(messageNumber);
         }
 

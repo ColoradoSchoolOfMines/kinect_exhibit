@@ -103,6 +103,10 @@ public class ComputerHand extends Hand {
         this.onCorrectSide = onCorrectSide;
     }
 
+    /**
+     * Checks to see if hand is on left side of conveyor.
+     * @return
+     */
     public boolean isHandOnLeftSide() {
         boolean ret = false;
         logger.debug("sx=" + getX() + ",px=" + ConveyorBelt.RIGHT_VERTICAL_PATH_START_X);
