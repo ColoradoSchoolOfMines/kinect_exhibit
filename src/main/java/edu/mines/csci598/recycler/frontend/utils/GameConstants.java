@@ -1,8 +1,5 @@
 package edu.mines.csci598.recycler.frontend.utils;
 
-import edu.mines.csci598.recycler.frontend.RecyclableType;
-import edu.mines.csci598.recycler.frontend.RecycleBin;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Marshall
@@ -53,10 +50,7 @@ public final class GameConstants {
      * The number of items we can include, not including powerups
      */
 	public static final int MAX_ITEM_COUNT = 5;
-	/**
-	 * The initial speed of the conveyor belt, measured in pixels per second
-	 */
-	public static final double INITIAL_SPEED_IN_PIXELS_PER_SECOND = 20;
+
 	/**
 	 * The max time speedup. When the game starts it is 1.0
 	 */

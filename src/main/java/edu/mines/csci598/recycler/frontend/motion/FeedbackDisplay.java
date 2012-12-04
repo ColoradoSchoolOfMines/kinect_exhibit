@@ -20,7 +20,6 @@ public class FeedbackDisplay extends ItemMover {
 
 
     public FeedbackDisplay(double initialSpeed) {
-        super(initialSpeed);
         gameScreen = GameScreen.getInstance();
     }
 

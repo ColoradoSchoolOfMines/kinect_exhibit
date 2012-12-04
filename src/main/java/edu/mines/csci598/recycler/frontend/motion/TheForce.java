@@ -1,7 +1,5 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-
 /**
  * Magically moves items around!  In practice used to control the items which are falling off the conveyor belt into the bins.
  * @author Oliver
@@ -11,7 +9,7 @@ import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 public class TheForce extends ItemMover {
 	
 	public TheForce(){
-		super(GameConstants.HAND_COLLISION_PATH_SPEED_IN_PIXELS_PER_SECOND);
+		super();
 	}
 
 }

@@ -47,10 +47,10 @@ public class Sprite {
 
     /*
       * Gets the x position.
-      *
+      * Protected because only graphics should care about where it is scaled
       * return {int}
       */
-    public int getScaledX() {
+    protected int getScaledX() {
         return (int) Math.round(location.getX() * GraphicsConstants.SCALE_FACTOR);
     }
 
@@ -63,7 +63,7 @@ public class Sprite {
       *
       * return {int}
       */
-    public int getScaledY() {
+    protected int getScaledY() {
         return (int) Math.round(location.getY() * GraphicsConstants.SCALE_FACTOR);
     }
 
@@ -87,11 +87,16 @@ public class Sprite {
      * @param y
      * @return
      */
+
+
     public boolean isPointInside(int x, int y) {
-        if (x >= getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
-                x <= getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
-            if (y >= getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
-                    y <= getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
+        //We multiply the sprite offsets by the graphics constants
+        //If we don't and we played the game either really small or really big it
+        //would not work as expected
+        if (x >= getX() - (GameConstants.SPRITE_X_OFFSET*GraphicsConstants.SCALE_FACTOR) &&
+                x <= getX() + (GameConstants.SPRITE_X_OFFSET*GraphicsConstants.SCALE_FACTOR)) {
+            if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET*GraphicsConstants.SCALE_FACTOR) &&
+                    y <= getY() + (GameConstants.SPRITE_Y_OFFSET*GraphicsConstants.SCALE_FACTOR)) {
                 return true;
             }
         }
@@ -106,10 +111,6 @@ public class Sprite {
 		this.location=location;
 	}
 
-    public synchronized void setScaledPosition(Coordinate location) {
-        this.location=new Coordinate(location.getX() * GraphicsConstants.REVERSE_SCALE_FACTOR,
-                location.getY() * GraphicsConstants.REVERSE_SCALE_FACTOR,
-                location.getRotation());
-    }
+
 
 }

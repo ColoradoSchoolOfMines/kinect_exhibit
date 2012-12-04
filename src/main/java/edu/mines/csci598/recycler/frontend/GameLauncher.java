@@ -36,7 +36,7 @@ public class GameLauncher extends GameState {
         GameScreen.getInstance().preLoadImages();
 
         // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler",true);
+		gameManager = new GameManager("Recycler",false);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -93,6 +93,7 @@ public class GameLauncher extends GameState {
 		gm.getGameManager().setState(gm);
 		gm.getGameManager().run();
 		gm.getGameManager().destroy();
+
 	}
 
 	public GameLauncher updateThis(float time) {
