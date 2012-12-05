@@ -1,10 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.ai.ComputerPlayer;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
@@ -18,6 +13,11 @@ import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
+import edu.mines.csci598.recycler.splashscreen.highscores.SavePlayer;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,11 +56,13 @@ public class GameLogic {
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
     private boolean gameState;
+    private boolean scoreSubmitted;
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                      boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
         gameState = true;
+        scoreSubmitted = false;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
@@ -177,22 +179,25 @@ public class GameLogic {
     /**
      * Given the recyclable and the bin it went into this function either increments the score or adds a strike
      *
-     * @param m
+     * @param movableRecyclable
      * @param bin
      */
-    public void handleScore(Movable m, RecycleBin bin) {
-        if (m instanceof Recyclable) {
-            if (bin.isCorrectRecyclableType(m)) {
-                feedbackDisplay.makeDisplay(m, currentTimeSec, true);
+    public void handleScore(Movable movableRecyclable, RecycleBin bin) {
+        if (movableRecyclable instanceof Recyclable) {
+            if (bin.isCorrectRecyclableType(movableRecyclable)) {
+                feedbackDisplay.makeDisplay(movableRecyclable, currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
                 gameStatusDisplay.incrementScore(10);
             } else {
-                Movable feedback[] = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
+                Movable feedback[] = feedbackDisplay.makeDisplay(movableRecyclable, currentTimeSec, false);
                 Boolean barFull = strikeBar.addStrike(feedback);
                 if(barFull){
                     if (!playerIsAComputer){
-                      //SavePlayer currentPlayer = new SavePlayer();
-                      //currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                      if (!scoreSubmitted){
+                          SavePlayer currentPlayer = new SavePlayer();
+                          currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                          scoreSubmitted = true;
+                      }
                     }
                     gameState = false;
 

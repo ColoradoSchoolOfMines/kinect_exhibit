@@ -67,8 +67,12 @@ public class StrikeBar {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
             for(int i=0; i<images.length; i++){
-               images[i].setRemovable(true);
+                Path p = images[i].getPath();
+                p.addLine(new Line(images[i].getPosition(), images[i].getPosition(), 0.8));
+                images[i].setPath(p);
+                images[i].setRemovable(true);
             }
+            return true;
         }
         else if (strikes < MAX_STRIKES) {
             for(int i=0; i<images.length; i++){
@@ -89,7 +93,7 @@ public class StrikeBar {
     }
 
     /**
-     * Removes strike from strike bar, generally used for powerups
+     * Removes strike from strike bar, generally used for powerups.
      */
     public void removeStrike() {
         logger.debug("Remove length: " + strikes);

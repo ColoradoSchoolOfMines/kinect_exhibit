@@ -102,11 +102,12 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher updateThis(float time) {
         if (gameStarted) {
+            if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+                // this.gameManager.destroy();
+            }
 		    leftGame.updateThis();
 		    rightGame.updateThis();
-            if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
-               // this.gameManager.destroy();
-            }
+
         }
         else {
             if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {

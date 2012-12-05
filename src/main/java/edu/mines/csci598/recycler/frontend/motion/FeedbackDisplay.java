@@ -27,31 +27,31 @@ public class FeedbackDisplay extends ItemMover {
         gameScreen = GameScreen.getInstance();
     }
 
-    public Movable[] makeDisplay(Movable m, double currentTimeSec, boolean isCorrect){
+    public Movable[] makeDisplay(Movable movableRecyclable, double currentTimeSec, boolean isCorrect){
         Movable[] movableArray = new Movable[2];
         Path p = new Path(currentTimeSec);
 
 
         BinFeedback feedback;
         if (isCorrect) {
-            p.addLine(new Line(m.getPosition(),m.getPosition(),0.8));
+            p.addLine(new Line(movableRecyclable.getPosition(),movableRecyclable.getPosition(),0.8));
             feedback = new BinFeedback(CORRECT_SPRITE, p);
             feedback.setRemovable(true);
         }
         else {
-            p.addLine(new Line(m.getPosition(),m.getPosition(),0.0));
+            p.addLine(new Line(movableRecyclable.getPosition(),movableRecyclable.getPosition(),0.0));
             feedback = new BinFeedback(INCORRECT_SPRITE, p);
             feedback.setRemovable(false);
-            m.setRemovable(false);
+            movableRecyclable.setRemovable(false);
         }
-        movables.add(m);
+        movables.add(movableRecyclable);
         movables.add(feedback);
 
-        gameScreen.addSprite(m.getSprite());
+        gameScreen.addSprite(movableRecyclable.getSprite());
         gameScreen.addSprite(feedback.getSprite());
 
         movableArray[0] = feedback;
-        movableArray[1] = m;
+        movableArray[1] = movableRecyclable;
         return movableArray;
     }
 
