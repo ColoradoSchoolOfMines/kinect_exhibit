@@ -1,4 +1,4 @@
-package bettycrocker;
+package edu.mines.csci598.recycler.bettyCrocker;
 
 import java.io.File;
 import java.io.IOException;
