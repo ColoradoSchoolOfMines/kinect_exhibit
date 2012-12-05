@@ -8,13 +8,15 @@ import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.graphics.PlayerOptionsScreen;
+import edu.mines.csci598.recycler.frontend.hands.Hand;
+import edu.mines.csci598.recycler.frontend.hands.PlayerHand;
+import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
-
-import edu.mines.csci598.recycler.frontend.items.RecyclableType;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
 
 
 /**
@@ -34,7 +36,7 @@ public class GameLauncher extends GameState {
     private boolean gameStarted;
     private long timeInstructionsStarted;
     private Thread preloading;
-
+    private ArrayList<Hand> hands = new ArrayList<Hand>();
     private InstructionScreen instructionScreen;
     private PlayerOptionsScreen playerOptions;
 
@@ -50,6 +52,7 @@ public class GameLauncher extends GameState {
         preloading.start();
 
 
+
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
 
@@ -57,21 +60,21 @@ public class GameLauncher extends GameState {
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
-
+        makeHands();
         leftGame = new GameLogic(
                 new RecycleBins(Side.LEFT),
 				ConveyorBelt.getConveyorBeltPathLeft(),
                 gameManager,
                 leftGameStatusDisplay,
                 false,
-                false);
+                hands);
 		rightGame = new GameLogic(
                 new RecycleBins(Side.RIGHT),
                 ConveyorBelt.getConveyorBeltPathRight(),
                 gameManager,
                 rightGameStatusDisplay,
-                true,
-                GameConstants.DEBUG_COLLISIONS);
+                GameConstants.DEBUG_COLLISIONS,
+                hands);
         leftGame.addLinkToOtherScreen(rightGame);
         rightGame.addLinkToOtherScreen(leftGame);
 
@@ -84,15 +87,20 @@ public class GameLauncher extends GameState {
 
         playerOptions = new PlayerOptionsScreen(gameManager);
 	}
-
+    private void makeHands(){
+        hands = new ArrayList<Hand>();
+        for (int i = 0; i <4; i++) {
+            hands.add(new PlayerHand(gameManager, i));
+            gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
+        }
+    }
+    private void updateHands(){
+        for(Hand h : hands){
+            h.updateLocation();
+        }
+    }
     protected void setUpPlayerMode(PlayerMode mode) {
-        // if there is a computer player set up the hands for a computer
-        if (mode == PlayerMode.ONE_PLAYER)
-            rightGame.setUpHands(true);
-        else
-            rightGame.setUpHands(false);
-        leftGame.setUpHands(false);
-
+        if(mode == PlayerMode.ONE_PLAYER) rightGame.turnOnComputer();
     }
 
 	protected void drawThis(Graphics2D g2d) {
@@ -137,8 +145,9 @@ public class GameLauncher extends GameState {
                     gameStarted = true;
                     setUpPlayerMode(playerOptions.getPlayerMode());
                 }
-		        leftGame.updateThis();
+                updateHands();
 		        rightGame.updateThis();
+                leftGame.updateThis();
                 if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
                // this.gameManager.destroy();
                 }

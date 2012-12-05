@@ -65,11 +65,13 @@ public class PlayerOptionsScreen {
     private void drawHands(Graphics2D g2d, Component canvas){
         // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
         // a hand is not available.
-        for (Sprite hand: handSprites) {
+        for (Sprite hand : handSprites) {
+            //compensate for current scale
+            int x = (int) Math.round(hand.getX() * GraphicsConstants.SCALE_FACTOR);
+            int y = (int) Math.round(hand.getY() * GraphicsConstants.SCALE_FACTOR);
+            //If it is negative one it is a sentinel for it not existing so ignore.
             if (hand.getX() > -1) {
-                // Computer hand uses scaled x and y for use of drawing to align properly with recyclables which
-                // are also drawn using scaling
-                g2d.drawImage(hand.getImage(), hand.getX(), hand.getY(), canvas);
+                g2d.drawImage(hand.getImage(), x, y, canvas);
             }
         }
     }
@@ -108,7 +110,7 @@ public class PlayerOptionsScreen {
     }
 
     public PlayerMode getPlayerMode() {
-        if (hands.get(0).getX() < screenWidth) {
+        if (hands.get(0).getX() < screenWidth/2) {
             return PlayerMode.ONE_PLAYER;
         }
         else {
