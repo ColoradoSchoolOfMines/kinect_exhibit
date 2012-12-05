@@ -60,14 +60,14 @@ public class Recyclable implements Displayable, Movable {
             this.setMotionState(MotionState.FALL_RIGHT);
             RecycleBin destBin = recycleBins.findBinForFallingRecyclable(this);
             collideLine = new Line( position.getX(), position.getY(),
-                    position.getX() + GameConstants.ITEM_PATH_END,  destBin.getMidPoint(),
+                    position.getX() + GameConstants.ITEM_PATH_END,  destBin.getYMidPoint(),
                     travelTime, Math.PI * randomRotation);
 
         } else if (hand.getVelocityX() <= -1 * GameConstants.MIN_HAND_VELOCITY) { //Pushed left
             this.setMotionState(MotionState.FALL_LEFT);
             RecycleBin destBin = recycleBins.findBinForFallingRecyclable(this);
             collideLine = new Line( position.getX(), position.getY(),
-                    position.getX() - GameConstants.ITEM_PATH_END, destBin.getMidPoint(),
+                    position.getX() - GameConstants.ITEM_PATH_END, destBin.getYMidPoint(),
                     travelTime, Math.PI * randomRotation);
         } else {
             throw new IllegalStateException("It really shouldn't be possible to get here!  The hand wasn't moving fast enough to make the conveyor release control!");
@@ -154,7 +154,7 @@ public class Recyclable implements Displayable, Movable {
         return type + ", moving along path " + path + ", and in current motion state " + currentMotion;
     }
 
-    public void tellRecyclablesAboutBins(RecycleBins bins) {
+    public void setRecycleBins(RecycleBins bins) {
         recycleBins = bins;
     }
 }

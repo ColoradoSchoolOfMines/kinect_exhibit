@@ -37,8 +37,6 @@ public class Sprite {
         this.fileName = fileName;
     }
 
-
-
     public void setY(int y) {
         location.setY(y);
     }
@@ -89,16 +87,14 @@ public class Sprite {
      * @param y
      * @return
      */
-
-
     public boolean isPointInside(int x, int y) {
 
         if (x >= getX() - (GameConstants.SPRITE_X_OFFSET) &&
-                x <= getX() + GameConstants.SPRITE_X_OFFSET) {
-            if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET) &&
+            x <= getX() + GameConstants.SPRITE_X_OFFSET) {
+                if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET) &&
                     y <= getY() + (GameConstants.SPRITE_Y_OFFSET)) {
-                return true;
-            }
+                        return true;
+                }
         }
         return false;
     }
@@ -110,7 +106,4 @@ public class Sprite {
 	public synchronized void setPosition(Coordinate location) {
 		this.location=location;
 	}
-
-
-
 }

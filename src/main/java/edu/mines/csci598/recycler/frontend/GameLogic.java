@@ -175,7 +175,14 @@ public class GameLogic {
             if (bin.isCorrectRecyclableType(m)) {
                 feedbackDisplay.makeDisplay(m, currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
-                gameStatusDisplay.incrementScore(10);
+                bin.addItem();
+                boolean comboScore = bin.handleBinLevel(recycleBins.getSide());
+                if (isPlaying) {
+                    gameStatusDisplay.incrementScore(GameConstants.ITEM_SCORE);
+                    if (comboScore) {
+                        gameStatusDisplay.incrementScore(GameConstants.COMBO_SCORE);
+                    }
+                }
             } else {
                 Movable feedback[] = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
                 Boolean barFull = strikeBar.addStrike(feedback);
