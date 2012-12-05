@@ -18,7 +18,7 @@ public class InstructionHeader implements SplashScreenSection {
     private Point bottomRight;
 
     public InstructionHeader(Component imageObserver) {
-        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.jpg").getImage();
+        image =  new ImageIcon("src/main/resources/SpriteImages/instructions_half.jpg").getImage();
         this.imageObserver = imageObserver;
     }
 

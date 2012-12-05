@@ -1,14 +1,13 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class keeps track of how many strikes the user has had and keeps a drawing on the screen.
@@ -23,7 +22,7 @@ public class StrikeBar {
 
     private static final Logger logger = Logger.getLogger(StrikeBar.class);
 
-    private static final int MAX_STRIKES = 5;
+    private static final int MAX_STRIKES = 10;
 
     private static final int LEFT_STRIKE_BAR_X = 845;
     private static final int RIGHT_STRIKE_BAR_X = 975;
@@ -59,40 +58,57 @@ public class StrikeBar {
         else {
             xStart = RIGHT_STRIKE_BAR_X;
         }
-        for (int i = MAX_STRIKES; i > 0; --i) {
-            strikeBoxes.add(new Coordinate(xStart, STRIKE_BAR_Y_START + i * STRIKE_BOX_Y_OFFSET));
+        for (int i = MAX_STRIKES; i > 0; i--) {
+            if(i%2 == 0){
+                strikeBoxes.add(new Coordinate(xStart, STRIKE_BAR_Y_START + (i/2) * STRIKE_BOX_Y_OFFSET));
+            }else{
+                strikeBoxes.add(new Coordinate(xStart, STRIKE_BAR_Y_START +((i+1)/2) * STRIKE_BOX_Y_OFFSET));
+            }
         }
     }
 
-    public boolean addStrike(Movable image) {
+    public boolean addStrike(Movable[] images) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
-            image.setRemovable(true);
+            for(int i=0; i<images.length; i++){
+                Path p = images[i].getPath();
+                p.addLine(new Line(images[i].getPosition(), images[i].getPosition(), 0.8));
+                images[i].setPath(p);
+                images[i].setRemovable(true);
+            }
+            return true;
         }
         else if (strikes < MAX_STRIKES) {
-            movables.add(strikes, image);
-            Path p = movables.get(strikes).getPath();
-            p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
-            movables.get(strikes).setPath(p);
-            strikes++;
-            if (strikes == MAX_STRIKES) {
-                gameOver.setGameOver(gameStatusDisplay);
-                return true;
+            for(int i=0; i<images.length; i++){
+                movables.add(strikes, images[i]);
+                Path p = movables.get(strikes).getPath();
+                p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
+                movables.get(strikes).setPath(p);
+                strikes++;
+                if (strikes == MAX_STRIKES) {
+                    gameOver.setGameOver(gameStatusDisplay);
+                    return true;
+                }
+
             }
+
         }
 
         return false;
     }
 
     /**
-     * Removes strike from strike bar, generally used for powerups
+     * Removes strike from strike bar, generally used for powerups.
      */
     public void removeStrike() {
         logger.debug("Remove length: " + strikes);
         if((strikes > 0) && (strikes < MAX_STRIKES)){
-            strikes--;
-            movables.get(strikes).setRemovable(true);
-            movables.remove(strikes);
+            for(int i=0; i<2; i++){
+                strikes--;
+                movables.get(strikes).setRemovable(true);
+                movables.remove(strikes);
+            }
+
         }
     }
 

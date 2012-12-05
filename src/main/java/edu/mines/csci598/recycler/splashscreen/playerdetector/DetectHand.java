@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.splashscreen.playerdetector;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.InputStatus;
 
 public class DetectHand {
     long _waitTime;
@@ -16,15 +17,20 @@ public class DetectHand {
     }
 
     public boolean playerFound(){
-        // if there exists a hand
-        if( _manager.getSharedInputStatus().pointers[0][0] > 0 ){
-            return true;
+        // if there exists a detected
+        float[][] pointers = _manager.getSharedInputStatus().pointers;
+        for( int person = 0; person < pointers.length; person++ ){
+            for( int pointer = 0; pointer < pointers[person].length; pointer++ ){
+                if( pointers[person][pointer] >= 0 ){
+                    return true;
+                }
+            }
         }
 
         return false;
     }
 
-    boolean startGame(){
+    public boolean startGame(){
 
         // If the player has been detected in the past is currently detected and the time since detection is greater
         // than the time to wait then return true
@@ -65,5 +71,15 @@ public class DetectHand {
         else{
             return true;
         }
+    }
+
+    public void setGameManager( GameManager man ){
+        this._manager = man;
+        resetCounters();
+    }
+
+    public void resetCounters(){
+        this._detected = false;
+        this._startedDetecting = 0;
     }
 }

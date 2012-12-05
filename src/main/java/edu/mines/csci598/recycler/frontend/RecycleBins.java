@@ -22,9 +22,11 @@ public class RecycleBins {
 
     private static final Logger logger = Logger.getLogger(RecycleBins.class);
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+    private Side side;
 
 
     public RecycleBins(Side s) {
+        side = s;
         if(s.equals(Side.LEFT)) {
             setUpLeftBins();
         } else {
@@ -62,7 +64,12 @@ public class RecycleBins {
         }
         return getLast();
     }
-    
+
+
+    public Side getSide() {
+        return side;
+    }
+
     /*
      * Find bin type
      */
@@ -73,7 +80,6 @@ public class RecycleBins {
                 return recycleBin;
             }
         }
-        
         throw new IllegalStateException("No bin found for recyclable " + r);
     }
     

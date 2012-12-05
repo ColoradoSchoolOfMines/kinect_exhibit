@@ -52,7 +52,7 @@ public final class ItemFactory {
         RecyclableType type = RecyclableType.values()[randomChoiceIndex];
 		String[] possibleImages = type.getImagePaths();
         Recyclable r = new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
-        r.tellRecyclablesAboutBins(bins);
+        r.setRecycleBins(bins);
         return r;
     }
 

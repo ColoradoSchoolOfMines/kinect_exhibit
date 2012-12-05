@@ -7,6 +7,10 @@ package edu.mines.csci598.recycler.splashscreen.highscores;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
 
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 /**
  *
  * @author jimmie
@@ -18,5 +22,10 @@ public class TestSavePlayer {
         driver.installInto( man );
         SavePlayer sp = new SavePlayer();
         sp.submitPlayerScore( 10, man);
+        ArrayList<PlayerHighScoreInformation> highscores = SerializePlayerInformation.retrievePlayerHighScoreInformation();
+
+        ImageIcon icon = new ImageIcon();
+        icon.setImage( highscores.get(0).getPlayerImage().getImage() );
+        JOptionPane.showMessageDialog(null, icon);
     }
 }

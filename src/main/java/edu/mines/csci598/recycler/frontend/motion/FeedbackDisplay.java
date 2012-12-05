@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend.motion;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.ResourceManager;
 import edu.mines.csci598.recycler.frontend.items.BinFeedback;
 import org.apache.log4j.Logger;
 
@@ -27,25 +28,32 @@ public class FeedbackDisplay extends ItemMover {
         gameScreen = GameScreen.getInstance();
     }
 
-    public Movable makeDisplay(Movable m, double currentTimeSec, boolean isCorrect){
+    public Movable[] makeDisplay(Movable movableRecyclable, double currentTimeSec, boolean isCorrect){
+        Movable[] movableArray = new Movable[2];
         Path p = new Path(currentTimeSec);
-        p.addLine(new Line(m.getPosition(),m.getPosition(),0.8));
+
 
         BinFeedback feedback;
         if (isCorrect) {
+            p.addLine(new Line(movableRecyclable.getPosition(),movableRecyclable.getPosition(),0.8));
             feedback = new BinFeedback(CORRECT_SPRITE, p);
             feedback.setRemovable(true);
         }
         else {
+            p.addLine(new Line(movableRecyclable.getPosition(),movableRecyclable.getPosition(),0.0));
             feedback = new BinFeedback(INCORRECT_SPRITE, p);
-            feedback.setRemovable(true);
-            m.setRemovable(false);
+            feedback.setRemovable(false);
+            movableRecyclable.setRemovable(false);
         }
+        movables.add(movableRecyclable);
         movables.add(feedback);
-        movables.add(m);
+
+        gameScreen.addSprite(movableRecyclable.getSprite());
         gameScreen.addSprite(feedback.getSprite());
-        gameScreen.addSprite(m.getSprite());
-        return m;
+
+        movableArray[0] = feedback;
+        movableArray[1] = movableRecyclable;
+        return movableArray;
     }
 
 
@@ -60,5 +68,10 @@ public class FeedbackDisplay extends ItemMover {
         }
     }
 
+    public static void preLoadImages() {
+        ResourceManager resourceManager = ResourceManager.getInstance();
+        resourceManager.getImage(INCORRECT_SPRITE);
+        resourceManager.getImage(CORRECT_SPRITE);
+    }
 
 }

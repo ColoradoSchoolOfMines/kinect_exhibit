@@ -81,6 +81,10 @@ public class GameScreen {
         sprites.add(s);
     }
 
+    public void removeHandSprites() {
+        handSprites.clear();
+    }
+
     public boolean removeSprite(Sprite s) {
         return sprites.remove(s);
     }
@@ -152,6 +156,25 @@ public class GameScreen {
         for (Sprite bin : recycleBinSprites) {
             bin.getImage();
         }
+
+        //TODO: Preload other recycle bins better
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_paper_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_paper_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_plastic_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_plastic_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_hazard_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_hazard_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_glass_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_glass_full.png", 0, 0).getImage();
+
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_paper_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_paper_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_plastic_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_plastic_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_hazard_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_hazard_full.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_glass_half.png", 0, 0).getImage();
+        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_glass_full.png", 0, 0).getImage();
     }
 
 }
