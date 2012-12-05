@@ -1,9 +1,5 @@
 package edu.mines.csci598.recycler.frontend;
 
-import java.awt.Graphics2D;
-
-import org.apache.log4j.Logger;
-
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
@@ -18,7 +14,9 @@ import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
 import java.awt.*;
 
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
-import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
@@ -49,19 +47,20 @@ public class GameLauncher extends GameState {
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
 
+
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
 
         leftGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.LEFT),
-                ConveyorBelt.getConveyorBeltPathLeft(),
+                new RecycleBins(Side.LEFT),
+				ConveyorBelt.getConveyorBeltPathLeft(),
                 gameManager,
                 leftGameStatusDisplay,
                 false,
                 false);
-        rightGame = new GameLogic(
-                new RecycleBins(RecycleBins.Side.RIGHT),
+		rightGame = new GameLogic(
+                new RecycleBins(Side.RIGHT),
                 ConveyorBelt.getConveyorBeltPathRight(),
                 gameManager,
                 rightGameStatusDisplay,
@@ -134,6 +133,10 @@ public class GameLauncher extends GameState {
                 }
 		        leftGame.updateThis();
 		        rightGame.updateThis();
+                if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+               // this.gameManager.destroy();
+                }
+
             }
         }
         else {
@@ -143,5 +146,6 @@ public class GameLauncher extends GameState {
         }
 		return this;
 	}
+
 
 }

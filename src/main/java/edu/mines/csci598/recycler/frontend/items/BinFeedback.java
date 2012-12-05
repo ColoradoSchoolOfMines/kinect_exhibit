@@ -1,12 +1,13 @@
 package edu.mines.csci598.recycler.frontend.items;
 
+
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.Hand;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.Displayable;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.graphics.Sprite;
+import edu.mines.csci598.recycler.frontend.hands.Hand;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**

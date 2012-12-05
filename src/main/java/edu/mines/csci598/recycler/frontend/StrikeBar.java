@@ -63,21 +63,29 @@ public class StrikeBar {
         }
     }
 
-    public void addStrike(Movable image) {
+    public boolean addStrike(Movable[] images) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
-            image.setRemovable(true);
-        }
-        else if (strikes < MAX_STRIKES) {
-            movables.add(strikes, image);
-            Path p = movables.get(strikes).getPath();
-            p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
-            movables.get(strikes).setPath(p);
-            strikes++;
-            if (strikes == MAX_STRIKES) {
-                gameOver.setGameOver(gameStatusDisplay);
+            for(int i=0; i<images.length; i++){
+               images[i].setRemovable(true);
             }
         }
+        else if (strikes < MAX_STRIKES) {
+            for(int i=0; i<images.length; i++){
+                movables.add(strikes, images[i]);
+                Path p = movables.get(strikes).getPath();
+                p.addLine(new Line(movables.get(strikes).getPosition(), strikeBoxes.get(strikes), TRANSITION_SPEED));
+                movables.get(strikes).setPath(p);
+                if (strikes == MAX_STRIKES) {
+                    gameOver.setGameOver(gameStatusDisplay);
+                    return true;
+                }
+            }
+            strikes++;
+
+        }
+
+        return false;
     }
 
     /**

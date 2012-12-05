@@ -32,17 +32,19 @@ public class RecycleBin implements Displayable {
     private ConveyorSide side;
     private RecyclableType type;
     private Sprite sprite = null;
-
+    private SoundEffectEnum soundEffect;
     public RecycleBin(RecyclableType trash) {
         this.type = trash;
+        this.soundEffect = SoundEffectEnum.NONE;
     }
 
-    public RecycleBin(ConveyorSide side, int minY, int maxY, RecyclableType type, String imagePath) {
+    public RecycleBin(ConveyorSide side, int minY, int maxY, RecyclableType type, String imagePath,SoundEffectEnum itemHitsBinSound) {
         this.side = side;
         this.minY = minY;
         this.maxY = maxY;
         this.type = type;
         sprite = new Sprite(imagePath, 0, 0);
+        soundEffect = itemHitsBinSound;
     }
 
     @Override
@@ -75,6 +77,10 @@ public class RecycleBin implements Displayable {
 
     public int getMidPoint() {
         return (minY + maxY) / 2;
+    }
+
+    public SoundEffectEnum getSoundEffect(){
+        return soundEffect;
     }
 
     @Override

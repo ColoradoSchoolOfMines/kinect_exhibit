@@ -23,9 +23,17 @@ public class HighScoreScreen implements SplashScreenSection {
 	private static final Font SCORE_LIST_NAME_FONT = new Font("SansSerif", Font.PLAIN, 22);
 	private static final Font SCORE_LIST_SCORE_FONT = new Font("SansSerif", Font.PLAIN, 16);
 	private static final Font INDIVIDUAL_NAME_FONT = new Font("SansSerif", Font.BOLD, 32);
-	
-	private static final int TIMER_DELAY = 200;
-	
+
+    final int SCORE_MARGIN_TOP_BOTTOM = 20;
+    final int SCORE_MIN_PADDING_BETWEEN = 10;
+    final int SCORE_BOX_HEIGHT = 60;
+    final int SCORE_BOX_INNER_LEFT_RIGHT_PADDING = 10;
+    final int PICTURE_HEIGHT = 400;
+    final int PICTURE_WIDTH = 300;
+    final int PICTURE_FRAME_PADDING = 20;
+    final int SCORE_PADDING = 40;
+
+	private static final int TIMER_DELAY = 10000;
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;
 	private int selectedScore;
@@ -53,7 +61,7 @@ public class HighScoreScreen implements SplashScreenSection {
 		int topLeftY = topLeft.y;
 		int bottomRightX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
 		int bottomRightY = topLeft.y + height;
-		Polygon individualScoreRectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+		Polygon individualScoreRectangle = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		g.setColor(new Color(250, 250, 250));
 		g.fillPolygon(individualScoreRectangle);
 
@@ -61,7 +69,7 @@ public class HighScoreScreen implements SplashScreenSection {
 		topLeftY = topLeft.y;
 		bottomRightX = topLeft.x + width;
 		bottomRightY = topLeft.y + height;
-		Polygon scoreListingRectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+		Polygon scoreListingRectangle = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		g.setColor(new Color(80, 80, 80));
 		g.fillPolygon(scoreListingRectangle);
 	}
@@ -73,23 +81,18 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private void drawScoreOnScoresList(PlayerHighScoreInformation highScore, int index, int totalScores, boolean selected, Graphics2D g) {
-		final int MARGIN_TOP_BOTTOM = 20;
-		final int MIN_PADDING_BETWEEN = 10;
-		final int SCORE_BOX_HEIGHT = 60;
-		final int SCORE_BOX_INNER_LEFT_RIGHT_PADDING = 10;
-
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 		
-		int neededHeight = MARGIN_TOP_BOTTOM * 2 + totalScores * SCORE_BOX_HEIGHT + (totalScores - 1) * MIN_PADDING_BETWEEN;
+		int neededHeight = SCORE_MARGIN_TOP_BOTTOM * 2 + totalScores * SCORE_BOX_HEIGHT + (totalScores - 1) * SCORE_MIN_PADDING_BETWEEN;
 		int extraHeight = height - neededHeight;
-		int extraPadding = Math.max(MIN_PADDING_BETWEEN, MIN_PADDING_BETWEEN + extraHeight / (totalScores - 1));
+		int extraPadding = Math.max(SCORE_MIN_PADDING_BETWEEN, SCORE_MIN_PADDING_BETWEEN + extraHeight / (totalScores - 1));
 		
 		int topLeftX = topLeft.x + width - DIVISION_PIXELS_FROM_RIGHT;
-		int topLeftY = topLeft.y + MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
+		int topLeftY = topLeft.y + SCORE_MARGIN_TOP_BOTTOM + (SCORE_BOX_HEIGHT + extraPadding) * index;
         int bottomRightX = topLeft.x + width;
         int bottomRightY = topLeftY + SCORE_BOX_HEIGHT;
-		Polygon rectangle = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+		Polygon rectangle = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		if (selected) {
 			g.setColor(SELECTED_BACKGROUND_COLOR);
@@ -122,11 +125,6 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private void drawScore(PlayerHighScoreInformation score, Graphics2D g) {
-		final int PICTURE_HEIGHT = 400;
-		final int PICTURE_WIDTH = 300;
-		final int FRAME_PADDING = 20;
-		final int SCORE_PADDING = 40;
-
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 		
@@ -137,13 +135,13 @@ public class HighScoreScreen implements SplashScreenSection {
         int topLeftY = topLeft.y + topPadding;
         int bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH;
         int bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT;
-		Polygon innerFrame = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+		Polygon innerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 
-        topLeftX = topLeft.x + leftPadding - FRAME_PADDING;
-        topLeftY = topLeft.y + topPadding - FRAME_PADDING;
-        bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + FRAME_PADDING;
-        bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + FRAME_PADDING;
-		Polygon outerFrame = getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+        topLeftX = topLeft.x + leftPadding - PICTURE_FRAME_PADDING;
+        topLeftY = topLeft.y + topPadding - PICTURE_FRAME_PADDING;
+        bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + PICTURE_FRAME_PADDING;
+        bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + PICTURE_FRAME_PADDING;
+		Polygon outerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		g.setColor(new Color(253, 253, 253));
 		g.fillPolygon(outerFrame);
@@ -156,16 +154,10 @@ public class HighScoreScreen implements SplashScreenSection {
 		g.setFont(INDIVIDUAL_NAME_FONT);
 		FontMetrics fontMetrics = g.getFontMetrics();
 		Rectangle2D fontBounds = fontMetrics.getStringBounds(score.getPlayerInitials(), g);
-		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + FRAME_PADDING + SCORE_PADDING);
+		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + PICTURE_FRAME_PADDING + SCORE_PADDING);
 		int leftFontPadding = topLeft.x + (int) (((width - DIVISION_PIXELS_FROM_RIGHT) - fontBounds.getWidth()) / 2);
 		g.setColor(SELECTED_TEXT_COLOR);
 		g.drawString(score.getPlayerInitials(), leftFontPadding, topFontPadding);
-	}
-
-	private Polygon getRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY) {
-		int[] xPoints = new int[] {topLeftX, topLeftX, bottomRightX, bottomRightX};
-		int[] yPoints = new int[] {topLeftY, bottomRightY, bottomRightY, topLeftY};
-		return new Polygon(xPoints, yPoints, 4);
 	}
 
     @Override

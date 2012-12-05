@@ -2,6 +2,7 @@ package edu.mines.csci598.recycler.frontend.items;
 
 import java.util.Random;
 
+import edu.mines.csci598.recycler.frontend.RecycleBins;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.GameConstants;
@@ -39,7 +40,7 @@ public final class ItemFactory {
      * @return
      */
     // TODO this shouldn't really depend on the order we typed items above
-    private Recyclable generateRandom(Path path, int numberOfItemTypesInUse) {
+    private Recyclable generateRandom(Path path, int numberOfItemTypesInUse, RecycleBins bins) {
         int numRecyclableTypes = RecyclableType.values().length;
 
         if (numberOfItemTypesInUse > numRecyclableTypes) { // error checking, just use the number of recyclables instead
@@ -50,7 +51,9 @@ public final class ItemFactory {
         int randomChoiceIndex = rand.nextInt(numberOfItemTypesInUse);
         RecyclableType type = RecyclableType.values()[randomChoiceIndex];
 		String[] possibleImages = type.getImagePaths();
-        return new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
+        Recyclable r = new Recyclable(type, path, possibleImages[(int)(Math.floor(Math.random() * possibleImages.length))]);
+        r.tellRecyclablesAboutBins(bins);
+        return r;
     }
 
     private PowerUp generateRandomPowerUp(Path path) {
@@ -63,7 +66,7 @@ public final class ItemFactory {
 	 * Generates new item if necessary
 	 * @return A new recyclable if it's been long enough and we get lucky, null otherwise
 	 */
-	public Movable possiblyGenerateItem(Path outputPath, double currentTimeSec) {
+	public Movable possiblyGenerateItem(Path outputPath, double currentTimeSec, RecycleBins bins) {
         outputPath.setStartTime(currentTimeSec);
 		Movable movable = null;
 		if (needsItemGeneration(currentTimeSec)) {
@@ -76,15 +79,15 @@ public final class ItemFactory {
             }
             else {
                 // Recyclables initially take the path of the conveyor belt
-            	movable = generateRandom(outputPath, numberOfItemTypes);
+            	movable = generateRandom(outputPath, numberOfItemTypes, bins);
                 logger.debug("Item generated: " + movable);
             }
 		}
 		return movable;
     }
 
-    public Recyclable generateItemForDebugging(Path outputPath) {
-        Recyclable returned = generateRandom(outputPath, 1);
+    public Recyclable generateItemForDebugging(Path outputPath, RecycleBins bins) {
+        Recyclable returned = generateRandom(outputPath, 1, bins);
         return returned;
     }
 	

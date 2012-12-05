@@ -9,6 +9,8 @@ import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.frontend.ai.ComputerPlayer;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.hands.Hand;
+import edu.mines.csci598.recycler.frontend.hands.PlayerHand;
 import edu.mines.csci598.recycler.frontend.items.ItemFactory;
 import edu.mines.csci598.recycler.frontend.items.PowerUp;
 import edu.mines.csci598.recycler.frontend.items.Recyclable;
@@ -55,15 +57,22 @@ public class GameLogic {
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
     private GameManager gameManager;
+    private boolean isPlaying;
+
+   /* public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
+                     boolean rightSide, boolean debuggingCollision) {
+        this.gameManager = gameManager;
+        */
+
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
                      boolean rightSide, boolean debuggingCollision) {
+        isPlaying = true;
         this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
-        Recyclable.tellRecyclablesAboutBins(recycleBins);
 
         numItemTypesInUse = GameConstants.INITIAL_NUMBER_OF_ITEM_TYPES;
         currentTimeSec = 0;
@@ -94,12 +103,13 @@ public class GameLogic {
             }
         }
         //Add single item to conveyor for debugging collisions.
-        if (this.debuggingCollisions) {
+      /*  if (this.debuggingCollisions) {
             logger.debug("Adding recyclable for collision detection");
             Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath());
             conveyorBelt.takeControlOfMovable(r);
             gameScreen.addSprite(r.getSprite());
         }
+        */
     }
 
     public void setUpHands(boolean secondPlayerIsComputer) {
@@ -123,6 +133,20 @@ public class GameLogic {
             computerPlayer = new ComputerPlayer(recycleBins);
             gameScreen.addHandSprite(computerPlayer.primary.getSprite());
             hands.add(computerPlayer.getHand());
+        }
+
+        //Add recycle bins to game screen to be drawn
+        for (RecycleBin bin : recycleBins.getRecycleBins()) {
+            if (bin.hasSprite()) {
+                gameScreen.addRecycleBinSprite(bin.getSprite());
+            }
+        }
+        //Add single item to conveyor for debugging collisions.
+        if (this.debuggingCollisions) {
+            logger.debug("Adding recyclable for collision detection");
+            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath(), recycleBins);
+            conveyorBelt.takeControlOfMovable(r);
+            gameScreen.addSprite(r.getSprite());
         }
     }
 
@@ -168,15 +192,18 @@ public class GameLogic {
         if (m instanceof PowerUp) {
             PowerUp p = (PowerUp) m;
             if (p.getType() == PowerUp.PowerUpType.DYNAMITE) {
+                SoundEffectEnum.EXPLODE.playSound();
                 strikeBar.removeStrike();
             } else if (p.getType() == PowerUp.PowerUpType.BLASTER) {
+                SoundEffectEnum.SPEED_UP.playSound();
                 otherScreen.powerUpSpeedFactor = 1.5;
                 otherScreen.timeToRemovePowerUp = otherScreen.lastWallTimeSec + 15;
             } else if (p.getType() == PowerUp.PowerUpType.TURTLE) {
+                SoundEffectEnum.SLOW_DOWN.playSound();
                 powerUpSpeedFactor = 0.5;
                 timeToRemovePowerUp = lastWallTimeSec + 15;
             }
-            feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true); //Display correct image for powerup
+            feedbackDisplay.makeDisplay(m, currentTimeSec, true); //Display correct image for powerup
         }
     }
 
@@ -189,12 +216,20 @@ public class GameLogic {
     public void handleScore(Movable m, RecycleBin bin) {
         if (m instanceof Recyclable) {
             if (bin.isCorrectRecyclableType(m)) {
-                feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, true);
+                feedbackDisplay.makeDisplay(m, currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
                 gameStatusDisplay.incrementScore(10);
             } else {
-                Movable feedback = feedbackDisplay.makeDisplay(m.getPosition(), currentTimeSec, false);
-                strikeBar.addStrike(feedback);
+                Movable feedback[] = feedbackDisplay.makeDisplay(m, currentTimeSec, false);
+                Boolean barFull = strikeBar.addStrike(feedback);
+                if(barFull){
+                    if (!playerIsAComputer){
+                      //SavePlayer currentPlayer = new SavePlayer();
+                      //currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                    }
+                    isPlaying = false;
+
+                }
                 SoundEffectEnum.INCORRECT.playSound();
             }
         }
@@ -235,6 +270,7 @@ public class GameLogic {
 
         // Release items at the end of the path
         List<Movable> itemsToRemove = conveyorBelt.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
+        if(itemsToRemove.size()>0) SoundEffectEnum.TRASH_BIN.playSound();
         for (Movable m : itemsToRemove) {
             handleScore(m, RecycleBin.TRASH_BIN);
             gameScreen.removeSprite(m.getSprite());
@@ -243,18 +279,22 @@ public class GameLogic {
         itemsToRemove = theForce.releaseControlOfMovablesAtEndOfPath(currentTimeSec);
         for (Movable m : itemsToRemove) {
             if (m instanceof Recyclable) {
-                handleScore(m, recycleBins.findBinForFallingRecyclable(m));
+                RecycleBin bin = recycleBins.findBinForFallingRecyclable(m);
+                bin.getSoundEffect().playSound();
+
+                handleScore(m,bin);
             }
             gameScreen.removeSprite(m.getSprite());
         }
 
         // Generate more items, if we feel like it
         if (!debuggingCollisions) {
-            Movable m = factory.possiblyGenerateItem(conveyorBelt.getConveyorPath(), currentTimeSec);
+            Movable m = factory.possiblyGenerateItem(conveyorBelt.getConveyorPath(), currentTimeSec, recycleBins);
             if (m != null) {
                 try {
                     conveyorBelt.takeControlOfMovable(m);
                     gameScreen.addSprite(m.getSprite());
+                    SoundEffectEnum.ITEM_EXIT_CHUTE.playSound();
                 } catch (ExceptionInInitializerError e) {
                     logger.error("ExceptionInInitializerError adding Recyclable with time " + currentTimeSec);
                 }
@@ -292,4 +332,9 @@ public class GameLogic {
         double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         factory.increaseGenerationRate(pctToMaxDifficulty);
     }
+
+    public boolean getState(){
+        return isPlaying;
+    }
+
 }

@@ -66,6 +66,7 @@ public class LocalAreaWeather {
         String cloudCover;
         String precipitation;
         String temperature;
+        String description;
 
         windDegree = getTagValue("winddirDegree", condition);
         windSpeed = getTagValue("windspeedMiles", condition);
@@ -74,7 +75,8 @@ public class LocalAreaWeather {
         visibility = getTagValue("visibility", condition);
         cloudCover = getTagValue("cloudcover", condition);
         precipitation = getTagValue("precipMM", condition);
-        temperature = getTagValue("temp_C", condition);
+        temperature = getTagValue("temp_F", condition);
+        description = getTagValue("weatherDesc", condition);
 
         return new WeatherInformation(
                 Integer.valueOf(windSpeed),
@@ -84,7 +86,8 @@ public class LocalAreaWeather {
                 Double.valueOf(precipitation),
                 Integer.valueOf(temperature),
                 Integer.valueOf(pressure),
-                Integer.valueOf(humidity)
+                Integer.valueOf(humidity),
+                description
         );
     }
 

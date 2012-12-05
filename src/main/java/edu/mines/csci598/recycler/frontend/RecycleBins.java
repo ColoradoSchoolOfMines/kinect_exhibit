@@ -3,7 +3,6 @@ package edu.mines.csci598.recycler.frontend;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import org.apache.log4j.Logger;
 
 import edu.mines.csci598.recycler.frontend.items.MotionState;
@@ -24,13 +23,11 @@ public class RecycleBins {
     private static final Logger logger = Logger.getLogger(RecycleBins.class);
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
 
-    public enum Side {LEFT, RIGHT};
 
     public RecycleBins(Side s) {
         if(s.equals(Side.LEFT)) {
             setUpLeftBins();
-        }
-        else {
+        } else {
             setUpRightBins();
         }
     }
@@ -87,19 +84,19 @@ public class RecycleBins {
         RecycleBin bin1 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT,  PLASTIC_MIN_Y,
                 PLASTIC_MAX_Y, RecyclableType.PLASTIC,
-                PLASTIC_IMAGE_LEFT);
+                PLASTIC_IMAGE_LEFT, SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin2 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
-                PAPER_IMAGE_LEFT);
+                PAPER_IMAGE_LEFT, SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin3 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
-                HAZARD_IMAGE_LEFT);
+                HAZARD_IMAGE_LEFT, SoundEffectEnum.NUCLEAR_BIN);
         RecycleBin bin4 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT, GLASS_MIN_Y,
                 GLASS_MAX_Y, RecyclableType.GLASS,
-                GLASS_IMAGE_LEFT);
+                GLASS_IMAGE_LEFT,SoundEffectEnum.GLASS_HITS_BIN);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);
@@ -115,19 +112,19 @@ public class RecycleBins {
         RecycleBin bin1 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT,  PLASTIC_MIN_Y,
                 PLASTIC_MAX_Y, RecyclableType.PLASTIC,
-                PLASTIC_IMAGE_RIGHT);
+                PLASTIC_IMAGE_RIGHT,SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin2 = new RecycleBin(
                 RecycleBin.ConveyorSide.RIGHT, PAPER_MIN_Y,
                 PAPER_MAX_Y, RecyclableType.PAPER,
-                PAPER_IMAGE_RIGHT);
+                PAPER_IMAGE_RIGHT,SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin3 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT, HAZARD_MIN_Y,
                 HAZARD_MAX_Y, RecyclableType.HAZARD,
-                HAZARD_IMAGE_RIGHT);
+                HAZARD_IMAGE_RIGHT,SoundEffectEnum.NUCLEAR_BIN);
         RecycleBin bin4 = new RecycleBin(
                 RecycleBin.ConveyorSide.LEFT, GLASS_MIN_Y,
                 GLASS_MAX_Y, RecyclableType.GLASS,
-                GLASS_IMAGE_RIGHT);
+                GLASS_IMAGE_RIGHT,SoundEffectEnum.GLASS_HITS_BIN);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);

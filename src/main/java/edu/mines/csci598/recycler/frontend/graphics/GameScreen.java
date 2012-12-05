@@ -1,15 +1,11 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import org.apache.log4j.Logger;
-import java.awt.*;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
-
-import edu.mines.csci598.recycler.frontend.GameConstants;
 
 /**
  * The GameScreen class is responsible for drawing the sprites with their updated time.

@@ -1,14 +1,12 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.items.BinFeedback;
+import org.apache.log4j.Logger;
 
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class is an easy way to show a checkmark or x just pass in the
@@ -29,22 +27,32 @@ public class FeedbackDisplay extends ItemMover {
         gameScreen = GameScreen.getInstance();
     }
 
-    public Movable makeDisplay(Coordinate c, double currentTimeSec, boolean isCorrect){
+    public Movable[] makeDisplay(Movable m, double currentTimeSec, boolean isCorrect){
+        Movable[] movableArray = new Movable[2];
         Path p = new Path(currentTimeSec);
-        p.addLine(new Line(c,c,0.5));
+
 
         BinFeedback feedback;
         if (isCorrect) {
+            p.addLine(new Line(m.getPosition(),m.getPosition(),0.8));
             feedback = new BinFeedback(CORRECT_SPRITE, p);
             feedback.setRemovable(true);
         }
         else {
+            p.addLine(new Line(m.getPosition(),m.getPosition(),0.0));
             feedback = new BinFeedback(INCORRECT_SPRITE, p);
             feedback.setRemovable(false);
+            m.setRemovable(false);
         }
+        movables.add(m);
         movables.add(feedback);
+
+        gameScreen.addSprite(m.getSprite());
         gameScreen.addSprite(feedback.getSprite());
-        return feedback;
+
+        movableArray[0] = feedback;
+        movableArray[1] = m;
+        return movableArray;
     }
 
 

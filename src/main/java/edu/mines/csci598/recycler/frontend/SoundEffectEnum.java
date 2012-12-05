@@ -26,8 +26,8 @@ public enum SoundEffectEnum {
     SLOW_DOWN("src/main/resources/Sounds/slow_down.wav"),
     SPEED_UP("src/main/resources/Sounds/speed_up.wav"),
     TRASH_BIN("src/main/resources/Sounds/trash_bin.wav"),
-    INCORRECT("src/main/resources/Sounds/wrong.wav");
-
+    INCORRECT("src/main/resources/Sounds/wrong.wav"),
+    NONE(null);
 
     private String soundPath;
     private SoundEffect soundEffect;
@@ -35,18 +35,16 @@ public enum SoundEffectEnum {
 
     private SoundEffectEnum(String soundPath) {
         this.soundPath = soundPath;
-        this.soundEffect = new SoundEffect(soundPath);
+        if(soundPath != null){
+            this.soundEffect = new SoundEffect(soundPath);
+        } else {
+            soundEffect = null;
+        }
     }
 
-    public String getSoundPath() {
-        return soundPath;
-    }
-
-    public SoundEffect getSoundEffect() {
-        return soundEffect;
-    }
 
     public void playSound() {
+        if (soundEffect == null) return;
         soundEffect.play();
     }
 
