@@ -1,16 +1,22 @@
 package edu.mines.csci598.recycler.splashscreen.highscores;
 
 
+import edu.mines.csci598.recycler.backend.GameManager;
 import javax.swing.*;
 
 public class SavePlayer {
-/*    private byte[] imgbytes;
-    int width, height;
-    private BufferedImage bimg;*/
+    GameManager man;
 
+    /**
+     * This is the hand-off between end-of-game and the splash screen
+     * It will record the score, take a photo, grab initials and store it
+     * to a top ten flat file.
+     *
+     * @param score      the score that the player(s) achieved
+     */
     public void submitPlayerScore(long score) {
 
-        ImageIcon image = takePhoto();
+        ImageIcon image = takePhoto( man );
         String initials = getInitials();
 
         //create object with score
@@ -21,27 +27,32 @@ public class SavePlayer {
         startSplashProcess();
     }
 
-    private ImageIcon takePhoto() {  
-        /*try {
-            scriptNode = new OutArg<ScriptNode>();        
-
-            context = Context.createFromXmlFile(SAMPLE_XML_FILE, scriptNode);
-
-            depthGen = DepthGenerator.create(context);
-            DepthMetaData depthMD = depthGen.getMetaData();
-
-            width = depthMD.getFullXRes();
-            height = depthMD.getFullYRes();
-
-            DataBufferByte dataBuffer = new DataBufferByte(imgbytes, width*height);
-            Raster raster = Raster.createPackedRaster(dataBuffer, width, height, 8, null);
-            bimg.setData(raster);
-        } catch (GeneralException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }*/
+    /**
+     * This is the hand-off between end-of-game and the splash screen
+     * It will record the score, take a photo, grab initials and store it
+     * to a top ten flat file.
+     *
+     * @param score      the score that the player(s) achieved
+     * @param man        the game manager allows us to take the photo
+     */
+    public void submitPlayerScore( long score, GameManager man ) {
+        this.man = man;
         
-        return new ImageIcon();
+        ImageIcon image = takePhoto( man );
+        String initials = getInitials();
+
+        //create object with score
+        PlayerHighScoreInformation playerHighScoreInformation = new PlayerHighScoreInformation(initials, score, image);
+
+        SerializePlayerInformation.savePlayerHighScoreInformation(playerHighScoreInformation);
+
+        startSplashProcess();
+    }
+
+    private ImageIcon takePhoto( GameManager man ) {  
+        ImageIcon pic = new ImageIcon( man.getImage() );
+        
+        return pic;
     }
 
     private String getInitials() {

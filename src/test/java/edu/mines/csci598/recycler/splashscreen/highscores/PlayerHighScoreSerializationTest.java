@@ -13,16 +13,16 @@ import static junit.framework.Assert.assertEquals;
 
 public class PlayerHighScoreSerializationTest {
 
-    private ArrayList<PlayerHighScoreInformation> _scores;
-    private ImageIcon _playerImage;
-    private long _playerScore;
-    private String _playerInitials;
+    private ArrayList<PlayerHighScoreInformation> scores;
+    private ImageIcon playerImage;
+    private long playerScore;
+    private String playerInitials;
 
     @Before
     public void setup() throws IOException {
-        _playerImage = new ImageIcon(getClass().getResource("recycle.jpg"));
-        _playerScore = 50;
-        _playerInitials = "ATM";
+        playerImage = new ImageIcon(getClass().getResource("recycle.jpg"));
+        playerScore = 50;
+        playerInitials = "ATM";
 
         File f = new File("testEmptyPlayer.dat");
         f = new File("testOnePlayer.dat");
@@ -31,45 +31,50 @@ public class PlayerHighScoreSerializationTest {
 
     @Test
     public void serializeEmptyPlayerHighScoreList() {
-        _scores = new ArrayList<PlayerHighScoreInformation>();
-        SerializePlayerInformation.storePlayerHighScoreInformation(_scores, "testEmptyPlayer.dat");
+        scores = new ArrayList<PlayerHighScoreInformation>();
+        SerializePlayerInformation.storePlayerHighScoreInformation(scores, "testEmptyPlayer.dat");
+    }
+
+    @Test
+    public void savePlayerToHighScores() {
+        SerializePlayerInformation.savePlayerHighScoreInformation(new PlayerHighScoreInformation(playerInitials, playerScore, playerImage));
     }
 
     @Test
     public void serializeOnePlayerInHighScoreList() {
-        _scores = new ArrayList<PlayerHighScoreInformation>();
-        _scores.add(new PlayerHighScoreInformation(_playerInitials, _playerScore, _playerImage));
-        SerializePlayerInformation.storePlayerHighScoreInformation(_scores, "testOnePlayer.dat");
+        scores = new ArrayList<PlayerHighScoreInformation>();
+        scores.add(new PlayerHighScoreInformation(playerInitials, playerScore, playerImage));
+        SerializePlayerInformation.storePlayerHighScoreInformation(scores, "testOnePlayer.dat");
     }
 
     @Test
     public void serializeMultiplePlayersInHighScoreList() {
-        _scores = new ArrayList<PlayerHighScoreInformation>();
-        _scores.add(new PlayerHighScoreInformation(_playerInitials, _playerScore, _playerImage));
-        _scores.add(new PlayerHighScoreInformation(_playerInitials, _playerScore+1, _playerImage));
-        SerializePlayerInformation.storePlayerHighScoreInformation(_scores, "testMultiplePlayer.dat");
+        scores = new ArrayList<PlayerHighScoreInformation>();
+        scores.add(new PlayerHighScoreInformation(playerInitials, playerScore, playerImage));
+        scores.add(new PlayerHighScoreInformation(playerInitials, playerScore + 1, playerImage));
+        SerializePlayerInformation.storePlayerHighScoreInformation(scores, "testMultiplePlayer.dat");
     }
 
     @Test
     public void deserializeEmptyPlayerHighScoreList() {
-        _scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testEmptyPlayer.dat");
-        assertEquals(0, _scores.size());
+        scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testEmptyPlayer.dat");
+        assertEquals(0, scores.size());
     }
 
     @Test
     public void deserializeOnePlayerInHighScoreList() {
-        _scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testOnePlayer.dat");
-        assertEquals(1, _scores.size());
-        PlayerHighScoreInformation player1 = _scores.get(0);
+        scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testOnePlayer.dat");
+        assertEquals(1, scores.size());
+        PlayerHighScoreInformation player1 = scores.get(0);
         assertEquals(50, player1.getPlayerScore());
         assertEquals("ATM", player1.getPlayerInitials());
     }
 
     @Test
     public void deserializeMultiplePlayersInHighScoreList() {
-        _scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testMultiplePlayer.dat");
-        assertEquals(2, _scores.size());
-        PlayerHighScoreInformation player1 = _scores.get(1);
+        scores = SerializePlayerInformation.retrievePlayerHighScoreInformation("testMultiplePlayer.dat");
+        assertEquals(2, scores.size());
+        PlayerHighScoreInformation player1 = scores.get(1);
         assertEquals(51, player1.getPlayerScore());
         assertEquals("ATM", player1.getPlayerInitials());
     }

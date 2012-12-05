@@ -8,11 +8,13 @@ public class SerializePlayerInformation {
 
     private static final int NUM_PLAYER_SCORES_TO_STORE = 10;
     private static final String SCORES_FILE = "scores.dat";
+    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SerializePlayerInformation.class.getName());
 
     public static ArrayList<PlayerHighScoreInformation> retrievePlayerHighScoreInformation() {
         return retrievePlayerHighScoreInformation(SCORES_FILE);
     }
 
+    @SuppressWarnings("unchecked")
     public static ArrayList<PlayerHighScoreInformation> retrievePlayerHighScoreInformation(String fileName) {
         Object deserializedHighScores = new ArrayList<PlayerHighScoreInformation>();
         File file = new File(fileName);
@@ -22,8 +24,8 @@ public class SerializePlayerInformation {
                 deserializedHighScores = oin.readObject();
                 oin.close();
             }
-            catch (Exception ioe) {
-                ioe.printStackTrace();
+            catch (Exception e) {
+                log.severe("Unable to deserialize high scores, " + e);
             }
         }
 
@@ -49,8 +51,8 @@ public class SerializePlayerInformation {
             oout.writeObject(abbreviatedList);
             oout.close();
         }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
+        catch (IOException e) {
+            log.severe("Unable to serialize high scores, " + e);
         }
     }
 
@@ -58,8 +60,8 @@ public class SerializePlayerInformation {
         ArrayList<PlayerHighScoreInformation> players = retrievePlayerHighScoreInformation();
         players.add(highScore);
         players = SortPlayerInformation.sortByScore(players);
-        if (players.size() > 10)
-            players = (ArrayList<PlayerHighScoreInformation>) players.subList(0, 10);
+        if (players.size() > NUM_PLAYER_SCORES_TO_STORE)
+            players = (ArrayList<PlayerHighScoreInformation>) players.subList(0, NUM_PLAYER_SCORES_TO_STORE);
         storePlayerHighScoreInformation(players);
     }
 }

@@ -2,3 +2,10 @@
 *.iml
 target
 *~
+*.class
+META-INF
+classes
+*.wav
+*.mp3
+*netbeans*
+scores.dat

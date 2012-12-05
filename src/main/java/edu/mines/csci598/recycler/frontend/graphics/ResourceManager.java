@@ -1,5 +1,7 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
+import org.apache.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,13 +20,17 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class ResourceManager {
+    private static final Logger logger = Logger.getLogger(ResourceManager.class);
+
     private static ResourceManager instance;
     private HashMap<String,Image> imageMap;
-    private ResourceManager(){
+
+    private ResourceManager() {
         imageMap = new HashMap<String, Image>();
     }
-    public static ResourceManager getInstance(){
-        if(instance==null){
+
+    public static ResourceManager getInstance() {
+        if(instance == null){
             instance = new ResourceManager();
         }
         return instance;
@@ -36,9 +42,9 @@ public class ResourceManager {
      * @param key
      * @return
      */
-    public Image getImage(String key){
+    public Image getImage(String key) {
         //If we don't have the image go create it and put it here.
-        if(!imageMap.containsKey(key)){
+        if(!imageMap.containsKey(key)) {
             BufferedImage img;
             try {
                 img = ImageIO.read(new File(key));
@@ -48,10 +54,23 @@ public class ResourceManager {
             //Calculate the rounded scaled height
             int newHeight = (int) Math.round(img.getHeight() * GraphicsConstants.SCALE_FACTOR);
             int newWidth = (int) Math.round(img.getWidth() * GraphicsConstants.SCALE_FACTOR);
+
+            BufferedImage ret = (BufferedImage)img;
+            BufferedImage tmp = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = tmp.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            //g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+            g2.drawImage(ret, 0, 0, newWidth, newHeight, null);
+            g2.dispose();
             //scale the image
-            Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-            imageMap.put(key,image);
+            // SCALE_FAST reduces the load time slightly
+            //Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
+            ret=tmp;
+            imageMap.put(key, ret);
         }
         return imageMap.get(key);
     }
+
+
+
 }

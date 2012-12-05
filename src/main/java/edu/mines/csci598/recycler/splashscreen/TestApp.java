@@ -7,6 +7,7 @@ import edu.mines.csci598.recycler.splashscreen.weather.LocalAreaWeather;
 import edu.mines.csci598.recycler.splashscreen.weather.WeatherInformation;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestApp extends JFrame {
@@ -18,9 +19,14 @@ public class TestApp extends JFrame {
     private void initialize() {
         JPanel panel = new JPanel();
         getContentPane().add(panel);
-
         JLabel label = new JLabel(getTwitterMessage());
         panel.add(label);
+
+        for (String msg : getTwitterMessages()) {
+            label = new JLabel(msg);
+            panel.add(label);
+        }
+
         label = new JLabel();
         label.setText(convertToHtml(getWeatherInformation().toString()));
         panel.add(label);
@@ -52,13 +58,18 @@ public class TestApp extends JFrame {
         return messages.retrieveLatestMessage();
     }
 
+    private ArrayList<String> getTwitterMessages() {
+        TwitterMessages messages = new TwitterMessages();
+        return messages.retrieveAllMessages();
+    }
+
     private WeatherInformation getWeatherInformation() {
         return LocalAreaWeather.retrieveWeatherInformation();
     }
 
     private static String convertToHtml(String text)
     {
-        return "<html>" + text.replaceAll("\n", "<brt c>");
+        return "<html>" + text.replaceAll("\n", "<br />") +"</html>";
     }
 
     private List<PlayerHighScoreInformation> getPlayerHighScores() {

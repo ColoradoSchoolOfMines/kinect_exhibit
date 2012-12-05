@@ -1,8 +1,15 @@
 package edu.mines.csci598.recycler.frontend;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
-
 import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import edu.mines.csci598.recycler.frontend.items.MotionState;
+import edu.mines.csci598.recycler.frontend.items.Recyclable;
+import edu.mines.csci598.recycler.frontend.items.RecyclableType;
+import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.Movable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +19,15 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class RecycleBins {
-    private LinkedList<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
 
-    public enum Side {LEFT, RIGHT};
-    public RecycleBins(Side s){
-        if(s.equals(Side.LEFT)){
+    private static final Logger logger = Logger.getLogger(RecycleBins.class);
+    private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
+    private Side side;
+
+
+    public RecycleBins(Side s) {
+        side = s;
+        if(s.equals(Side.LEFT)) {
             setUpLeftBins();
         } else {
             setUpRightBins();
@@ -30,37 +41,45 @@ public class RecycleBins {
      * Moved from GameLogic check collision function
      * Need here for AI
      *
-     * @param r
+     * @param m
      * @return
      */
-    public RecycleBin findBinForFallingRecyclable(Recyclable r) {
-        int yCord = r.getSprite().getScaledY();
+    public RecycleBin findBinForFallingRecyclable(Movable m) {
+        if (!(m instanceof Recyclable)) {
+            throw new IllegalStateException("Something is falling into a bin that shouldn't be (not a recyclable)!");
+        }
+
+        int yCoord = m.getSprite().getY();
 
         // finds the bin that the trash has gone into using the y coordinates since it can only fall to the right or
         // left of the conveyor we only need to check which way it's going and the y coordinates
         for (RecycleBin bin : recycleBins) {
-            if ((r.getMotionState() == MotionState.FALL_LEFT && bin.getSide() == RecycleBin.ConveyorSide.LEFT) ||
-                    (r.getMotionState() == MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
+            if ((m.getMotionState() == MotionState.FALL_LEFT && bin.getSide() == RecycleBin.ConveyorSide.LEFT) ||
+                    (m.getMotionState() == MotionState.FALL_RIGHT && bin.getSide() == RecycleBin.ConveyorSide.RIGHT)) {
 
-                if (yCord >= bin.getMinY() && yCord <= bin.getMaxY()) {
+                if (yCoord >= bin.getMinY() && yCoord <= bin.getMaxY()) {
                     return bin;
                 }
             }
         }
-        return recycleBins.getLast();
+        return getLast();
     }
-    
+
+
+    public Side getSide() {
+        return side;
+    }
+
     /*
      * Find bin type
      */
-    public RecycleBin findCorrectBin(Recyclable r){
+    public RecycleBin findCorrectBin(Recyclable r) {
     	RecyclableType recycleType = r.getType();
-        for(RecycleBin recycleBin: recycleBins){
-            if(recycleBin.getType()==recycleType){
+        for(RecycleBin recycleBin: recycleBins) {
+            if(recycleBin.getType() == recycleType) {
                 return recycleBin;
             }
         }
-        
         throw new IllegalStateException("No bin found for recyclable " + r);
     }
     
@@ -69,28 +88,27 @@ public class RecycleBins {
      */
     private void setUpLeftBins() {
         RecycleBin bin1 = new RecycleBin(
-               LEFT_BIN_1_SIDE, LEFT_BIN_1_MIN_Y,
-               LEFT_BIN_1_MAX_Y, LEFT_BIN_1_TYPE);
+                RecycleBin.ConveyorSide.LEFT,  PLASTIC_MIN_Y,
+                PLASTIC_MAX_Y, RecyclableType.PLASTIC,
+                PLASTIC_IMAGE_LEFT, SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin2 = new RecycleBin(
-                LEFT_BIN_2_SIDE, LEFT_BIN_2_MIN_Y,
-                LEFT_BIN_2_MAX_Y, LEFT_BIN_2_TYPE);
+                RecycleBin.ConveyorSide.LEFT, PAPER_MIN_Y,
+                PAPER_MAX_Y, RecyclableType.PAPER,
+                PAPER_IMAGE_LEFT, SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin3 = new RecycleBin(
-                LEFT_BIN_3_SIDE, LEFT_BIN_3_MIN_Y,
-                LEFT_BIN_3_MAX_Y, LEFT_BIN_3_TYPE);
+                RecycleBin.ConveyorSide.RIGHT, HAZARD_MIN_Y,
+                HAZARD_MAX_Y, RecyclableType.HAZARD,
+                HAZARD_IMAGE_LEFT, SoundEffectEnum.NUCLEAR_BIN);
         RecycleBin bin4 = new RecycleBin(
-                LEFT_BIN_4_SIDE, LEFT_BIN_4_MIN_Y,
-                LEFT_BIN_4_MAX_Y, LEFT_BIN_4_TYPE);
-        RecycleBin bin5 = new RecycleBin(
-                LEFT_BIN_5_SIDE, LEFT_BIN_5_MIN_Y,
-                LEFT_BIN_5_MAX_Y, LEFT_BIN_5_TYPE);
-        RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
+                RecycleBin.ConveyorSide.RIGHT, GLASS_MIN_Y,
+                GLASS_MAX_Y, RecyclableType.GLASS,
+                GLASS_IMAGE_LEFT,SoundEffectEnum.GLASS_HITS_BIN);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);
         recycleBins.add(bin3);
         recycleBins.add(bin4);
-        recycleBins.add(bin5);
-        recycleBins.add(trash);
+        recycleBins.add(RecycleBin.TRASH_BIN);
     }
 
     /**
@@ -98,83 +116,56 @@ public class RecycleBins {
      */
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
-                RIGHT_BIN_1_SIDE, RIGHT_BIN_1_MIN_Y,
-                RIGHT_BIN_1_MAX_Y, RIGHT_BIN_1_TYPE);
+                RecycleBin.ConveyorSide.RIGHT,  PLASTIC_MIN_Y,
+                PLASTIC_MAX_Y, RecyclableType.PLASTIC,
+                PLASTIC_IMAGE_RIGHT,SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin2 = new RecycleBin(
-                RIGHT_BIN_2_SIDE, RIGHT_BIN_2_MIN_Y,
-                RIGHT_BIN_2_MAX_Y, RIGHT_BIN_2_TYPE);
+                RecycleBin.ConveyorSide.RIGHT, PAPER_MIN_Y,
+                PAPER_MAX_Y, RecyclableType.PAPER,
+                PAPER_IMAGE_RIGHT,SoundEffectEnum.PLASTIC_OR_PAPER_HITS_BIN);
         RecycleBin bin3 = new RecycleBin(
-                RIGHT_BIN_3_SIDE, RIGHT_BIN_3_MIN_Y,
-                RIGHT_BIN_3_MAX_Y, RIGHT_BIN_3_TYPE);
+                RecycleBin.ConveyorSide.LEFT, HAZARD_MIN_Y,
+                HAZARD_MAX_Y, RecyclableType.HAZARD,
+                HAZARD_IMAGE_RIGHT,SoundEffectEnum.NUCLEAR_BIN);
         RecycleBin bin4 = new RecycleBin(
-                RIGHT_BIN_4_SIDE, RIGHT_BIN_4_MIN_Y,
-                RIGHT_BIN_4_MAX_Y, RIGHT_BIN_4_TYPE);
-        RecycleBin bin5 = new RecycleBin(
-                RIGHT_BIN_5_SIDE, RIGHT_BIN_5_MIN_Y,
-                RIGHT_BIN_5_MAX_Y, RIGHT_BIN_5_TYPE);
-        RecycleBin trash = new RecycleBin(RecyclableType.TRASH);
+                RecycleBin.ConveyorSide.LEFT, GLASS_MIN_Y,
+                GLASS_MAX_Y, RecyclableType.GLASS,
+                GLASS_IMAGE_RIGHT,SoundEffectEnum.GLASS_HITS_BIN);
 
         recycleBins.add(bin1);
         recycleBins.add(bin2);
         recycleBins.add(bin3);
         recycleBins.add(bin4);
-        recycleBins.add(bin5);
-        recycleBins.add(trash);
+        recycleBins.add(RecycleBin.TRASH_BIN);
     }
     
-    public RecycleBin getLast(){
-        return recycleBins.getLast();
+    public RecycleBin getLast() {
+        return recycleBins.get(recycleBins.size() - 1);
     }
 
-    //Left recycle bins
-    public static final RecyclableType LEFT_BIN_1_TYPE = RecyclableType.PLASTIC;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_1_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double LEFT_BIN_1_MIN_Y = 40;
-    public static final double LEFT_BIN_1_MAX_Y = 300;
+    public List<RecycleBin> getRecycleBins() {
+        return recycleBins;
+    }
 
-    public static final RecyclableType LEFT_BIN_2_TYPE = RecyclableType.PAPER;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_2_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double LEFT_BIN_2_MIN_Y = 301;
-    public static final double LEFT_BIN_2_MAX_Y = 838;
+    //Bin constants
+    public static final int PLASTIC_MIN_Y = 80;
+    public static final int PLASTIC_MAX_Y = 400;
+    public static final String PLASTIC_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_plastic_empty.png";
+    public static final String PLASTIC_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_plastic_empty.png";
 
-    public static final RecyclableType LEFT_BIN_3_TYPE = RecyclableType.HAZARD;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_3_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_3_MIN_Y = 140;
-    public static final double LEFT_BIN_3_MAX_Y = 440;
+    public static final int PAPER_MIN_Y = 401;
+    public static final int PAPER_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
+    public static final String PAPER_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_paper_empty.png";
+    public static final String PAPER_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_paper_empty.png";
 
-    public static final RecyclableType LEFT_BIN_4_TYPE = RecyclableType.GLASS;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_4_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_4_MIN_Y = 441;
-    public static final double LEFT_BIN_4_MAX_Y = 975;
+    public static final int HAZARD_MIN_Y = 173;
+    public static final int HAZARD_MAX_Y = 547;
+    public static final String HAZARD_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_hazard_empty.png";
+    public static final String HAZARD_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_hazard_empty.png";
 
-    public static final RecyclableType LEFT_BIN_5_TYPE = RecyclableType.TRASH;
-    public static final RecycleBin.ConveyorSide LEFT_BIN_5_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double LEFT_BIN_5_MIN_Y = 0;
-    public static final double LEFT_BIN_5_MAX_Y = 140;
+    public static final int GLASS_MIN_Y = 548;
+    public static final int GLASS_MAX_Y = ConveyorBelt.SPRITE_BECOMES_TOUCHABLE;
+    public static final String GLASS_IMAGE_LEFT = "src/main/resources/SpriteImages/Bins/left_bin_glass_empty.png";
+    public static final String GLASS_IMAGE_RIGHT = "src/main/resources/SpriteImages/Bins/right_bin_glass_empty.png";
 
-    //Right recycle bins
-    public static final RecyclableType RIGHT_BIN_1_TYPE = RecyclableType.PLASTIC;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_1_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double RIGHT_BIN_1_MIN_Y = 40;
-    public static final double RIGHT_BIN_1_MAX_Y = 360;
-
-    public static final RecyclableType RIGHT_BIN_2_TYPE = RecyclableType.PAPER;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_2_SIDE = RecycleBin.ConveyorSide.RIGHT;
-    public static final double RIGHT_BIN_2_MIN_Y = 361;
-    public static final double RIGHT_BIN_2_MAX_Y = 818;
-
-    public static final RecyclableType RIGHT_BIN_3_TYPE = RecyclableType.HAZARD;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_3_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_3_MIN_Y = 120;
-    public static final double RIGHT_BIN_3_MAX_Y = 480;
-
-    public static final RecyclableType RIGHT_BIN_4_TYPE = RecyclableType.GLASS;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_4_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_4_MIN_Y = 481;
-    public static final double RIGHT_BIN_4_MAX_Y = 918;
-
-    public static final RecyclableType RIGHT_BIN_5_TYPE = RecyclableType.TRASH;
-    public static final RecycleBin.ConveyorSide RIGHT_BIN_5_SIDE = RecycleBin.ConveyorSide.LEFT;
-    public static final double RIGHT_BIN_5_MIN_Y = 0;
-    public static final double RIGHT_BIN_5_MAX_Y = 140;
 }

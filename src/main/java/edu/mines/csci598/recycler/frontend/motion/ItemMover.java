@@ -1,7 +1,7 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
-import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,14 @@ import java.util.List;
  *
  */
 public abstract class ItemMover {
+    private static final Logger logger = Logger.getLogger(ItemMover.class);
 	
-	protected List<Recyclable> recyclables;
-	protected double speedPixPerSecond;
+	protected List<Movable> movables;
+
 	
-	public ItemMover(double initialSpeed){
-		recyclables = new ArrayList<Recyclable>();
-		speedPixPerSecond = initialSpeed;
+	public ItemMover(){
+        movables = new ArrayList<Movable>();
+
 	}
 	
 	/**
@@ -28,35 +29,35 @@ public abstract class ItemMover {
 	// TODO OJC - rework this to put lastMotionTime into the recyclables themselves
 	public void moveItems(double currentTimeSec){
 		// Figure out how much time has passed since we last moved
-		for(Recyclable r : recyclables){
-			Coordinate newPosition = r.getPath().getLocation(currentTimeSec);
-            r.setPosition(newPosition);
+		for(Movable m : movables){
+			Coordinate newPosition = m.getPath().getLocation(currentTimeSec);
+            m.setPosition(newPosition);
 		}
 	}
 
 	/**
 	 * @return the list of items this ItemMover moves
 	 */
-    public final List<Recyclable> getRecyclables() {
-        return recyclables;
+    public final List<Movable> getMovables() {
+        return movables;
     }
     
     /**
      * Registers the given recyclable with this ItemMover.  It will now be moved with each call to moveItems
-     * @param r The recyclable you wish to take controll of
+     * @param m The recyclable you wish to take controll of
      */
-    public final void takeControlOfRecyclable(Recyclable r){
-    	recyclables.add(r);
+    public final void takeControlOfMovable(Movable m){
+        movables.add(m);
     }
     
     /**
      * Registers each of the given recyclables with this ItemMover.
      * They will now be moved with each call to moveItems
-     * @param r
+     * @param newItems - List of items that you should take control of
      */
-    public final void takeControlOfRecyclables(List<Recyclable> newItems){
-    	for(Recyclable r : newItems){
-    		recyclables.add(r);
+    public final void takeControlOfMovables(List<Movable> newItems){
+    	for(Movable m : newItems){
+            movables.add(m);
     	}
     }
     
@@ -65,15 +66,15 @@ public abstract class ItemMover {
      * The ItemMover will no longer be aware of these items after calling this method.
      * @return The items no longer owned by this ItemMover
      */
-    public final List<Recyclable> releaseControlOfRecyclablesAtEndOfPath(double currentTimeSec){
-    	List<Recyclable> atEnd = new ArrayList<Recyclable>();
-    	for(Recyclable r : recyclables){
-    		if(r.getPath().PathFinished(currentTimeSec)){
-    			atEnd.add(r);
+    public final List<Movable> releaseControlOfMovablesAtEndOfPath(double currentTimeSec){
+    	List<Movable> atEnd = new ArrayList<Movable>();
+    	for(Movable m : movables){
+    		if((m.getPath().PathFinished(currentTimeSec)) && (m.isRemovable())){
+    			atEnd.add(m);
     		}
     	}
-    	for(Recyclable r : atEnd){
-    		recyclables.remove(r);
+    	for(Movable m : atEnd){
+            movables.remove(m);
     	}
     	return atEnd;
     }
@@ -84,20 +85,22 @@ public abstract class ItemMover {
      * @param - the point that may have items
      * @return - any items that existed at that point, which will no longer be managed by this ItemMover
      */
-    public final List<Recyclable> releaseTouchableItemsAtPoint(Coordinate point){
-    	List<Recyclable> releasing = new ArrayList<Recyclable>();
-    	for(Recyclable r : recyclables){
-    		if(!(r.isTouchable())){
+    public final List<Movable> releaseTouchableItemsAtPoint(Coordinate point){
+    	List<Movable> releasing = new ArrayList<Movable>();
+    	for(Movable m : movables){
+    		if(!(m.isTouchable())){
     			continue; // can't return this one, go to next
     		}
-    		
-    		if(r.collidesWithPoint(point)){
-    			releasing.add(r);
+
+            logger.debug("point="+point+",r=" + m.getPosition());
+    		if(m.collidesWithPoint(point)){
+                logger.debug("Release");
+    			releasing.add(m);
     		}
     		
     	}
-    	for(Recyclable r : releasing){
-    		recyclables.remove(r);
+    	for(Movable m : releasing){
+            movables.remove(m);
     	}
     	return releasing;
     }
@@ -105,10 +108,10 @@ public abstract class ItemMover {
 
     /**
      * Tells this itemMover to stop paying attention to said recyclables
-     * @param recyclablesToRemove
+     * @param movablesToRemove
      * @return
      */
-    public final boolean releaseRecyclables(List<Recyclable> recyclablesToRemove){
-        return recyclables.removeAll(recyclablesToRemove);
+    public final boolean releaseMovables(List<Movable> movablesToRemove){
+        return movables.removeAll(movablesToRemove);
     }
 }

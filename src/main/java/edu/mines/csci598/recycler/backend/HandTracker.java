@@ -1,5 +1,10 @@
 package edu.mines.csci598.recycler.backend;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
+import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.OpenNI.*;
+
+import javax.swing.*;
 
 public class HandTracker {
     // the size of the history for locations, for drawing paths
@@ -17,6 +24,11 @@ public class HandTracker {
 
     // OpenNI depth information
     private DepthGenerator depthGen;
+    
+    // OpenNI image information
+    private ImageGenerator imageGen;
+    private Dimension rgbDim;
+    private int[] rgbImageArray;
 
     // OpenNI gesture information
     private GestureGenerator gestureGen;
@@ -116,6 +128,10 @@ public class HandTracker {
             // depth generator map
             depthGen = DepthGenerator.create(context);
             DepthMetaData depthMD = depthGen.getMetaData();
+            
+            // Visual spectrum map generator
+            imageGen = ImageGenerator.create(context);
+            ImageMetaData imageMD = imageGen.getMetaData();
 
             // start everything
 			context.startGeneratingAll();
@@ -173,5 +189,53 @@ public class HandTracker {
      */
     public int getHeight() {
         return this.height;
+    }
+    
+    public BufferedImage getDepthData(){
+        DepthMetaData depthMD = depthGen.getMetaData();
+
+        width = depthMD.getFullXRes();
+        height = depthMD.getFullYRes();
+
+        ShortBuffer depth = depthMD.getData().createShortBuffer();
+        depth.rewind();
+
+        BufferedImage bimg = new BufferedImage( width, height, BufferedImage.TYPE_BYTE_GRAY );
+
+        while(depth.remaining() > 0)
+        {
+            int pos = depth.position();
+            short pixel = depth.get();
+            bimg.setRGB( pos%width, pos/width, pixel*16 );
+        }
+
+        return bimg;
+    }
+    
+    public BufferedImage getVisualData(){
+        ImageMetaData imageMD = imageGen.getMetaData();
+
+        rgbDim = new Dimension(imageMD.getFullXRes(), imageMD.getFullYRes());
+        rgbImageArray = new int[rgbDim.width * rgbDim.height];
+        BufferedImage bimg = new BufferedImage(rgbDim.width, rgbDim.height, BufferedImage.TYPE_INT_RGB);
+
+        int i = 0;
+        int r = 0;
+        int g = 0;
+        int b = 0;
+
+        ByteBuffer rgbBuffer = imageMD.getData().createByteBuffer();
+        for (int x = 0; x < rgbDim.width; x++) {
+            for (int y = 0; y < rgbDim.height; y++) {
+                i = y * rgbDim.width + x;
+                r = rgbBuffer.get(i * 3) & 0xff;
+                g = rgbBuffer.get(i * 3 + 1) & 0xff;
+                b = rgbBuffer.get(i * 3 + 2) & 0xff;
+                rgbImageArray[i] = (r << 16) | (g << 8) | b;
+                bimg.setRGB( rgbDim.width - ( 1+i%width), i/width, (r << 16) | (g << 8) | b );
+            }
+        }
+
+        return bimg;
     }
 }

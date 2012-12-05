@@ -2,99 +2,109 @@ package edu.mines.csci598.recycler.splashscreen.weather;
 
 public class WeatherInformation {
 
-    private int _windSpeed;
-    private int _visibility;
-    private int _windDegree;
-    private int _cloudCover;
-    private double _precipitation;
-    private int _temperature;
-    private int _pressure;
-    private int _humidity;
+    private int windSpeed;
+    private int visibility;
+    private int windDegree;
+    private int cloudCover;
+    private double precipitation;
+    private int temperature;
+    private int pressure;
+    private int humidity;
+    private String description;
 
-    public WeatherInformation(int windSpeed, int visibility, int windDegree, int cloudCover, double precipitation, int temperature, int pressure, int humidity) {
-        _windDegree = windDegree;
-        _windSpeed = windSpeed;
-        _cloudCover = cloudCover;
-        _precipitation = precipitation;
-        _temperature = temperature;
-        _pressure = pressure;
-        _humidity = humidity;
-        _visibility = visibility;
+    public WeatherInformation(int windSpeed, int visibility, int windDegree, int cloudCover, double precipitation, int temperature, int pressure, int humidity, String description) {
+        this.windDegree = windDegree;
+        this.windSpeed = windSpeed;
+        this.cloudCover = cloudCover;
+        this.precipitation = precipitation;
+        this.temperature = temperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.visibility = visibility;
+        this.description = description;
     }
 
     public int getWindSpeed() {
-        return _windSpeed;
+        return windSpeed;
     }
 
     public void setWindSpeed(int windSpeed) {
-        this._windSpeed = windSpeed;
+        this.windSpeed = windSpeed;
     }
 
     public int getVisibility() {
-        return _visibility;
+        return visibility;
     }
 
     public void setVisibility(int visibility) {
-        this._visibility = visibility;
+        this.visibility = visibility;
     }
 
     public int getWindDegree() {
-        return _windDegree;
+        return windDegree;
     }
 
     public void setWindDegree(int windDegree) {
-        this._windDegree = windDegree;
+        this.windDegree = windDegree;
     }
 
     public int getCloudCover() {
-        return _cloudCover;
+        return cloudCover;
     }
 
     public void setCloudCover(int cloudCover) {
-        this._cloudCover = cloudCover;
+        this.cloudCover = cloudCover;
     }
 
     public double getPrecipitation() {
-        return _precipitation;
+        return precipitation;
     }
 
     public void setPrecipitation(double precipitation) {
-        this._precipitation = precipitation;
+        this.precipitation = precipitation;
     }
 
     public int getTemperature() {
-        return _temperature;
+        return temperature;
     }
 
     public void setTemperature(int temperature) {
-        this._temperature = temperature;
+        this.temperature = temperature;
     }
 
     public int getPressure() {
-        return _pressure;
+        return pressure;
     }
 
     public void setPressure(int pressure) {
-        this._pressure = pressure;
+        this.pressure = pressure;
     }
 
     public int getHumidity() {
-        return _humidity;
+        return humidity;
     }
 
     public void setHumidity(int humidity) {
-        this._humidity = humidity;
+        this.humidity = humidity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Wind Speed (MPH): " + _windSpeed + "\n" +
-                "Wind Degree (DIR): " + _windDegree + "\n" +
-                "Cloud Cover: " + _cloudCover + "\n" +
-                "Precipitation (mm): " + _precipitation + "\n" +
-                "Temperature (C): " + _temperature + "\n" +
-                "Pressure: " + _pressure + "\n" +
-                "Humidity: " + _humidity + "\n" +
-                "Visibility: " + _visibility + "\n";
+        return "Wind Speed (MPH): " + windSpeed + "\n" +
+                "Wind Degree (DIR): " + windDegree + "\n" +
+                "Cloud Cover: " + cloudCover + "\n" +
+                "Precipitation (mm): " + precipitation + "\n" +
+                "Temperature (C): " + temperature + "\n" +
+                "Pressure: " + pressure + "\n" +
+                "Humidity: " + humidity + "\n" +
+                "Visibility: " + visibility + "\n";
     }
 }

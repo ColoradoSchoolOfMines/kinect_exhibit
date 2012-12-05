@@ -1,13 +1,11 @@
 package edu.mines.csci598.recycler.frontend.motion;
 
 import edu.mines.csci598.recycler.frontend.GameLogic;
-import edu.mines.csci598.recycler.frontend.MotionState;
-import edu.mines.csci598.recycler.frontend.Recyclable;
 import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.items.MotionState;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -15,8 +13,7 @@ import java.util.Arrays;
 
 public class ConveyorBelt extends ItemMover {
     private static final Logger logger = Logger.getLogger(ConveyorBelt.class);
-    private double conveyorTime;
-    private final Path path;
+    private final Path PATH;
 
     public static final int LEFT_BOTTOM_PATH_START_X = 0;
     public static final int LEFT_BOTTOM_PATH_START_Y = 880;
@@ -52,30 +49,26 @@ public class ConveyorBelt extends ItemMover {
     public static final int SPRITE_BECOMES_UNTOUCHABLE = LEFT_TOP_PATH_START_Y + 20;
 
     public ConveyorBelt(GameLogic game, GameScreen gameScreen, Path path) {
-        super(GameConstants.INITIAL_SPEED_IN_PIXELS_PER_SECOND);
-        recyclables = new ArrayList<Recyclable>();
-        this.path = path;
-    }
-
-    public int getNumRecyclablesOnConveyor() {
-        return recyclables.size();
+        super();
+        movables = new ArrayList<Movable>();
+        PATH = path;
     }
 
     /*
     * Returns the next touchable recyclable
     */
-    public Recyclable getNextRecyclableThatIsTouchable() {
-        Recyclable ret;
+    public Movable getNextMovableThatIsTouchable() {
         int index = 0;
-        ret = recyclables.get(index);
-        while (!(ret.isTouchable()) && index < recyclables.size()) {
-            index++;
-            if (index < recyclables.size() - 1)
-                ret = recyclables.get(index);
+        while(index < movables.size()){
+        	Movable r = movables.get(index);
+        	if(r.isTouchable()){
+        		return r;
+        	}
+        	index++;
         }
-
-        return ret;
+        return null;
     }
+
 
 
     /**
@@ -89,21 +82,21 @@ public class ConveyorBelt extends ItemMover {
         super.moveItems(currentTimeSec);
 
         // Update all the current items
-        for (Recyclable recyclable : recyclables) {
-            Coordinate position = recyclable.getPosition();
+        for (Movable movable : movables) {
+            Coordinate position = movable.getPosition();
             if (position.getY() < SPRITE_BECOMES_UNTOUCHABLE) {
-                recyclable.setMotionState(MotionState.CHUTE);
+                movable.setMotionState(MotionState.CHUTE);
 
             } else if (position.getY() < SPRITE_BECOMES_TOUCHABLE) {
-                if (recyclable.getMotionState() == MotionState.CHUTE) {
-                    recyclable.setMotionState(MotionState.CONVEYOR);
+                if (movable.getMotionState() == MotionState.CHUTE) {
+                    movable.setMotionState(MotionState.CONVEYOR);
                 }
             }
         }
     }
 
-    public Path getNewPath() {
-        return new Path(path);
+    public Path getConveyorPath() {
+        return new Path(PATH);
     }
 
     public static Path getConveyorBeltPathLeft() {

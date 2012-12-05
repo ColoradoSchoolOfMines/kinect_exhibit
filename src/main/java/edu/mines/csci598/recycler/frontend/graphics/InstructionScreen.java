@@ -1,11 +1,10 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.frontend.Hand;
+import java.awt.Component;
+import java.awt.Graphics2D;
+
 import org.apache.log4j.Logger;
 
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,19 +14,17 @@ import java.util.ArrayList;
  * This class takes care of displaying the splash screen
  */
 public class InstructionScreen {
-    private static final Logger logger = Logger.getLogger(GameScreen.class);
 
+    private static final Logger logger = Logger.getLogger(InstructionScreen.class);
     private Sprite background;
-    private GameManager gameManager;
-    private int waveTimes;
 
-    public InstructionScreen(GameManager gameManager) {
-        this.gameManager = gameManager;
-        background = new Sprite("src/main/resources/SpriteImages/instructions.jpg",0,0);
+    public InstructionScreen() {
+        background = new Sprite("src/main/resources/SpriteImages/instructions_full.jpg", 0, 0);
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
         g2d.drawImage(background.getImage(), background.getX(), background.getY(), canvas);
     }
+
 }
 

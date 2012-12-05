@@ -1,8 +1,9 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.utils.GameConstants;
+import edu.mines.csci598.recycler.frontend.GameConstants;
+import org.apache.log4j.Logger;
 
-import java.awt.Image;
+import java.awt.*;
 
 /**
  * This class keeps track of the sprites location on disk, transforms, position velocity etc.
@@ -15,19 +16,15 @@ import java.awt.Image;
  * To change this template use File | Settings | File Templates.
  */
 public class Sprite {
-    private int dx;
-    private int dy;
-    private int x;
-    private int y;
+    private static final Logger logger = Logger.getLogger(Sprite.class);
+
+    Coordinate location;
     private String fileName;
 
     public Sprite(String fileName, int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.location = new Coordinate(x,y);
         this.fileName = fileName;
         setImage(fileName);
-        setHorizontalVelocity(0);
-        setVerticalVelocity(0);
     }
 
     /*
@@ -40,71 +37,25 @@ public class Sprite {
         this.fileName = fileName;
     }
 
-    /*
-      * Moves the sprite based on current velocities.
-      *
-      * param {float} x
-      * 		The x position on the board.
-      * param {float} y
-      * 		The y position on the board.
-      */
-    public void move() {
-        x += dx;
-        y += dy;
-    }
-
-    /*
-      * Moves the sprite to a specific coordinate.
-      *
-      * param {float} x
-      * 		The x position on the board.
-      * param {float} y
-      * 		The y position on the board.
-      */
-    public void moveTo(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    /*
-      * Sets the horizontal velocity.
-      *
-      * param {float} dx
-      * 		The positive or negative horizontal velocity.
-      */
-    public void setHorizontalVelocity(int dx) {
-        this.dx = dx;
-    }
-
-    /*
-      * Sets the vertical velocity.
-      *
-      * param {float} dy
-      * 		The positive or negative vertical velocity.
-      */
-    public void setVerticalVelocity(int dy) {
-        this.dy = dy;
+    public void setY(int y) {
+        location.setY(y);
     }
 
     public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+        location.setX(x);
     }
 
     /*
       * Gets the x position.
-      *
+      * Protected because only graphics should care about where it is scaled
       * return {int}
       */
-    public int getScaledX() {
-        return (int) Math.round(x * GraphicsConstants.SCALE_FACTOR);
+    protected int getScaledX() {
+        return (int) Math.round(location.getX() * GraphicsConstants.SCALE_FACTOR);
     }
 
     public int getX() {
-        return x;
+        return (int) Math.round(location.getX());
     }
 
     /*
@@ -112,12 +63,12 @@ public class Sprite {
       *
       * return {int}
       */
-    public int getScaledY() {
-        return (int) Math.round(y * GraphicsConstants.SCALE_FACTOR);
+    protected int getScaledY() {
+        return (int) Math.round(location.getY() * GraphicsConstants.SCALE_FACTOR);
     }
 
     public int getY() {
-        return y;
+        return (int) Math.round(location.getY());
     }
 
     /*
@@ -137,27 +88,22 @@ public class Sprite {
      * @return
      */
     public boolean isPointInside(int x, int y) {
-        if (x >= getScaledX() - (GameConstants.SPRITE_X_OFFSET) &&
-                x <= getScaledX() + (GameConstants.SPRITE_X_OFFSET)) {
-            if (y >= getScaledY() - (GameConstants.SPRITE_Y_OFFSET) &&
-                    y <= getScaledY() + (GameConstants.SPRITE_Y_OFFSET)) {
-                return true;
-            }
+
+        if (x >= getX() - (GameConstants.SPRITE_X_OFFSET) &&
+            x <= getX() + GameConstants.SPRITE_X_OFFSET) {
+                if (y >= getY() - (GameConstants.SPRITE_Y_OFFSET) &&
+                    y <= getY() + (GameConstants.SPRITE_Y_OFFSET)) {
+                        return true;
+                }
         }
         return false;
     }
     
     public Coordinate getPosition(){
-    	return new Coordinate(x, y);
+    	return location;
     }
 
 	public synchronized void setPosition(Coordinate location) {
-		setX((int)Math.round(location.getX()));
-		setY((int)Math.round(location.getY()));
+		this.location=location;
 	}
-    public synchronized void setScaledPosition(Coordinate location) {
-        setX((int)Math.round(location.getX()*GraphicsConstants.REVERSE_SCALE_FACTOR));
-        setY((int)Math.round(location.getY()*GraphicsConstants.REVERSE_SCALE_FACTOR));
-    }
-
 }

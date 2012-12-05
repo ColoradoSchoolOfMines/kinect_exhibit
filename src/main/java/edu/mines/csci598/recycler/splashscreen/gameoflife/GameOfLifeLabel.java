@@ -5,33 +5,35 @@ import java.awt.*;
 
 public class GameOfLifeLabel extends JLabel {
 
-    static final int size = 15;
-    static final Dimension dim = new Dimension(size, size);
-    static final Color[] color = {Color.DARK_GRAY, Color.LIGHT_GRAY};
-    private int state, newState;
+    private static final int size = 15;
+    private static final Dimension dimension = new Dimension(size, size);
+    private static final Color[] colors = {Color.DARK_GRAY, Color.LIGHT_GRAY};
+    private int state;
+    private int newState;
     private int howManyNeighbor;
-    private GameOfLifeLabel[] neighbour = new GameOfLifeLabel[8];
+    private GameOfLifeLabel[] neighbors;
 
     GameOfLifeLabel() {
-        state = newState = 0;
+        state = 0;
+        newState = 0;
         setOpaque(true);
-        setBackground(color[0]);
-        this.setPreferredSize(dim);
+        setBackground(colors[0]);
+        this.setPreferredSize(dimension);
+        neighbors = new GameOfLifeLabel[8];
     }
 
-    void addNeighbour(GameOfLifeLabel n) {
-        neighbour[howManyNeighbor++] = n;
+    void addNeighbor(GameOfLifeLabel n) {
+        neighbors[howManyNeighbor++] = n;
     }
 
     void checkState() {
         int howManyLive = 0;
 
         for(int i = 0; i < howManyNeighbor; i++)
-            howManyLive += neighbour[i].state;
+            howManyLive += neighbors[i].state;
 
-        if(state == 1) {
+        if(state == 1)
             checkLivingNeighborsToDetermineState(howManyLive);
-        }
         else {
             if(howManyLive == 3)
                 newState = 1;
@@ -48,7 +50,7 @@ public class GameOfLifeLabel extends JLabel {
     void updateState() {
         if(state != newState) {
             state = newState;
-            setBackground(color[state]);
+            setBackground(colors[state]);
         }
     }
 
