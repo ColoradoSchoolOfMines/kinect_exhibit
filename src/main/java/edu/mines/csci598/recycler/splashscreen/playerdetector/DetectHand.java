@@ -1,6 +1,7 @@
 package edu.mines.csci598.recycler.splashscreen.playerdetector;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.InputStatus;
 
 public class DetectHand {
     long _waitTime;
@@ -17,8 +18,13 @@ public class DetectHand {
 
     public boolean playerFound(){
         // if there exists a hand
-        if( _manager.getSharedInputStatus().pointers[0][0] > 0 ){
-            return true;
+        float[][] pointers = _manager.getSharedInputStatus().pointers;
+        for( int person = 0; person < pointers.length; person++ ){
+            for( int pointer = 0; pointer < pointers[person].length; pointer++ ){
+                if( pointers[person][pointer] >= 0 ){
+                    return true;
+                }
+            }
         }
 
         return false;
