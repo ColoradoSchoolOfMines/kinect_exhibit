@@ -30,14 +30,14 @@ public class GameofLife extends JPanel implements ActionListener {
         for(int r = 1; r < nbRow+1; r++) {
             for(int c = 1; c < nbCol+1; c++) {
                 panel.add(cells[r][c]);
-                cells[r][c].addNeighbour(cells[r-1][c]);
-                cells[r][c].addNeighbour(cells[r+1][c]);
-                cells[r][c].addNeighbour(cells[r][c-1]);
-                cells[r][c].addNeighbour(cells[r][c+1]);
-                cells[r][c].addNeighbour(cells[r-1][c-1]);
-                cells[r][c].addNeighbour(cells[r-1][c+1]);
-                cells[r][c].addNeighbour(cells[r+1][c-1]);
-                cells[r][c].addNeighbour(cells[r+1][c+1]);
+                cells[r][c].addNeighbor(cells[r - 1][c]);
+                cells[r][c].addNeighbor(cells[r + 1][c]);
+                cells[r][c].addNeighbor(cells[r][c - 1]);
+                cells[r][c].addNeighbor(cells[r][c + 1]);
+                cells[r][c].addNeighbor(cells[r - 1][c - 1]);
+                cells[r][c].addNeighbor(cells[r - 1][c + 1]);
+                cells[r][c].addNeighbor(cells[r + 1][c - 1]);
+                cells[r][c].addNeighbor(cells[r + 1][c + 1]);
             }
         }
 
