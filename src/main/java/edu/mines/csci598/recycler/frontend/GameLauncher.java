@@ -128,7 +128,6 @@ public class GameLauncher extends GameState {
 	}
 
 	public GameLauncher updateThis(float time) {
-        System.out.println(preloading.isAlive());
         if (gameCanStart) {
             if (!playerOptions.canGameStart()) {
                 playerOptions.updateThis();
@@ -147,7 +146,7 @@ public class GameLauncher extends GameState {
             }
         }
         else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15) {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10 && !preloading.isAlive() ) {
                 gameCanStart = true;
             }
         }
