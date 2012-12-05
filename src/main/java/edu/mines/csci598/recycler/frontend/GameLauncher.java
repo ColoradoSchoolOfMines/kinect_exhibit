@@ -57,7 +57,6 @@ public class GameLauncher extends GameState {
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
 
-
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
@@ -88,15 +87,15 @@ public class GameLauncher extends GameState {
 
         playerOptions = new PlayerOptionsScreen(gameManager);
 	}
-    private void makeHands(){
+    private void makeHands() {
         hands = new ArrayList<Hand>();
-        for (int i = 0; i <4; i++) {
+        for (int i = 0; i < 4; i++) {
             hands.add(new PlayerHand(gameManager, i));
             gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
         }
     }
-    private void updateHands(){
-        for(Hand h : hands){
+    private void updateHands() {
+        for(Hand h : hands) {
             h.updateLocation();
         }
     }
@@ -149,19 +148,16 @@ public class GameLauncher extends GameState {
                 updateHands();
 		        rightGame.updateThis();
                 leftGame.updateThis();
+
                 if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
                // this.gameManager.destroy();
                 }
-
             }
         }
-        else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10 && !preloading.isAlive() ) {
+        else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15 && !preloading.isAlive() ) {
                 gameCanStart = true;
-            }
         }
 		return this;
 	}
-
 
 }
