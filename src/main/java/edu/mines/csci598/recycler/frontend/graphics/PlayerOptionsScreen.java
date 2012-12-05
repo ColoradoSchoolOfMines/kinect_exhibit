@@ -43,7 +43,7 @@ public class PlayerOptionsScreen {
                 }
             };
             textSpriteHolders.add(holder);
-            countdown = 11;
+            countdown = 6;
             previousTime = 0;
             screenWidth = 1920;
         }

@@ -16,7 +16,6 @@ import java.awt.*;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
 
 /**
  * This class launches 2 instances of GameLogic which represent the left and right games being played.
@@ -34,6 +33,7 @@ public class GameLauncher extends GameState {
     private boolean gameCanStart;
     private boolean gameStarted;
     private long timeInstructionsStarted;
+    private Thread preloading;
 
     private InstructionScreen instructionScreen;
     private PlayerOptionsScreen playerOptions;
@@ -41,8 +41,14 @@ public class GameLauncher extends GameState {
 	public GameLauncher() {
          //Preloading the images will prevent some flickering.
         //TODO: Preload correct/incorrect images too
-        RecyclableType.preLoadImages();
-        GameScreen.getInstance().preLoadImages();
+        preloading = (new Thread() {
+            public void run() {
+                RecyclableType.preLoadImages();
+                GameScreen.getInstance().preLoadImages();
+            }
+        });//.start();
+        preloading.start();
+
 
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
@@ -122,6 +128,7 @@ public class GameLauncher extends GameState {
 	}
 
 	public GameLauncher updateThis(float time) {
+        System.out.println(preloading.isAlive());
         if (gameCanStart) {
             if (!playerOptions.canGameStart()) {
                 playerOptions.updateThis();
@@ -140,7 +147,7 @@ public class GameLauncher extends GameState {
             }
         }
         else {
-            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 10) {
+            if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15) {
                 gameCanStart = true;
             }
         }
