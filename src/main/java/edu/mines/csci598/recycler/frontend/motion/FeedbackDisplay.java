@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.frontend.motion;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Line;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
+import edu.mines.csci598.recycler.frontend.graphics.ResourceManager;
 import edu.mines.csci598.recycler.frontend.items.BinFeedback;
 import org.apache.log4j.Logger;
 
@@ -67,5 +68,10 @@ public class FeedbackDisplay extends ItemMover {
         }
     }
 
+    public static void preLoadImages() {
+        ResourceManager resourceManager = ResourceManager.getInstance();
+        resourceManager.getImage(INCORRECT_SPRITE);
+        resourceManager.getImage(CORRECT_SPRITE);
+    }
 
 }

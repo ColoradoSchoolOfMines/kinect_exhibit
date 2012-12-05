@@ -10,8 +10,10 @@ import edu.mines.csci598.recycler.frontend.graphics.InstructionScreen;
 import edu.mines.csci598.recycler.frontend.graphics.PlayerOptionsScreen;
 import edu.mines.csci598.recycler.frontend.hands.Hand;
 import edu.mines.csci598.recycler.frontend.hands.PlayerHand;
+import edu.mines.csci598.recycler.frontend.items.PowerUp;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
+import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
 import org.apache.log4j.Logger;
 
@@ -42,16 +44,15 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher() {
          //Preloading the images will prevent some flickering.
-        //TODO: Preload correct/incorrect images too
         preloading = (new Thread() {
             public void run() {
                 RecyclableType.preLoadImages();
                 GameScreen.getInstance().preLoadImages();
+                PowerUp.PowerUpType.preLoadImages();
+                FeedbackDisplay.preLoadImages();
             }
-        });//.start();
+        });
         preloading.start();
-
-
 
         // the boolean in gameManager determines if the screen is full screen or not
 		gameManager = new GameManager("Recycler", true);
