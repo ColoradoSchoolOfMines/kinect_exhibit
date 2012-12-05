@@ -46,16 +46,21 @@ public class GameLauncher extends GameState {
          //Preloading the images will prevent some flickering.
         preloading = (new Thread() {
             public void run() {
+                long startTime = System.currentTimeMillis();
                 RecyclableType.preLoadImages();
                 GameScreen.getInstance().preLoadImages();
                 PowerUp.PowerUpType.preLoadImages();
                 FeedbackDisplay.preLoadImages();
+                double totalTime = (System.currentTimeMillis()-startTime)/1000.0;
+                logger.info("Image Loading finished took "+ totalTime+" seconds.");
             }
         });
+        //If we name the thread it will show up in the debugger/profiler with that name.
+        preloading.setName("preload-images");
         preloading.start();
 
         // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler", true);
+		gameManager = new GameManager("Recycler", false);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -164,7 +169,7 @@ public class GameLauncher extends GameState {
                 }
             }
         }
-        else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15 && !preloading.isAlive() ) {
+        else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5 && !preloading.isAlive() ) {
                 gameCanStart = true;
         }
 		return this;
