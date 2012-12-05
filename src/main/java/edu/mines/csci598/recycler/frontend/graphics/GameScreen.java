@@ -1,14 +1,16 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import java.awt.Component;
-import java.awt.Graphics2D;
+import org.apache.log4j.Logger;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
-
 /**
- * The GameScreen class is responsible for drawing the sprites with their updated time.
+ * The GameScreen singleton class is responsible for drawing the sprites.
+ * Generally to a sprite to be drawn call the addSprite method. To get it to stop
+ * drawing the sprites remove the sprite using removeSprite()
+ *
  * <p/>
  * <p/>
  * Created with IntelliJ IDEA.
@@ -25,6 +27,7 @@ public class GameScreen {
     private Sprite background2;
     private Sprite backgroundChutesAndFrame;
     private Sprite backgroundScoreFrame;
+    private Sprite backgroundToDraw;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
@@ -33,6 +36,7 @@ public class GameScreen {
     private GameScreen() {
         background1 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_1.jpg", 0, 0);
         background2 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_2.jpg", 0, 0);
+        backgroundToDraw = background1;
         backgroundChutesAndFrame = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_frame.png", 0, 0);
         backgroundScoreFrame = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_score_frame.png", 0, 0);
 
@@ -40,6 +44,33 @@ public class GameScreen {
         handSprites = new ArrayList<Sprite>();
         sprites = new LinkedList<Sprite>();
         recycleBinSprites = new ArrayList<Sprite>();
+
+        //Just a simple thread that toggles between the background images
+        // so it feels more like the bars on the conveyor are turning.
+        Thread backgroundSwitcher = new Thread("Background Switcher"){
+          public void run(){
+              while(true){
+                  int sleepTime = 300;
+                  synchronized (backgroundToDraw){
+                      backgroundToDraw = background1;
+                  }
+                  try {
+                      Thread.sleep(sleepTime);
+                  } catch (InterruptedException e) {
+                      //ignore
+                  }
+                  synchronized (backgroundToDraw){
+                      backgroundToDraw = background2;
+                  }
+                  try {
+                      Thread.sleep(sleepTime);
+                  } catch (InterruptedException e) {
+                      //ignore
+                  }
+              }
+          }
+        };
+        backgroundSwitcher.start();
     }
 
     public static final GameScreen getInstance() {
@@ -51,7 +82,9 @@ public class GameScreen {
 
     public void paint(Graphics2D g2d, Component canvas) {
         //TODO: Figure out which background to draw
-        g2d.drawImage(background1.getImage(), background1.getX(), background1.getY(), canvas);
+        synchronized (backgroundToDraw) {
+            g2d.drawImage(backgroundToDraw.getImage(), backgroundToDraw.getX(), backgroundToDraw.getY(), canvas);
+        }
 
         for (Sprite bin : recycleBinSprites) {
             g2d.drawImage(bin.getImage(), bin.getScaledX(), bin.getScaledY(), canvas);
@@ -110,10 +143,15 @@ public class GameScreen {
         return textSpriteHolders.add(textSpritesHolder);
     }
 
-    private void drawHands(Graphics2D g2d, Component canvas) {
 
-        // draws each hand as long as it's x position is greater than -1. The back end returns -1 when
-        // a hand is not available.
+    /**
+     *
+     * draws each hand as long as it's x position is greater than -1. The back end returns -1 when
+     * a hand is not available.
+     * @param g2d
+     * @param canvas
+     */
+    private void drawHands(Graphics2D g2d, Component canvas) {
         for (Sprite hand : handSprites) {
             //compensate for current scale
             int x = (int) Math.round(hand.getX() * GraphicsConstants.SCALE_FACTOR);
@@ -158,23 +196,28 @@ public class GameScreen {
         }
 
         //TODO: Preload other recycle bins better
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_paper_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_paper_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_plastic_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_plastic_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_hazard_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_hazard_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_glass_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/left_bin_glass_full.png", 0, 0).getImage();
 
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_paper_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_paper_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_plastic_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_plastic_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_hazard_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_hazard_full.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_glass_half.png", 0, 0).getImage();
-        new Sprite("src/main/resources/SpriteImages/Bins/right_bin_glass_full.png", 0, 0).getImage();
+        String[] imagesToLoad =
+                {"src/main/resources/SpriteImages/Bins/left_bin_paper_half.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_paper_full.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_plastic_half.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_plastic_full.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_hazard_half.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_hazard_full.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_glass_half.png",
+                "src/main/resources/SpriteImages/Bins/left_bin_glass_full.png",
+
+                "src/main/resources/SpriteImages/Bins/right_bin_paper_half.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_paper_full.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_plastic_half.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_plastic_full.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_hazard_half.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_hazard_full.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_glass_half.png",
+                "src/main/resources/SpriteImages/Bins/right_bin_glass_full.png"};
+        for(String s : imagesToLoad){
+            ResourceManager.getInstance().getImage(s);
+        }
     }
 
 }

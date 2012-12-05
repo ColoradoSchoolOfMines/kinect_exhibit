@@ -44,7 +44,7 @@ public class GameLauncher extends GameState {
 
 	public GameLauncher() {
          //Preloading the images will prevent some flickering.
-        preloading = (new Thread() {
+        preloading = new Thread() {
             public void run() {
                 long startTime = System.currentTimeMillis();
                 RecyclableType.preLoadImages();
@@ -54,7 +54,7 @@ public class GameLauncher extends GameState {
                 double totalTime = (System.currentTimeMillis()-startTime)/1000.0;
                 logger.info("Image Loading finished took "+ totalTime+" seconds.");
             }
-        });
+        };
         //If we name the thread it will show up in the debugger/profiler with that name.
         preloading.setName("preload-images");
         preloading.start();
