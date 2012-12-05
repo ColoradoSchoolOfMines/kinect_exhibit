@@ -13,6 +13,9 @@ import java.util.List;
 public class PlayerOptionsScreen {
 
     private static final Logger logger = Logger.getLogger(GameScreen.class);
+
+    private static final int TIME_TO_SHOW = 4;
+
     private ArrayList<Sprite> handSprites;
     private java.util.List<Hand> hands;
     private ArrayList<TextSpritesHolder> textSpriteHolders;
@@ -43,7 +46,7 @@ public class PlayerOptionsScreen {
                 }
             };
             textSpriteHolders.add(holder);
-            countdown = 9;
+            countdown = TIME_TO_SHOW;
             previousTime = 0;
             screenWidth = 1920;
         }
