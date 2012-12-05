@@ -23,9 +23,9 @@ public class GameOver {
         displayed = false;
         gameScreen = GameScreen.getInstance();
         if (side == Side.LEFT) {
-            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 100, 300);
+            s = new Sprite("src/main/resources/SpriteImages/game_over_p1.png", 0, 0);
         } else {
-            s = new Sprite("src/main/resources/SpriteImages/game_over_text.png", 1200, 300);
+            s = new Sprite("src/main/resources/SpriteImages/game_over_p2.png", 0, 0);
         }
     }
 
