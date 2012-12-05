@@ -3,12 +3,14 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
+import edu.mines.csci598.recycler.splashscreen.playerdetector.DetectHand;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,14 +19,17 @@ import java.util.List;
 public class SplashScreenLauncher extends GameState {
 
     private GameManager gameManager;
+    private OpenNIHandTrackerInputDriver driver;
     private List<SplashScreenSection> staticSections;
     private List<SplashScreenSection> cyclingSections;
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
     private Song song;
+    private DetectHand detector;
 
     private static final int HEADER_HEIGHT = 150;
     private static final int FOOTER_HEIGHT = 100;
+    private static final int MILLISECOND_TO_SECOND = 1000;
 
     public static void main(String[] args) {
         SplashScreenLauncher launcher = new SplashScreenLauncher();
@@ -35,6 +40,9 @@ public class SplashScreenLauncher extends GameState {
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
+        driver = new OpenNIHandTrackerInputDriver();
+
+        detector = new DetectHand( MILLISECOND_TO_SECOND, gameManager );
 
         song = new Song();
         song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));
@@ -82,14 +90,17 @@ public class SplashScreenLauncher extends GameState {
 
                 currentSection.stop();
 
-                // Temporary switch-to-game logic
-                song.stopPlaying();
-                GameLauncher gm = new GameLauncher();
-                ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-                gm.getGameManager().installInputDriver(mouse);
-                gm.getGameManager().setState(gm);
-                gm.getGameManager().run();
-                gm.getGameManager().destroy();
+                if( detector.startGame() ){
+                    song.stopPlaying();
+                    GameLauncher gm = new GameLauncher();
+                    ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+                    gm.getGameManager().installInputDriver(mouse);
+                    gm.getGameManager().setState(gm);
+                    gm.getGameManager().run();
+                    gm.getGameManager().destroy();
+
+                }
+                driver.pumpInput( gameManager.getGameState() );
 
                 // CODE USED TO CYCLE TO NEXT SCREEN
                 // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);
