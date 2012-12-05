@@ -23,12 +23,6 @@ public abstract class Hand implements Displayable {
     private int y;
 
     public Hand() {
-        /*x = 0;
-        y = 0;
-        oldX = 0;
-        oldY = 0;
-        velocityX = 0;
-        velocityY = 0;*/
         sprite = new Sprite("src/main/resources/SpriteImages/hand_open.png", x, y);
     }
     
@@ -36,10 +30,14 @@ public abstract class Hand implements Displayable {
      * Talks to whatever form of intelligence makes decisions and discovers the location that the hand
      * is intended to be at.  Each type of hand is responsible for implementing this method to tell
      * the game where it thinks it is.  This location is used in the main <code>updateLocation</code> method.
+     * Used internally by Hand subclasses and is not public.  Use <code>updateLocation</code> instead.
      * @return
      */
     protected abstract Coordinate getNextPosition();
 
+    /**
+     * Moves the hand to a new location.  This is the main method the frontend should be calling.
+     */
     public final void updateLocation() {
     	Coordinate next = getNextPosition();
     	
@@ -59,6 +57,7 @@ public abstract class Hand implements Displayable {
     public final Sprite getSprite() {
         return sprite;
     }
+    
     /*
     * Gets the x position.
     *
