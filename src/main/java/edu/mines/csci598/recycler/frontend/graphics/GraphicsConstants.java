@@ -9,6 +9,6 @@ package edu.mines.csci598.recycler.frontend.graphics;
 
 public final class GraphicsConstants {
     //Change this value to decide how the entire game will be scaled graphically
-    public static final double SCALE_FACTOR =0.65;
+    public static final double SCALE_FACTOR = 0.65;
 
 }
