@@ -9,6 +9,7 @@ import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
+import edu.mines.csci598.recycler.splashscreen.playerdetector.DetectHand;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,9 +23,11 @@ public class SplashScreenLauncher extends GameState {
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
     private Song song;
+    private DetectHand detector;
 
     private static final int HEADER_HEIGHT = 150;
     private static final int FOOTER_HEIGHT = 100;
+    private static final int MILLISECOND_TO_SECOND = 1000;
 
     public static void main(String[] args) {
         SplashScreenLauncher launcher = new SplashScreenLauncher();
@@ -35,6 +38,7 @@ public class SplashScreenLauncher extends GameState {
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
+        detector = new DetectHand( MILLISECOND_TO_SECOND, gameManager );
 
         song = new Song();
         song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));
