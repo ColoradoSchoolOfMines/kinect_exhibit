@@ -34,6 +34,9 @@ public class GameOver {
             gameStatusDisplay.setGameOverState(true);
             gameScreen.addSprite(s);
             displayed = true;
+        }else{
+            gameScreen.removeSprite(s);
+            gameScreen.addSprite(s);
         }
     }
 }
