@@ -48,7 +48,7 @@ public class GameLogic {
     private double nextItemTypeGenerationTime;
     private int numItemTypesInUse;
     private StrikeBar strikeBar;
-    private boolean started;
+    private boolean clockStarted; //Boolean to know whether to start the clock or not
     private boolean playerIsAComputer;
     private boolean debuggingCollisions;
     private GameStatusDisplay gameStatusDisplay;
@@ -83,7 +83,7 @@ public class GameLogic {
         this.gameStatusDisplay = gameStatusDisplay;
         conveyorBelt = new ConveyorBelt(this, gameScreen, conveyorPath);
         theForce = new TheForce();
-        started = false;
+        clockStarted = false;
         this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollisions = debuggingCollision;
         strikeBar = new StrikeBar(gameStatusDisplay);
@@ -270,9 +270,11 @@ public class GameLogic {
     }
 
     private void updateTime() {
-        if(started == false){
+        //If the clock hasn't started yet, start it
+        //This keeps all times relative to when the game started
+        if(clockStarted == false){
             startTime = System.currentTimeMillis() ;
-            started = true;
+            clockStarted = true;
         }
         wallTimeSec = (System.currentTimeMillis() - startTime) / 1000.0;
         currentTimeSec += (wallTimeSec - lastWallTimeSec) * timeSpeedFactor * powerUpSpeedFactor;
