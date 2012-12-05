@@ -155,6 +155,7 @@ public class GameLauncher extends GameState {
                     gameStarted = true;
                     setUpPlayerMode(playerOptions.getPlayerMode());
                 }
+                System.out.println("Updating game");
                 updateHands();
 		        rightGame.updateThis();
                 leftGame.updateThis();
@@ -164,8 +165,7 @@ public class GameLauncher extends GameState {
                 }
 
             }
-		    leftGame.updateThis();
-		    rightGame.updateThis();
+
 
         }
         else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 15 && !preloading.isAlive() ) {
