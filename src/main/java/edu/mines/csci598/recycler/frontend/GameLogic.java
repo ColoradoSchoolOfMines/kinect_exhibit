@@ -12,9 +12,7 @@ import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 import edu.mines.csci598.recycler.frontend.motion.TheForce;
-import edu.mines.csci598.recycler.splashscreen.highscores.SavePlayer;
 import org.apache.log4j.Logger;
-
 
 import java.util.List;
 
@@ -192,8 +190,8 @@ public class GameLogic {
                 if(barFull){
                     if (!playerIsAComputer){
                       if (!scoreSubmitted){
-                          SavePlayer currentPlayer = new SavePlayer();
-                          currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                          //SavePlayer currentPlayer = new SavePlayer();
+                         // currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
                           scoreSubmitted = true;
                       }
                     }
