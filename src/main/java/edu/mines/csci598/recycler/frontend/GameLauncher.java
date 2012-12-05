@@ -87,6 +87,10 @@ public class GameLauncher extends GameState {
 
         playerOptions = new PlayerOptionsScreen(gameManager);
 	}
+
+    /**
+     * Creates the 4 hands provided by the backend and adds them to the game screen
+     */
     private void makeHands() {
         hands = new ArrayList<Hand>();
         for (int i = 0; i < 4; i++) {
@@ -94,11 +98,16 @@ public class GameLauncher extends GameState {
             gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
         }
     }
+
+    /**
+     * Gets an updated location of where the hands are in terms of screen coordinates.
+     */
     private void updateHands() {
         for(Hand h : hands) {
             h.updateLocation();
         }
     }
+
     protected void setUpPlayerMode(PlayerMode mode) {
         if(mode == PlayerMode.ONE_PLAYER) rightGame.turnOnComputer();
     }
