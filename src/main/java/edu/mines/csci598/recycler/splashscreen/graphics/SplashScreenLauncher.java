@@ -3,6 +3,7 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
+import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.GameLauncher;
@@ -18,6 +19,7 @@ import java.util.List;
 public class SplashScreenLauncher extends GameState {
 
     private GameManager gameManager;
+    private OpenNIHandTrackerInputDriver driver;
     private List<SplashScreenSection> staticSections;
     private List<SplashScreenSection> cyclingSections;
     private boolean refreshScreen;
@@ -38,6 +40,8 @@ public class SplashScreenLauncher extends GameState {
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
+        driver = new OpenNIHandTrackerInputDriver();
+
         detector = new DetectHand( MILLISECOND_TO_SECOND, gameManager );
 
         song = new Song();
@@ -95,8 +99,8 @@ public class SplashScreenLauncher extends GameState {
                     gm.getGameManager().run();
                     gm.getGameManager().destroy();
 
-                    //gm = new GameManager( "SplashScreen", false );
                 }
+                driver.pumpInput( gameManager.getGameState() );
 
                 // CODE USED TO CYCLE TO NEXT SCREEN
                 // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);
