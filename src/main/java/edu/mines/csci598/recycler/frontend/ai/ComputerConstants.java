@@ -25,7 +25,7 @@ public final class ComputerConstants {
     /* SET_HAND_T0_CORRECT_SIDE_THRESHOLD
      * Probability that the hand will be set to the correct side
      */
-    public static final int SET_HAND_T0_CORRECT_SIDE_THRESHOLD = 25;
+    public static final int SET_HAND_T0_CORRECT_SIDE_THRESHOLD = 15;
     /*
      * LAST_STRIKE_UPDATE
      * Used to slow hand movement when repositioning to the correct side.
@@ -70,7 +70,7 @@ public final class ComputerConstants {
     /* INCORRECT_STRIKE_THRESHOLD
      * Must exceed this number to strike recyclable into correct bin
      */
-    public static final int INCORRECT_STRIKE_THRESHOLD = 3;
+    public static final int INCORRECT_STRIKE_THRESHOLD = 2;
     /* INITIAL_HAND_X
      * Position of initial x
      */
