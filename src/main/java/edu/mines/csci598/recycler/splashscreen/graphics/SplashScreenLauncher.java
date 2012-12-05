@@ -86,14 +86,17 @@ public class SplashScreenLauncher extends GameState {
 
                 currentSection.stop();
 
-                // Temporary switch-to-game logic
-                song.stopPlaying();
-                GameLauncher gm = new GameLauncher();
-                ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-                gm.getGameManager().installInputDriver(mouse);
-                gm.getGameManager().setState(gm);
-                gm.getGameManager().run();
-                gm.getGameManager().destroy();
+                if( detector.startGame() ){
+                    song.stopPlaying();
+                    GameLauncher gm = new GameLauncher();
+                    ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+                    gm.getGameManager().installInputDriver(mouse);
+                    gm.getGameManager().setState(gm);
+                    gm.getGameManager().run();
+                    gm.getGameManager().destroy();
+
+                    //gm = new GameManager( "SplashScreen", false );
+                }
 
                 // CODE USED TO CYCLE TO NEXT SCREEN
                 // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);

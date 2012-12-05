@@ -30,7 +30,7 @@ public class DetectHand {
         return false;
     }
 
-    boolean startGame(){
+    public boolean startGame(){
 
         // If the player has been detected in the past is currently detected and the time since detection is greater
         // than the time to wait then return true
@@ -71,5 +71,15 @@ public class DetectHand {
         else{
             return true;
         }
+    }
+
+    public void setGameManager( GameManager man ){
+        this._manager = man;
+        resetCounters();
+    }
+
+    public void resetCounters(){
+        this._detected = false;
+        this._startedDetecting = 0;
     }
 }
