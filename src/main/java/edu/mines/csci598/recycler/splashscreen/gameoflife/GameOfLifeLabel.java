@@ -22,7 +22,7 @@ public class GameOfLifeLabel extends JLabel {
         neighbors = new GameOfLifeLabel[8];
     }
 
-    void addNeighbour(GameOfLifeLabel n) {
+    void addNeighbor(GameOfLifeLabel n) {
         neighbors[howManyNeighbor++] = n;
     }
 

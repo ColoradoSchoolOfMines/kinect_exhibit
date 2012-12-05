@@ -70,5 +70,11 @@ public final class GameConstants {
      */
     public static final double MIN_ITEM_TRAVEL_TIME = 0.3;
     public static final double MAX_ITEM_TRAVEL_TIME = 2;
+
+    /**
+     * Determine scoring
+     */
+    public static final int ITEM_SCORE = 10;
+    public static final int COMBO_SCORE = 40;
 }
 

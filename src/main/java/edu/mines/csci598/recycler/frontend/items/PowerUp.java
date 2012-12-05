@@ -1,13 +1,9 @@
 package edu.mines.csci598.recycler.frontend.items;
 
 
+import edu.mines.csci598.recycler.frontend.graphics.*;
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.graphics.Coordinate;
-import edu.mines.csci598.recycler.frontend.graphics.Displayable;
-import edu.mines.csci598.recycler.frontend.graphics.Line;
-import edu.mines.csci598.recycler.frontend.graphics.Path;
-import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 import edu.mines.csci598.recycler.frontend.hands.Hand;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 
@@ -135,6 +131,15 @@ public class PowerUp implements Displayable, Movable {
 
         public String getImage() {
             return image;
+        }
+
+        public static void preLoadImages() {
+            ResourceManager resourceManager = ResourceManager.getInstance();
+            for(PowerUpType r : PowerUpType.values()){
+                String s = r.getImage();
+                logger.debug("Trying to preload image: " + s);
+                resourceManager.getImage(s);
+            }
         }
     }
 

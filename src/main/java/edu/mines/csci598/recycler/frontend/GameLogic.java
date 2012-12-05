@@ -5,7 +5,6 @@ import edu.mines.csci598.recycler.frontend.ai.ComputerPlayer;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.hands.Hand;
-import edu.mines.csci598.recycler.frontend.hands.PlayerHand;
 import edu.mines.csci598.recycler.frontend.items.ItemFactory;
 import edu.mines.csci598.recycler.frontend.items.PowerUp;
 import edu.mines.csci598.recycler.frontend.items.Recyclable;
@@ -16,7 +15,7 @@ import edu.mines.csci598.recycler.frontend.motion.TheForce;
 import edu.mines.csci598.recycler.splashscreen.highscores.SavePlayer;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ public class GameLogic {
     private static final Logger logger = Logger.getLogger(GameLogic.class);
 
     private GameLogic otherScreen;
-    private List<Hand> hands;
+    private  List<Hand> hands;
     private ComputerPlayer computerPlayer;
     private GameScreen gameScreen;
     private ItemFactory factory;
@@ -55,14 +54,21 @@ public class GameLogic {
     private boolean debuggingCollisions;
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
-    private boolean gameState;
-    private boolean scoreSubmitted;
+    private boolean scoreSubmitted =false;
+    private GameManager gameManager;
+    private boolean isPlaying;
+
+   /* public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
+                     boolean rightSide, boolean debuggingCollision) {
+        this.gameManager = gameManager;
+        */
+
 
 
     public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
-                     boolean playerIsAComputer, boolean rightSide, boolean debuggingCollision) {
-        gameState = true;
-        scoreSubmitted = false;
+                     boolean debuggingCollision, List<Hand> hands) {
+        isPlaying = true;
+        this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
@@ -82,41 +88,25 @@ public class GameLogic {
         this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollisions = debuggingCollision;
         strikeBar = new StrikeBar(gameStatusDisplay);
+        this.hands = hands;
 
-        hands = new ArrayList<Hand>();
-
-        // sets up the first player and adds its hands to the gameScreen
-        // so that they can be displayed
-        if (!this.playerIsAComputer) {
-            // creates the max number of hands that can be displayed which is 4 (2 per side)
-            // startingHand makes sure that 2 different pairs of hands are displayed per side
-            int startingHand = 0;
-            if (rightSide)
-                startingHand = 2;
-
-            for (int i = startingHand; i < startingHand + 2; i++) {
-                hands.add(new PlayerHand(gameManager, i));
-                gameScreen.addHandSprite(hands.get(hands.size() - 1).getSprite());
-            }
-        }
-        else {
-            computerPlayer = new ComputerPlayer(recycleBins);
-            gameScreen.addHandSprite(computerPlayer.primary.getSprite());
-            hands.add(computerPlayer.getHand());
-        }
         //Add recycle bins to game screen to be drawn
         for (RecycleBin bin : recycleBins.getRecycleBins()) {
             if (bin.hasSprite()) {
                 gameScreen.addRecycleBinSprite(bin.getSprite());
             }
         }
-        //Add single item to conveyor for debugging collisions.
-        if (this.debuggingCollisions) {
-            logger.debug("Adding recyclable for collision detection");
-            Recyclable r = factory.generateItemForDebugging(conveyorBelt.getConveyorPath(), recycleBins);
-            conveyorBelt.takeControlOfMovable(r);
-            gameScreen.addSprite(r.getSprite());
-        }
+    }
+
+    /**
+     * This function will turn on the computer player, otherwise it will be left as a regular people player
+     * This only works on the right side at the moment
+     */
+    public void turnOnComputer() {
+        playerIsAComputer = true;
+        computerPlayer = new ComputerPlayer(recycleBins);
+        gameScreen.addHandSprite(computerPlayer.primary.getSprite());
+        hands.add(computerPlayer.getHand());
     }
 
     /**
@@ -125,6 +115,7 @@ public class GameLogic {
      */
     private void lookForAndHandleCollisions() {
         for (Hand hand : hands) {
+
             //If the hand isn't moving fast enough to swipe, skip it
             if (Math.abs(hand.getVelocityX()) < GameConstants.MIN_HAND_VELOCITY) {
                 continue;
@@ -187,7 +178,14 @@ public class GameLogic {
             if (bin.isCorrectRecyclableType(movableRecyclable)) {
                 feedbackDisplay.makeDisplay(movableRecyclable, currentTimeSec, true);
                 SoundEffectEnum.CORRECT.playSound();
-                gameStatusDisplay.incrementScore(10);
+                bin.addItem();
+                boolean comboScore = bin.handleBinLevel(recycleBins.getSide());
+                if (isPlaying) {
+                    gameStatusDisplay.incrementScore(GameConstants.ITEM_SCORE);
+                    if (comboScore) {
+                        gameStatusDisplay.incrementScore(GameConstants.COMBO_SCORE);
+                    }
+                }
             } else {
                 Movable feedback[] = feedbackDisplay.makeDisplay(movableRecyclable, currentTimeSec, false);
                 Boolean barFull = strikeBar.addStrike(feedback);
@@ -199,7 +197,7 @@ public class GameLogic {
                           scoreSubmitted = true;
                       }
                     }
-                    gameState = false;
+                    isPlaying = false;
 
                 }
                 SoundEffectEnum.INCORRECT.playSound();
@@ -225,12 +223,9 @@ public class GameLogic {
         }
         if (playerIsAComputer) {
             computerPlayer.updateAI(conveyorBelt.getNextMovableThatIsTouchable(), currentTimeSec);
+            computerPlayer.primary.updateLocation();
         }
 
-        // display the hands
-        for (Hand hand : hands) {
-            hand.updateLocation();
-        }
 
         // Handle existing item collisions
         lookForAndHandleCollisions();
@@ -306,7 +301,7 @@ public class GameLogic {
     }
 
     public boolean getState(){
-        return gameState;
+        return isPlaying;
     }
 
 }
