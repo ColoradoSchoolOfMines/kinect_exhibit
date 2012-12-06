@@ -168,12 +168,12 @@ public class GameLauncher extends GameState {
         x.addTrack(new Track(SONG_FILENAME));
         x.setLooping(true);
         x.startPlaying();
-        GameLauncher gm = new GameLauncher();
+        GameLauncher gameLauncher = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-		gm.getGameManager().installInputDriver(mouse);
-		gm.getGameManager().setState(gm);
-		gm.getGameManager().run();
-		gm.getGameManager().destroy();
+		gameLauncher.getGameManager().installInputDriver(mouse);
+		gameLauncher.getGameManager().setState(gameLauncher);
+		gameLauncher.getGameManager().run();
+		gameLauncher.getGameManager().destroy();
 	}
 
 }
