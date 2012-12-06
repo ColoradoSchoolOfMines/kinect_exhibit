@@ -24,14 +24,12 @@ public class PlayerOptionsScreen {
     int countdown;
     private int screenWidth;
 
-    public PlayerOptionsScreen(GameManager gameManager) {
+    public PlayerOptionsScreen(GameManager gameManager, ArrayList<Hand> hands) {
         background = new Sprite("src/main/resources/SpriteImages/playerSelection.jpg", 0, 0);
         handSprites = new ArrayList<Sprite>();
-        hands = new ArrayList<Hand>();
+        this.hands = hands;
 
-        Hand tempHand = new PlayerHand(gameManager, 0);
-        hands.add(tempHand);
-        addHandSprite(tempHand.getSprite());
+        addHandSprite(hands.get(0).getSprite());
 
         textSpriteHolders = new ArrayList<TextSpritesHolder>();
 

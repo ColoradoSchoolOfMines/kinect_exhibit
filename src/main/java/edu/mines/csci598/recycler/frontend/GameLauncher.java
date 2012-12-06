@@ -92,7 +92,7 @@ public class GameLauncher extends GameState {
         gameCanStart = false;
         timeInstructionsStarted = System.currentTimeMillis() / 1000;
 
-        playerOptions = new PlayerOptionsScreen(gameManager);
+        playerOptions = new PlayerOptionsScreen(gameManager, hands);
 	}
 
     /**
