@@ -16,7 +16,9 @@ public abstract class ItemMover {
 	
 	protected List<Movable> movables;
 
-	
+	/**
+	 * Creates a new ItemMover to move items around
+	 */
 	public ItemMover(){
         movables = new ArrayList<Movable>();
 

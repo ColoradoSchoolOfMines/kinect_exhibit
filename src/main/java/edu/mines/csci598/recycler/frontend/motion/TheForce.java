@@ -11,6 +11,9 @@ import org.apache.log4j.Logger;
 public class TheForce extends ItemMover {
     private static final Logger logger = Logger.getLogger(TheForce.class);
 	
+    /**
+     * Creates a new TheForce ItemMover
+     */
 	public TheForce(){
 		super();
 	}

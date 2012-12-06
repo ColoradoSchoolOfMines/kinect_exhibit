@@ -207,6 +207,9 @@ public class GameLogic {
         this.otherScreen = otherScreen;
     }
 
+    /**
+     * Updates the game!  Runs multiple times per second and handles everything the game does.
+     */
     protected void updateThis() {
         updateTime();
 
