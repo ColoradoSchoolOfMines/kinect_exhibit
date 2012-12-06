@@ -73,6 +73,10 @@ public class ComputerPlayer {
      */
     private double goalBinBottomY;
 
+    /**
+     * Creates a new ComputerPlayer complete with artificial intelligence
+     * @param recycleBins
+     */
     public ComputerPlayer(RecycleBins recycleBins) {
         logger.setLevel(Level.INFO);
         logger.debug("Second player is a computer");
@@ -133,7 +137,7 @@ public class ComputerPlayer {
         }
     }
 
-    /**HandleTrashAndSettingHand
+    /**
      * Marks trash as Untouchable
      * Tries to set hand to correct side
      * @param movable
@@ -148,7 +152,7 @@ public class ComputerPlayer {
         }
     }
 
-    /** handleJustStruckRecyclable
+    /** 
      * Moves hand off of the conveyer after striking recyclable
      */
     private void handleJustStruckRecyclable(){
@@ -166,7 +170,7 @@ public class ComputerPlayer {
         justStruckRecyclable=false;
     }
 
-    /**followMovable
+    /**
      * Follows next touchable movable up the conveyer
      * @param m
      */
@@ -175,7 +179,7 @@ public class ComputerPlayer {
         primary.setPosition(position);
     }
 
-    /**crossConveyor
+    /**
      * Creates a new path to go up and over the recyclable
      * @param r
      * @param currentTimeSec
@@ -195,7 +199,7 @@ public class ComputerPlayer {
         }
     }
 
-    /**setUpPath
+    /**
      * Creates a new path to go up and over the recyclable
      * @param r
      * @param currentTimeSec
@@ -218,7 +222,7 @@ public class ComputerPlayer {
         primary.setPath(p);
     }
 
-    /**followPath
+    /**
      * Follows the path up and around the conveyer
      * @param currentTimeSec
      */
@@ -233,7 +237,7 @@ public class ComputerPlayer {
         }
     }
 
-    /**findBinSide
+    /**
      * Determines the correct side for pushing the movable off the conveyor
      * Determines where a bin starts and stops
      * @param r
@@ -264,7 +268,7 @@ public class ComputerPlayer {
         return newX;
     }
 
-    /**SetHandToCorrectSide
+    /**
      * Finds which side of the conveyor the bin lies on
      * Crosses the conveyor if needed
      * @param r
@@ -278,7 +282,7 @@ public class ComputerPlayer {
         }
     }
 
-    /**recyclableWillFallInBin
+    /**
      * Determines if the recyclable is within range of its bin
      * Returns true of false
      * @param m
@@ -304,7 +308,7 @@ public class ComputerPlayer {
         return ret;
     }
 
-    /**attemptToStrike
+    /**
      * if the movable is a power up, strikes as soon as possible
      * if the movable is a recyclable and it will fall in a bin and it can strike,
      * it strikes the recyclable
@@ -335,7 +339,7 @@ public class ComputerPlayer {
         }
     }
 
-    /** iCanStrike
+    /** 
      * Determines if the random number is greater than the threshold for striking
      * Returns true or false
      */
@@ -348,7 +352,7 @@ public class ComputerPlayer {
         return ret;
     }
 
-    /**strikeItem
+    /**
      * Places the computer hand on top of the recyclable to strike
      * @param m
      */
