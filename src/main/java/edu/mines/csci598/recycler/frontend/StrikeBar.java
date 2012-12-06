@@ -39,11 +39,9 @@ public class StrikeBar {
     private GameStatusDisplay gameStatusDisplay;
 
     /**
-     * The recyclable is the offending strike so it can be displayed in the bar
-     *
-     * @paramrecyclable
+     * Creates a new StrikeBar
+     * @param gameStatusDisplay
      */
-
     public StrikeBar(GameStatusDisplay gameStatusDisplay) {
         this.gameStatusDisplay = gameStatusDisplay;
         gameOver = new GameOver(gameStatusDisplay.getSide());
@@ -67,6 +65,12 @@ public class StrikeBar {
         }
     }
 
+    /**
+     * Adds a strike to the strike bar.
+     * If it fills the strike bar, ends the game for the current player.
+     * @param images
+     * @return
+     */
     public boolean addStrike(Movable[] images) {
 
         if (strikes >= MAX_STRIKES) { //Still playing when game over, so don't add more strikes
