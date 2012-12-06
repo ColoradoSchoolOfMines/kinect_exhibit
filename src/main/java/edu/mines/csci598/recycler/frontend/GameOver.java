@@ -32,7 +32,7 @@ public class GameOver {
     public void setGameOver(GameStatusDisplay gameStatusDisplay) {
         if (!displayed) {
             gameStatusDisplay.setGameOverState(true);
-            gameScreen.addSprite(s);
+            gameScreen.addGameOverSprite(s);
             displayed = true;
         }
     }

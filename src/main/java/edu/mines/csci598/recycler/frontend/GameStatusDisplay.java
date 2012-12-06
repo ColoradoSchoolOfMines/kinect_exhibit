@@ -36,7 +36,7 @@ public class GameStatusDisplay implements TextSpritesHolder {
         Color c = Color.green;
         //If its on the left the sprites will need to have different positions.
         if(side == Side.LEFT){
-            scoreSprite = new TextSprite("", f, c, 615, 70);
+            scoreSprite = new TextSprite("", f, c, 585, 70);
         }
         else {
             scoreSprite = new TextSprite("", f, c, 1100, 70);

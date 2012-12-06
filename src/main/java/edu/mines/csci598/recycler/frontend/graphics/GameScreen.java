@@ -32,8 +32,10 @@ public class GameScreen {
     private LinkedList<Sprite> sprites;
     private ArrayList<Sprite> recycleBinSprites;
     private ArrayList<Sprite> handSprites;
+    private ArrayList<Sprite> gameOverSprites;
 
     private GameScreen() {
+
         background1 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_1.jpg", 0, 0);
         background2 = new Sprite("src/main/resources/SpriteImages/Backgrounds/ui_background_2.jpg", 0, 0);
         backgroundToDraw = background1;
@@ -44,6 +46,7 @@ public class GameScreen {
         handSprites = new ArrayList<Sprite>();
         sprites = new LinkedList<Sprite>();
         recycleBinSprites = new ArrayList<Sprite>();
+        gameOverSprites = new ArrayList<Sprite>();
 
         //Just a simple thread that toggles between the background images
         // so it feels more like the bars on the conveyor are turning.
@@ -99,6 +102,10 @@ public class GameScreen {
             g2d.rotate(-1.0 * sprite.getPosition().getRotation(), sprite.getScaledX() + offset, sprite.getScaledY() + offset);
         }
 
+        for(Sprite sprites: gameOverSprites){
+            g2d.drawImage(sprites.getImage(), sprites.getScaledX(), sprites.getScaledY(), canvas);
+        }
+
         g2d.drawImage(backgroundChutesAndFrame.getImage(), backgroundChutesAndFrame.getX(), backgroundChutesAndFrame.getY(), canvas);
 
         drawHands(g2d, canvas);
@@ -129,6 +136,12 @@ public class GameScreen {
     public void removeRecycleBinSprite(Sprite s) {
         recycleBinSprites.remove(s);
     }
+
+    public void addGameOverSprite(Sprite s){
+        gameOverSprites.add(s);
+    }
+
+
 
     /**
      * Adds a hand sprite to the hands array

@@ -45,12 +45,9 @@ public class TwitterMessages implements SocialMessages {
             RequestToken requestToken = twitter.getOAuthRequestToken();
             AccessToken accessToken = null;
             accessToken = getAccessToken(requestToken, accessToken);
-            log.info("Got access token.");
-            log.info("Access token: " + accessToken.getToken());
-            log.info("Access token secret: " + accessToken.getTokenSecret());
         } catch (IllegalStateException ie) {
             if (!twitter.getAuthorization().isEnabled()) {
-                log.severe("OAuth consumer key/secret is not set.");
+                log.severe("OAuth consumer key/secret not set.");
                 return false;
             }
         }
@@ -59,17 +56,15 @@ public class TwitterMessages implements SocialMessages {
 
     private AccessToken getAccessToken(RequestToken requestToken, AccessToken accessToken) {
         while (null == accessToken) {
-            log.info("Open the following URL and grant access to your account:");
-            log.info(requestToken.getAuthorizationURL());
             try {
                 accessToken = twitter.getOAuthAccessToken(requestToken);
             }
             catch (TwitterException te) {
-                if (401 == te.getStatusCode()) {
+                if (401 == te.getStatusCode())
                     log.severe("Unable to get the access token.");
-                } else {
-                    te.printStackTrace();
-                }
+                else
+                    log.severe("Other status code " + te);
+
             }
         }
         return accessToken;
