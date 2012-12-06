@@ -168,7 +168,9 @@ public class GameLauncher extends GameState {
                 leftGame.updateThis();
 
                 if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
-               // this.gameManager.destroy();
+                     this.gameManager.destroy();
+                }else if( (leftGame.getState() == false) && (rightGame.isComputerPlayer() == true)){
+                    this.gameManager.destroy();
                 }
             }
         }
