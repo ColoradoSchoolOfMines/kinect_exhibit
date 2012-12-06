@@ -84,7 +84,6 @@ public class GameScreen {
     }
 
     public void paint(Graphics2D g2d, Component canvas) {
-        //TODO: Figure out which background to draw
         synchronized (backgroundToDraw) {
             g2d.drawImage(backgroundToDraw.getImage(), backgroundToDraw.getX(), backgroundToDraw.getY(), canvas);
         }
@@ -112,11 +111,6 @@ public class GameScreen {
         drawTextSprites(g2d);
     }
 
-    /**
-     * Adds a sprite
-     *
-     * @param s - The sprite to add
-     */
     public void addSprite(Sprite s) {
         sprites.add(s);
     }
