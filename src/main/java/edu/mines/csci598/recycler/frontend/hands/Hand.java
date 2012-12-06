@@ -57,31 +57,17 @@ public abstract class Hand implements Displayable {
     public final Sprite getSprite() {
         return sprite;
     }
-    
-    /*
-    * Gets the x position.
-    *
-    * return {int}
-    */
+
     public final int getX() {
         return x;
     }
 
-    /*
-      * Gets the y position.
-      *
-      * return {int}
-      */
     public final int getY() {
         return y;
     }
 
     public final int getVelocityX() {
         return velocityX;
-    }
-
-    public final int getVelocityY() {
-        return velocityY;
     }
 
     public final Coordinate getPosition(){

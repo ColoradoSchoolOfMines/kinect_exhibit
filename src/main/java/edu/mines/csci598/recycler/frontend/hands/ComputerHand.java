@@ -21,23 +21,20 @@ public class ComputerHand extends Hand {
     private Path path;
     private int goalX;
     private int goalY;
-    /*
-     * followingPath
+
+    /**
      * Boolean used to determine if the hand should be following a recyclable or a path
      */
     private boolean followingPath;
-    /*
-     * onCorrectSide
+    /**
      * Keeps track of whether or not the hand is on the opposite side of the bin for striking
      */
     private boolean onCorrectSide;
     /**
-     * DEFAULT_POSITION
      * The position the computer player will take by default
      */
     private static final Coordinate DEFAULT_POSITION = new Coordinate(ComputerConstants.INITIAL_HAND_X, ComputerConstants.INITIAL_HAND_Y);
     /**
-     * intendedPosition
      * The position the AI currently wants to be at
      */
     private Coordinate intendedPosition;

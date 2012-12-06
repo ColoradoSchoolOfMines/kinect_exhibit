@@ -18,6 +18,8 @@ public class PowerUp implements Displayable, Movable {
 
     private static final Logger logger = Logger.getLogger(PowerUp.class);
 
+    private static final double TIME_ON_CONVEYOR_AFTER_SWIPE = 0.5;
+
     private Sprite sprite;
     private Path path;
     private PowerUpType type;
@@ -32,13 +34,18 @@ public class PowerUp implements Displayable, Movable {
         motionState = MotionState.CHUTE;
     }
 
+    /**
+     * If swiped, the powerup receives a new path to make it stay on conveyor for a bit before disappearing
+     * @param hand
+     * @param currentTimeSec
+     */
     @Override
     public void reactToCollision(Hand hand, double currentTimeSec) {
         if (!(this instanceof PowerUp)) {
             throw new IllegalStateException("Trying to react to PowerUp collision with a non-PowerUp!");
         }
         this.setMotionState(MotionState.NONE);
-        Line collideLine = new Line(this.getPosition(), this.getPosition(), 0.5);
+        Line collideLine = new Line(this.getPosition(), this.getPosition(), TIME_ON_CONVEYOR_AFTER_SWIPE);
         Path path = new Path(currentTimeSec);
         path.addLine(collideLine);
         this.setPath(path);
@@ -58,7 +65,6 @@ public class PowerUp implements Displayable, Movable {
 
     /**
      * Determines if the power up should be touched by a hand
-     *
      * @return true if power up can be touched, false otherwise
      */
     @Override
