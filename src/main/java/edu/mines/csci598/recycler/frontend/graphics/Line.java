@@ -48,32 +48,6 @@ public class Line extends Line2D{
         this.timeToComplete = timeToComplete;
     }
 
-    public Line(Coordinate start, Coordinate end, double timeToComplete, double rotation) {
-        startPoint = start;
-        endPoint = end;
-        endPoint.setRotation(rotation);
-        this.timeToComplete = timeToComplete;
-    }
-
-    /**
-     * Checks whether the given point, with integer coordinates, is on this line.
-     * @param point - the point we're wondering about
-     * @return true if the given point is on the line, false otherwise
-     */
-    public boolean intersectsPoint(Coordinate point){
-    	// This is a weird function that needs some explanation.  We're given a point with
-    	// pixel coordinates, in ints.  Java meanwhile is treating the line as being
-    	// continuous.  So we can think of a point on the line as being "rounded" to the
-    	// nearest integer grid coordinate.  Visualize a 1x1 square.  Anything in the upper
-    	// left quadrant will get "rounded" to the upper left point, anything in the upper
-    	// right to the upper right point, etc.  The *worst case* is that the center point
-    	// gets rounded ... somewhere, any of the four I suppose.  So if we look at a given
-    	// grid coordinate point, the furthest point that could have been rounded to it is
-    	// the center of the 1x1 square, which is (via basic trig, triangle sides 1/2, 1/2)
-    	// 1/(sqrt2) away from the grid point.
-    	return ptLineDist(point) <= Math.sqrt(1.0 / Math.sqrt(2.0));
-    }
-
 	@Override
 	public Rectangle2D getBounds2D() {
 		return new Rectangle2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
@@ -140,7 +114,6 @@ public class Line extends Line2D{
             return new Coordinate(x, y, rotation);
         }
     }
-
 
     /**
      * Pass in the elapsed time since this line has started to get the coordinates at that time

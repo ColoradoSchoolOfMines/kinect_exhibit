@@ -40,24 +40,12 @@ public class TextSprite {
         return x;
     }
 
-    public int setX(){
-        return x;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public Font getFont() {
         return font;
-    }
-
-    public void setFont(Font font) {
-        this.font = font;
     }
 
     public String getMessage(){

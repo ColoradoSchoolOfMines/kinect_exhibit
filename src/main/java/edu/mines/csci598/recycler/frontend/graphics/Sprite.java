@@ -1,6 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -27,12 +27,6 @@ public class Sprite {
         setImage(fileName);
     }
 
-    /*
-      * Sets the file path for this sprite's icon image.
-      *
-      * param {String} fileName
-      * 		The name of the file to be loaded.
-      */
     public void setImage(String fileName) {
         this.fileName = fileName;
     }
@@ -45,7 +39,7 @@ public class Sprite {
         location.setX(x);
     }
 
-    /*
+    /**
       * Gets the x position.
       * Protected because only graphics should care about where it is scaled
       * return {int}
@@ -58,7 +52,7 @@ public class Sprite {
         return (int) Math.round(location.getX());
     }
 
-    /*
+    /**
       * Gets the y position.
       *
       * return {int}
@@ -71,9 +65,8 @@ public class Sprite {
         return (int) Math.round(location.getY());
     }
 
-    /*
+    /**
     * Gets the icon image.
-    *
     * return {Image}
     */
     public Image getImage() {
