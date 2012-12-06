@@ -16,10 +16,12 @@ import org.apache.log4j.Logger;
 public class InstructionScreen {
 
     private static final Logger logger = Logger.getLogger(InstructionScreen.class);
+    private static final String INSTRUCTIONS_FILENAME = "src/main/resources/SpriteImages/instructions_full.jpg";
+
     private Sprite background;
 
     public InstructionScreen() {
-        background = new Sprite("src/main/resources/SpriteImages/instructions_full.jpg", 0, 0);
+        background = new Sprite(INSTRUCTIONS_FILENAME, 0, 0);
     }
 
     public void paint(Graphics2D g2d, Component canvas) {

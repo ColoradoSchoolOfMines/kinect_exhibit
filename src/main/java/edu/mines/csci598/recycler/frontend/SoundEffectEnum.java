@@ -42,7 +42,9 @@ public enum SoundEffectEnum {
         }
     }
 
-
+    /**
+     * Plays the given item's sound effect
+     */
     public void playSound() {
         if (soundEffect == null) return;
         soundEffect.play();

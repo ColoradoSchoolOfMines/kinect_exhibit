@@ -115,10 +115,6 @@ public class GameScreen {
         sprites.add(s);
     }
 
-    public void removeHandSprites() {
-        handSprites.clear();
-    }
-
     public boolean removeSprite(Sprite s) {
         return sprites.remove(s);
     }
@@ -127,21 +123,10 @@ public class GameScreen {
         recycleBinSprites.add(s);
     }
 
-    public void removeRecycleBinSprite(Sprite s) {
-        recycleBinSprites.remove(s);
-    }
-
     public void addGameOverSprite(Sprite s){
         gameOverSprites.add(s);
     }
 
-
-
-    /**
-     * Adds a hand sprite to the hands array
-     *
-     * @param s
-     */
     public void addHandSprite(Sprite s) {
         handSprites.add(s);
     }
@@ -149,7 +134,6 @@ public class GameScreen {
     public boolean addTextSpriteHolder(TextSpritesHolder textSpritesHolder) {
         return textSpriteHolders.add(textSpritesHolder);
     }
-
 
     /**
      *
@@ -168,13 +152,10 @@ public class GameScreen {
                 g2d.drawImage(hand.getImage(), x, y, canvas);
             }
         }
-
-
     }
 
     /**
      * Draws the text sprites that are held in a TextSpriteHolder
-     *
      * @param g
      */
     private void drawTextSprites(Graphics2D g) {
@@ -201,8 +182,6 @@ public class GameScreen {
         for (Sprite bin : recycleBinSprites) {
             bin.getImage();
         }
-
-        //TODO: Preload other recycle bins better
 
         String[] imagesToLoad =
                 {"src/main/resources/SpriteImages/Bins/left_bin_paper_half.png",
