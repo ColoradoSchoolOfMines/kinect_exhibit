@@ -1,8 +1,16 @@
 package edu.mines.csci598.recycler.bettyCrocker;
 
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * A SoundEffect is used to play a short sound clip typically short enough
@@ -29,7 +37,34 @@ public class SoundEffect {
 	}
 	
 	public void play() {
-		new PlayThread().start();
+		//new PlayThread().start();
+		
+		try {
+			audioStream = AudioSystem.getAudioInputStream(soundFile);
+			
+			clip = AudioSystem.getClip();
+			clip.open(audioStream);
+		
+			clip.addLineListener( new LineListener() {
+				@Override
+				public void update(LineEvent evt) {
+					if (evt.getType() == LineEvent.Type.STOP) {
+				    evt.getLine().close();
+				  }
+				}
+			});
+			
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void play(int times) {
@@ -68,16 +103,16 @@ public class SoundEffect {
 				
 				clip = AudioSystem.getClip();
 				clip.open(audioStream);
-
+			
 				clip.addLineListener( new LineListener() {
 					@Override
 					public void update(LineEvent evt) {
-						if (evt.getType() == LineEvent.Type.STOP) {
-					    evt.getLine().close();
-					  }
+						 if (evt.getType() == LineEvent.Type.STOP) {
+					     evt.getLine().close();
+					   }
 					}
 				});
-
+				
 				clip.start();
 			} catch (UnsupportedAudioFileException e) {
 				System.out.println("Unsupported audio file: " + soundFile.getName());
