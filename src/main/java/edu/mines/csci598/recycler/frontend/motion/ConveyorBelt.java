@@ -55,8 +55,8 @@ public class ConveyorBelt extends ItemMover {
     }
 
     /**
-     * Returns the next touchable recyclable
-     * @return
+     * Returns the furthest recyclable on the conveyor that can be touched.  If there are none, returns null
+     * @return 
      */
     public Movable getNextMovableThatIsTouchable() {
         int index = 0;
