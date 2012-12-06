@@ -66,7 +66,6 @@ public class HandTracker {
 	class MyHandCreateEvent implements IObserver<ActiveHandEventArgs> {
 		public void update(IObservable<ActiveHandEventArgs> observable,
                            ActiveHandEventArgs args) {
-                  System.out.println("create event: " + args);
             // create a new list of historical points for the newly-detected
             // hand and add the current location
 			List<Point3D> newList = Collections.synchronizedList(new LinkedList<Point3D>());
@@ -81,7 +80,6 @@ public class HandTracker {
 	class MyHandUpdateEvent implements IObserver<ActiveHandEventArgs> {
 		public void update(IObservable<ActiveHandEventArgs> observable,
                            ActiveHandEventArgs args) {
-                  System.out.println(args.getPosition());
             // add the current location to the history of points
 			List<Point3D> historyList = history.get(args.getId());
 			historyList.add(args.getPosition());
@@ -110,7 +108,6 @@ public class HandTracker {
      */
     public HandTracker() {
         try {
-          System.out.println("constructor");
             // context setup
             context = OpenNIContextSingleton.getContext();
 
