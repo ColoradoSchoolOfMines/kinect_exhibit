@@ -18,22 +18,18 @@ import edu.mines.csci598.recycler.frontend.motion.Movable;
  * To change this template use File | Settings | File Templates.
  */
 public class BinFeedback implements Displayable, Movable {
+
     private static final Logger logger = Logger.getLogger(BinFeedback.class);
 
     private Sprite sprite;
     private Path path;
-
     private boolean removable;
-    private boolean touchable;
-    //TODO: Touchable vs MotionState - ask motionState if touchable
-
     private MotionState motionState;
 
     public BinFeedback(String image, Path path) {
         this.sprite = new Sprite(image, (int) path.getInitialPosition().getX(), (int) path.getInitialPosition().getY());
         this.path = path;
         removable = true;
-        touchable = false;
         motionState = MotionState.NONE;
     }
 
@@ -73,7 +69,7 @@ public class BinFeedback implements Displayable, Movable {
 
     @Override
     public boolean isTouchable() {
-        return touchable;
+        return motionState.isTouchable();
     }
 
     /**

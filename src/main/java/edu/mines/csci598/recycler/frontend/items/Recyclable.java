@@ -1,6 +1,6 @@
 package edu.mines.csci598.recycler.frontend.items;
 
-import edu.mines.csci598.recycler.frontend.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.RecycleBin;
 import edu.mines.csci598.recycler.frontend.RecycleBins;
 import edu.mines.csci598.recycler.frontend.graphics.*;
@@ -40,6 +40,12 @@ public class Recyclable implements Displayable, Movable {
         sprite = new Sprite(imagePath, (int) path.getInitialPosition().getX(), (int) path.getInitialPosition().getY());
     }
 
+    /**
+     * Creates new path for swiped recyclable to travel along into bin
+     * Speed it travels is based on hand's velocity
+     * @param hand
+     * @param currentTimeSec
+     */
     @Override
     public void reactToCollision(Hand hand, double currentTimeSec) {
         if (!(this instanceof Recyclable)) {
@@ -91,7 +97,6 @@ public class Recyclable implements Displayable, Movable {
 
     /**
      * Determines if the recyclable should be touched by a hand
-     *
      * @return true if recyclable can be touched, false otherwise
      */
     public boolean isTouchable() {
@@ -100,7 +105,6 @@ public class Recyclable implements Displayable, Movable {
 
     /**
      * Determines if Recyclable can be removed from screen when its path is done
-     *
      * @return true if it's okay to remove, false otherwise
      */
     @Override
