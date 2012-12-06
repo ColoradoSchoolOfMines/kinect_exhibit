@@ -10,10 +10,19 @@ public class SerializePlayerInformation {
     private static final String SCORES_FILE = "scores.dat";
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SerializePlayerInformation.class.getName());
 
+    /**
+     *
+     * @return call retrievePlayerHighScoreInformation from the standard scores file
+     */
     public static ArrayList<PlayerHighScoreInformation> retrievePlayerHighScoreInformation() {
         return retrievePlayerHighScoreInformation(SCORES_FILE);
     }
 
+    /**
+     *
+     * @param fileName file to load scores from
+     * @return array list of deserialized player high scores
+     */
     @SuppressWarnings("unchecked")
     public static ArrayList<PlayerHighScoreInformation> retrievePlayerHighScoreInformation(String fileName) {
         Object deserializedHighScores = new ArrayList<PlayerHighScoreInformation>();

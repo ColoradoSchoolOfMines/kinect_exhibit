@@ -34,6 +34,7 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
     private static final String TITLE = "Twitter";
     private static final String NO_TWEETS_MESSAGE = "No tweets found";
 
+
     public TwitterFooter() {
         messageNumber = 0;
         twitterMessages = new TwitterMessages();
@@ -60,6 +61,11 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
         callback.updateScreen();
     }
 
+    /**
+     *
+     * @param text text to be converted to HTML
+     * @return HTML equivalent of message. used for panel formatting
+     */
     private static String convertToHtml(String text)
     {
         return "<html>" + text.replaceAll("\n", "<br />") +"</html>";

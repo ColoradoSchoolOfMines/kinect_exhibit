@@ -6,43 +6,50 @@ import java.util.Comparator;
 
 public class PlayerHighScoreInformation implements Serializable {
 
-    private ImageIcon _playerImage;
-    private String _playerInitials;
-    private long _playerScore;
+    private ImageIcon playerImage;
+    private String playerInitials;
+    private long playerScore;
 
     public PlayerHighScoreInformation(String playerInitials, long playerScore, ImageIcon playerImage) {
-        _playerInitials = playerInitials;
-        _playerScore = playerScore;
-        _playerImage = playerImage;
+        this.playerInitials = playerInitials;
+        this.playerScore = playerScore;
+        this.playerImage = playerImage;
     }
 
     public ImageIcon getPlayerImage() {
-        return _playerImage;
+        return playerImage;
     }
 
     public void setPlayerImage(ImageIcon playerPlayerImage) {
-        this._playerImage = playerPlayerImage;
+        this.playerImage = playerPlayerImage;
     }
 
     public String getPlayerInitials() {
-        return _playerInitials;
+        return playerInitials;
     }
 
     public void setPlayerInitials(String playerInitials) {
-        this._playerInitials = playerInitials;
+        this.playerInitials = playerInitials;
     }
 
     public long getPlayerScore() {
-        return _playerScore;
+        return playerScore;
     }
 
     public void setPlayerScore(long playerScore) {
-        this._playerScore = playerScore;
+        this.playerScore = playerScore;
     }
+
 
     public static Comparator<PlayerHighScoreInformation> playerInitialsComporator
             = new Comparator<PlayerHighScoreInformation>() {
 
+        /**
+         *
+         * @param playerInformation1 first player to compare
+         * @param playerInformation2 second player to compare
+         * @return integer on how players compared
+         */
         public int compare(PlayerHighScoreInformation playerInformation1, PlayerHighScoreInformation playerInformation2) {
 
             String initials1 = playerInformation1.getPlayerInitials();
