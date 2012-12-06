@@ -1,3 +1,5 @@
 export CLASSPATH=/usr/share/java/org.OpenNI.jar:/usr/share/java/com.primesense.NITE.jar:jl1.0.1.jar:jl1.0.1.jar:mp3spi1.9.5.jar:tritonus_share.jar:target/frontend-exe.jar
 java edu.mines.csci598.recycler.frontend.GameLauncher
-# java edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenLauncher
+#java edu.mines.csci598.recycler.entejagd.Entejagd
+#java edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenLauncher
+#java edu.mines.csci598.recycler.splashscreen.playerdetector.TestDetectHand
