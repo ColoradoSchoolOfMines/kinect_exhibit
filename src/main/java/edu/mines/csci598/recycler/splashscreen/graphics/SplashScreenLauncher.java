@@ -32,21 +32,9 @@ public class SplashScreenLauncher extends GameState {
     private static final int MILLISECOND_TO_SECOND = 1000;
 
     public static void main(String[] args) {
-        Song x = new Song();
-        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
-        x.setLooping(true);
-        x.startPlaying();
-        GameLauncher gm = new GameLauncher();
-        ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-        gm.getGameManager().installInputDriver(mouse);
-        gm.getGameManager().setState(gm);
-        gm.getGameManager().run();
-        gm.getGameManager().destroy();
 
         SplashScreenLauncher launcher = new SplashScreenLauncher();
-        launcher.getGameManager().setState(launcher);
-        launcher.getGameManager().run();
-        launcher.getGameManager().destroy();
+        launcher.run();
     }
 
     public SplashScreenLauncher() {
@@ -141,6 +129,27 @@ public class SplashScreenLauncher extends GameState {
             }
 
             cyclingSections.get(currentCyclingSectionIndex).draw(g);
+        }
+    }
+
+    public void run(){
+        while( true ){
+            // Update the splash screen and change screen if necessary
+
+            // If conditions for starting game are met the start the game
+            if( detector.startGame() ){
+                song.stopPlaying();
+                GameLauncher gm = new GameLauncher();
+                //ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+                OpenNIHandTrackerInputDriver kinect = new OpenNIHandTrackerInputDriver();
+                gm.getGameManager().installInputDriver(kinect);
+                gm.getGameManager().setState(gm);
+                gm.getGameManager().run();
+                gm.getGameManager().destroy();
+            }
+
+            // Update the game managers hand info
+            driver.pumpInput( gameManager.getGameState() );
         }
     }
 
