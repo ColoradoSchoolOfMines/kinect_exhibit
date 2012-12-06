@@ -141,6 +141,14 @@ public class HighScoreScreen implements SplashScreenSection {
         topLeftY = topLeft.y + topPadding - PICTURE_FRAME_PADDING;
         bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + PICTURE_FRAME_PADDING;
         bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT + PICTURE_FRAME_PADDING;
+        if (score.getPlayerImage() != null)
+            g.drawImage(score.getPlayerImage().getImage(),topLeftX, topLeftY, bottomRightX-topLeftX, bottomRightY - topLeftY, null );
+        else {
+            g.fillPolygon(innerFrame);
+            g.setColor(PICTURE_FRAME_COLOR);
+            g.drawPolygon(innerFrame);
+        }
+
 		Polygon outerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 		
 		g.setColor(new Color(253, 253, 253));
@@ -148,7 +156,6 @@ public class HighScoreScreen implements SplashScreenSection {
 		g.setColor(new Color(230, 230, 230));
 		g.fillPolygon(innerFrame);
 		g.setColor(PICTURE_FRAME_COLOR);
-		g.drawPolygon(innerFrame);
 		g.drawPolygon(outerFrame);
 		
 		g.setFont(INDIVIDUAL_NAME_FONT);
