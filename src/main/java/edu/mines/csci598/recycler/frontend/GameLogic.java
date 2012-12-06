@@ -314,7 +314,7 @@ public class GameLogic {
         return playerIsAComputer;
     }
 
-    public boolean getState(){
+    public boolean isPlaying(){
         return isPlaying;
     }
 

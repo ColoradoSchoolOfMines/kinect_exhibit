@@ -33,6 +33,7 @@ public class GameLauncher extends GameState {
     private static final Logger logger = Logger.getLogger(GameLauncher.class);
     private static final String SONG_FILENAME = "src/main/resources/Sounds/recyclotron.mp3";
 
+    private Song song;
 	private GameManager gameManager;
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
@@ -69,6 +70,13 @@ public class GameLauncher extends GameState {
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
         rightGameStatusDisplay = new GameStatusDisplay(Side.RIGHT);
         makeHands();
+
+        song = new Song();
+        song.addTrack(new Track(SONG_FILENAME));
+        song.setLooping(true);
+        song.startPlaying();
+
+
         leftGame = new GameLogic(
                 new RecycleBins(Side.LEFT),
 				ConveyorBelt.getConveyorBeltPathLeft(),
@@ -137,9 +145,11 @@ public class GameLauncher extends GameState {
                 rightGame.updateThis();
                 leftGame.updateThis();
 
-                if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+                if ( (leftGame.isPlaying() == false) && (rightGame.isPlaying() == false) ){
+                    song.stopPlaying();
                     return null;
-                }else if( (leftGame.getState() == false) && (rightGame.isComputerPlayer() == true)){
+                }else if( (leftGame.isPlaying() == false) && (rightGame.isComputerPlayer() == true)){
+                    song.stopPlaying();
                     return null;
                 }
             }
@@ -165,10 +175,6 @@ public class GameLauncher extends GameState {
 	}
 
 	public static void main(String[] args) {
-        Song x = new Song();
-        x.addTrack(new Track(SONG_FILENAME));
-        x.setLooping(true);
-        x.startPlaying();
         GameLauncher gameLauncher = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
 		gameLauncher.getGameManager().installInputDriver(mouse);
