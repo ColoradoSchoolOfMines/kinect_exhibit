@@ -192,7 +192,7 @@ public class GameLogic {
                     if (!playerIsAComputer){
                       if (!scoreSubmitted){
                           //SavePlayer currentPlayer = new SavePlayer();
-                         // currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
+                          //currentPlayer.submitPlayerScore(gameStatusDisplay.getScore());
                           scoreSubmitted = true;
                       }
                     }
@@ -304,6 +304,11 @@ public class GameLogic {
         double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         factory.increaseGenerationRate(pctToMaxDifficulty);
     }
+
+    public boolean isComputerPlayer(){
+        return playerIsAComputer;
+    }
+
 
     public boolean getState(){
         return isPlaying;
