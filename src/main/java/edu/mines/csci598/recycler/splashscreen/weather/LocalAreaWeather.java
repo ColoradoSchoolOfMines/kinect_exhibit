@@ -22,6 +22,10 @@ public class LocalAreaWeather {
     private static final String LOCAL_ZIP = "80401";
     private static final String BASE_URL = "http://free.worldweatheronline.com/feed/weather.ashx";
 
+    /**
+     *
+     * @return Make a call to web service, get XML documents, return parsed results
+     */
     public static WeatherInformation retrieveWeatherInformation() {
         try {
             URL weatherUrl = new URL(BASE_URL+"?key="+API_KEY+"&q="+LOCAL_ZIP+"&num_of_days=1&format=xml");
@@ -41,6 +45,14 @@ public class LocalAreaWeather {
         return null;
     }
 
+    /**
+     *
+     * @param weatherStream the xml file stream
+     * @return container object with weather information populated
+     * @throws ParserConfigurationException if there's something wrong with parser
+     * @throws SAXException if there's a state exception
+     * @throws IOException if there's a file read exception
+     */
     public static WeatherInformation parseWeatherXML(InputStream weatherStream) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = docBuilder.parse(weatherStream);
@@ -91,6 +103,12 @@ public class LocalAreaWeather {
         );
     }
 
+    /**
+     *
+     * @param sTag the element tag to search by
+     * @param eElement the current element
+     * @return the value between a pair of xml tags
+     */
     private static String getTagValue(String sTag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
         Node nValue = nlList.item(0);

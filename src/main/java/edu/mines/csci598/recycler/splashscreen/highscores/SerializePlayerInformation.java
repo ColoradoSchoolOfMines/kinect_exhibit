@@ -41,10 +41,19 @@ public class SerializePlayerInformation {
         return (ArrayList<PlayerHighScoreInformation>) deserializedHighScores;
     }
 
+    /**
+     *
+     * @param highScores the high scores that we need to store to default scores file
+     */
     public static void storePlayerHighScoreInformation(ArrayList<PlayerHighScoreInformation> highScores) {
         storePlayerHighScoreInformation(highScores, SCORES_FILE);
     }
 
+    /**
+     * Additionally, besides storing, this truncates players to only the top 10
+     * @param highScores the high scores that we need to store
+     * @param fileName file to store scores too
+     */
     public static void storePlayerHighScoreInformation(ArrayList<PlayerHighScoreInformation> highScores, String fileName) {
         List<PlayerHighScoreInformation> abbreviatedList;
 
@@ -65,6 +74,10 @@ public class SerializePlayerInformation {
         }
     }
 
+    /**
+     *  Save a single player, but retrieve pre-existing scores, sort and store
+     * @param highScore save a single player to the scores.dat file
+     */
     public static void savePlayerHighScoreInformation(PlayerHighScoreInformation highScore) {
         ArrayList<PlayerHighScoreInformation> players = retrievePlayerHighScoreInformation();
         players.add(highScore);

@@ -15,6 +15,10 @@ public class TwitterMessages implements SocialMessages {
         twitter = new TwitterFactory().getInstance();
     }
 
+    /**
+     *
+     * @return get the latest twitter mention via API
+     */
     @Override
     public String retrieveLatestMessage() {
         if (!retrieveAllMessages().isEmpty())
@@ -22,6 +26,10 @@ public class TwitterMessages implements SocialMessages {
         return null;
     }
 
+    /**
+     *
+     * @return get the last 20 twitter mentions from API
+     */
     public ArrayList<String> retrieveAllMessages() {
         ArrayList<String> messageList = new ArrayList<String>();
 
@@ -40,6 +48,11 @@ public class TwitterMessages implements SocialMessages {
         return messageList;
     }
 
+    /**
+     *
+     * @return whether or not we were authorized to use twitter api
+     * @throws TwitterException if we don't have proper OAuth keys
+     */
     private boolean authorizeAccess() throws TwitterException {
         try {
             RequestToken requestToken = twitter.getOAuthRequestToken();
@@ -54,6 +67,12 @@ public class TwitterMessages implements SocialMessages {
         return true;
     }
 
+    /**
+     *
+     * @param requestToken send request to retrieve OAuthAccessToken
+     * @param accessToken token that is set to OAuthAccessToken
+     * @return the access token
+     */
     private AccessToken getAccessToken(RequestToken requestToken, AccessToken accessToken) {
         while (null == accessToken) {
             try {

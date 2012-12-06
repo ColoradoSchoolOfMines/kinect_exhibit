@@ -6,6 +6,11 @@ import java.util.Comparator;
 
 public class SortPlayerInformation {
 
+    /**
+     *
+     * @param playerHighScoreInformationList list to be sorted by score
+     * @return sorted array list
+     */
     public static ArrayList<PlayerHighScoreInformation> sortByScore(ArrayList<PlayerHighScoreInformation> playerHighScoreInformationList) {
         Collections.sort(playerHighScoreInformationList, new Comparator<PlayerHighScoreInformation>() {
             public int compare(PlayerHighScoreInformation object1, PlayerHighScoreInformation object2) {
@@ -16,6 +21,11 @@ public class SortPlayerInformation {
         return playerHighScoreInformationList;
     }
 
+    /**
+     *
+     * @param playerHighScoreInformationList list to be sorted by initials
+     * @return sorted list
+     */
     public static ArrayList<PlayerHighScoreInformation> sortByInitials(ArrayList<PlayerHighScoreInformation> playerHighScoreInformationList) {
         Collections.sort(playerHighScoreInformationList, PlayerHighScoreInformation.playerInitialsComporator);
         return playerHighScoreInformationList;
