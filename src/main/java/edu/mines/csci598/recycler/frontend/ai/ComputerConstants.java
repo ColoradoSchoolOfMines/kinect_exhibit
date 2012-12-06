@@ -23,12 +23,14 @@ public final class ComputerConstants {
      */
     public static final int MAX_GENERATION_NUMBER = 100;
     /** SET_HAND_T0_CORRECT_SIDE_THRESHOLD
-     * Probability that the hand will be set to the correct side
+     * Probability that the hand will be set to the correct side.
+     * Random number must be greater than this.
      */
     public static final int SET_HAND_T0_CORRECT_SIDE_THRESHOLD = 15;
     /**
      * LAST_STRIKE_UPDATE
      * Used to slow hand movement when repositioning to the correct side.
+     * In seconds
      */
     public static final double LAST_STRIKE_UPDATE = 0.33;
     /**
@@ -40,18 +42,15 @@ public final class ComputerConstants {
      * LAST_STRIKE_DELAY
      * Must wait this long before attempting to strike at a new recyclable
      * Slows down the speed at which the computer can strike
+     * In seconds
      */
     public static final double LAST_STRIKE_DELAY = 0.65;
     /**
      * LAST_MOVE_DELAY
      * Delay hand movement when following recyclable.
+     * In seconds
      */
     public static final double LAST_MOVE_DELAY = 0.30;
-    /**
-     * HAND_GOAL_OFFSET
-     * Goal for moving up and around recyclable.
-     */
-    public static final int HAND_GOAL_OFFSET = 60;
     /**
      * HAND_Y_OFFSET
      * Position for moving up and around recyclable.
@@ -65,12 +64,13 @@ public final class ComputerConstants {
     /**
      * PATH_TIME_SEC
      * Time needed to move a line
+     * In seconds
      */
     public  static final double PATH_TIME_SEC = 0.2;
     /** INCORRECT_STRIKE_THRESHOLD
      * Must exceed this number to strike recyclable into correct bin
      */
-    public static final int INCORRECT_STRIKE_THRESHOLD = 2;
+    public static final int INCORRECT_STRIKE_THRESHOLD = 1;
     /** INITIAL_HAND_X
      * Position of initial x
      */
