@@ -35,39 +35,40 @@ public class ComputerPlayer {
     public ComputerHand primary;
     public Path p;
     private Random random;
-    /* lastStrikeTime
+
+    /** lastStrikeTime
      * Time of last strike
      * Used for slowing down strike attempts and resetting hand to initial position
      */
     private double lastStrikeTime;
-    /* lastStrikeDelay
+    /** lastStrikeDelay
      * Amount of time needed since lastStrikeTime to be able to strike
      * Accumulates and then is reset with a successful strike
      */
     private double lastStrikeDelay;
-    /* justStruckRecyclable
+    /** justStruckRecyclable
      * Used for continuation of hand movement across conveyer
      */
     private boolean justStruckRecyclable;
-    /* lastMoveDelay
+    /** lastMoveDelay
      * Used to slowdown AI hand movement
      * Time after a successful strike before being reset to initial location
      */
     private double lastMoveDelay;
-    /* recycleBins
+    /** recycleBins
      * List of recycleBins
      * Needed to determine when and where to strike
      */
     private RecycleBins recycleBins;
-    /* lastMotionTimeSec
+    /** lastMotionTimeSec
      * Used for following the path around a recyclable across the conveyer
      */
     private double lastMotionTimeSec;
-    /* goalBinTopY
+    /** goalBinTopY
      * Top of target recyclables goalBin
      */
     private double goalBinTopY;
-    /* goalBinBottomY
+    /** goalBinBottomY
      * Bottom of target recyclables goalBin
      */
     private double goalBinBottomY;
@@ -86,7 +87,7 @@ public class ComputerPlayer {
         goalBinBottomY = -1;
         goalBinTopY = -1;
     }
-    /* getHand
+    /** getHand
      * Used in gameLogic to add ComputerHand to hands array
      * @return Hand
      */
@@ -147,7 +148,7 @@ public class ComputerPlayer {
         }
     }
 
-    /* handleJustStruckRecyclable
+    /** handleJustStruckRecyclable
      * Moves hand off of the conveyer after striking recyclable
      */
     private void handleJustStruckRecyclable(){
@@ -314,7 +315,7 @@ public class ComputerPlayer {
         if(!(movable instanceof PowerUp)){
             if(recyclableWillFallInBin(movable)){
                 if(currentTimeSec > lastStrikeTime + lastStrikeDelay){
-                    if(ICanStrike()){
+                    if(iCanStrike()){
                         strikeItem(movable);
                         lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                         lastStrikeTime = currentTimeSec;
@@ -324,7 +325,7 @@ public class ComputerPlayer {
                 }
             }
         }else {
-            if(ICanStrike()){
+            if(iCanStrike()){
                 strikeItem(movable);
                 lastStrikeDelay=ComputerConstants.LAST_STRIKE_UPDATE;
                 lastStrikeTime = currentTimeSec;
@@ -334,11 +335,11 @@ public class ComputerPlayer {
         }
     }
 
-    /* ICanStrike
+    /** iCanStrike
      * Determines if the random number is greater than the threshold for striking
      * Returns true or false
      */
-    public boolean ICanStrike(){
+    public boolean iCanStrike(){
         boolean ret = false;
         int rand = random.nextInt(ComputerConstants.MAX_GENERATION_NUMBER) + 1;
         if(rand > ComputerConstants.MIN_GENERATION_THRESHOLD){
