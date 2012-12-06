@@ -45,14 +45,26 @@ public class RecycleBin implements Displayable {
     private SoundEffectEnum soundEffect;
 
     /**
-     * Meant specifically for trash bin
+     * Creates the Trash bin.  Not intended to be used for any other type of item.
      * @param type
      */
     public RecycleBin(RecyclableType type) {
+    	if(type != RecyclableType.TRASH){
+    		throw new IllegalArgumentException("This constructor is intended only for the trash can");
+    	}
         this.type = type;
         this.soundEffect = SoundEffectEnum.NONE;
     }
 
+    /**
+     * Creates a new RecycleBin
+     * @param side - The side of the player's screen the bin appears on
+     * @param minY - The lower bound of the bin, in pixels
+     * @param maxY - The upper bound of the bin, in pixels
+     * @param type - The type of item this bin accepts
+     * @param imagePath - The path to the image used for this bin
+     * @param itemHitsBinSound - The sound effect used when items are dropped into the bin.  (Correct or incorrect items) 
+     */
     public RecycleBin(ConveyorSide side, int minY, int maxY, RecyclableType type, String imagePath,SoundEffectEnum itemHitsBinSound) {
         this.side = side;
         this.minY = minY;
@@ -65,7 +77,7 @@ public class RecycleBin implements Displayable {
     }
 
     /**
-     *  Returns true if the recyclable type is the same as the bin type
+     * Returns true if the given recyclable type is the same as the bin type
      * @param m
      * @return
      */
@@ -79,6 +91,9 @@ public class RecycleBin implements Displayable {
         return false;
     }
 
+    /**
+     * Puts an item into the bin
+     */
     public void addItem() {
         numItems++;
     }
