@@ -1,5 +1,6 @@
 package edu.mines.csci598.recycler.bettyCrocker;
 
+
 import java.io.File;
 import java.io.IOException;
 
@@ -37,8 +38,10 @@ public class SoundEffect {
 	}
 	
 	public void play() {
-		//new PlayThread().start();
-		
+		play(1);
+	}
+	
+	public void play(int times) {
 		try {
 			audioStream = AudioSystem.getAudioInputStream(soundFile);
 			
@@ -54,25 +57,25 @@ public class SoundEffect {
 				}
 			});
 			
-			clip.start();
+			if (times != Clip.LOOP_CONTINUOUSLY) {
+				clip.loop(times - 1); //The Clip method for looping states 0 will play it once)
+			}	else {
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			}
 		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Unsupported audio file.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Problem reading the audio file.");
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Dataline is not available.");
 			e.printStackTrace();
 		}
 	}
 	
-	public void play(int times) {
-		clip.loop(times - 1); //The Clip method for looping states 0 will play it once)
-	}
-	
 	public void loop() {
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		play(Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	public void stop() {
@@ -88,45 +91,6 @@ public class SoundEffect {
 	public void setVolume(float newVolume) {
 		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		volume.setValue(newVolume);
-	}
-	
-	
-	/*
-	 * This class is used to play the SoundEffect in a separate
-	 * thread so that the main application isn't interrupted.
-	 */
-	private class PlayThread extends Thread {
-		
-		public void run() {
-			try {
-				audioStream = AudioSystem.getAudioInputStream(soundFile);
-				
-				clip = AudioSystem.getClip();
-				clip.open(audioStream);
-			
-				clip.addLineListener( new LineListener() {
-					@Override
-					public void update(LineEvent evt) {
-						 if (evt.getType() == LineEvent.Type.STOP) {
-					     evt.getLine().close();
-					   }
-					}
-				});
-				
-				clip.start();
-			} catch (UnsupportedAudioFileException e) {
-				System.out.println("Unsupported audio file: " + soundFile.getName());
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println("Error reading the file: " + soundFile.getName());
-				e.printStackTrace();
-			} catch (LineUnavailableException e) {
-				System.out.println("Problem playing sound file: " + soundFile.getName() + ". Line was unavailable for playback.");
-				e.printStackTrace();
-			}
-			
-		}
-
 	}
 	
 }
