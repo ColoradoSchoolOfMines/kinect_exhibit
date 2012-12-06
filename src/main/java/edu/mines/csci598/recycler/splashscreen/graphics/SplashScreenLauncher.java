@@ -32,6 +32,17 @@ public class SplashScreenLauncher extends GameState {
     private static final int MILLISECOND_TO_SECOND = 1000;
 
     public static void main(String[] args) {
+        Song x = new Song();
+        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
+        x.setLooping(true);
+        x.startPlaying();
+        GameLauncher gm = new GameLauncher();
+        ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+        gm.getGameManager().installInputDriver(mouse);
+        gm.getGameManager().setState(gm);
+        gm.getGameManager().run();
+        gm.getGameManager().destroy();
+
         SplashScreenLauncher launcher = new SplashScreenLauncher();
         launcher.getGameManager().setState(launcher);
         launcher.getGameManager().run();
