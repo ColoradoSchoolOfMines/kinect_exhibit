@@ -5,7 +5,7 @@ import java.util.Random;
 import edu.mines.csci598.recycler.frontend.RecycleBins;
 import org.apache.log4j.Logger;
 
-import edu.mines.csci598.recycler.frontend.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.graphics.Path;
 import edu.mines.csci598.recycler.frontend.motion.Movable;
 
@@ -19,13 +19,14 @@ import edu.mines.csci598.recycler.frontend.motion.Movable;
  */
 public final class ItemFactory {
 
+    private final Logger logger = Logger.getLogger(ItemFactory.class);
+
     /**
      * The percentage of time a powerup comes on the screen. 100% means it will come up everytime an item is going to be
      * generated
      */
     public static final int POWERUP_FREQUENCY_PERCENTAGE = 10;
-    private final Logger logger = Logger.getLogger(ItemFactory.class);
-    //logger.setLevel(Level.INFO);
+
     private final Random rand = new Random();
 	private double nextTimeToGenerate = 0;
     private double meanTimeBetweenItemGeneration = GameConstants.INITIAL_TIME_BETWEEN_GENERATIONS;
@@ -86,11 +87,6 @@ public final class ItemFactory {
 		return movable;
     }
 
-    public Recyclable generateItemForDebugging(Path outputPath, RecycleBins bins) {
-        Recyclable returned = generateRandom(outputPath, 1, bins);
-        return returned;
-    }
-	
     /**
      * Determines if item should be generated.  If true, sets the time for the next object to be generated
      *

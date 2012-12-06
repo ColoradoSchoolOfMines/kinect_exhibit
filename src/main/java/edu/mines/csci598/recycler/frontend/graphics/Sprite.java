@@ -1,6 +1,6 @@
 package edu.mines.csci598.recycler.frontend.graphics;
 
-import edu.mines.csci598.recycler.frontend.GameConstants;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

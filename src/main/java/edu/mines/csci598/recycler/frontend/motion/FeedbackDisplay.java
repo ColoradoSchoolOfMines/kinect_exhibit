@@ -23,11 +23,21 @@ public class FeedbackDisplay extends ItemMover {
     private static final String INCORRECT_SPRITE = "src/main/resources/SpriteImages/incorrect.png";
     private static final String CORRECT_SPRITE = "src/main/resources/SpriteImages/correct.png";
 
-
+    /**
+     * Constructing a FeedbackDisplay object based on a double InitialSpeed value.
+     * @param initialSpeed
+     */
     public FeedbackDisplay(double initialSpeed) {
         gameScreen = GameScreen.getInstance();
     }
 
+    /**
+     * Creates incorrect and correct images based on the recyclable being pushed into a bin.
+     * @param movableRecyclable
+     * @param currentTimeSec
+     * @param isCorrect
+     * @return
+     */
     public Movable[] makeDisplay(Movable movableRecyclable, double currentTimeSec, boolean isCorrect){
         Movable[] movableArray = new Movable[2];
         Path p = new Path(currentTimeSec);
@@ -68,6 +78,9 @@ public class FeedbackDisplay extends ItemMover {
         }
     }
 
+    /**
+     * Preloads the images
+     */
     public static void preLoadImages() {
         ResourceManager resourceManager = ResourceManager.getInstance();
         resourceManager.getImage(INCORRECT_SPRITE);

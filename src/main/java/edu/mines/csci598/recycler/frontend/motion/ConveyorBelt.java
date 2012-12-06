@@ -54,9 +54,10 @@ public class ConveyorBelt extends ItemMover {
         PATH = path;
     }
 
-    /*
-    * Returns the next touchable recyclable
-    */
+    /**
+     * Returns the furthest recyclable on the conveyor that can be touched.  If there are none, returns null
+     * @return 
+     */
     public Movable getNextMovableThatIsTouchable() {
         int index = 0;
         while(index < movables.size()){
@@ -95,10 +96,18 @@ public class ConveyorBelt extends ItemMover {
         }
     }
 
+    /**
+     * Returns the path that the current ConveyorBelt is following
+     * @return
+     */
     public Path getConveyorPath() {
         return new Path(PATH);
     }
 
+    /**
+     * Gets the path that the left conveyor belt uses
+     * @return
+     */
     public static Path getConveyorBeltPathLeft() {
         //Left Path
         final Line bottomLineLeft = new Line(LEFT_BOTTOM_PATH_START_X, LEFT_BOTTOM_PATH_START_Y,
@@ -110,6 +119,10 @@ public class ConveyorBelt extends ItemMover {
         return new Path(Arrays.asList(bottomLineLeft, verticalLineLeft, topLineLeft));
     }
 
+    /**
+     * Gets the path that the right conveyor belt uses
+     * @return
+     */
     public static Path getConveyorBeltPathRight() {
         //Right Path
         final Line bottomLineRight = new Line(RIGHT_BOTTOM_PATH_START_X, RIGHT_BOTTOM_PATH_START_Y,
