@@ -15,6 +15,9 @@ import edu.mines.csci598.recycler.frontend.graphics.Sprite;
 public class GameOver {
     private static final Logger logger = Logger.getLogger(GameOver.class);
 
+    private static final String GAME_OVER_LEFT = "src/main/resources/SpriteImages/game_over_p1.png";
+    private static final String GAME_OVER_RIGHT = "src/main/resources/SpriteImages/game_over_p2.png";
+
     private GameScreen gameScreen;
     private Sprite s;
     private boolean displayed;
@@ -23,9 +26,9 @@ public class GameOver {
         displayed = false;
         gameScreen = GameScreen.getInstance();
         if (side == Side.LEFT) {
-            s = new Sprite("src/main/resources/SpriteImages/game_over_p1.png", 0, 0);
+            s = new Sprite(GAME_OVER_LEFT, 0, 0);
         } else {
-            s = new Sprite("src/main/resources/SpriteImages/game_over_p2.png", 0, 0);
+            s = new Sprite(GAME_OVER_RIGHT, 0, 0);
         }
     }
 

@@ -108,8 +108,4 @@ public class Path {
         startTime = time;
     }
 
-    public List<Line> getPath() {
-        return path;
-    }
-
 }
