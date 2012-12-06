@@ -24,7 +24,10 @@ public class RecycleBins {
     private List<RecycleBin> recycleBins = new LinkedList<RecycleBin>();
     private Side side;
 
-
+    /**
+     * Creates a list to hold RecycleBins
+     * @param s
+     */
     public RecycleBins(Side s) {
         side = s;
         if(s.equals(Side.LEFT)) {
@@ -70,8 +73,10 @@ public class RecycleBins {
         return side;
     }
 
-    /*
-     * Find bin type
+    /**
+     * Returns the bin that the given recyclable is intended to enter.
+     * @param r
+     * @return
      */
     public RecycleBin findCorrectBin(Recyclable r) {
     	RecyclableType recycleType = r.getType();
@@ -84,7 +89,7 @@ public class RecycleBins {
     }
     
     /**
-     *  sets up the location of each of the bins with trash last since it is the last accessed bin
+     *  Initializes the bins on the left side of the screen, for the human player
      */
     private void setUpLeftBins() {
         RecycleBin bin1 = new RecycleBin(
@@ -112,7 +117,7 @@ public class RecycleBins {
     }
 
     /**
-     *  sets up the location of each of the bins with trash last since it is the last accessed bin
+     *  Initializes the bins on the right side of the screen, for the computer or second human player
      */
     private void setUpRightBins() {
         RecycleBin bin1 = new RecycleBin(
@@ -139,10 +144,14 @@ public class RecycleBins {
         recycleBins.add(RecycleBin.TRASH_BIN);
     }
     
-    public RecycleBin getLast() {
+    private RecycleBin getLast() {
         return recycleBins.get(recycleBins.size() - 1);
     }
 
+    /**
+     * Returns the list of recycle bins
+     * @return
+     */
     public List<RecycleBin> getRecycleBins() {
         return recycleBins;
     }

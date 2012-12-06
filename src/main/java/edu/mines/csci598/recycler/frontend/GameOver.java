@@ -22,6 +22,10 @@ public class GameOver {
     private Sprite s;
     private boolean displayed;
 
+    /**
+     * Creates a new game over object based on the Side object.
+     * @param side
+     */
     public GameOver(Side side) {
         displayed = false;
         gameScreen = GameScreen.getInstance();
@@ -32,6 +36,10 @@ public class GameOver {
         }
     }
 
+    /**
+     * Signalas the game over state of the entire game for a particular player.
+     * @param gameStatusDisplay
+     */
     public void setGameOver(GameStatusDisplay gameStatusDisplay) {
         if (!displayed) {
             gameStatusDisplay.setGameOverState(true);

@@ -15,6 +15,7 @@ public class TestDetectHand {
 
         while( !dh.startGame() ){
             // Display splash screen stuff
+            System.out.println( dh.playerFound() );
 
             // Update info from the kinect
             driver.pumpInput( man.getGameState() );
