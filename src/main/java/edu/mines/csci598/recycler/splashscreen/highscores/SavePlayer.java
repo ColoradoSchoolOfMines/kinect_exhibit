@@ -49,9 +49,16 @@ public class SavePlayer {
         startSplashProcess();
     }
 
-    private ImageIcon takePhoto( GameManager man ) {  
-        ImageIcon pic = new ImageIcon( man.getImage() );
-        
+    private ImageIcon takePhoto( GameManager man ) {
+        ImageIcon pic = null;
+        try{
+            pic = new ImageIcon( man.getImage() );
+        }
+        catch( Exception e )
+        {
+            // Image isn't saved in GameManager ( likely not connected to the kinect )
+        }
+
         return pic;
     }
 
