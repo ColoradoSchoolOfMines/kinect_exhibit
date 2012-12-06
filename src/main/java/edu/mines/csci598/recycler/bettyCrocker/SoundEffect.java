@@ -1,6 +1,5 @@
 package edu.mines.csci598.recycler.bettyCrocker;
 
-
 import java.io.File;
 import java.io.IOException;
 
@@ -33,14 +32,26 @@ public class SoundEffect {
 	private Clip clip;
 	private AudioInputStream audioStream;
 	
+	/**
+	 * Creates a SoundEffect from the supplied file path.
+	 * @param fileName
+	 */
 	public SoundEffect(String fileName) {
 		soundFile = new File(fileName);
 	}
 	
+	/**
+	 * Plays the SoundEffect once.
+	 */
 	public void play() {
 		play(1);
 	}
 	
+	/**
+	 * Plays the sound effect a user defined
+	 * amount of times.
+	 * @param times
+	 */
 	public void play(int times) {
 		try {
 			audioStream = AudioSystem.getAudioInputStream(soundFile);
@@ -74,23 +85,39 @@ public class SoundEffect {
 		}
 	}
 	
+	/**
+	 * Plays the SoundEffect indefinitely.
+	 */
 	public void loop() {
 		play(Clip.LOOP_CONTINUOUSLY);
 	}
 	
+	/**
+	 * Stops playing the SoundEffect
+	 */
 	public void stop() {
 		if (clip.isRunning()) {
 			clip.stop();
 		}
 	}
 	
+	/**
+	 * Returns the sound file associated with this
+	 * SoundEffect.
+	 * @return
+	 */
 	public File getSoundFile() {
 		return soundFile;
 	}
 	
+	/**
+	 * Sets the volume of the SoundEffect.
+	 * @param newVolume
+	 */
 	public void setVolume(float newVolume) {
 		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		volume.setValue(newVolume);
 	}
 	
 }
+
