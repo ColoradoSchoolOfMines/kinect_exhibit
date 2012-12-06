@@ -30,6 +30,8 @@ import java.util.ArrayList;
  */
 public class GameLauncher extends GameState {
     private static final Logger logger = Logger.getLogger(GameLauncher.class);
+    private static final String SONG_FILENAME = "src/main/resources/Sounds/recyclotron.mp3";
+
 	private GameManager gameManager;
 	private GameLogic leftGame, rightGame;
     private GameStatusDisplay leftGameStatusDisplay, rightGameStatusDisplay;
@@ -60,7 +62,7 @@ public class GameLauncher extends GameState {
         preloading.start();
 
         // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler", false);
+		gameManager = new GameManager("Recycler", true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -69,14 +71,12 @@ public class GameLauncher extends GameState {
         leftGame = new GameLogic(
                 new RecycleBins(Side.LEFT),
 				ConveyorBelt.getConveyorBeltPathLeft(),
-                gameManager,
                 leftGameStatusDisplay,
                 false,
                 hands);
 		rightGame = new GameLogic(
                 new RecycleBins(Side.RIGHT),
                 ConveyorBelt.getConveyorBeltPathRight(),
-                gameManager,
                 rightGameStatusDisplay,
                 GameConstants.DEBUG_COLLISIONS,
                 hands);
@@ -113,8 +113,40 @@ public class GameLauncher extends GameState {
         }
     }
 
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
     protected void setUpPlayerMode(PlayerMode mode) {
         if(mode == PlayerMode.ONE_PLAYER) rightGame.turnOnComputer();
+    }
+
+    public GameLauncher updateThis(float time) {
+        if (gameCanStart) {
+            if (!playerOptions.canGameStart()) {
+                playerOptions.updateThis();
+            }
+            else {
+                if (!gameStarted) {
+                    gameStarted = true;
+                    setUpPlayerMode(playerOptions.getPlayerMode());
+                }
+                updateHands();
+                rightGame.updateThis();
+                leftGame.updateThis();
+
+                if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
+                    return null;
+                }else if( (leftGame.getState() == false) && (rightGame.isComputerPlayer() == true)){
+                    return null;
+                }
+            }
+        }
+        else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5 && !preloading.isAlive() ) {
+            gameCanStart = true;
+        }
+        return this;
     }
 
 	protected void drawThis(Graphics2D g2d) {
@@ -131,13 +163,9 @@ public class GameLauncher extends GameState {
         }
 	}
 
-	public GameManager getGameManager() {
-		return gameManager;
-	}
-
 	public static void main(String[] args) {
         Song x = new Song();
-        x.addTrack(new Track("src/main/resources/Sounds/recyclotron.mp3"));
+        x.addTrack(new Track(SONG_FILENAME));
         x.setLooping(true);
         x.startPlaying();
         GameLauncher gm = new GameLauncher();
@@ -146,35 +174,6 @@ public class GameLauncher extends GameState {
 		gm.getGameManager().setState(gm);
 		gm.getGameManager().run();
 		gm.getGameManager().destroy();
-
-	}
-
-	public GameLauncher updateThis(float time) {
-
-        if (gameCanStart) {
-            if (!playerOptions.canGameStart()) {
-                playerOptions.updateThis();
-            }
-            else {
-                if (!gameStarted) {
-                    gameStarted = true;
-                    setUpPlayerMode(playerOptions.getPlayerMode());
-                }
-                updateHands();
-		        rightGame.updateThis();
-                leftGame.updateThis();
-
-                if ( (leftGame.getState() == false) && (rightGame.getState() == false) ){
-                    return null;
-                }else if( (leftGame.getState() == false) && (rightGame.isComputerPlayer() == true)){
-                    return null;
-                }
-            }
-        }
-        else if ((System.currentTimeMillis() / 1000) > timeInstructionsStarted + 5 && !preloading.isAlive() ) {
-                gameCanStart = true;
-        }
-		return this;
 	}
 
 }

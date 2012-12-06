@@ -36,7 +36,6 @@ public class ResourceManager {
         return instance;
     }
 
-
     /**
      * Put in the file name as the key and it will either go find you the image, or give you its cached one.
      * @param key
@@ -59,12 +58,9 @@ public class ResourceManager {
             BufferedImage tmp = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = tmp.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            //g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
             g2.drawImage(ret, 0, 0, newWidth, newHeight, null);
             g2.dispose();
-            //scale the image
-            // SCALE_FAST reduces the load time slightly
-            //Image image = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
+
             ret=tmp;
             imageMap.put(key, ret);
         }

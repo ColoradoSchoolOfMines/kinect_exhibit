@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
-
 /**
  * The GameLogic is where the game play logic is. The main game update loop will go here.
  * <p/>
@@ -55,20 +54,11 @@ public class GameLogic {
     private GameStatusDisplay gameStatusDisplay;
     private double timeToRemovePowerUp;
     private boolean scoreSubmitted =false;
-    private GameManager gameManager;
     private boolean isPlaying;
 
-   /* public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
-                     boolean rightSide, boolean debuggingCollision) {
-        this.gameManager = gameManager;
-        */
-
-
-
-    public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameManager gameManager, GameStatusDisplay gameStatusDisplay,
+    public GameLogic(RecycleBins recycleBins, Path conveyorPath, GameStatusDisplay gameStatusDisplay,
                      boolean debuggingCollision, List<Hand> hands) {
         isPlaying = true;
-        this.gameManager = gameManager;
         gameScreen = GameScreen.getInstance();
         factory = new ItemFactory();
         this.recycleBins = recycleBins;
@@ -85,7 +75,6 @@ public class GameLogic {
         conveyorBelt = new ConveyorBelt(this, gameScreen, conveyorPath);
         theForce = new TheForce();
         clockStarted = false;
-        this.playerIsAComputer = playerIsAComputer;
         this.debuggingCollisions = debuggingCollision;
         strikeBar = new StrikeBar(gameStatusDisplay);
         this.hands = hands;
@@ -121,15 +110,18 @@ public class GameLogic {
                 continue;
             }
             // If we get here, it is causing collisions with anything at this location.
-
             List<Movable> swipedOffConveyor = conveyorBelt.releaseTouchableItemsAtPoint(hand.getPosition());
-            logger.debug("swipedSize=" + swipedOffConveyor.size());
             // We should really check the theForce also, but we're not allowing things it controls to be touchable, so it would be kind of silly.
 
             handleCollisions(hand, swipedOffConveyor);
         }
     }
 
+    /**
+     * Tell movables to react to the collision
+     * Change gameplay with powerups
+     * Release from conveyor and give them to the force
+     */
     public void handleCollisions(Hand hand, List<Movable> swipedOffConveyor) {
         for (Movable m : swipedOffConveyor) {
             m.reactToCollision(hand, currentTimeSec);
@@ -288,6 +280,9 @@ public class GameLogic {
         increaseItemGenerationProbability();
     }
 
+    /**
+     * If it's time to increase number of items in play, do it
+     */
     private void possiblyIncreaseTypesInUse() {
         if (numItemTypesInUse < GameConstants.MAX_ITEM_COUNT && Math.round(currentTimeSec) > nextItemTypeGenerationTime) {
             numItemTypesInUse++;
@@ -296,11 +291,17 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Make the conveyor go faster
+     */
     private void increaseSpeed() {
         double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         timeSpeedFactor = pctToMaxDifficulty * (GameConstants.FINAL_TIME_SPEED_FACTOR - 1) + 1;
     }
 
+    /**
+     * Make the items come out closer together
+     */
     private void increaseItemGenerationProbability() {
         double pctToMaxDifficulty = Math.min(1, wallTimeSec / GameConstants.TIME_TO_MAX_DIFFICULTY);
         factory.increaseGenerationRate(pctToMaxDifficulty);
@@ -309,7 +310,6 @@ public class GameLogic {
     public boolean isComputerPlayer(){
         return playerIsAComputer;
     }
-
 
     public boolean getState(){
         return isPlaying;

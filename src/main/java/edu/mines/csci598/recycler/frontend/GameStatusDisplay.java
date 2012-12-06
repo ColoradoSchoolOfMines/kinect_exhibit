@@ -32,7 +32,7 @@ public class GameStatusDisplay implements TextSpritesHolder {
         this.side = side;
         score = 0;
         gameOver = false;
-        Font f = new Font("Stencil",Font.BOLD,40);
+        Font f = new Font("Stencil",Font.BOLD, 40);
         Color c = Color.green;
         //If its on the left the sprites will need to have different positions.
         if(side == Side.LEFT){
@@ -60,19 +60,11 @@ public class GameStatusDisplay implements TextSpritesHolder {
         return side;
     }
 
-
     public void incrementScore(int points) {
         if(!gameOver){
             score += points;
             //Keep score at or above zero
             score = Math.max(score, 0);
-            scoreChanged();
-        }
-    }
-
-    public void setScore(int score) {
-        if(!gameOver) {
-            this.score = score;
             scoreChanged();
         }
     }
