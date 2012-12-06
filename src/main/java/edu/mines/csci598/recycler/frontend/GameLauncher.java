@@ -14,6 +14,7 @@ import edu.mines.csci598.recycler.frontend.items.PowerUp;
 import edu.mines.csci598.recycler.frontend.items.RecyclableType;
 import edu.mines.csci598.recycler.frontend.motion.ConveyorBelt;
 import edu.mines.csci598.recycler.frontend.motion.FeedbackDisplay;
+import edu.mines.csci598.recycler.frontend.utils.GameConstants;
 import edu.mines.csci598.recycler.frontend.utils.PlayerMode;
 import org.apache.log4j.Logger;
 
@@ -168,12 +169,14 @@ public class GameLauncher extends GameState {
         x.addTrack(new Track(SONG_FILENAME));
         x.setLooping(true);
         x.startPlaying();
-        GameLauncher gm = new GameLauncher();
+        GameLauncher gameLauncher = new GameLauncher();
 		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-		gm.getGameManager().installInputDriver(mouse);
-		gm.getGameManager().setState(gm);
-		gm.getGameManager().run();
-		gm.getGameManager().destroy();
+		gameLauncher.getGameManager().installInputDriver(mouse);
+		gameLauncher.getGameManager().setState(gameLauncher);
+		gameLauncher.getGameManager().run();
+		gameLauncher.getGameManager().destroy();
 	}
 
 }
+
+

@@ -135,8 +135,8 @@ public class HighScoreScreen implements SplashScreenSection {
         int topLeftY = topLeft.y + topPadding;
         int bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH;
         int bottomRightY = topLeft.y + topPadding + PICTURE_HEIGHT;
-		Polygon innerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
 
+		Polygon innerFrame = GraphicsHelper.getRectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
         topLeftX = topLeft.x + leftPadding - PICTURE_FRAME_PADDING;
         topLeftY = topLeft.y + topPadding - PICTURE_FRAME_PADDING;
         bottomRightX = topLeft.x + leftPadding + PICTURE_WIDTH + PICTURE_FRAME_PADDING;
@@ -153,11 +153,11 @@ public class HighScoreScreen implements SplashScreenSection {
 		
 		g.setFont(INDIVIDUAL_NAME_FONT);
 		FontMetrics fontMetrics = g.getFontMetrics();
-		Rectangle2D fontBounds = fontMetrics.getStringBounds(score.getPlayerInitials(), g);
+		Rectangle2D fontBounds = fontMetrics.getStringBounds(String.valueOf(score.getPlayerScore()), g);
 		int topFontPadding = topLeft.y + (int) (topPadding + innerFrame.getBounds2D().getHeight() + PICTURE_FRAME_PADDING + SCORE_PADDING);
 		int leftFontPadding = topLeft.x + (int) (((width - DIVISION_PIXELS_FROM_RIGHT) - fontBounds.getWidth()) / 2);
 		g.setColor(SELECTED_TEXT_COLOR);
-		g.drawString(score.getPlayerInitials(), leftFontPadding, topFontPadding);
+		g.drawString(String.valueOf(score.getPlayerScore()), leftFontPadding, topFontPadding);
 	}
 
     @Override
