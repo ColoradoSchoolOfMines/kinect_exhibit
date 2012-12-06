@@ -19,33 +19,53 @@ import java.util.concurrent.CountDownLatch;
  *
  */
 public class Song {
-	
-	private final CountDownLatch startLatch = new CountDownLatch(1); //Used for making sure the Tracks start at the same time
+	//Used for making sure the Tracks start at the same time
+	private final CountDownLatch startLatch = new CountDownLatch(1);
 	
 	private List<Track> tracks;
 	private boolean isPlaying = false;
 	private boolean isLooping = false;
 	
+	/**
+	 * The default constructor for a Song. It simply initializes the list
+	 * of Tracks to an empty list.
+	 */
 	public Song() {
 		tracks = new ArrayList<Track>();
 	}
 	
+	/**
+	 * Creates a Song and populates the list of Tracks with the given
+	 * list of Tracks.
+	 * @param tracks
+	 */
 	public Song(List<Track> tracks) {
 		for (Track track : tracks) {
 			addTrack(track);
 		}
 	}
 
+	/**
+	 * Plays the Song with the current looping setting.
+	 */
 	public void startPlaying() {
 		startPlaying(isLooping);
 	}
 	
+	/**
+	 * Plays the Song, allowing the user to pass in the looping
+	 * setting.
+	 * @param loop
+	 */
 	public void startPlaying(boolean loop) {
 		isLooping = loop;
 		isPlaying = true;
 		new PlayThread().start();
 	}
 	
+	/**
+	 * Stops the Song.
+	 */
 	public void stopPlaying() {
 		isPlaying = false;
 		isLooping = false;
@@ -55,10 +75,20 @@ public class Song {
 		}
 	}
 	
+	/**
+	 * Adds a Track to the Song.
+	 * @param track
+	 */
 	public void addTrack(Track track) {
 		insertTrack(tracks.size(), track);
 	}
 	
+	/**
+	 * Allows the user to add a Track to the Song at a specific
+	 * index.
+	 * @param index
+	 * @param track
+	 */
 	public void insertTrack(int index, Track track) {
 		track.setStartLatch(startLatch);
 		tracks.add(index, track);
@@ -85,6 +115,9 @@ public class Song {
 		startLatch.countDown();
 	}
 	
+	/*
+	 * Determines if all tracks are finished playing
+	 */
 	private boolean allTracksFinished() {
 		boolean allTracksFinished = true;
 		
@@ -98,10 +131,18 @@ public class Song {
 		return allTracksFinished;
 	}
 	
+	/**
+	 * Sets the looping setting.
+	 * @param isLooping
+	 */
 	public void setLooping(boolean isLooping) {
 		this.isLooping = isLooping;
 	}
 	
+	/**
+	 * Gets the list of Tracks
+	 * @return
+	 */
 	public List<Track> getTracks() {
 		return tracks;
 	}
