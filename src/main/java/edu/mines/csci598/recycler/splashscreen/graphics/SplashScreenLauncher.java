@@ -2,10 +2,8 @@ package edu.mines.csci598.recycler.splashscreen.graphics;
 
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
-import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
-import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
@@ -23,7 +21,7 @@ public class SplashScreenLauncher extends GameState {
     private int currentCyclingSectionIndex;
     private Song song;
 
-    private static final int HEADER_HEIGHT = 150;
+    private static final int HEADER_HEIGHT = 120;
     private static final int FOOTER_HEIGHT = 100;
 
     public static void main(String[] args) {
@@ -45,7 +43,7 @@ public class SplashScreenLauncher extends GameState {
         int screenHeight = canvas.getHeight();
 
         staticSections = new ArrayList<SplashScreenSection>();
-        SplashScreenSection instructionsSection = new InstructionHeader(gameManager.getCanvas());
+        SplashScreenSection instructionsSection = new InstructionHeader();
         instructionsSection.initialize(new Point(0, 0), new Point(screenWidth, HEADER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         staticSections.add(instructionsSection);
 
@@ -77,19 +75,19 @@ public class SplashScreenLauncher extends GameState {
         @Override
         public void cycleScreen(SplashScreenSection currentSection) {
             if (cyclingSections.contains(currentSection)) {
-                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
-                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
-
-                currentSection.stop();
-
-                // Temporary switch-to-game logic
-                song.stopPlaying();
-                GameLauncher gm = new GameLauncher();
-                ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-                gm.getGameManager().installInputDriver(mouse);
-                gm.getGameManager().setState(gm);
-                gm.getGameManager().run();
-                gm.getGameManager().destroy();
+//                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
+//                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
+//
+//                currentSection.stop();
+//
+//                // Temporary switch-to-game logic
+//                song.stopPlaying();
+//                GameLauncher gm = new GameLauncher();
+//                ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+//                gm.getGameManager().installInputDriver(mouse);
+//                gm.getGameManager().setState(gm);
+//                gm.getGameManager().run();
+//                gm.getGameManager().destroy();
 
                 // CODE USED TO CYCLE TO NEXT SCREEN
                 // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);

@@ -1,8 +1,6 @@
 package edu.mines.csci598.recycler.splashscreen.graphics;
 
 import edu.mines.csci598.recycler.splashscreen.highscores.PlayerHighScoreInformation;
-import edu.mines.csci598.recycler.splashscreen.highscores.SerializePlayerInformation;
-import edu.mines.csci598.recycler.splashscreen.highscores.SortPlayerInformation;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -33,7 +31,7 @@ public class HighScoreScreen implements SplashScreenSection {
     final int PICTURE_FRAME_PADDING = 20;
     final int SCORE_PADDING = 40;
 
-	private static final int TIMER_DELAY = 1000;
+	private static final int TIMER_DELAY = 3000;
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;
 	private int selectedScore;
@@ -50,7 +48,14 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private ArrayList<PlayerHighScoreInformation> getTop10Scores() {
-        return SortPlayerInformation.sortByScore(SerializePlayerInformation.retrievePlayerHighScoreInformation());
+        // return SortPlayerInformation.sortByScore(SerializePlayerInformation.retrievePlayerHighScoreInformation());
+        ArrayList<PlayerHighScoreInformation> scores = new ArrayList<PlayerHighScoreInformation>();
+        scores.add(new PlayerHighScoreInformation("ASM", 50, null));
+        scores.add(new PlayerHighScoreInformation("ANG", 40, null));
+        scores.add(new PlayerHighScoreInformation("JIB", 25, null));
+        scores.add(new PlayerHighScoreInformation("XOR", 15, null));
+        scores.add(new PlayerHighScoreInformation("NUB", 5, null));
+        return scores;
 	}
 	
 	private void drawDivision(Graphics2D g) {

@@ -2,24 +2,26 @@ package edu.mines.csci598.recycler.splashscreen.headers;
 
 
 import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
+import edu.mines.csci598.recycler.splashscreen.graphics.GraphicsHelper;
 import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
 import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
+import java.awt.geom.Rectangle2D;
 
 public class InstructionHeader implements SplashScreenSection {
 
-    private Image image;
-    private ImageObserver imageObserver;
     private UpdateScreenCallback callback;
     private Point topLeft;
     private Point bottomRight;
 
-    public InstructionHeader(Component imageObserver) {
-        image =  new ImageIcon("src/main/resources/SpriteImages/FinalSpriteImages/instructions_half.jpg").getImage();
-        this.imageObserver = imageObserver;
+    private static final Font TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
+    private static final Font MESSAGE_FONT = new Font("SansSerif", Font.BOLD, 54);
+    private static final Color TEXT_COLOR = new Color(240, 240, 240);
+    private static final Color BACKGROUND_COLOR = new Color(100, 100, 100);
+
+    public InstructionHeader() {
+
     }
 
     @Override
@@ -30,9 +32,34 @@ public class InstructionHeader implements SplashScreenSection {
 
     @Override
     public void draw(Graphics2D g) {
-        int width = bottomRight.x - topLeft.x;
+        drawBackground(g);
+        drawMessage(g);
+    }
+
+    private void drawBackground(Graphics2D g) {
+        Polygon frame = GraphicsHelper.getRectangle(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+        g.setColor(BACKGROUND_COLOR);
+        g.fillPolygon(frame);
+    }
+
+    private void drawMessage(Graphics2D g) {
+        String message = "Wave to begin the game!";
+
+        g.setFont(MESSAGE_FONT);
+        FontMetrics fontMetrics = g.getFontMetrics();
+        Rectangle2D fontBounds = fontMetrics.getStringBounds(message, g);
+
         int height = bottomRight.y - topLeft.y;
-        g.drawImage(image, topLeft.x, topLeft.y, width, height, imageObserver);
+        int width = bottomRight.x - topLeft.x;
+
+        int totalXPadding = width - (int)fontBounds.getWidth();
+        int fontStartX = topLeft.x + totalXPadding / 2;
+
+        int totalYPadding = height - (int)fontBounds.getHeight();
+        int fontStartY = topLeft.y + totalYPadding / 2 + (int)fontMetrics.getAscent();
+
+        g.setColor(TEXT_COLOR);
+        g.drawString(message, fontStartX, fontStartY);
     }
 
     @Override
