@@ -82,7 +82,11 @@ public class SoundEffect {
 		} catch (LineUnavailableException e) {
 			System.out.println("Dataline is not available.");
 			e.printStackTrace();
-		}
+		} catch ( IllegalArgumentException e ){
+            System.out.println();
+            e.printStackTrace();
+        }
+
 	}
 	
 	/**

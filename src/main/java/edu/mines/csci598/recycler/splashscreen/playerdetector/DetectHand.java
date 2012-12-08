@@ -19,9 +19,9 @@ public class DetectHand {
     public boolean playerFound(){
         // if there exists a detected
         float[][] pointers = _manager.getSharedInputStatus().pointers;
-        for( int person = 0; person < pointers.length; person++ ){
-            for( int pointer = 0; pointer < pointers[person].length; pointer++ ){
-                if( pointers[person][pointer] >= 0 ){
+        for( int hand = 0; hand < pointers.length; hand++ ){
+            for( int pointer = 0; pointer < pointers[hand].length; pointer++ ){
+                if( pointers[hand][pointer] >= 0 ){
                     return true;
                 }
             }
