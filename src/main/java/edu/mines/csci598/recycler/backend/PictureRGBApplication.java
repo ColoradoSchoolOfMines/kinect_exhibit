@@ -8,6 +8,9 @@ import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Run this as main to take a picture using the kinect and display it to the screen.
+ */
 public class PictureRGBApplication extends JPanel {
     PictureRGB prgb;
     BufferedImage img;

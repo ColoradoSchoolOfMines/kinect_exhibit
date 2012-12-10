@@ -5,7 +5,9 @@ import org.OpenNI.*;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
-
+/**
+ * Takes pictures using the kinect. Construct the object and then call getPicture(), returns a 640*480 BufferedImage
+ */
 public class PictureRGB {
     private Context context;
     private ImageGenerator imageGen;
@@ -28,8 +30,7 @@ public class PictureRGB {
         configOpenNI();
     }
 
-    private BufferedImage bufToImage(ByteBuffer pixelsRGB)
-           {
+    private BufferedImage bufToImage(ByteBuffer pixelsRGB) {
                int[] pixelInts = new int[width * height];
                for(int i = 0; i < width*height; i++) {
                    int tmp = 0xFF;
@@ -48,8 +49,7 @@ public class PictureRGB {
                return im;
            }
 
-    private void configOpenNI()
-    {
+    private void configOpenNI() {
         try {
             context = OpenNIContextSingleton.getContext();
             imageGen = ImageGenerator.create(context);
@@ -67,8 +67,7 @@ public class PictureRGB {
         }
     }
 
-    private void updateImage()
-    {
+    private void updateImage() {
         try {
             ByteBuffer imageBB = imageGen.getImageMap().createByteBuffer();
             bimg = bufToImage(imageBB);

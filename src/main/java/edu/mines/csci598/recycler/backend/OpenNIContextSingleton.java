@@ -1,5 +1,9 @@
 package edu.mines.csci598.recycler.backend;
 import org.OpenNI.*;
+
+/**
+ * Singleton class that handles access to the openNI context.
+ */
 public class OpenNIContextSingleton {
     private static final OpenNIContextSingleton instance = new OpenNIContextSingleton();
     private static Context context;
