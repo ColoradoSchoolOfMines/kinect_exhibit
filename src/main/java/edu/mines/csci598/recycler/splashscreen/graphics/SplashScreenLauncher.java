@@ -1,9 +1,6 @@
 package edu.mines.csci598.recycler.splashscreen.graphics;
 
-import edu.mines.csci598.recycler.backend.GameManager;
-import edu.mines.csci598.recycler.backend.GameState;
-import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
-import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
+import edu.mines.csci598.recycler.backend.*;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.GameLauncher;
@@ -13,6 +10,7 @@ import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
 import edu.mines.csci598.recycler.splashscreen.playerdetector.DetectHand;
 
 import java.awt.*;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +28,17 @@ public class SplashScreenLauncher extends GameState {
     private static final int FOOTER_HEIGHT = 100;
 
     public static void main(String[] args) {
+        InputDriver driver;
+
+        if( args[0] == "-k" ){
+            driver = new OpenNIHandTrackerInputDriver();
+        }
+        else{
+            driver = new ModalMouseMotionInputDriver();
+        }
+
 
         SplashScreenLauncher launcher = new SplashScreenLauncher();
-        OpenNIHandTrackerInputDriver driver = new OpenNIHandTrackerInputDriver();
 
         launcher.getGameManager().installInputDriver(driver);
         launcher.getGameManager().setState(launcher);
