@@ -17,7 +17,7 @@ import java.util.List;
 public class SplashScreenLauncher extends GameState {
 
     private GameManager gameManager;
-    private OpenNIHandTrackerInputDriver driver;
+    private InputDriver driver;
     private List<SplashScreenSection> staticSections;
     private List<SplashScreenSection> cyclingSections;
     private boolean refreshScreen;
@@ -30,7 +30,7 @@ public class SplashScreenLauncher extends GameState {
     public static void main(String[] args) {
         InputDriver driver;
 
-        if( args[0] == "-k" ){
+        if( args[0].contains( "-k" ) ){
             driver = new OpenNIHandTrackerInputDriver();
         }
         else{
@@ -43,7 +43,6 @@ public class SplashScreenLauncher extends GameState {
         launcher.getGameManager().installInputDriver(driver);
         launcher.getGameManager().setState(launcher);
         launcher.getGameManager().run();
-        //launcher.
     }
 
     public SplashScreenLauncher() {
@@ -100,8 +99,7 @@ public class SplashScreenLauncher extends GameState {
                 if( playerFound() ){
                     song.stopPlaying();
                     GameLauncher gm = new GameLauncher();
-                    ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-                    gm.getGameManager().installInputDriver(mouse);
+                    gm.getGameManager().installInputDriver(driver);
                     gm.getGameManager().setState(gm);
                     gm.getGameManager().run();
                     gm.getGameManager().destroy();
