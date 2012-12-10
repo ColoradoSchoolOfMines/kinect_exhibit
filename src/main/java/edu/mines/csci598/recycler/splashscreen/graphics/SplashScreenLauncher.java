@@ -25,23 +25,24 @@ public class SplashScreenLauncher extends GameState {
     private boolean refreshScreen;
     private int currentCyclingSectionIndex;
     private Song song;
-    private DetectHand detector;
 
     private static final int HEADER_HEIGHT = 150;
     private static final int FOOTER_HEIGHT = 100;
-    private static final int MILLISECOND_TO_SECOND = 1000;
 
     public static void main(String[] args) {
 
         SplashScreenLauncher launcher = new SplashScreenLauncher();
-        launcher.run();
+        OpenNIHandTrackerInputDriver driver = new OpenNIHandTrackerInputDriver();
+
+        launcher.getGameManager().installInputDriver(driver);
+        launcher.getGameManager().setState(launcher);
+        launcher.getGameManager().run();
+        //launcher.
     }
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
         driver = new OpenNIHandTrackerInputDriver();
-
-        detector = new DetectHand( MILLISECOND_TO_SECOND, gameManager );
 
         song = new Song();
         song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));
@@ -89,7 +90,8 @@ public class SplashScreenLauncher extends GameState {
 
                 currentSection.stop();
 
-                if( detector.startGame() ){
+                System.out.println( "Looking for player" );
+                if( playerFound() ){
                     song.stopPlaying();
                     GameLauncher gm = new GameLauncher();
                     ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
@@ -130,30 +132,35 @@ public class SplashScreenLauncher extends GameState {
 
             cyclingSections.get(currentCyclingSectionIndex).draw(g);
         }
-    }
 
-    public void run(){
-        while( true ){
-            // Update the splash screen and change screen if necessary
+        if( playerFound() ){
 
-            // If conditions for starting game are met the start the game
-            if( detector.startGame() ){
-                song.stopPlaying();
-                GameLauncher gm = new GameLauncher();
-                //ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-                OpenNIHandTrackerInputDriver kinect = new OpenNIHandTrackerInputDriver();
-                gm.getGameManager().installInputDriver(kinect);
-                gm.getGameManager().setState(gm);
-                gm.getGameManager().run();
-                gm.getGameManager().destroy();
-            }
+            System.out.println( "Found Player" );
+            song.stopPlaying();
+            GameLauncher gm = new GameLauncher();
+            gm.getGameManager().installInputDriver(driver);
+            gm.getGameManager().setState(gm);
+            gm.getGameManager().run();
+            gm.getGameManager().destroy();
 
-            // Update the game managers hand info
-            driver.pumpInput( gameManager.getGameState() );
         }
     }
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public boolean playerFound(){
+        // if there exists a detected
+        float[][] pointers = gameManager.getSharedInputStatus().pointers;
+        for( int hand = 0; hand < pointers.length; hand++ ){
+            for( int pointer = 0; pointer < pointers[hand].length; pointer++ ){
+                if( gameManager.vcxtopx( pointers[hand][pointer] ) >= 0 ){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

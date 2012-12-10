@@ -9,17 +9,37 @@ public class TestDetectHand {
         GameManager man = new GameManager( "TestPlayerDetector" );
         OpenNIHandTrackerInputDriver driver = new OpenNIHandTrackerInputDriver();
         driver.installInto( man );
+
+        DetectHand dh = new DetectHand( 0, man );
+
+        man.setState(dh);
+
         GameState state = man.getGameState();
 
-        DetectHand dh = new DetectHand( 1000, man );
 
-        while( !dh.startGame() ){
+        long lastClock = System.nanoTime();
+
+        //Determine elapsed time
+        long clock = System.nanoTime();
+        float et = (clock-lastClock) * 1.0e-9f;
+
+        while( !dh.playerFound() ){
+            clock = System.nanoTime();
+            et = (clock-lastClock) * 1.0e-9f;
+            lastClock = clock;
+
             // Display splash screen stuff
             System.out.println( dh.playerFound() );
-            System.out.println( man.vcxtopx(man.getSharedInputStatus().pointers[0][0]) );
+
+            state = man.getGameState();
+
+            //Handle updating
+            if (state != null) {
+                state = state.update(et);
+            }
 
             // Update info from the kinect
-            driver.pumpInput( man.getGameState() );
+            driver.pumpInput( state );
         }
 
         // Move on to the game run loop

@@ -1,9 +1,12 @@
 package edu.mines.csci598.recycler.splashscreen.playerdetector;
 
 import edu.mines.csci598.recycler.backend.GameManager;
+import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.InputStatus;
 
-public class DetectHand {
+import java.awt.*;
+
+public class DetectHand extends GameState {
     long _waitTime;
     GameManager _manager;
     boolean _detected;
@@ -21,7 +24,7 @@ public class DetectHand {
         float[][] pointers = _manager.getSharedInputStatus().pointers;
         for( int hand = 0; hand < pointers.length; hand++ ){
             for( int pointer = 0; pointer < pointers[hand].length; pointer++ ){
-                if( pointers[hand][pointer] >= 0 ){
+                if( _manager.vcxtopx( pointers[hand][pointer] ) >= 0 ){
                     return true;
                 }
             }
@@ -81,5 +84,15 @@ public class DetectHand {
     public void resetCounters(){
         this._detected = false;
         this._startedDetecting = 0;
+    }
+
+    @Override
+    protected GameState updateThis(float elapsedTime) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void drawThis(Graphics2D g) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
