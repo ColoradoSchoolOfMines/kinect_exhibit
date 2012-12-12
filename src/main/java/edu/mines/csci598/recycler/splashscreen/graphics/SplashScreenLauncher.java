@@ -4,13 +4,12 @@ import edu.mines.csci598.recycler.backend.*;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.GameLauncher;
+import edu.mines.csci598.recycler.splashscreen.credits.CreditsScreen;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
-import edu.mines.csci598.recycler.splashscreen.playerdetector.DetectHand;
 
 import java.awt.*;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +70,9 @@ public class SplashScreenLauncher extends GameState {
         staticSections.add(weatherSection);
 
         cyclingSections = new ArrayList<SplashScreenSection>();
+        SplashScreenSection creditsSection = new CreditsScreen();
+        creditsSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        cyclingSections.add(creditsSection);
         SplashScreenSection highScoreSection = new HighScoreScreen();
         highScoreSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         cyclingSections.add(highScoreSection);
