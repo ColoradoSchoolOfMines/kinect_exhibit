@@ -7,6 +7,7 @@ import edu.mines.csci598.recycler.frontend.GameLauncher;
 import edu.mines.csci598.recycler.splashscreen.credits.CreditsScreen;
 import edu.mines.csci598.recycler.splashscreen.footers.TwitterFooter;
 import edu.mines.csci598.recycler.splashscreen.footers.WeatherFooter;
+import edu.mines.csci598.recycler.splashscreen.gameoflife.GameofLife;
 import edu.mines.csci598.recycler.splashscreen.headers.InstructionHeader;
 
 import java.awt.*;
@@ -70,6 +71,9 @@ public class SplashScreenLauncher extends GameState {
         staticSections.add(weatherSection);
 
         cyclingSections = new ArrayList<SplashScreenSection>();
+        SplashScreenSection gameOfLife = new GameofLife();
+        gameOfLife.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        cyclingSections.add(gameOfLife);
         SplashScreenSection creditsSection = new CreditsScreen();
         creditsSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         cyclingSections.add(creditsSection);

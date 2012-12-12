@@ -1,35 +1,39 @@
 package edu.mines.csci598.recycler.splashscreen.gameoflife;
 
-import javax.swing.*;
+import edu.mines.csci598.recycler.splashscreen.graphics.CycleScreenCallback;
+import edu.mines.csci598.recycler.splashscreen.graphics.GraphicsHelper;
+import edu.mines.csci598.recycler.splashscreen.graphics.SplashScreenSection;
+import edu.mines.csci598.recycler.splashscreen.graphics.UpdateScreenCallback;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
+import java.util.TimerTask;
 
-public class GameofLife extends JPanel implements ActionListener {
+public class GameofLife implements SplashScreenSection {
 
-    private GameOfLifeLabel[][] cells;
-    private Timer timer;
+    private static final int TIMER_DELAY = 1000;
     private static final int NUM_ROWS = 50;
     private static final int NUM_COLS = 50;
-    private int genNumber;
+    private java.util.Timer gameofLifeUpdate;
+    private Point topLeft;
+    private Point bottomRight;
+    private UpdateScreenCallback updateScreenCallback;
+    private CycleScreenCallback cycleScreenCallback;
+    private int timerUpdateCount = 0;
+    private static final Color[] colors = {Color.DARK_GRAY, Color.LIGHT_GRAY};
+    private GameOfLifeCell[][] cells;
 
-    GameofLife(int nbRow, int nbCol) {
-        genNumber = 0;
+    public GameofLife() {
+        cells = new GameOfLifeCell[NUM_ROWS+2][NUM_COLS+2];
 
-        cells = new GameOfLifeLabel[nbRow+2][nbCol+2];
-        for(int r = 0; r < nbRow+2; r++)
-            for(int c = 0; c < nbCol+2; c++)
-                cells[r][c] = new GameOfLifeLabel();
+        for(int r = 0; r < NUM_ROWS+2; r++) {
+            for(int c = 0; c < NUM_COLS+2; c++) {
+                cells[r][c] = new GameOfLifeCell();
+            }
+        }
 
-
-        JPanel panel = new JPanel(new GridLayout(nbRow, nbCol, 1, 1));
-        panel.setBackground(Color.BLACK);
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        for(int r = 1; r < nbRow+1; r++) {
-            for(int c = 1; c < nbCol+1; c++) {
-                panel.add(cells[r][c]);
+        for(int r = 1; r < NUM_ROWS+1; r++) {
+            for(int c = 1; c < NUM_COLS+1; c++) {
                 cells[r][c].addNeighbor(cells[r - 1][c]);
                 cells[r][c].addNeighbor(cells[r + 1][c]);
                 cells[r][c].addNeighbor(cells[r][c - 1]);
@@ -51,46 +55,82 @@ public class GameofLife extends JPanel implements ActionListener {
             cells[xCoord][yCoord].setState();
         }
 
-        add(panel, BorderLayout.CENTER);
-        panel = new JPanel(new GridLayout(1,3));
-
-        add(panel, BorderLayout.SOUTH);
-        setLocation(20, 20);
-        setVisible(true);
-        timer = new Timer(100, this);
-        timer.start();
-        updateBoard();
     }
 
     private void updateBoard() {
-        genNumber++;
-        for (GameOfLifeLabel[] labelsToCheck : cells) {
-            for (GameOfLifeLabel checkedLabel : labelsToCheck) {
-                checkedLabel.checkState();
+        for (GameOfLifeCell[] labelsToCheck : cells) {
+            for (GameOfLifeCell checkedCell : labelsToCheck) {
+                checkedCell.checkState();
             }
         }
-        for (GameOfLifeLabel[] labels : cells) {
-            for (GameOfLifeLabel label : labels) {
-                label.updateState();
+        for (GameOfLifeCell[] cells : cells) {
+            for (GameOfLifeCell cell : cells) {
+                cell.updateState();
             }
         }
     }
 
-    public synchronized void actionPerformed(ActionEvent e) {
-        e.getSource();
-        timer.start();
-        updateBoard();
+
+    private void drawGame(Graphics2D g) {
+        int height = bottomRight.y - topLeft.y;
+        int width = bottomRight.x - topLeft.x;
+
+        int topLeftY = topLeft.y;
+
+        int rowHeight = height / NUM_ROWS;
+        for (int row = 0; row < NUM_ROWS; row++) {
+            g.drawLine(0, (row * rowHeight)+topLeftY, width, (row * rowHeight) + topLeftY);
+        }
+
+        int colWidth = width / NUM_COLS;
+        for (int col = 0; col < NUM_COLS; col++) {
+            g.drawLine((col*colWidth), topLeftY, (col*colWidth), height+topLeftY);
+        }
+
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLS; c++) {
+                Polygon rectangle = GraphicsHelper.getRectangle((c*colWidth), (r * rowHeight)+topLeftY, (c*colWidth), (r * rowHeight) + topLeftY);
+
+                if (cells[r][c].getState() == 1) {
+                    g.setColor(colors[1]);
+                } else {
+                    g.setColor(colors[0]);
+                }
+
+                g.fillPolygon(rectangle);
+            }
+        }
     }
 
+    @Override
+    public void initialize(Point topLeft, Point bottomRight, UpdateScreenCallback updateScreenCallback, CycleScreenCallback cycleScreenCallback) {
+        this.topLeft = topLeft;
+        this.bottomRight = bottomRight;
+        this.updateScreenCallback = updateScreenCallback;
+        this.cycleScreenCallback = cycleScreenCallback;
 
-    public static void main(String[] arg) {
-        JFrame mainFrame = new JFrame();
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setSize(1280, 720);
+        gameofLifeUpdate = new java.util.Timer();
+        gameofLifeUpdate.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                GameofLife.this.updateScreenCallback.updateScreen();
+                updateBoard();
+                timerUpdateCount++;
 
-        GameofLife gameofLife = new GameofLife(NUM_COLS, NUM_ROWS);
-        mainFrame.add(gameofLife);
+                if (timerUpdateCount == 10) {
+                    GameofLife.this.cycleScreenCallback.cycleScreen(GameofLife.this);
+                }
+            }
+        }, TIMER_DELAY, TIMER_DELAY);
+    }
 
-        mainFrame.setVisible(true);
+    @Override
+    public void draw(Graphics2D g) {
+        drawGame(g);
+    }
+
+    @Override
+    public void stop() {
+        gameofLifeUpdate.cancel();
     }
 }
