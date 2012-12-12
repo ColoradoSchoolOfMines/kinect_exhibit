@@ -46,6 +46,7 @@ public class SplashScreenLauncher extends GameState {
 
     public SplashScreenLauncher() {
         gameManager = new GameManager("SplashScreen", false);
+        driver = new OpenNIHandTrackerInputDriver();
 
         song = new Song();
         song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));

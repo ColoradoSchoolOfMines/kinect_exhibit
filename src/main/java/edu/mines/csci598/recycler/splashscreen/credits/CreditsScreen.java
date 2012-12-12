@@ -13,11 +13,8 @@ import java.util.TimerTask;
 
 public class CreditsScreen implements SplashScreenSection {
 
-    private static final int DIVISION_PIXELS_FROM_RIGHT = 300;
-
     private static final int TIMER_DELAY = 10000;
-    private int selectedScore;
-    private Timer scoreSwitch;
+    private Timer credits;
     private Point topLeft;
     private Point bottomRight;
     private UpdateScreenCallback updateScreenCallback;
@@ -25,26 +22,19 @@ public class CreditsScreen implements SplashScreenSection {
     private int timerUpdateCount = 0;
 
     public CreditsScreen() {
-        selectedScore = 0;
     }
 
-    private void drawDivision(Graphics2D g) {
+    private void drawImage(Graphics2D g) {
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 
         BufferedImage originalImage;
         try {
             originalImage = ImageIO.read((getClass().getResource("/SpriteImages/team.jpg")));
-            /*int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-            BufferedImage resizedImage = new BufferedImage(width, height, type);
-            g = resizedImage.createGraphics();*/
             g.drawImage(originalImage, topLeft.x, topLeft.y, width, height, null);
         } catch (IOException e) {
-
+           //don't display image
         }
-
-
-
     }
 
     @Override
@@ -54,8 +44,8 @@ public class CreditsScreen implements SplashScreenSection {
         this.updateScreenCallback = updateScreenCallback;
         this.cycleScreenCallback = cycleScreenCallback;
 
-        scoreSwitch = new Timer();
-        scoreSwitch.scheduleAtFixedRate(new TimerTask() {
+        credits = new Timer();
+        credits.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 CreditsScreen.this.updateScreenCallback.updateScreen();
@@ -71,11 +61,11 @@ public class CreditsScreen implements SplashScreenSection {
 
     @Override
     public void draw(Graphics2D g) {
-        drawDivision(g);
+        drawImage(g);
     }
 
     @Override
     public void stop() {
-        scoreSwitch.cancel();
+        credits.cancel();
     }
 }
