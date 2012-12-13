@@ -72,14 +72,15 @@ public class SplashScreenLauncher extends GameState {
 
         cyclingSections = new ArrayList<SplashScreenSection>();
         SplashScreenSection gameOfLife = new GameofLife();
+        SplashScreenSection highScoreSection = new HighScoreScreen();
+        highScoreSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        cyclingSections.add(highScoreSection);
         gameOfLife.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         cyclingSections.add(gameOfLife);
         SplashScreenSection creditsSection = new CreditsScreen();
         creditsSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         cyclingSections.add(creditsSection);
-        SplashScreenSection highScoreSection = new HighScoreScreen();
-        highScoreSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
-        cyclingSections.add(highScoreSection);
+
 
         currentCyclingSectionIndex = 0;
         refreshScreen = true;
