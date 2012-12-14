@@ -39,8 +39,6 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
         messageNumber = 0;
         twitterMessages = new TwitterMessages();
         messages = twitterMessages.retrieveAllMessages();
-        timer = new Timer(UPDATE_INTERVAL, this);
-        timer.start();
     }
 
 
@@ -121,7 +119,14 @@ public class TwitterFooter implements ActionListener, SplashScreenSection {
     }
 
     @Override
-    public void stop() {
+    public void startThreads() {
+        timer = new Timer(UPDATE_INTERVAL, this);
+        timer.start();
+    }
+
+    @Override
+    public void stopThreads() {
         timer.stop();
     }
+
 }

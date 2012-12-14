@@ -42,11 +42,10 @@ public class HighScoreScreen implements SplashScreenSection {
     private Point bottomRight;
     private UpdateScreenCallback updateScreenCallback;
     private CycleScreenCallback cycleScreenCallback;
-    private int timerUpdateCount = 0;
+    private int timerUpdateCount;
 
 	public HighScoreScreen() {
 		top10Scores = getTop10Scores();
-		selectedScore = 0;
 	}
 	
 	private ArrayList<PlayerHighScoreInformation> getTop10Scores() {
@@ -173,6 +172,20 @@ public class HighScoreScreen implements SplashScreenSection {
         this.bottomRight = bottomRight;
         this.updateScreenCallback = updateScreenCallback;
         this.cycleScreenCallback = cycleScreenCallback;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        drawDivision(g);
+        drawScoresList(top10Scores, selectedScore, g);
+        if (!top10Scores.isEmpty())
+            drawScore(top10Scores.get(selectedScore), g);
+    }
+
+    @Override
+    public void startThreads() {
+        timerUpdateCount = 0;
+        selectedScore = 0;
 
         scoreSwitch = new Timer();
         scoreSwitch.scheduleAtFixedRate(new TimerTask() {
@@ -192,15 +205,8 @@ public class HighScoreScreen implements SplashScreenSection {
     }
 
     @Override
-    public void draw(Graphics2D g) {
-        drawDivision(g);
-        drawScoresList(top10Scores, selectedScore, g);
-        if (!top10Scores.isEmpty())
-            drawScore(top10Scores.get(selectedScore), g);
-    }
-
-    @Override
-    public void stop() {
+    public void stopThreads() {
         scoreSwitch.cancel();
     }
+
 }

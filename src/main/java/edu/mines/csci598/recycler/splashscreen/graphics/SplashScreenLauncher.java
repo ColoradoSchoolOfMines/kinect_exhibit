@@ -30,10 +30,9 @@ public class SplashScreenLauncher extends GameState {
     public static void main(String[] args) {
         InputDriver driver;
 
-        if( args[0].contains( "-k" ) ){
+        if(args.length >= 1 && args[0].contains( "-k" )){
             driver = new OpenNIHandTrackerInputDriver();
-        }
-        else{
+        } else {
             driver = new ModalMouseMotionInputDriver();
         }
 
@@ -60,14 +59,17 @@ public class SplashScreenLauncher extends GameState {
         staticSections = new ArrayList<SplashScreenSection>();
         SplashScreenSection instructionsSection = new InstructionHeader(gameManager.getCanvas());
         instructionsSection.initialize(new Point(0, 0), new Point(screenWidth, HEADER_HEIGHT), updateScreenCallback, cycleScreenCallback);
+        instructionsSection.startThreads();
         staticSections.add(instructionsSection);
 
         SplashScreenSection twitterSection = new TwitterFooter();
         twitterSection.initialize(new Point(0, screenHeight - FOOTER_HEIGHT), new Point(screenWidth / 2, screenHeight), updateScreenCallback, cycleScreenCallback);
+        twitterSection.startThreads();
         staticSections.add(twitterSection);
 
         SplashScreenSection weatherSection = new WeatherFooter();
         weatherSection.initialize(new Point(screenWidth / 2, screenHeight - FOOTER_HEIGHT), new Point(screenWidth, screenHeight), updateScreenCallback, cycleScreenCallback);
+        weatherSection.startThreads();
         staticSections.add(weatherSection);
 
         cyclingSections = new ArrayList<SplashScreenSection>();
@@ -81,8 +83,8 @@ public class SplashScreenLauncher extends GameState {
         creditsSection.initialize(new Point(0, HEADER_HEIGHT), new Point(screenWidth, screenHeight - FOOTER_HEIGHT), updateScreenCallback, cycleScreenCallback);
         cyclingSections.add(creditsSection);
 
-
         currentCyclingSectionIndex = 0;
+        cyclingSections.get(currentCyclingSectionIndex).startThreads();
         refreshScreen = true;
     }
 
@@ -100,31 +102,29 @@ public class SplashScreenLauncher extends GameState {
                 int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
                 SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
 
-                currentSection.stop();
+                currentSection.stopThreads();
+                nextSection.startThreads();
 
-                System.out.println( "Looking for player" );
-                if( playerFound() ){
-                    song.stopPlaying();
-                    GameLauncher gm = new GameLauncher();
-                    gm.getGameManager().installInputDriver(driver);
-                    gm.getGameManager().setState(gm);
-                    gm.getGameManager().run();
-                    gm.getGameManager().destroy();
-
-                }
-                driver.pumpInput( gameManager.getGameState() );
-
-                // CODE USED TO CYCLE TO NEXT SCREEN
-                // nextSection.initialize(new Point(...), new Point(...), updateScreenCallback, cycleScreenCallback);
-
-                // currentCyclingSectionIndex = nextSectionIndex;
-                // refreshScreen = true;
+                currentCyclingSectionIndex = nextSectionIndex;
+                refreshScreen = true;
             }
         }
     };
 
     @Override
     protected GameState updateThis(float elapsedTime) {
+        System.out.println( "Looking for player" );
+        if( playerFound() ){
+            song.stopPlaying();
+            GameLauncher gm = new GameLauncher();
+            gm.getGameManager().installInputDriver(driver);
+            gm.getGameManager().setState(gm);
+            gm.getGameManager().run();
+            gm.getGameManager().destroy();
+
+        }
+        driver.pumpInput( gameManager.getGameState() );
+
         return this;
     }
 

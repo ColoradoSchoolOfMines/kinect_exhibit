@@ -43,7 +43,15 @@ public class CreditsScreen implements SplashScreenSection {
         this.bottomRight = bottomRight;
         this.updateScreenCallback = updateScreenCallback;
         this.cycleScreenCallback = cycleScreenCallback;
+    }
 
+    @Override
+    public void draw(Graphics2D g) {
+        drawImage(g);
+    }
+
+    @Override
+    public void startThreads() {
         credits = new Timer();
         credits.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -60,12 +68,7 @@ public class CreditsScreen implements SplashScreenSection {
     }
 
     @Override
-    public void draw(Graphics2D g) {
-        drawImage(g);
-    }
-
-    @Override
-    public void stop() {
+    public void stopThreads() {
         credits.cancel();
     }
 }

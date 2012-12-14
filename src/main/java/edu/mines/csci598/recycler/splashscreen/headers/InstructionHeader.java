@@ -18,7 +18,7 @@ public class InstructionHeader implements SplashScreenSection {
     private Point bottomRight;
 
     public InstructionHeader(Component imageObserver) {
-        image =  new ImageIcon("src/main/resources/SpriteImages/instructions_half.jpg").getImage();
+        image = new ImageIcon("src/main/resources/SpriteImages/instructions_half.jpg").getImage();
         this.imageObserver = imageObserver;
     }
 
@@ -36,7 +36,12 @@ public class InstructionHeader implements SplashScreenSection {
     }
 
     @Override
-    public void stop() {
+    public void startThreads() {
+
+    }
+
+    @Override
+    public void stopThreads() {
 
     }
 }

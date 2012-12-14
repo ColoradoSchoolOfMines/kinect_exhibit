@@ -44,17 +44,6 @@ public class GameofLife implements SplashScreenSection {
                 cells[r][c].addNeighbor(cells[r + 1][c + 1]);
             }
         }
-
-        int gridSize = NUM_COLS * NUM_ROWS;
-        int numRandomElements = gridSize / 5;
-        Random rand = new Random();
-        for (int i = 0; i < numRandomElements; i++) {
-            int randomNum = rand.nextInt(gridSize + 1);
-            int xCoord = randomNum / 50;
-            int yCoord = randomNum % 50;
-            cells[xCoord][yCoord].setState();
-        }
-
     }
 
     private void updateBoard() {
@@ -63,8 +52,8 @@ public class GameofLife implements SplashScreenSection {
                 checkedCell.checkState();
             }
         }
-        for (GameOfLifeCell[] cells : cells) {
-            for (GameOfLifeCell cell : cells) {
+        for (GameOfLifeCell[] cellsToCheck : cells) {
+            for (GameOfLifeCell cell : cellsToCheck) {
                 cell.updateState();
             }
         }
@@ -108,6 +97,24 @@ public class GameofLife implements SplashScreenSection {
         this.bottomRight = bottomRight;
         this.updateScreenCallback = updateScreenCallback;
         this.cycleScreenCallback = cycleScreenCallback;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        drawGame(g);
+    }
+
+    @Override
+    public void startThreads() {
+        int gridSize = NUM_COLS * NUM_ROWS;
+        int numRandomElements = gridSize / 5;
+        Random rand = new Random();
+        for (int i = 0; i < numRandomElements; i++) {
+            int randomNum = rand.nextInt(gridSize + 1);
+            int xCoord = randomNum / 50;
+            int yCoord = randomNum % 50;
+            cells[xCoord][yCoord].setState();
+        }
 
         gameofLifeUpdate = new java.util.Timer();
         gameofLifeUpdate.scheduleAtFixedRate(new TimerTask() {
@@ -125,12 +132,8 @@ public class GameofLife implements SplashScreenSection {
     }
 
     @Override
-    public void draw(Graphics2D g) {
-        drawGame(g);
-    }
-
-    @Override
-    public void stop() {
+    public void stopThreads() {
         gameofLifeUpdate.cancel();
     }
+
 }

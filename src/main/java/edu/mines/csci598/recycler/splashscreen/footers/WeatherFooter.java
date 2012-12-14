@@ -34,8 +34,6 @@ public class WeatherFooter implements ActionListener, SplashScreenSection {
 
     public WeatherFooter() {
         weather = LocalAreaWeather.retrieveWeatherInformation();
-        timer = new Timer(UPDATE_INTERVAL, this);
-        timer.start();
     }
 
     @Override
@@ -111,7 +109,14 @@ public class WeatherFooter implements ActionListener, SplashScreenSection {
     }
 
     @Override
-    public void stop() {
-
+    public void startThreads() {
+        timer = new Timer(UPDATE_INTERVAL, this);
+        timer.start();
     }
+
+    @Override
+    public void stopThreads() {
+        timer.stop();
+    }
+
 }
