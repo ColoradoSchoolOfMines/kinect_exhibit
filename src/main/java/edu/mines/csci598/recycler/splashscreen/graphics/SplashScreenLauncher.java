@@ -117,11 +117,15 @@ public class SplashScreenLauncher extends GameState {
         if(playerFound()){
             System.out.println("Found player");
             song.stopPlaying();
-            GameLauncher gm = new GameLauncher();
-            gm.getGameManager().installInputDriver(driver);
-            gm.getGameManager().setState(gm);
-            gm.getGameManager().run();
-            gm.getGameManager().destroy();
+
+            GameLauncher gameLauncher = new GameLauncher();
+            gameLauncher.getGameManager().installInputDriver(driver);
+            gameLauncher.getGameManager().setState(gameLauncher);
+            this.subState = gameLauncher;
+            gameLauncher.getGameManager().run();
+            gameLauncher.getGameManager().destroy();
+
+            song.startPlaying(true);
         }
 
         return this;
