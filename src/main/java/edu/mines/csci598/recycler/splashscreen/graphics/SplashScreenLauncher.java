@@ -98,32 +98,31 @@ public class SplashScreenLauncher extends GameState {
     CycleScreenCallback cycleScreenCallback = new CycleScreenCallback() {
         @Override
         public void cycleScreen(SplashScreenSection currentSection) {
-            if (cyclingSections.contains(currentSection)) {
-                int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
-                SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
+        if (cyclingSections.contains(currentSection)) {
+            int nextSectionIndex = (cyclingSections.indexOf(currentSection) + 1) % cyclingSections.size();
+            SplashScreenSection nextSection = cyclingSections.get(nextSectionIndex);
 
-                currentSection.stopThreads();
-                nextSection.startThreads();
+            currentSection.stopThreads();
+            nextSection.startThreads();
 
-                currentCyclingSectionIndex = nextSectionIndex;
-                refreshScreen = true;
-            }
+            currentCyclingSectionIndex = nextSectionIndex;
+            refreshScreen = true;
+        }
         }
     };
 
     @Override
     protected GameState updateThis(float elapsedTime) {
-        System.out.println( "Looking for player" );
-        if( playerFound() ){
+        // Look for player
+        if(playerFound()){
+            System.out.println("Found player");
             song.stopPlaying();
             GameLauncher gm = new GameLauncher();
             gm.getGameManager().installInputDriver(driver);
             gm.getGameManager().setState(gm);
             gm.getGameManager().run();
             gm.getGameManager().destroy();
-
         }
-        driver.pumpInput( gameManager.getGameState() );
 
         return this;
     }
@@ -142,18 +141,6 @@ public class SplashScreenLauncher extends GameState {
             }
 
             cyclingSections.get(currentCyclingSectionIndex).draw(g);
-        }
-
-        if( playerFound() ){
-
-            System.out.println( "Found Player" );
-            song.stopPlaying();
-            GameLauncher gm = new GameLauncher();
-            gm.getGameManager().installInputDriver(driver);
-            gm.getGameManager().setState(gm);
-            gm.getGameManager().run();
-            gm.getGameManager().destroy();
-
         }
     }
 

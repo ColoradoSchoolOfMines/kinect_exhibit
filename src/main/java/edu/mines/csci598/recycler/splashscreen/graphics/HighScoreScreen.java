@@ -49,7 +49,13 @@ public class HighScoreScreen implements SplashScreenSection {
 	}
 	
 	private ArrayList<PlayerHighScoreInformation> getTop10Scores() {
-        return SortPlayerInformation.sortByScore(SerializePlayerInformation.retrievePlayerHighScoreInformation());
+        ArrayList<PlayerHighScoreInformation> highscores = SortPlayerInformation.sortByScore(SerializePlayerInformation.retrievePlayerHighScoreInformation());
+        if (highscores.isEmpty()) {
+            highscores.add(new PlayerHighScoreInformation("ABC", 3, null));
+            highscores.add(new PlayerHighScoreInformation("DEF", 2, null));
+            highscores.add(new PlayerHighScoreInformation("GHI", 1, null));
+        }
+        return highscores;
 	}
 	
 	private void drawDivision(Graphics2D g) {
