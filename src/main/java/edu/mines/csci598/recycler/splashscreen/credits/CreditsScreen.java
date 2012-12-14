@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class CreditsScreen implements SplashScreenSection {
 
-    private static final int TIMER_DELAY = 10000;
+    private static final int TIMER_DELAY = 1000;
     private Timer credits;
     private Point topLeft;
     private Point bottomRight;

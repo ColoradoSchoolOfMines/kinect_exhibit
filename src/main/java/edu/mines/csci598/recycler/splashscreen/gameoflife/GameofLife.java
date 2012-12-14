@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 public class GameofLife implements SplashScreenSection {
 
-    private static final int TIMER_DELAY = 1000;
+    private static final int TIMER_DELAY = 100;
     private static final int NUM_ROWS = 50;
     private static final int NUM_COLS = 50;
     private java.util.Timer gameofLifeUpdate;
@@ -64,21 +64,23 @@ public class GameofLife implements SplashScreenSection {
         int height = bottomRight.y - topLeft.y;
         int width = bottomRight.x - topLeft.x;
 
-        int topLeftY = topLeft.y;
-
         int rowHeight = height / NUM_ROWS;
         for (int row = 0; row < NUM_ROWS; row++) {
-            g.drawLine(0, (row * rowHeight)+topLeftY, width, (row * rowHeight) + topLeftY);
+            g.drawLine(0, (row * rowHeight) + topLeft.y, width, (row * rowHeight) + topLeft.y);
         }
 
         int colWidth = width / NUM_COLS;
         for (int col = 0; col < NUM_COLS; col++) {
-            g.drawLine((col*colWidth), topLeftY, (col*colWidth), height+topLeftY);
+            g.drawLine((col*colWidth), topLeft.y, (col*colWidth), height + topLeft.y);
         }
 
         for (int r = 0; r < NUM_ROWS; r++) {
             for (int c = 0; c < NUM_COLS; c++) {
-                Polygon rectangle = GraphicsHelper.getRectangle((c*colWidth), (r * rowHeight)+topLeftY, (c*colWidth), (r * rowHeight) + topLeftY);
+                int cellTopLeftX = topLeft.x + (c*colWidth);
+                int cellTopLeftY = topLeft.y + (r * rowHeight);
+                int cellBottomLeftX = cellTopLeftX + colWidth;
+                int cellBottomLeftY = cellTopLeftY + rowHeight;
+                Polygon rectangle = GraphicsHelper.getRectangle(cellTopLeftX, cellTopLeftY, cellBottomLeftX ,cellBottomLeftY);
 
                 if (cells[r][c].getState() == 1) {
                     g.setColor(colors[1]);
@@ -124,7 +126,7 @@ public class GameofLife implements SplashScreenSection {
                 updateBoard();
                 timerUpdateCount++;
 
-                if (timerUpdateCount == 10) {
+                if (timerUpdateCount == 100) {
                     GameofLife.this.cycleScreenCallback.cycleScreen(GameofLife.this);
                 }
             }

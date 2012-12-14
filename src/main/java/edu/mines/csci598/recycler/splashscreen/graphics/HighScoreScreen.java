@@ -33,7 +33,7 @@ public class HighScoreScreen implements SplashScreenSection {
     final int PICTURE_FRAME_PADDING = 20;
     final int SCORE_PADDING = 40;
 
-	private static final int TIMER_DELAY = 10000;
+	private static final int TIMER_DELAY = 1000;
 	
 	private ArrayList<PlayerHighScoreInformation> top10Scores;
 	private int selectedScore;
