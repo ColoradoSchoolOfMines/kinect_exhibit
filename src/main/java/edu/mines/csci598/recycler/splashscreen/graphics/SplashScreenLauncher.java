@@ -36,16 +36,15 @@ public class SplashScreenLauncher extends GameState {
             driver = new ModalMouseMotionInputDriver();
         }
 
-        SplashScreenLauncher launcher = new SplashScreenLauncher();
-
+        GameManager gameManager = new GameManager("Recycler", true);
+        SplashScreenLauncher launcher = new SplashScreenLauncher(gameManager);
         launcher.getGameManager().installInputDriver(driver);
         launcher.getGameManager().setState(launcher);
         launcher.getGameManager().run();
     }
 
-    public SplashScreenLauncher() {
-        gameManager = new GameManager("SplashScreen", false);
-        driver = new OpenNIHandTrackerInputDriver();
+    public SplashScreenLauncher(GameManager gameManager) {
+        this.gameManager = gameManager;
 
         song = new Song();
         song.addTrack(new Track("src/main/resources/Sounds/root_beer_float.mp3"));
@@ -115,7 +114,13 @@ public class SplashScreenLauncher extends GameState {
             song.stopPlaying();
             stopAllScreens();
 
-            this.subState = new GameLauncher();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // No big deal
+            }
+
+            this.subState = new GameLauncher(this.gameManager);
 
             startAllScreens();
             song.startPlaying(true);
@@ -126,7 +131,11 @@ public class SplashScreenLauncher extends GameState {
 
     @Override
     protected void drawThis(Graphics2D g) {
-        if (refreshScreen) {
+        // TODO: Fix this. Refreshing after an UpdateScreenCallback only works when NOT in full screen.
+        // Right now, every screen is redrawn every frame, which is what the UpdateScreenCallback was designed
+        // to avoid.
+        // if (refreshScreen) {
+        if (true) {
             refreshScreen = false;
 
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

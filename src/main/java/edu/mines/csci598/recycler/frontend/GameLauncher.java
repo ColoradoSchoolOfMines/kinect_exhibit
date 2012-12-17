@@ -3,7 +3,6 @@ package edu.mines.csci598.recycler.frontend;
 import edu.mines.csci598.recycler.backend.GameManager;
 import edu.mines.csci598.recycler.backend.GameState;
 import edu.mines.csci598.recycler.backend.ModalMouseMotionInputDriver;
-import edu.mines.csci598.recycler.backend.OpenNIHandTrackerInputDriver;
 import edu.mines.csci598.recycler.bettyCrocker.Song;
 import edu.mines.csci598.recycler.bettyCrocker.Track;
 import edu.mines.csci598.recycler.frontend.graphics.GameScreen;
@@ -47,7 +46,8 @@ public class GameLauncher extends GameState {
     private InstructionScreen instructionScreen;
     private PlayerOptionsScreen playerOptions;
 
-	public GameLauncher() {
+	public GameLauncher(GameManager gameManager) {
+        this.gameManager = gameManager;
          //Preloading the images will prevent some flickering.
         preloading = new Thread() {
             public void run() {
@@ -63,9 +63,6 @@ public class GameLauncher extends GameState {
         //If we name the thread it will show up in the debugger/profiler with that name.
         preloading.setName("preload-images");
         preloading.start();
-
-        // the boolean in gameManager determines if the screen is full screen or not
-		gameManager = new GameManager("Recycler", true);
 
 		gameScreen = GameScreen.getInstance();
         leftGameStatusDisplay = new GameStatusDisplay(Side.LEFT);
@@ -176,13 +173,14 @@ public class GameLauncher extends GameState {
 	}
 
 	public static void main(String[] args) {
-        GameLauncher gameLauncher = new GameLauncher();
-		//ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
-        OpenNIHandTrackerInputDriver kinect = new OpenNIHandTrackerInputDriver();
-        gameLauncher.getGameManager().installInputDriver(kinect);
+        GameManager gameManager = new GameManager("Recycler", true);
+        GameLauncher gameLauncher = new GameLauncher(gameManager);
+		ModalMouseMotionInputDriver mouse = new ModalMouseMotionInputDriver();
+        //OpenNIHandTrackerInputDriver kinect = new OpenNIHandTrackerInputDriver();
+        gameLauncher.getGameManager().installInputDriver(mouse);
 		gameLauncher.getGameManager().setState(gameLauncher);
 		gameLauncher.getGameManager().run();
-		gameLauncher.getGameManager().destroy();
+        gameLauncher.getGameManager().destroy();
 	}
 
 }
