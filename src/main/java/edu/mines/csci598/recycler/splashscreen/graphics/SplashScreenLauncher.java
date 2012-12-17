@@ -36,7 +36,6 @@ public class SplashScreenLauncher extends GameState {
             driver = new ModalMouseMotionInputDriver();
         }
 
-
         SplashScreenLauncher launcher = new SplashScreenLauncher();
 
         launcher.getGameManager().installInputDriver(driver);
@@ -59,17 +58,14 @@ public class SplashScreenLauncher extends GameState {
         staticSections = new ArrayList<SplashScreenSection>();
         SplashScreenSection instructionsSection = new InstructionHeader(gameManager.getCanvas());
         instructionsSection.initialize(new Point(0, 0), new Point(screenWidth, HEADER_HEIGHT), updateScreenCallback, cycleScreenCallback);
-        instructionsSection.startThreads();
         staticSections.add(instructionsSection);
 
         SplashScreenSection twitterSection = new TwitterFooter();
         twitterSection.initialize(new Point(0, screenHeight - FOOTER_HEIGHT), new Point(screenWidth / 2, screenHeight), updateScreenCallback, cycleScreenCallback);
-        twitterSection.startThreads();
         staticSections.add(twitterSection);
 
         SplashScreenSection weatherSection = new WeatherFooter();
         weatherSection.initialize(new Point(screenWidth / 2, screenHeight - FOOTER_HEIGHT), new Point(screenWidth, screenHeight), updateScreenCallback, cycleScreenCallback);
-        weatherSection.startThreads();
         staticSections.add(weatherSection);
 
         cyclingSections = new ArrayList<SplashScreenSection>();
@@ -84,7 +80,7 @@ public class SplashScreenLauncher extends GameState {
         cyclingSections.add(creditsSection);
 
         currentCyclingSectionIndex = 0;
-        cyclingSections.get(currentCyclingSectionIndex).startThreads();
+        startAllScreens();
         refreshScreen = true;
     }
 
@@ -117,14 +113,11 @@ public class SplashScreenLauncher extends GameState {
         if(playerFound()){
             System.out.println("Found player");
             song.stopPlaying();
+            stopAllScreens();
 
-            GameLauncher gameLauncher = new GameLauncher();
-            gameLauncher.getGameManager().installInputDriver(driver);
-            gameLauncher.getGameManager().setState(gameLauncher);
-            this.subState = gameLauncher;
-            gameLauncher.getGameManager().run();
-            gameLauncher.getGameManager().destroy();
+            this.subState = new GameLauncher();
 
+            startAllScreens();
             song.startPlaying(true);
         }
 
@@ -146,6 +139,22 @@ public class SplashScreenLauncher extends GameState {
 
             cyclingSections.get(currentCyclingSectionIndex).draw(g);
         }
+    }
+
+    private void startAllScreens() {
+        for (SplashScreenSection staticSection : staticSections) {
+            staticSection.startThreads();
+        }
+
+        cyclingSections.get(currentCyclingSectionIndex).startThreads();
+    }
+
+    private void stopAllScreens() {
+        for (SplashScreenSection staticSection : staticSections) {
+            staticSection.stopThreads();
+        }
+
+        cyclingSections.get(currentCyclingSectionIndex).stopThreads();
     }
 
     public GameManager getGameManager() {
